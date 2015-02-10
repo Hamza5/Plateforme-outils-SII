@@ -67,6 +67,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             item = ObjectItem(état)
             if item not in self.etatsModel:
                 self.etatsModel.appendRow(item)
+            else:
+                QMessageBox.warning(self, 'Etat existant', "L'état '"+état+"' existe dans la liste !")
 
     def suprimmerEtat(self):
         selection_model = self.etatsListView.selectionModel()
@@ -91,6 +93,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             hypothèse = Hypothese(états)
             if ObjectItem(hypothèse) not in self.hypothesesModel:
                 self.hypothesesModel.appendRow(ObjectItem(hypothèse))
+            else:
+                QMessageBox.warning(self, 'Hypothèse existante', "L'hypothèse "+str(hypothèse)+" existe dans la liste !")
         else :
             hypotheses_dialog = HypotheseDialog(self)
             if hypotheses_dialog.exec_() == QDialog.Accepted:
@@ -99,6 +103,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                 hypothèse = Hypothese(états)
                 if ObjectItem(hypothèse) not in self.hypothesesModel:
                     self.hypothesesModel.appendRow(ObjectItem(hypothèse))
+                else:
+                    QMessageBox.warning(self, 'Hypothèse existante', "L'hypothèse "+str(hypothèse)+" existe dans la liste !")
 
     def supprimerHypothese(self):
         selection_model = self.hypothesesListView.selectionModel()
@@ -130,6 +136,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                     affaiblissement_item = agent_dialog.model.item(i,2)
                     agent.add_hypothese(hypothèse_item.item, masse_item.item, affaiblissement_item.item)
                     agent_item.appendRow([ObjectItem(hypothèse_item.item), ObjectItem(masse_item.item), ObjectItem(affaiblissement_item.item)])
+            else:
+                QMessageBox.warning(self, 'Agent existant', "L'agent '"+str(agent)+"' existe dans la liste !")
 
     def supprimerAgent(self):
         selection_model = self.agentsTreeView.selectionModel()
