@@ -5,7 +5,8 @@ from HypotheseDialog import Ui_hypothesesDialog
 from AgentDialog import Ui_agentDialog
 from MasseDialog import Ui_masseDialog
 from DescriptionDialog import Ui_descriptionDialog
-from PyQt4.QtGui import QApplication, QMainWindow, QActionGroup, QDialog, QStandardItem, QStandardItemModel, QInputDialog, QHeaderView, QLineEdit
+from PyQt4.QtGui import QApplication, QMainWindow, QActionGroup, QDialog, QStandardItem, QStandardItemModel, QInputDialog, QHeaderView, QLineEdit, \
+    QMessageBox
 from PyQt4.QtCore import SIGNAL
 import sys
 
@@ -204,9 +205,18 @@ class AgentDialog(QDialog, Ui_agentDialog):
             hypothèse_title = masse_dialog.hypotheseComboBox.currentText()
             masse = masse_dialog.masseSpinBox.value()
             affaiblissement = masse_dialog.affaiblissementSpinBox.value()
-            if ObjectItem(hypothèse_title) not in self.model:
-                self.model.appendRow([ObjectItem(Hypothese(eval(hypothèse_title))), ObjectItem(masse), ObjectItem(affaiblissement)])
+            hypothèse_item = ObjectItem(Hypothese(eval(hypothèse_title)))
+            if hypothèse_item not in self.model:
+                self.model.appendRow([hypothèse_item, ObjectItem(masse), ObjectItem(affaiblissement)])
                 self.hypothesesTableView.resizeColumnsToContents()
+            else:
+                answer = QMessageBox.warning(self, "Hypothèse existante", "L'hypothèse "+hypothèse_title+" existe, voulez vouz la mettre à jour ?", QMessageBox.Yes | QMessageBox.No)
+                if answer == QMessageBox.No: return
+                for i in range(len(self.model)):
+                    if self.model[i].named(hypothèse_title):
+                        self.model.setItem(i, 1, ObjectItem(masse))
+                        self.model.setItem(i, 2, ObjectItem(affaiblissement))
+                        break
 
     def supprimerHypothese(self):
         selection_model = self.hypothesesTableView.selectionModel()
