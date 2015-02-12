@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'MainWindow.ui'
 #
-# Created: Tue Feb 10 19:19:46 2015
+# Created: Wed Feb 11 17:21:24 2015
 #      by: PyQt4 UI code generator 4.10.4
 #
 # WARNING! All changes made in this file will be lost!
@@ -64,9 +64,6 @@ class Ui_MainWindow(object):
         self.agentsTreeView.setObjectName(_fromUtf8("agentsTreeView"))
         self.horizontalLayout_3.addWidget(self.agentsTreeView)
         self.verticalLayout_4.addWidget(self.splitter)
-        self.widget = QtGui.QWidget(self.centralwidget)
-        self.widget.setObjectName(_fromUtf8("widget"))
-        self.verticalLayout_4.addWidget(self.widget)
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QtGui.QMenuBar(MainWindow)
         self.menubar.setGeometry(QtCore.QRect(0, 0, 600, 21))

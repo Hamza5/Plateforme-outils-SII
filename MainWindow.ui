@@ -70,9 +70,6 @@
       </widget>
      </widget>
     </item>
-    <item>
-     <widget class="QWidget" name="widget" native="true"/>
-    </item>
    </layout>
   </widget>
   <widget class="QMenuBar" name="menubar">
