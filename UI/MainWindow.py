@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'MainWindow.ui'
 #
-# Created: Wed Feb 11 17:21:24 2015
+# Created: Sat Feb 14 18:25:49 2015
 #      by: PyQt4 UI code generator 4.10.4
 #
 # WARNING! All changes made in this file will be lost!
@@ -27,6 +27,7 @@ class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         MainWindow.setObjectName(_fromUtf8("MainWindow"))
         MainWindow.resize(600, 600)
+        MainWindow.setLocale(QtCore.QLocale(QtCore.QLocale.French, QtCore.QLocale.France))
         self.centralwidget = QtGui.QWidget(MainWindow)
         self.centralwidget.setObjectName(_fromUtf8("centralwidget"))
         self.verticalLayout_4 = QtGui.QVBoxLayout(self.centralwidget)
@@ -60,7 +61,6 @@ class Ui_MainWindow(object):
         self.horizontalLayout_3 = QtGui.QHBoxLayout(self.AgentsGroupBox)
         self.horizontalLayout_3.setObjectName(_fromUtf8("horizontalLayout_3"))
         self.agentsTreeView = QtGui.QTreeView(self.AgentsGroupBox)
-        self.agentsTreeView.setSelectionMode(QtGui.QAbstractItemView.MultiSelection)
         self.agentsTreeView.setObjectName(_fromUtf8("agentsTreeView"))
         self.horizontalLayout_3.addWidget(self.agentsTreeView)
         self.verticalLayout_4.addWidget(self.splitter)
@@ -76,10 +76,10 @@ class Ui_MainWindow(object):
         self.menuM_thode_de_calcule.setObjectName(_fromUtf8("menuM_thode_de_calcule"))
         self.menuHypotheses = QtGui.QMenu(self.menuEdition)
         self.menuHypotheses.setObjectName(_fromUtf8("menuHypotheses"))
-        self.menuAgents = QtGui.QMenu(self.menuEdition)
-        self.menuAgents.setObjectName(_fromUtf8("menuAgents"))
         self.menuEtats_du_monde = QtGui.QMenu(self.menuEdition)
         self.menuEtats_du_monde.setObjectName(_fromUtf8("menuEtats_du_monde"))
+        self.menuAgents = QtGui.QMenu(self.menuEdition)
+        self.menuAgents.setObjectName(_fromUtf8("menuAgents"))
         MainWindow.setMenuBar(self.menubar)
         self.statusbar = QtGui.QStatusBar(MainWindow)
         self.statusbar.setObjectName(_fromUtf8("statusbar"))
@@ -114,6 +114,8 @@ class Ui_MainWindow(object):
         self.actionAjouterAgent.setObjectName(_fromUtf8("actionAjouterAgent"))
         self.actionSupprimerAgent = QtGui.QAction(MainWindow)
         self.actionSupprimerAgent.setObjectName(_fromUtf8("actionSupprimerAgent"))
+        self.actionModifierAgent = QtGui.QAction(MainWindow)
+        self.actionModifierAgent.setObjectName(_fromUtf8("actionModifierAgent"))
         self.menuFichier.addAction(self.actionTitre)
         self.menuFichier.addAction(self.actionDescription)
         self.menuFichier.addSeparator()
@@ -125,10 +127,11 @@ class Ui_MainWindow(object):
         self.menuM_thode_de_calcule.addAction(self.actionDubois_Prade)
         self.menuHypotheses.addAction(self.actionAjouterHypothese)
         self.menuHypotheses.addAction(self.actionSupprimerHypothese)
-        self.menuAgents.addAction(self.actionAjouterAgent)
-        self.menuAgents.addAction(self.actionSupprimerAgent)
         self.menuEtats_du_monde.addAction(self.actionAjouterEtat)
         self.menuEtats_du_monde.addAction(self.actionSupprimerEtat)
+        self.menuAgents.addAction(self.actionAjouterAgent)
+        self.menuAgents.addAction(self.actionSupprimerAgent)
+        self.menuAgents.addAction(self.actionModifierAgent)
         self.menuEdition.addAction(self.menuM_thode_de_calcule.menuAction())
         self.menuEdition.addSeparator()
         self.menuEdition.addAction(self.menuEtats_du_monde.menuAction())
@@ -149,8 +152,8 @@ class Ui_MainWindow(object):
         self.menuEdition.setTitle(_translate("MainWindow", "&Edition", None))
         self.menuM_thode_de_calcule.setTitle(_translate("MainWindow", "Méthode de calcule", None))
         self.menuHypotheses.setTitle(_translate("MainWindow", "Hypothèses", None))
-        self.menuAgents.setTitle(_translate("MainWindow", "Agents", None))
         self.menuEtats_du_monde.setTitle(_translate("MainWindow", "Etats du monde", None))
+        self.menuAgents.setTitle(_translate("MainWindow", "Agents", None))
         self.actionTitre.setText(_translate("MainWindow", "Titre", None))
         self.actionTitre.setShortcut(_translate("MainWindow", "Ctrl+T", None))
         self.actionDescription.setText(_translate("MainWindow", "Description", None))
@@ -175,4 +178,6 @@ class Ui_MainWindow(object):
         self.actionAjouterAgent.setShortcut(_translate("MainWindow", "Ctrl+G", None))
         self.actionSupprimerAgent.setText(_translate("MainWindow", "Supprimer", None))
         self.actionSupprimerAgent.setShortcut(_translate("MainWindow", "Ctrl+Shift+G", None))
+        self.actionModifierAgent.setText(_translate("MainWindow", "Modifier", None))
+        self.actionModifierAgent.setShortcut(_translate("MainWindow", "Alt+G", None))
 

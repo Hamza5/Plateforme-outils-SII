@@ -1,4 +1,4 @@
-from Hypothese import Hypothese
+from HelperClasses.Hypothese import Hypothese
 
 __author__ = 'hamza'
 
@@ -21,6 +21,12 @@ class Agent:
         self.hypotheses.append(hypothese)
         self.masses.append(masse)
         self.weakings.append(affaiblissement)
+
+    def remove_hypothese(self, hypothese: Hypothese):
+        index = self.hypotheses.index(hypothese)
+        del self.hypotheses[index]
+        del self.masses[index]
+        del self.weakings[index]
 
     def __eq__(self, other) -> bool:
         if not isinstance(other, Agent):

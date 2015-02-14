@@ -1,17 +1,20 @@
-from Etat import Etat
-from Hypothese import Hypothese
-from Agent import Agent
-from MainWindow import Ui_MainWindow
-from HypotheseDialog import Ui_hypothesesDialog
-from AgentDialog import Ui_agentDialog
-from MasseDialog import Ui_masseDialog
-from DescriptionDialog import Ui_descriptionDialog
+import sys
+from xml.etree.ElementTree import Element, ElementTree
+
 from PyQt4.QtGui import QApplication, QMainWindow, QActionGroup, QDialog, QStandardItem, QStandardItemModel, \
     QInputDialog, QHeaderView, QLineEdit, \
     QMessageBox
 from PyQt4.QtCore import SIGNAL
-import sys
-from xml.etree.ElementTree import Element, ElementTree, dump
+
+from HelperClasses.Etat import Etat
+from HelperClasses.Hypothese import Hypothese
+from HelperClasses.Agent import Agent
+from UI.MainWindow import Ui_MainWindow
+from UI.HypotheseDialog import Ui_hypothesesDialog
+from UI.AgentDialog import Ui_agentDialog
+from UI.MasseDialog import Ui_masseDialog
+from UI.DescriptionDialog import Ui_descriptionDialog
+
 
 __author__ = 'hamza'
 
@@ -37,7 +40,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.etatsModel = ItemModel(self.etatsListView)
         self.hypothesesModel = ItemModel(self.hypothesesListView)
         self.agentsModel = ItemModel(self.agentsTreeView)
-        self.agentsModel.setHorizontalHeaderLabels(["Agent/Hypothèse", "Fiabilité/Masse", "Affaiblissement"])
+        self.agentsModel.setHorizontalHeaderLabels(["Agent/Hypothèse", "Fiabilité/Masse", "Activé/Affaiblissement"])
 
         # Assign the models
         self.etatsListView.setModel(self.etatsModel)
@@ -56,6 +59,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.connect(self.actionDescription, SIGNAL("triggered(bool)"), self.attribuer_description)
         self.connect(self.actionQuitter, SIGNAL("triggered(bool)"), self.close)
         self.connect(self.actionEnregistrer, SIGNAL("triggered(bool)"), self.enregistrer)
+        self.connect(self.actionModifierAgent, SIGNAL("triggered(bool)"), self.modifierAgent)
 
     def attribuer_titre(self):
         title, ok = QInputDialog.getText(self, "Titre", "Titre", QLineEdit.Normal, self.title)
@@ -93,12 +97,12 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                             {'id': agent_item.item.id(), 'name': str(agent_item),
                              'reliability': str(agent_item.item.reliability),
                              'disabled': str(agent_item.item.disabled).lower()
-                             })
+                            })
             for hmw in agent_item.item:
                 agent.append(Element('Knowledge', {'id': hmw[0].id(), 'mass': str(hmw[1]), 'weaking': str(hmw[2])}))
             agents.append(agent)
         root.append(agents)
-        tree.write('input.xml', encoding='utf-8', xml_declaration=True)
+        tree.write('../input.xml', encoding='utf-8', xml_declaration=True)
 
     def ajouterEtat(self):
         état, ok = QInputDialog.getText(self, "Ajouter un état", "Etat")
@@ -112,7 +116,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
     def suprimmerEtat(self):
         selection_model = self.etatsListView.selectionModel()
         if selection_model.hasSelection():
-            self.deleteSelection(self.etatsListView)
+            self.delete_états_selection()
         else:
             état_item, ok = QInputDialog.getItem(self, "Supprimer un état", "Etat", self.etatsModel.list_of_str(), 0,
                                                  False)
@@ -169,10 +173,12 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         if agent_dialog.exec_() == QDialog.Accepted:
             nom = agent_dialog.nomLineEdit.text()
             fiabilité = agent_dialog.fiabiliteSpinBox.value()
+            activé = agent_dialog.activeCheckBox.isChecked()
             agent = Agent(nom, fiabilité)
+            agent.disable(not activé)
             agent_item = ObjectItem(agent)
             if agent_item not in self.agentsModel:
-                self.agentsModel.appendRow([agent_item, ObjectItem(fiabilité)])
+                self.agentsModel.appendRow([agent_item, ObjectItem(fiabilité), ObjectItem(activé)])
                 for i in range(agent_dialog.model.rowCount()):
                     hypothèse_item = agent_dialog.model.item(i, 0)
                     masse_item = agent_dialog.model.item(i, 1)
@@ -199,14 +205,63 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                         del self.agentsModel[item.row()]
                         break
 
-    def deleteSelection(self, list_view):
-        selection_model = list_view.selectionModel()
+    def modifierAgent(self):
+        selection_model = self.agentsTreeView.selectionModel()
+        if selection_model.hasSelection():
+            model_index_list = selection_model.selectedIndexes()
+            # Edit the first agent in the selection
+            self.editAgent(model_index_list[0].row())
+        else:
+            agent_name, ok = QInputDialog.getItem(self, "Supprimer un agent", "Agent", self.agentsModel.list_of_str(),
+                                                  0, False)
+            if ok:
+                for item in self.agentsModel:
+                    if item.named(agent_name):
+                        print('Edit agent n°', item.row(), item)
+                        self.editAgent(item.row())
+                        break
+
+    def editAgent(self, selectedIndex):
+        agent_dialog = AgentDialog(self)
+        # Extract the agent object
+        agent = self.agentsModel[selectedIndex].item
+        # Setting up the dialog
+        agent_dialog.setWindowTitle("Modifier l'agent")
+        agent_dialog.nomLineEdit.setText(agent.name)
+        agent_dialog.fiabiliteSpinBox.setValue(agent.reliability)
+        agent_dialog.activeCheckBox.setChecked(not agent.disabled)
+        for hmw in agent:
+            agent_dialog.model.appendRow([ObjectItem(hmw[0]), ObjectItem(hmw[1]), ObjectItem(hmw[2])])
+        # Show the dialog
+        if agent_dialog.exec_() == QDialog.Accepted:
+            # Edit the object
+            agent.name = agent_dialog.nomLineEdit.text()
+            agent.reliability = agent_dialog.fiabiliteSpinBox.value()
+            agent.disable(not agent_dialog.activeCheckBox.isChecked())
+            # Edit the model
+            self.agentsModel.setItem(selectedIndex, 0, ObjectItem(agent))
+            self.agentsModel.setItem(selectedIndex, 1, ObjectItem(agent.reliability))
+            self.agentsModel.setItem(selectedIndex, 2, ObjectItem(not agent.disabled))
+            # Delete the old hypotheses
+            for hmw in agent:
+                agent.remove_hypothese(hmw[0])
+            self.agentsModel[selectedIndex].removeRows(0, self.agentsModel[selectedIndex].rowCount())
+            for i in range(agent_dialog.model.rowCount()):  # Insert the new ones
+                hypothèse_item = agent_dialog.model.item(i, 0)
+                masse_item = agent_dialog.model.item(i, 1)
+                affaiblissement_item = agent_dialog.model.item(i, 2)
+                agent.add_hypothese(hypothèse_item.item, masse_item.item, affaiblissement_item.item)
+                self.agentsModel[selectedIndex].appendRow([ObjectItem(hypothèse_item.item), ObjectItem(masse_item.item),
+                                                           ObjectItem(affaiblissement_item.item)])
+
+    def delete_états_selection(self):
+        selection_model = self.etatsListView.selectionModel()
         model_index_list = selection_model.selectedIndexes()
         for x in reversed(model_index_list):
-            self.deleteHypotheseByEtat(str(list_view.model()[x.row()]))
-            del list_view.model()[x.row()]
+            self.deleteHypotheseByEtat(self.etatsListView.model()[x.row()].item)
+            del self.etatsListView.model()[x.row()]
 
-    def deleteHypotheseByEtat(self, état: str):
+    def deleteHypotheseByEtat(self, état: Etat):
         for hypothèse_item in reversed(self.hypothesesModel):
             if état in hypothèse_item.item:
                 self.deleteHypothese(hypothèse_item.row())
@@ -256,6 +311,18 @@ class AgentDialog(QDialog, Ui_agentDialog):
         self.model.setHorizontalHeaderLabels(["Hypothèse", "Masse", "Affaiblissement"])
         self.hypothesesTableView.horizontalHeader().setResizeMode(QHeaderView.ResizeToContents)
 
+    def accept(self):
+        if self.nomLineEdit.text() == '':
+            QMessageBox.warning(self, 'Erreur', 'L\'agent ne peut pas être sans nom !')
+            return
+        s = 0
+        for i in range(len(self.model)):
+            s += self.model.item(i, 1).item
+        if s > 1:
+            QMessageBox.warning(self, 'Erreur', 'La somme de masses ne peut pas dépasser 1 !')
+        else:
+            super(AgentDialog, self).accept()
+
     def ajouterHypothese(self):
         masse_dialog = MasseDialog(self)
         if masse_dialog.exec_() == QDialog.Accepted:
@@ -282,7 +349,7 @@ class AgentDialog(QDialog, Ui_agentDialog):
     def supprimerHypothese(self):
         selection_model = self.hypothesesTableView.selectionModel()
         if selection_model.hasSelection():
-            model_index_list = selection_model.selectedIndexes()
+            model_index_list = selection_model.selectedRows()
             hypothèses_rows = [x.row() for x in model_index_list]
             for i in reversed(hypothèses_rows):
                 del self.model[i]
@@ -316,6 +383,25 @@ class MasseDialog(QDialog, Ui_masseDialog):
                      lambda value: self.affaiblissementSlider.setValue(value * 100))
 
 
+class ObjectItem(QStandardItem):
+    def __init__(self, obj=None):
+        super(ObjectItem, self).__init__(str(obj) if obj != None else None)
+        self.item = obj
+        self.setEditable(False)
+
+    def __eq__(self, other) -> bool:
+        if isinstance(other, ObjectItem):
+            return self.item == other.item
+        else:
+            return False
+
+    def __str__(self) -> str:
+        return self.text()
+
+    def named(self, name: str) -> bool:
+        return name == str(self.item)
+
+
 class ItemModel(QStandardItemModel):
     def __init__(self, parent=None):
         super(ItemModel, self).__init__(parent)
@@ -323,23 +409,24 @@ class ItemModel(QStandardItemModel):
     def __contains__(self, item: QStandardItem) -> bool:
         for i in range(self.rowCount()):
             current_item = self.item(i)
-            if current_item == item: return True
+            if current_item == item:
+                return True
         return False
 
-    def __iter__(self):
+    def __iter__(self) -> iter:
         l = []
         for i in range(self.rowCount()):
             current_item = self.item(i)
             l.append(current_item)
         return iter(l)
 
-    def __getitem__(self, item_index):
+    def __getitem__(self, item_index) -> ObjectItem:
         return self.item(item_index)
 
     def __delitem__(self, item_index):
         self.removeRow(item_index)
 
-    def __len__(self):
+    def __len__(self) -> int:
         return self.rowCount()
 
     def list_of_str(self) -> list:
@@ -347,26 +434,6 @@ class ItemModel(QStandardItemModel):
         for x in self.__iter__():
             l.append(str(x))
         return l
-
-
-class ObjectItem(QStandardItem):
-    def __init__(self, obj=None):
-        super(ObjectItem, self).__init__(str(obj) if obj != None else None)
-        self.item = obj
-        self.setEditable(False)
-
-    def __eq__(self, other):
-        if isinstance(other, ObjectItem):
-            return self.item == other.item
-        else:
-            return False
-
-    def __str__(self):
-        return self.text()
-
-    def named(self, name: str) -> bool:
-        return name == str(self.item)
-
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)

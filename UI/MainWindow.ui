@@ -13,6 +13,9 @@
   <property name="windowTitle">
    <string>Calculateur</string>
   </property>
+  <property name="locale">
+   <locale language="French" country="France"/>
+  </property>
   <widget class="QWidget" name="centralwidget">
    <layout class="QVBoxLayout" name="verticalLayout_4">
     <item>
@@ -60,11 +63,7 @@
        </property>
        <layout class="QHBoxLayout" name="horizontalLayout_3">
         <item>
-         <widget class="QTreeView" name="agentsTreeView">
-          <property name="selectionMode">
-           <enum>QAbstractItemView::MultiSelection</enum>
-          </property>
-         </widget>
+         <widget class="QTreeView" name="agentsTreeView"/>
         </item>
        </layout>
       </widget>
@@ -111,19 +110,20 @@
      <addaction name="actionAjouterHypothese"/>
      <addaction name="actionSupprimerHypothese"/>
     </widget>
-    <widget class="QMenu" name="menuAgents">
-     <property name="title">
-      <string>Agents</string>
-     </property>
-     <addaction name="actionAjouterAgent"/>
-     <addaction name="actionSupprimerAgent"/>
-    </widget>
     <widget class="QMenu" name="menuEtats_du_monde">
      <property name="title">
       <string>Etats du monde</string>
      </property>
      <addaction name="actionAjouterEtat"/>
      <addaction name="actionSupprimerEtat"/>
+    </widget>
+    <widget class="QMenu" name="menuAgents">
+     <property name="title">
+      <string>Agents</string>
+     </property>
+     <addaction name="actionAjouterAgent"/>
+     <addaction name="actionSupprimerAgent"/>
+     <addaction name="actionModifierAgent"/>
     </widget>
     <addaction name="menuM_thode_de_calcule"/>
     <addaction name="separator"/>
@@ -243,6 +243,14 @@
    </property>
    <property name="shortcut">
     <string>Ctrl+Shift+G</string>
+   </property>
+  </action>
+  <action name="actionModifierAgent">
+   <property name="text">
+    <string>Modifier</string>
+   </property>
+   <property name="shortcut">
+    <string>Alt+G</string>
    </property>
   </action>
  </widget>

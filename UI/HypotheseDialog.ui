@@ -13,6 +13,9 @@
   <property name="windowTitle">
    <string>Fomer une hypothèse</string>
   </property>
+  <property name="locale">
+   <locale language="French" country="France"/>
+  </property>
   <property name="modal">
    <bool>true</bool>
   </property>

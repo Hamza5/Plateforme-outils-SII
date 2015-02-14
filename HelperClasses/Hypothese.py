@@ -1,5 +1,4 @@
-import sys
-from Etat import Etat
+from HelperClasses.Etat import Etat
 
 __author__ = 'hamza'
 
@@ -26,8 +25,4 @@ class Hypothese:
         return "{" + str([str(e) for e in self.états])[1:-1] + "}"
 
     def id(self):
-        # print(self.états, file=sys.stderr)
-        # for x in self.états:
-        #     print(x, type(x), file=sys.stderr)
-        #     print(x.id(), type(x.id()), file=sys.stderr)
         return '-'.join([x.id() for x in self.états])

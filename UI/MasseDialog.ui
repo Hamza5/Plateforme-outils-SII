@@ -13,6 +13,9 @@
   <property name="windowTitle">
    <string>Affecter une hypothèse</string>
   </property>
+  <property name="locale">
+   <locale language="French" country="France"/>
+  </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
     <layout class="QHBoxLayout" name="horizontalLayout">

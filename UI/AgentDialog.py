@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'AgentDialog.ui'
 #
-# Created: Mon Feb  9 15:59:03 2015
+# Created: Fri Feb 13 22:24:32 2015
 #      by: PyQt4 UI code generator 4.10.4
 #
 # WARNING! All changes made in this file will be lost!
@@ -37,6 +37,10 @@ class Ui_agentDialog(object):
         self.nomLineEdit = QtGui.QLineEdit(agentDialog)
         self.nomLineEdit.setObjectName(_fromUtf8("nomLineEdit"))
         self.horizontalLayout.addWidget(self.nomLineEdit)
+        self.activeCheckBox = QtGui.QCheckBox(agentDialog)
+        self.activeCheckBox.setChecked(True)
+        self.activeCheckBox.setObjectName(_fromUtf8("activeCheckBox"))
+        self.horizontalLayout.addWidget(self.activeCheckBox)
         self.verticalLayout.addLayout(self.horizontalLayout)
         self.horizontalLayout_2 = QtGui.QHBoxLayout()
         self.horizontalLayout_2.setObjectName(_fromUtf8("horizontalLayout_2"))
@@ -92,6 +96,7 @@ class Ui_agentDialog(object):
     def retranslateUi(self, agentDialog):
         agentDialog.setWindowTitle(_translate("agentDialog", "Ajouter un agent", None))
         self.nomLabel.setText(_translate("agentDialog", "Nom", None))
+        self.activeCheckBox.setText(_translate("agentDialog", "Activé", None))
         self.fiabiliteLabel.setText(_translate("agentDialog", "Fiabilité", None))
         self.hypothesesGroupBox.setTitle(_translate("agentDialog", "Hypothèses / Masses", None))
         self.ajouterMasseButton.setText(_translate("agentDialog", "Affecter une hypothèse", None))
