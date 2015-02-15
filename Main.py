@@ -1,9 +1,9 @@
 import sys
 from xml.etree.ElementTree import Element, ElementTree
+# import re
 
 from PyQt4.QtGui import QApplication, QMainWindow, QActionGroup, QDialog, QStandardItem, QStandardItemModel, \
-    QInputDialog, QHeaderView, QLineEdit, \
-    QMessageBox
+    QInputDialog, QHeaderView, QLineEdit, QMessageBox, QFileDialog
 from PyQt4.QtCore import SIGNAL
 
 from HelperClasses.Etat import Etat
@@ -72,6 +72,9 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             self.description = description_dialog.get_description()
 
     def enregistrer(self):
+        file_path = QFileDialog.getSaveFileName(self, 'Enregistrer', '', 'Données de calcule (*.xml)')
+        if not file_path:
+            return
         root = Element('DSTI', {'xmlns': 'http://www.usthb.dz'})
         tree = ElementTree(root)
         title = Element('Title')
@@ -102,7 +105,10 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                 agent.append(Element('Knowledge', {'id': hmw[0].id(), 'mass': str(hmw[1]), 'weaking': str(hmw[2])}))
             agents.append(agent)
         root.append(agents)
-        tree.write('../input.xml', encoding='utf-8', xml_declaration=True)
+        try:
+            tree.write(file_path, encoding='utf-8', xml_declaration=True)
+        except OSError as e:
+            QMessageBox.critical(self, 'Erreur', 'Impossible de sauvegarder le fichier '+e.filename)
 
     def ajouterEtat(self):
         état, ok = QInputDialog.getText(self, "Ajouter un état", "Etat")
