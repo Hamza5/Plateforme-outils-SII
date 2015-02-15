@@ -1,0 +1,259 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>MainWindow</class>
+ <widget class="QMainWindow" name="MainWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>600</width>
+    <height>600</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Calculateur</string>
+  </property>
+  <property name="locale">
+   <locale language="French" country="France"/>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <layout class="QVBoxLayout" name="verticalLayout_4">
+    <item>
+     <widget class="QSplitter" name="splitter">
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
+        <horstretch>0</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
+      </property>
+      <property name="orientation">
+       <enum>Qt::Vertical</enum>
+      </property>
+      <widget class="QGroupBox" name="etatsGroupBox">
+       <property name="title">
+        <string>Etats du monde</string>
+       </property>
+       <layout class="QHBoxLayout" name="horizontalLayout">
+        <item>
+         <widget class="QListView" name="etatsListView">
+          <property name="selectionMode">
+           <enum>QAbstractItemView::MultiSelection</enum>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </widget>
+      <widget class="QGroupBox" name="hypothesesGroupBox">
+       <property name="title">
+        <string>Hypothèses</string>
+       </property>
+       <layout class="QHBoxLayout" name="horizontalLayout_2">
+        <item>
+         <widget class="QListView" name="hypothesesListView">
+          <property name="selectionMode">
+           <enum>QAbstractItemView::MultiSelection</enum>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </widget>
+      <widget class="QGroupBox" name="AgentsGroupBox">
+       <property name="title">
+        <string>Agents</string>
+       </property>
+       <layout class="QHBoxLayout" name="horizontalLayout_3">
+        <item>
+         <widget class="QTreeView" name="agentsTreeView"/>
+        </item>
+       </layout>
+      </widget>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QMenuBar" name="menubar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>600</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <widget class="QMenu" name="menuFichier">
+    <property name="title">
+     <string>&amp;Fichier</string>
+    </property>
+    <addaction name="actionTitre"/>
+    <addaction name="actionDescription"/>
+    <addaction name="separator"/>
+    <addaction name="actionOuvrir"/>
+    <addaction name="actionEnregistrer"/>
+    <addaction name="separator"/>
+    <addaction name="actionQuitter"/>
+   </widget>
+   <widget class="QMenu" name="menuEdition">
+    <property name="title">
+     <string>&amp;Edition</string>
+    </property>
+    <widget class="QMenu" name="menuM_thode_de_calcule">
+     <property name="title">
+      <string>Méthode de calcule</string>
+     </property>
+     <addaction name="actionDempster_Shafer"/>
+     <addaction name="actionDubois_Prade"/>
+    </widget>
+    <widget class="QMenu" name="menuHypotheses">
+     <property name="title">
+      <string>Hypothèses</string>
+     </property>
+     <addaction name="actionAjouterHypothese"/>
+     <addaction name="actionSupprimerHypothese"/>
+    </widget>
+    <widget class="QMenu" name="menuEtats_du_monde">
+     <property name="title">
+      <string>Etats du monde</string>
+     </property>
+     <addaction name="actionAjouterEtat"/>
+     <addaction name="actionSupprimerEtat"/>
+    </widget>
+    <widget class="QMenu" name="menuAgents">
+     <property name="title">
+      <string>Agents</string>
+     </property>
+     <addaction name="actionAjouterAgent"/>
+     <addaction name="actionSupprimerAgent"/>
+     <addaction name="actionModifierAgent"/>
+    </widget>
+    <addaction name="menuM_thode_de_calcule"/>
+    <addaction name="separator"/>
+    <addaction name="menuEtats_du_monde"/>
+    <addaction name="menuHypotheses"/>
+    <addaction name="menuAgents"/>
+   </widget>
+   <addaction name="menuFichier"/>
+   <addaction name="menuEdition"/>
+  </widget>
+  <widget class="QStatusBar" name="statusbar"/>
+  <action name="actionTitre">
+   <property name="text">
+    <string>Titre</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+T</string>
+   </property>
+  </action>
+  <action name="actionDescription">
+   <property name="text">
+    <string>Description</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+D</string>
+   </property>
+  </action>
+  <action name="actionOuvrir">
+   <property name="text">
+    <string>Ouvrir</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+O</string>
+   </property>
+  </action>
+  <action name="actionEnregistrer">
+   <property name="text">
+    <string>Enregistrer</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+S</string>
+   </property>
+  </action>
+  <action name="actionQuitter">
+   <property name="text">
+    <string>Quitter</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+Q</string>
+   </property>
+   <property name="menuRole">
+    <enum>QAction::QuitRole</enum>
+   </property>
+  </action>
+  <action name="actionDempster_Shafer">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="checked">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Dempster-Shafer</string>
+   </property>
+  </action>
+  <action name="actionDubois_Prade">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Dubois-Prade</string>
+   </property>
+  </action>
+  <action name="actionAjouterEtat">
+   <property name="text">
+    <string>Ajouter</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+E</string>
+   </property>
+  </action>
+  <action name="actionSupprimerEtat">
+   <property name="text">
+    <string>Supprimer</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+Shift+E</string>
+   </property>
+  </action>
+  <action name="actionAjouterHypothese">
+   <property name="text">
+    <string>Ajouter</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+H</string>
+   </property>
+  </action>
+  <action name="actionSupprimerHypothese">
+   <property name="text">
+    <string>Supprimer</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+Shift+H</string>
+   </property>
+  </action>
+  <action name="actionAjouterAgent">
+   <property name="text">
+    <string>Ajouter</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+G</string>
+   </property>
+  </action>
+  <action name="actionSupprimerAgent">
+   <property name="text">
+    <string>Supprimer</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+Shift+G</string>
+   </property>
+  </action>
+  <action name="actionModifierAgent">
+   <property name="text">
+    <string>Modifier</string>
+   </property>
+   <property name="shortcut">
+    <string>Alt+G</string>
+   </property>
+  </action>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>
