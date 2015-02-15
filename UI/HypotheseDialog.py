@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'HypotheseDialog.ui'
 #
-# Created: Mon Feb  2 19:06:17 2015
+# Created: Sun Feb 15 21:12:14 2015
 #      by: PyQt4 UI code generator 4.10.4
 #
 # WARNING! All changes made in this file will be lost!
@@ -26,7 +26,8 @@ except AttributeError:
 class Ui_hypothesesDialog(object):
     def setupUi(self, hypothesesDialog):
         hypothesesDialog.setObjectName(_fromUtf8("hypothesesDialog"))
-        hypothesesDialog.resize(400, 250)
+        hypothesesDialog.resize(400, 200)
+        hypothesesDialog.setLocale(QtCore.QLocale(QtCore.QLocale.French, QtCore.QLocale.France))
         hypothesesDialog.setModal(True)
         self.verticalLayout = QtGui.QVBoxLayout(hypothesesDialog)
         self.verticalLayout.setObjectName(_fromUtf8("verticalLayout"))

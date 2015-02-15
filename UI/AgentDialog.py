@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'AgentDialog.ui'
 #
-# Created: Fri Feb 13 22:24:32 2015
+# Created: Sun Feb 15 21:11:54 2015
 #      by: PyQt4 UI code generator 4.10.4
 #
 # WARNING! All changes made in this file will be lost!
@@ -26,7 +26,8 @@ except AttributeError:
 class Ui_agentDialog(object):
     def setupUi(self, agentDialog):
         agentDialog.setObjectName(_fromUtf8("agentDialog"))
-        agentDialog.resize(400, 250)
+        agentDialog.resize(400, 300)
+        agentDialog.setLocale(QtCore.QLocale(QtCore.QLocale.French, QtCore.QLocale.France))
         self.verticalLayout = QtGui.QVBoxLayout(agentDialog)
         self.verticalLayout.setObjectName(_fromUtf8("verticalLayout"))
         self.horizontalLayout = QtGui.QHBoxLayout()

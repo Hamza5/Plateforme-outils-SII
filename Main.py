@@ -17,6 +17,7 @@ from UI.DescriptionDialog import Ui_descriptionDialog
 
 
 __author__ = 'hamza'
+app_name = 'Calculateur'
 
 
 class MainWindow(QMainWindow, Ui_MainWindow):
@@ -65,6 +66,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         title, ok = QInputDialog.getText(self, "Titre", "Titre", QLineEdit.Normal, self.title)
         if ok:
             self.title = title
+            self.setWindowTitle(app_name + (' - ' + self.title if self.title != '' else ''))
 
     def attribuer_description(self):
         description_dialog = DescriptionDialog(self, self.description)
@@ -72,7 +74,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             self.description = description_dialog.get_description()
 
     def enregistrer(self):
-        file_path = QFileDialog.getSaveFileName(self, 'Enregistrer', '', 'Données de calcule (*.xml)')
+        file_path = QFileDialog.getSaveFileName(self, 'Enregistrer', '', 'Données (*.xml)')
         if not file_path:
             return
         root = Element('DSTI', {'xmlns': 'http://www.usthb.dz'})
@@ -129,7 +131,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             if ok:
                 for item in reversed(self.etatsModel):
                     if item.named(état_item):
-                        self.deleteHypotheseByEtat(str(item))
+                        self.deleteHypotheseByEtat(self.etatsListView.model()[item.row()].item)
                         del self.etatsModel[item.row()]
                         break
 
@@ -223,7 +225,6 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             if ok:
                 for item in self.agentsModel:
                     if item.named(agent_name):
-                        print('Edit agent n°', item.row(), item)
                         self.editAgent(item.row())
                         break
 
