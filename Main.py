@@ -1,6 +1,7 @@
 import sys
-from xml.etree.ElementTree import Element, ElementTree
-# import re
+from xml.etree.ElementTree import Element, ElementTree, tostring
+from xml.dom.minidom import parseString
+import re
 
 from PyQt4.QtGui import QApplication, QMainWindow, QActionGroup, QDialog, QStandardItem, QStandardItemModel, \
     QInputDialog, QHeaderView, QLineEdit, QMessageBox, QFileDialog
@@ -14,6 +15,7 @@ from UI.HypotheseDialog import Ui_hypothesesDialog
 from UI.AgentDialog import Ui_agentDialog
 from UI.MasseDialog import Ui_masseDialog
 from UI.DescriptionDialog import Ui_descriptionDialog
+import HelperClasses.Etat
 
 
 __author__ = 'hamza'
@@ -26,6 +28,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.setupUi(self)
         self.title = ""
         self.description = ""
+        self.agentsModelHeaderLabels = ["Agent/Hypothèse", "Fiabilité/Masse", "Activé/Affaiblissement"]
 
         # Make methods actions mutually-exclusives :
         self.action_group = QActionGroup(self)
@@ -41,7 +44,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.etatsModel = ItemModel(self.etatsListView)
         self.hypothesesModel = ItemModel(self.hypothesesListView)
         self.agentsModel = ItemModel(self.agentsTreeView)
-        self.agentsModel.setHorizontalHeaderLabels(["Agent/Hypothèse", "Fiabilité/Masse", "Activé/Affaiblissement"])
+        self.agentsModel.setHorizontalHeaderLabels(self.agentsModelHeaderLabels)
 
         # Assign the models
         self.etatsListView.setModel(self.etatsModel)
@@ -61,6 +64,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.connect(self.actionQuitter, SIGNAL("triggered(bool)"), self.close)
         self.connect(self.actionEnregistrer, SIGNAL("triggered(bool)"), self.enregistrer)
         self.connect(self.actionModifierAgent, SIGNAL("triggered(bool)"), self.modifierAgent)
+        self.connect(self.actionOuvrir, SIGNAL("triggered(bool)"), self.ouvrir)
 
     def attribuer_titre(self):
         title, ok = QInputDialog.getText(self, "Titre", "Titre", QLineEdit.Normal, self.title)
@@ -77,7 +81,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         file_path = QFileDialog.getSaveFileName(self, 'Enregistrer', '', 'Données (*.xml)')
         if not file_path:
             return
-        root = Element('DSTI', {'xmlns': 'http://www.usthb.dz'})
+        root = Element('DSTI')
         tree = ElementTree(root)
         title = Element('Title')
         title.text = self.title
@@ -102,15 +106,59 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                             {'id': agent_item.item.id(), 'name': str(agent_item),
                              'reliability': str(agent_item.item.reliability),
                              'disabled': str(agent_item.item.disabled).lower()
-                            })
+                             })
             for hmw in agent_item.item:
                 agent.append(Element('Knowledge', {'id': hmw[0].id(), 'mass': str(hmw[1]), 'weaking': str(hmw[2])}))
             agents.append(agent)
         root.append(agents)
+        dom = parseString(tostring(root, encoding='utf-8'))
+        pretty_xml = dom.toprettyxml()
         try:
-            tree.write(file_path, encoding='utf-8', xml_declaration=True)
+            file = open(file_path, mode='w', encoding='utf-8')
+            file.write(pretty_xml)
+            file.close()
         except OSError as e:
             QMessageBox.critical(self, 'Erreur', 'Impossible de sauvegarder le fichier '+e.filename)
+
+    def ouvrir(self):
+        file_path = QFileDialog.getOpenFileName(self, 'Ouvrir', '', 'Données (*.xml)')
+        if not file_path:
+            return
+        try:
+            tree = ElementTree(file=file_path)
+        except OSError as e:
+            QMessageBox.critical(self, 'Erreur', 'Impossible d\'ouvrir le fichier '+e.filename)
+            return
+        self.resetEverything()
+        highestID = 0
+        # Les états
+        for element in tree.iter('Etat'):
+            état = Etat(element.get('title'))
+            état.order = int(re.search(r'\d+', element.attrib['id']).group())
+            highestID = max(highestID, état.order)
+            self.etatsModel.appendRow(ObjectItem(état))
+        # Les hypothèses
+        for element in tree.iter('Hypothese'):
+            états = []
+            for idf in element.attrib['id'].split('-'):
+                for état in self.etatsModel:
+                    if état.item.id() == idf:
+                        états.append(état.item)
+            hypothèse = Hypothese(états)
+            self.hypothesesModel.appendRow(ObjectItem(hypothèse))
+        for element in tree.iter('Agent'):
+            agent = Agent(element.get('name'), float(element.get('reliability')))
+            agent.disable(element.get('disabled') == 'true')
+            for hypothèse_element in element:
+                for hypothèse_item in self.hypothesesModel:
+                    if hypothèse_element.attrib['id'] == hypothèse_item.item.id():
+                        agent.add_hypothese(hypothèse_item.item, float(hypothèse_element.attrib['mass']), float(hypothèse_element.attrib['weaking']))
+                        break
+            agent_item = ObjectItem(agent)
+            for hmw in agent:
+                agent_item.appendRow([ObjectItem(hmw[0]), ObjectItem(hmw[1]), ObjectItem(hmw[2])])
+            self.agentsModel.appendRow([agent_item, ObjectItem(agent.reliability), ObjectItem(not agent.disabled)])
+        HelperClasses.Etat.idf = highestID+1  # To protect old IDs from being overwritten when editing a saved file
 
     def ajouterEtat(self):
         état, ok = QInputDialog.getText(self, "Ajouter un état", "Etat")
@@ -279,6 +327,13 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             if hypothèse in agent_item.item:
                 del self.agentsModel[agent_item.row()]
         del self.hypothesesModel[rowIndex]
+
+    def resetEverything(self):
+        # Vider les modèles
+        self.etatsModel.clear()
+        self.hypothesesModel.clear()
+        self.agentsModel.clear()
+        self.agentsModel.setHorizontalHeaderLabels(self.agentsModelHeaderLabels)
 
 
 class DescriptionDialog(QDialog, Ui_descriptionDialog):

@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">
+	
+	<!-- Data -->
+	
+	<xs:element name="DSTI">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="Title" type="xs:token"/>
+				<xs:element name="Description" type="xs:token"/>
+				<xs:element name="Method" type="methodType"/>
+				<xs:element name="Etats" type="etatsType"/>
+				<xs:element name="Hypotheses" type="hypothesesType"/>
+				<xs:element name="Agents" type="agentsType"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+
+	<!-- Definitions -->
+	
+	<xs:simpleType name="methodType">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="Dempster-Shafer"/>
+			<xs:enumeration value=""/>
+			<xs:enumeration value="Dubois-Prade"/>
+		</xs:restriction>
+	</xs:simpleType>
+	
+	<xs:complexType name="etatsType">
+		<xs:sequence maxOccurs="unbounded">
+			<xs:element name="Etat">
+				<xs:complexType>
+					<xs:attribute name="id" use="required" type="customID"/>
+					<xs:attribute name="title" type="xs:token"/>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	
+	<xs:complexType name="hypothesesType">
+		<xs:sequence maxOccurs="unbounded">
+			<xs:element name="Hypothese">
+				<xs:complexType>
+					<xs:attribute name="id" use="required" type="customID"/>
+					<xs:attribute name="title" type="xs:token"/>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="agentsType">
+		<xs:sequence maxOccurs="unbounded">
+			<xs:element name="Agent">
+				<xs:complexType>
+					<xs:sequence maxOccurs="unbounded">
+						<xs:element name="Knowledge">
+							<xs:complexType>
+								<xs:attribute name="id" use="required" type="customID"/>
+								<xs:attribute name="mass" default="0" type="massType"/>
+								<xs:attribute name="weaking" type="massType" default="0"/>
+							</xs:complexType>
+						</xs:element>
+					</xs:sequence>
+					<xs:attribute name="id" type="customID" use="required"/>
+					<xs:attribute name="name" type="xs:token"/>
+					<xs:attribute name="disabled" type="xs:boolean" default="false"/>
+					<xs:attribute name="reliability" type="massType" default="1"/>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	
+	<xs:simpleType name="customID">
+		<xs:restriction base="xs:string">
+			<xs:pattern value="(\w)+(-(\w)+)*"/>
+		</xs:restriction>
+	</xs:simpleType>
+	
+	<xs:simpleType name="massType">
+		<xs:restriction base="xs:decimal">
+			<xs:minInclusive value="0"/>
+			<xs:maxInclusive value="1"/>
+		</xs:restriction>
+	</xs:simpleType>
+
+</xs:schema>
