@@ -42,6 +42,68 @@ import org.xml.sax.SAXException;
  }
 
 public class Main{
+	public static AgentTrans MultiAgSmets(AgentTrans Agt1,AgentTrans Agt2){
+		  Vector <multiHash> Vec= new Vector <multiHash>();
+			//Creation du Set qui contient les du Agt1 et Agt2
+			 Set<Set<String>> set = new HashSet<Set<String>>();
+			 for (Set number1 : Agt1.knowleges.keySet()) {
+				set.add(number1);
+			 }
+			 for (Set number2 : Agt2.knowleges.keySet()) {
+					set.add(number2);
+				 }
+			 HashMap <Set, Double> vide =new HashMap<Set, Double>();
+			 Set<String> in = new HashSet<String>();
+			 in.add("h0");
+			 set.add(in);//Creer l'ensemble vide et le ajouter dans l'ensemble globale
+			//Remplissage du vec avec les elements du set
+			 for (Set number3 : set) {
+				 multiHash mu =new multiHash();
+				 mu.set=number3;
+				 mu.mass=0;
+				 Vec.add(mu);
+				}
+		
+			//Calcul la constante k
+			 //Calcul des nouvels masses
+			 double k=0;
+			 for (Set number1 : Agt1.knowleges.keySet()) {
+				 multiHash temp =new multiHash();
+				 multiHash tempUN =new multiHash();
+	    	     for (Set number2 : Agt2.knowleges.keySet()) { 
+		    		  Set<String> intersection = new HashSet<String>(number1); // use the copy constructor
+			    	  intersection.retainAll(number2);
+			    	   temp.set=intersection;
+			    	   tempUN.set= new HashSet<String>(number1);
+			    	   tempUN.set.addAll(number2);
+			    	  temp.mass=Agt1.knowleges.get(number1)*Agt2.knowleges.get(number2);
+			    	  tempUN.mass=Agt1.knowleges.get(number1)*Agt2.knowleges.get(number2);
+			    	  
+			    	  if (intersection.size()==0){k+=temp.mass;}//Calcul la constante k
+			    	  //rechercher cet ensemble dans le tableau
+			    	  for(int i=0;i<Vec.size();i++){
+				    		  if(Vec.get(i).set.equals(intersection)){
+				    			  Vec.get(i).mass=Vec.get(i).mass+temp.mass;
+				    		  }
+			    	  }
+			    	  for(int i=0;i<Vec.size();i++){
+			    		  if(Vec.get(i).set.equals(tempUN.set)&&intersection.size()==0){
+			    			  Vec.get(i).mass=Vec.get(i).mass+temp.mass;
+			    		  }
+		    	  }
+		    	 }
+	    	 }
+		
+	 
+			AgentTrans temp = new AgentTrans();
+			for(int i=0;i<Vec.size();i++){
+			
+				if(Vec.get(i).set.size()!=0){//pour eviter l'ensemble vide
+				 temp.knowleges.put(Vec.get(i).set,Vec.get(i).mass );
+				}
+			}
+			return temp;//Retouner la collection resultat
+	}
 	public static AgentTrans MultiAgDuboisPrade(AgentTrans Agt1,AgentTrans Agt2){
 		  Vector <multiHash> Vec= new Vector <multiHash>();
 			//Creation du Set qui contient les du Agt1 et Agt2
@@ -274,6 +336,7 @@ public class Main{
 		HashSet<Element> agents = new HashSet<>();
 		NodeList agt = données.getElementsByTagName("Agent");
 		for(int i=0; i<agt.getLength(); i++) agents.add((Element)agt.item(i));
+		
 		for(Element a : agents){
 			//System.out.printf("Agent : %s%n", a.getAttribute("id"));
 			if (a.getAttribute("disabled").equals("true")){continue;}//condition pour éliminer les agent desactivés 
@@ -282,42 +345,43 @@ public class Main{
 			A.name=new String(a.getAttribute("name"));
 			NodeList hyp =  a.getElementsByTagName("Knowledge");
 			double massVerifier=0;
-			int omegaDetecter=0;
+			
 			double omegaToAdd=0;
 			for(int i=0; i<hyp.getLength(); i++){
 				Element e = (Element)(hyp.item(i));
 				//System.out.printf("Hypothèse %s masse = %s%n", e.getAttribute("id"), e.getAttribute("mass"));
 				massVerifier+=Double.parseDouble(e.getAttribute("mass"));
-				omegaToAdd+=Double.parseDouble(e.getAttribute("mass"))*Double.parseDouble(e.getAttribute("weakening"));;
+				omegaToAdd+=Double.parseDouble(e.getAttribute("mass"))*Double.parseDouble(e.getAttribute("weakening"));
 				A.knowleges.put(e.getAttribute("id"),Double.parseDouble(e.getAttribute("mass"))*(1-Double.parseDouble(e.getAttribute("weakening"))));//String to double
 				//System.out.println(e.getAttribute("mass"));
-				if(omegaDetecter<e.getAttribute("id").length()){omegaDetecter=e.getAttribute("id").length();}
+			
 				
 			} 
+			
 			//Ajouter a Omega les Alpha d'affaiblissement des sous ensembles de Omega
-			for(int i=0; i<hyp.getLength(); i++){
-				Element e = (Element)(hyp.item(i)); 
-				if(e.getAttribute("id").length()==omegaDetecter)
-					{A.knowleges.put(e.getAttribute("id"),Double.parseDouble(e.getAttribute("mass"))+omegaToAdd);}
-			}
+//			for(int i=0; i<hyp.getLength(); i++){
+//				Element e = (Element)(hyp.item(i)); 
+//				if(/*e.getAttribute("id").length()==omegaDetecter*/false)
+//					{A.knowleges.put(e.getAttribute("id"),Double.parseDouble(e.getAttribute("mass"))+omegaToAdd);}
+//			}
 			DecimalFormat df = new DecimalFormat ();
    	        df.setMaximumFractionDigits (4);
    	    
    	      //verif
    	    
             System.out.println("massVerif "+(float)massVerifier+" round "+df.format(massVerifier));
-			if( ((float)massVerifier)!=1)
-			{System.out.println("massVerif "+massVerifier);Runtime.getRuntime().exit(2);}
+			if( ((float)massVerifier)>1){System.out.println("massVerif "+massVerifier);Runtime.getRuntime().exit(2);}
    	     	Vector HopoGen=new Vector(); 
 			//Lecture des Hypotheses integrer les Hypotheses avec des masses nulles 
 			HashSet<Element> Etats = new HashSet<>();
 			NodeList hyposs = données.getElementsByTagName("Etats");
 			for(int i=0; i<hyposs.getLength(); i++) Etats.add((Element)hyposs.item(i));
+			int omegaDetecter =0;
 			for(Element b : Etats){
 				NodeList Etat =  b.getElementsByTagName("Etat");
 				for(int i=0; i<Etat.getLength(); i++){
 					Element e1 = (Element)(Etat.item(i));
-					//HopoGen[j++]=e1.getAttribute("id");
+					omegaDetecter++;
 					HopoGen.add(e1.getAttribute("id")); 
 					//System.out.printf("Hypothèse %s masse = %s%n", e.getAttribute("id"), e.getAttribute("mass"));
 //					if(!A.knowleges.containsKey(e1.getAttribute("id"))){
@@ -325,20 +389,32 @@ public class Main{
 //					}
 				}
 			}
-
+			
 			hashSet.add(A);//Ajouter l'element dans le hashSet
 			
 			  Set<Set<String>> setTest = powerSet(HopoGen);
 			  System.out.println("A "+A.knowleges.toString());
 			  
+			  if(massVerifier < 1){System.out.print("omegaToAdd avent "+omegaToAdd);omegaToAdd+=(1-massVerifier); System.out.println("massVerifier "+(massVerifier)+" omegaToAdd "+(float)omegaToAdd);}//Ajouter la difference entre la somme des masses et 1
 			  for (Set elm : setTest){
+				  int length=elm.toString().substring(1,elm.toString().length()-1).replaceAll(", ", "-").length();
 				 if(!A.knowleges.containsKey(elm.toString().substring(1,elm.toString().length()-1).replaceAll(", ", "-"))&& elm.size()!=0){
-					//Ajouter pour chaque agent l'Hypothese non ewistante avec mass=0 
+					 //Ajouter pour chaque agent l'Hypothese non existante avec mass=0 
 					 System.out.println("elm "+elm);
-					 A.knowleges.put(elm.toString().substring(1,elm.toString().length()-1).replaceAll(", ", "-"),(double) 0);
+					 if(length==omegaDetecter*2+omegaDetecter-1){A.knowleges.put(elm.toString().substring(1,elm.toString().length()-1).replaceAll(", ", "-"),omegaToAdd);
+					/* System.out.println("length "+length+" omegaDetecter+omegaDetecter-1 "+(omegaDetecter*2+omegaDetecter-1));*/}
+					  else{A.knowleges.put(elm.toString().substring(1,elm.toString().length()-1).replaceAll(", ", "-"),(double) 0);}
+				 }else{
+					 System.out.println("length "+length+" omegaDetecter*2+omegaDetecter-1 "+(omegaDetecter*2+omegaDetecter-1));
+					 if(length==omegaDetecter*2+omegaDetecter-1){
+						 //System.out.println("Omega mass "+A.knowleges.get(elm.toString().substring(1,elm.toString().length()-1).replaceAll(", ", "-"))+"omegaToAdd"+omegaToAdd);
+						 A.knowleges.put(elm.toString().substring(1,elm.toString().length()-1).replaceAll(", ", "-"),A.knowleges.get(elm.toString().substring(1,elm.toString().length()-1).replaceAll(", ", "-"))+omegaToAdd);
+						 }
 				 }
+				 System.out.println("Apres ajout du omega "+ A.knowleges);
 			  }
 			System.out.println("Lala "+setTest);
+			
 		}
 		int choix =0;
 		final Element methode = (Element) données.getElementsByTagName("Method").item(0);
@@ -358,8 +434,8 @@ public class Main{
 					AgTr=Trans(it.next());
 					while (it.hasNext()) {
 						AgentTrans ag=Trans( it.next());
-						if (choix==1){System.out.println("Dampster shaver");AgTr=MultiAg(AgTr,ag);}//Calculer le Multi Agent
-						if (choix==2){System.out.println("Dubois Prade");AgTr=MultiAgDuboisPrade(AgTr,ag);}//Calculer le Multi Agent
+						if (choix==1){AgTr=MultiAg(AgTr,ag);}//Calculer le Multi Agent
+						if (choix==2){AgTr=MultiAgDuboisPrade(AgTr,ag);}//Calculer le Multi Agent
 						if (choix==3){};
 						 Set set = ag.knowleges.entrySet();
 				         Iterator iterator = set.iterator();
