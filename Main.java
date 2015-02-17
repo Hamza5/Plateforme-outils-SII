@@ -63,41 +63,32 @@ public class Main{
 				 mu.mass=0;
 				 Vec.add(mu);
 				}
-		
-			//Calcul la constante k
+			 //Calcul la constante k
 			 //Calcul des nouvels masses
 			 double k=0;
 			 for (Set number1 : Agt1.knowleges.keySet()) {
 				 multiHash temp =new multiHash();
-				 multiHash tempUN =new multiHash();
-	    	     for (Set number2 : Agt2.knowleges.keySet()) { 
+				 for (Set number2 : Agt2.knowleges.keySet()) {
 		    		  Set<String> intersection = new HashSet<String>(number1); // use the copy constructor
 			    	  intersection.retainAll(number2);
 			    	   temp.set=intersection;
-			    	   tempUN.set= new HashSet<String>(number1);
-			    	   tempUN.set.addAll(number2);
-			    	  temp.mass=Agt1.knowleges.get(number1)*Agt2.knowleges.get(number2);
-			    	  tempUN.mass=Agt1.knowleges.get(number1)*Agt2.knowleges.get(number2);
-			    	  
+			    	 temp.mass=Agt1.knowleges.get(number1)*Agt2.knowleges.get(number2);
 			    	  if (intersection.size()==0){k+=temp.mass;}//Calcul la constante k
 			    	  //rechercher cet ensemble dans le tableau
 			    	  for(int i=0;i<Vec.size();i++){
 				    		  if(Vec.get(i).set.equals(intersection)){
 				    			  Vec.get(i).mass=Vec.get(i).mass+temp.mass;
 				    		  }
+				    		  //System.out.println("Vec.get(i).set "+Vec.get(i).set);
+				    		  if(Vec.get(i).set.toString().equals("[h0]")){
+				    			  Vec.get(i).mass=k;
+				    			  System.out.println("Vec.get(i).set "+Vec.get(i).set);
+				    		  }
 			    	  }
-			    	  for(int i=0;i<Vec.size();i++){
-			    		  if(Vec.get(i).set.equals(tempUN.set)&&intersection.size()==0){
-			    			  Vec.get(i).mass=Vec.get(i).mass+temp.mass;
-			    		  }
-		    	  }
-		    	 }
-	    	 }
-		
-	 
-			AgentTrans temp = new AgentTrans();
+			     }
+			 }
+			 AgentTrans temp = new AgentTrans();
 			for(int i=0;i<Vec.size();i++){
-			
 				if(Vec.get(i).set.size()!=0){//pour eviter l'ensemble vide
 				 temp.knowleges.put(Vec.get(i).set,Vec.get(i).mass );
 				}
@@ -139,6 +130,7 @@ public class Main{
 			    	  if (intersection.size()==0){k+=temp.mass;}//Calcul la constante k
 			    	  //rechercher cet ensemble dans le tableau
 			    	  for(int i=0;i<Vec.size();i++){
+			    		  
 				    		  if(Vec.get(i).set.equals(intersection)){
 				    			  Vec.get(i).mass=Vec.get(i).mass+temp.mass;
 				    		  }
@@ -147,11 +139,9 @@ public class Main{
 			    		  if(Vec.get(i).set.equals(tempUN.set)&&intersection.size()==0){
 			    			  Vec.get(i).mass=Vec.get(i).mass+temp.mass;
 			    		  }
-		    	  }
+		    	     }
 		    	 }
 	    	 }
-		
-	 
 			AgentTrans temp = new AgentTrans();
 			for(int i=0;i<Vec.size();i++){
 			
@@ -232,7 +222,7 @@ public class Main{
 		      return AgTran;
 		}
 		//Methode calcul croyance  plausibilité
-		public static void clalculPlBel(AgentTrans Ag){
+		public static void clalculPlBel(AgentTrans Ag,String NomFichier){
 			try {
 			    final DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
 				final DocumentBuilder builder = factory.newDocumentBuilder();
@@ -273,7 +263,7 @@ public class Main{
 		    		    final DOMSource source = new DOMSource(document);
 		    		    final TransformerFactory transformerFactory = TransformerFactory.newInstance();
 		         	    final Transformer transformer = transformerFactory.newTransformer();
-		         	    final StreamResult sortie = new StreamResult(new File("file.xml"));
+		         	    final StreamResult sortie = new StreamResult(new File(NomFichier+".xml"));
 		         	
 		         		 //prologue
 		         	    transformer.setOutputProperty(OutputKeys.VERSION, "1.0");
@@ -326,7 +316,7 @@ public class Main{
 		    }
 	public static void main(String[] args) throws ParserConfigurationException, SAXException, IOException {
       
-		if(args.length!=1){Runtime.getRuntime().exit(1);}
+		if(args.length!=2){Runtime.getRuntime().exit(1);}
 		HashSet<Agent> hashSet = new HashSet<Agent>();
 		SchemaFactory xsdf = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
 		DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
@@ -427,16 +417,16 @@ public class Main{
 			choix = 3;break; 
 		}
 				Iterator<Agent> it = hashSet.iterator();
-				if(hashSet.size()==1){clalculPlBel(Trans(it.next()));}
+				if(hashSet.size()==1){clalculPlBel(Trans(it.next()),args[1]);}
 				else{
 					if(hashSet.size()>=1){
 					AgentTrans AgTr =new AgentTrans();
 					AgTr=Trans(it.next());
 					while (it.hasNext()) {
 						AgentTrans ag=Trans( it.next());
-						if (choix==1){AgTr=MultiAg(AgTr,ag);}//Calculer le Multi Agent
-						if (choix==2){AgTr=MultiAgDuboisPrade(AgTr,ag);}//Calculer le Multi Agent
-						if (choix==3){};
+						if (choix==1){AgTr=MultiAg(AgTr,ag);}//Calculer le Multi Agent Dempster and Shaver
+						if (choix==2){AgTr=MultiAgDuboisPrade(AgTr,ag);}//Calculer le Multi Agent Dubois Prade
+						if (choix==3){AgTr=MultiAgSmets(AgTr,ag);}//Calculer le Multi Agent Smets
 						 Set set = ag.knowleges.entrySet();
 				         Iterator iterator = set.iterator();
 				         while(iterator.hasNext()) {
@@ -445,7 +435,7 @@ public class Main{
 					         System.out.println(mentry.getValue());
 				        }
 					 }
-					clalculPlBel(AgTr);//Appler la fonction pour calcul Bel et Pl et creer le fichier xml
+					clalculPlBel(AgTr,args[1]);//Appler la fonction pour calcul Bel et Pl et creer le fichier xml
 				}
 			        }
 				
