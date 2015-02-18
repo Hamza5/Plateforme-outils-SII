@@ -28,6 +28,10 @@ class Agent:
         del self.masses[index]
         del self.weakings[index]
 
+    def clear_hypotheses(self):
+        for hypothese in reversed(self.hypotheses):
+            self.remove_hypothese(hypothese)
+
     def __eq__(self, other) -> bool:
         if not isinstance(other, Agent):
             return False
@@ -43,6 +47,9 @@ class Agent:
 
     def __str__(self) -> str:
         return self.name
+
+    def __len__(self):
+        return len(self.hypotheses)
 
     def id(self):
         return 'a'+str(self.order)

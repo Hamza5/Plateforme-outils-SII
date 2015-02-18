@@ -21,7 +21,7 @@
 	<xs:simpleType name="methodType">
 		<xs:restriction base="xs:string">
 			<xs:enumeration value="Dempster-Shafer"/>
-			<xs:enumeration value=""/>
+			<xs:enumeration value="Smets"/>
 			<xs:enumeration value="Dubois-Prade"/>
 		</xs:restriction>
 	</xs:simpleType>

@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'MainWindow.ui'
 #
-# Created: Sat Feb 14 18:25:49 2015
+# Created: Tue Feb 17 11:38:31 2015
 #      by: PyQt4 UI code generator 4.10.4
 #
 # WARNING! All changes made in this file will be lost!
@@ -72,14 +72,14 @@ class Ui_MainWindow(object):
         self.menuFichier.setObjectName(_fromUtf8("menuFichier"))
         self.menuEdition = QtGui.QMenu(self.menubar)
         self.menuEdition.setObjectName(_fromUtf8("menuEdition"))
-        self.menuM_thode_de_calcule = QtGui.QMenu(self.menuEdition)
-        self.menuM_thode_de_calcule.setObjectName(_fromUtf8("menuM_thode_de_calcule"))
         self.menuHypotheses = QtGui.QMenu(self.menuEdition)
         self.menuHypotheses.setObjectName(_fromUtf8("menuHypotheses"))
         self.menuEtats_du_monde = QtGui.QMenu(self.menuEdition)
         self.menuEtats_du_monde.setObjectName(_fromUtf8("menuEtats_du_monde"))
         self.menuAgents = QtGui.QMenu(self.menuEdition)
         self.menuAgents.setObjectName(_fromUtf8("menuAgents"))
+        self.menuM_thode_de_calcule = QtGui.QMenu(self.menuEdition)
+        self.menuM_thode_de_calcule.setObjectName(_fromUtf8("menuM_thode_de_calcule"))
         MainWindow.setMenuBar(self.menubar)
         self.statusbar = QtGui.QStatusBar(MainWindow)
         self.statusbar.setObjectName(_fromUtf8("statusbar"))
@@ -116,6 +116,9 @@ class Ui_MainWindow(object):
         self.actionSupprimerAgent.setObjectName(_fromUtf8("actionSupprimerAgent"))
         self.actionModifierAgent = QtGui.QAction(MainWindow)
         self.actionModifierAgent.setObjectName(_fromUtf8("actionModifierAgent"))
+        self.actionSmets = QtGui.QAction(MainWindow)
+        self.actionSmets.setCheckable(True)
+        self.actionSmets.setObjectName(_fromUtf8("actionSmets"))
         self.menuFichier.addAction(self.actionTitre)
         self.menuFichier.addAction(self.actionDescription)
         self.menuFichier.addSeparator()
@@ -123,8 +126,6 @@ class Ui_MainWindow(object):
         self.menuFichier.addAction(self.actionEnregistrer)
         self.menuFichier.addSeparator()
         self.menuFichier.addAction(self.actionQuitter)
-        self.menuM_thode_de_calcule.addAction(self.actionDempster_Shafer)
-        self.menuM_thode_de_calcule.addAction(self.actionDubois_Prade)
         self.menuHypotheses.addAction(self.actionAjouterHypothese)
         self.menuHypotheses.addAction(self.actionSupprimerHypothese)
         self.menuEtats_du_monde.addAction(self.actionAjouterEtat)
@@ -132,6 +133,9 @@ class Ui_MainWindow(object):
         self.menuAgents.addAction(self.actionAjouterAgent)
         self.menuAgents.addAction(self.actionSupprimerAgent)
         self.menuAgents.addAction(self.actionModifierAgent)
+        self.menuM_thode_de_calcule.addAction(self.actionDempster_Shafer)
+        self.menuM_thode_de_calcule.addAction(self.actionDubois_Prade)
+        self.menuM_thode_de_calcule.addAction(self.actionSmets)
         self.menuEdition.addAction(self.menuM_thode_de_calcule.menuAction())
         self.menuEdition.addSeparator()
         self.menuEdition.addAction(self.menuEtats_du_monde.menuAction())
@@ -150,10 +154,10 @@ class Ui_MainWindow(object):
         self.AgentsGroupBox.setTitle(_translate("MainWindow", "Agents", None))
         self.menuFichier.setTitle(_translate("MainWindow", "&Fichier", None))
         self.menuEdition.setTitle(_translate("MainWindow", "&Edition", None))
-        self.menuM_thode_de_calcule.setTitle(_translate("MainWindow", "Méthode de calcule", None))
         self.menuHypotheses.setTitle(_translate("MainWindow", "Hypothèses", None))
         self.menuEtats_du_monde.setTitle(_translate("MainWindow", "Etats du monde", None))
         self.menuAgents.setTitle(_translate("MainWindow", "Agents", None))
+        self.menuM_thode_de_calcule.setTitle(_translate("MainWindow", "Méthode de calcule", None))
         self.actionTitre.setText(_translate("MainWindow", "Titre", None))
         self.actionTitre.setShortcut(_translate("MainWindow", "Ctrl+T", None))
         self.actionDescription.setText(_translate("MainWindow", "Description", None))
@@ -180,4 +184,5 @@ class Ui_MainWindow(object):
         self.actionSupprimerAgent.setShortcut(_translate("MainWindow", "Ctrl+Shift+G", None))
         self.actionModifierAgent.setText(_translate("MainWindow", "Modifier", None))
         self.actionModifierAgent.setShortcut(_translate("MainWindow", "Alt+G", None))
+        self.actionSmets.setText(_translate("MainWindow", "Smets", None))
 

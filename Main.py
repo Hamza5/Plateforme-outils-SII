@@ -16,6 +16,7 @@ from UI.AgentDialog import Ui_agentDialog
 from UI.MasseDialog import Ui_masseDialog
 from UI.DescriptionDialog import Ui_descriptionDialog
 import HelperClasses.Etat
+import HelperClasses.Agent
 
 
 __author__ = 'hamza'
@@ -81,7 +82,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         file_path = QFileDialog.getSaveFileName(self, 'Enregistrer', '', 'Données (*.xml)')
         if not file_path:
             return
-        root = Element('DSTI')
+        root = Element('DSTI', {'xmlns:xsi': 'http://www.w3.org/2001/XMLSchema-instance',
+                                'xsi:noNamespaceSchemaLocation': 'validation.xsd'})
         tree = ElementTree(root)
         title = Element('Title')
         title.text = self.title
@@ -130,13 +132,14 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             QMessageBox.critical(self, 'Erreur', 'Impossible d\'ouvrir le fichier '+e.filename)
             return
         self.resetEverything()
-        highestID = 0
         # Les états
+        highest_id = 0  # For états
         for element in tree.iter('Etat'):
             état = Etat(element.get('title'))
             état.order = int(re.search(r'\d+', element.attrib['id']).group())
-            highestID = max(highestID, état.order)
+            highest_id = max(highest_id, état.order)
             self.etatsModel.appendRow(ObjectItem(état))
+        HelperClasses.Etat.idf = highest_id+1  # To protect old états IDs from being overwritten when editing a saved file
         # Les hypothèses
         for element in tree.iter('Hypothese'):
             états = []
@@ -146,9 +149,13 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                         états.append(état.item)
             hypothèse = Hypothese(états)
             self.hypothesesModel.appendRow(ObjectItem(hypothèse))
+        # Les agents
+        highest_id = 0  # For agents
         for element in tree.iter('Agent'):
             agent = Agent(element.get('name'), float(element.get('reliability')))
             agent.disable(element.get('disabled') == 'true')
+            agent.order = int(re.search(r'\d+', element.attrib['id']).group())
+            highest_id = max(highest_id, agent.order)
             for hypothèse_element in element:
                 for hypothèse_item in self.hypothesesModel:
                     if hypothèse_element.attrib['id'] == hypothèse_item.item.id():
@@ -158,7 +165,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             for hmw in agent:
                 agent_item.appendRow([ObjectItem(hmw[0]), ObjectItem(hmw[1]), ObjectItem(hmw[2])])
             self.agentsModel.appendRow([agent_item, ObjectItem(agent.reliability), ObjectItem(not agent.disabled)])
-        HelperClasses.Etat.idf = highestID+1  # To protect old IDs from being overwritten when editing a saved file
+        HelperClasses.Agent.idf = highest_id+1
 
     def ajouterEtat(self):
         état, ok = QInputDialog.getText(self, "Ajouter un état", "Etat")
@@ -200,7 +207,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             hypotheses_dialog = HypotheseDialog(self)
             if hypotheses_dialog.exec_() == QDialog.Accepted:
                 selections = hypotheses_dialog.hypothesesDialogListView.selectedIndexes()
-                états = {self.etatsModel.itemFromIndex(x).item for x in selections}
+                états = [self.etatsModel.itemFromIndex(x).item for x in selections]
                 hypothèse = Hypothese(états)
                 if ObjectItem(hypothèse) not in self.hypothesesModel:
                     self.hypothesesModel.appendRow(ObjectItem(hypothèse))
@@ -268,7 +275,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             # Edit the first agent in the selection
             self.editAgent(model_index_list[0].row())
         else:
-            agent_name, ok = QInputDialog.getItem(self, "Supprimer un agent", "Agent", self.agentsModel.list_of_str(),
+            agent_name, ok = QInputDialog.getItem(self, "Modifier un agent", "Agent", self.agentsModel.list_of_str(),
                                                   0, False)
             if ok:
                 for item in self.agentsModel:
@@ -294,20 +301,21 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             agent.reliability = agent_dialog.fiabiliteSpinBox.value()
             agent.disable(not agent_dialog.activeCheckBox.isChecked())
             # Edit the model
-            self.agentsModel.setItem(selectedIndex, 0, ObjectItem(agent))
-            self.agentsModel.setItem(selectedIndex, 1, ObjectItem(agent.reliability))
-            self.agentsModel.setItem(selectedIndex, 2, ObjectItem(not agent.disabled))
+            self.agentsModel.removeRow(selectedIndex)
+            self.agentsModel.insertRow(selectedIndex, [ObjectItem(agent), ObjectItem(agent.reliability), ObjectItem(not agent.disabled)])
+            # self.agentsModel.setItem(selectedIndex, 0, ObjectItem(agent))
+            # self.agentsModel.setItem(selectedIndex, 1, ObjectItem(agent.reliability))
+            # self.agentsModel.setItem(selectedIndex, 2, ObjectItem(not agent.disabled))
             # Delete the old hypotheses
-            for hmw in agent:
-                agent.remove_hypothese(hmw[0])
+            agent.clear_hypotheses()
             self.agentsModel[selectedIndex].removeRows(0, self.agentsModel[selectedIndex].rowCount())
             for i in range(agent_dialog.model.rowCount()):  # Insert the new ones
                 hypothèse_item = agent_dialog.model.item(i, 0)
                 masse_item = agent_dialog.model.item(i, 1)
                 affaiblissement_item = agent_dialog.model.item(i, 2)
                 agent.add_hypothese(hypothèse_item.item, masse_item.item, affaiblissement_item.item)
-                self.agentsModel[selectedIndex].appendRow([ObjectItem(hypothèse_item.item), ObjectItem(masse_item.item),
-                                                           ObjectItem(affaiblissement_item.item)])
+            for hmw in agent:
+                self.agentsModel[selectedIndex].appendRow([ObjectItem(hmw[0]), ObjectItem(hmw[1]), ObjectItem(hmw[2])])
 
     def delete_états_selection(self):
         selection_model = self.etatsListView.selectionModel()
