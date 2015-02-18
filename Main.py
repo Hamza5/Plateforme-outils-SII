@@ -35,8 +35,10 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.action_group = QActionGroup(self)
         self.action_group.addAction(self.actionDempster_Shafer)
         self.action_group.addAction(self.actionDubois_Prade)
+        self.action_group.addAction(self.actionSmets)
         self.actionDempster_Shafer.setData('Dempster-Shafer')
         self.actionDubois_Prade.setData('Dubois-Prade')
+        self.actionSmets.setData('Smets')
 
         # Center the main window on the screen
         self.move(QApplication.desktop().availableGeometry().center() - self.rect().center())
@@ -366,7 +368,7 @@ class AgentDialog(QDialog, Ui_agentDialog):
     def __init__(self, parent: MainWindow):
         super(AgentDialog, self).__init__(parent)
         self.setupUi(self)
-        # Set the model for the hyopotheses/masses table view
+        # Set the model for the hypotheses/masses table view
         self.model = ItemModel(self)
         self.hypothesesTableView.setModel(self.model)
         # Link the spinbox with the slider
@@ -380,6 +382,11 @@ class AgentDialog(QDialog, Ui_agentDialog):
         # Set the table
         self.model.setHorizontalHeaderLabels(["Hypothèse", "Masse", "Affaiblissement"])
         self.hypothesesTableView.horizontalHeader().setResizeMode(QHeaderView.ResizeToContents)
+        # Disable the agent reliability if the used method is Dempster-Shafer
+        if parent.action_group.checkedAction().data() == 'Dempster-Shafer':
+            self.fiabiliteLabel.setEnabled(False)
+            self.fiabiliteSlider.setEnabled(False)
+            self.fiabiliteSpinBox.setEnabled(False)
 
     def accept(self):
         if self.nomLineEdit.text() == '':
@@ -405,11 +412,6 @@ class AgentDialog(QDialog, Ui_agentDialog):
                 self.model.appendRow([hypothèse_item, ObjectItem(masse), ObjectItem(affaiblissement)])
                 self.hypothesesTableView.resizeColumnsToContents()
             else:
-                answer = QMessageBox.warning(self, "Hypothèse existante",
-                                             "L'hypothèse " + str(hypothèse) + " existe, voulez vouz la mettre à jour ?"
-                                             , QMessageBox.Yes | QMessageBox.No)
-                if answer == QMessageBox.No:
-                    return
                 for i in range(len(self.model)):
                     if self.model[i].named(str(hypothèse)):
                         self.model.setItem(i, 1, ObjectItem(masse))
@@ -451,11 +453,24 @@ class MasseDialog(QDialog, Ui_masseDialog):
                      lambda value: self.affaiblissementSpinBox.setValue(value / 100))
         self.connect(self.affaiblissementSpinBox, SIGNAL("valueChanged(double)"),
                      lambda value: self.affaiblissementSlider.setValue(value * 100))
+        # Link the hypotheses combo box
+        self.connect(self.hypotheseComboBox, SIGNAL('currentIndexChanged(const QString&)'), self.mass_weaking_change)
+        # Set the right values for the first time
+        self.mass_weaking_change(self.hypotheseComboBox.currentText())
+
+    def mass_weaking_change(self, current_text: str):
+        for i in range(self.parent().model.rowCount()):
+            if self.parent().model[i].named(current_text):
+                mass = self.parent().model.item(i, 1).item
+                weaking = self.parent().model.item(i, 2).item
+                self.masseSpinBox.setValue(mass)
+                self.affaiblissementSpinBox.setValue(weaking)
+                break
 
 
 class ObjectItem(QStandardItem):
     def __init__(self, obj=None):
-        super(ObjectItem, self).__init__(str(obj) if obj != None else None)
+        super(ObjectItem, self).__init__(str(obj) if obj is not None else None)
         self.item = obj
         self.setEditable(False)
 
