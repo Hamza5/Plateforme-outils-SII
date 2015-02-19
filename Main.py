@@ -176,9 +176,12 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             if item not in self.etatsModel:
                 self.etatsModel.appendRow(item)
             else:
-                QMessageBox.warning(self, 'Etat existant', "L'état '" + str(état) + "' existe dans la liste !")
+                QMessageBox.warning(self, 'Erreur', "L'état '" + str(état) + "' existe dans la liste !")
 
     def suprimmerEtat(self):
+        if self.etatsModel.rowCount() == 0:
+            QMessageBox.warning(self, 'Erreur', 'Aucun état trouvé')
+            return
         selection_model = self.etatsListView.selectionModel()
         if selection_model.hasSelection():
             self.delete_états_selection()
@@ -193,6 +196,9 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                         break
 
     def ajouterHypothese(self):
+        if self.etatsModel.rowCount() == 0:
+            QMessageBox.warning(self, 'Erreur', 'Aucun état trouvé')
+            return
         selection_model = self.etatsListView.selectionModel()
         états = list()
         if selection_model.hasSelection():
@@ -203,7 +209,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             if ObjectItem(hypothèse) not in self.hypothesesModel:
                 self.hypothesesModel.appendRow(ObjectItem(hypothèse))
             else:
-                QMessageBox.warning(self, 'Hypothèse existante',
+                QMessageBox.warning(self, 'Erreur',
                                     "L'hypothèse " + str(hypothèse) + " existe dans la liste !")
         else:
             hypotheses_dialog = HypotheseDialog(self)
@@ -214,10 +220,13 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                 if ObjectItem(hypothèse) not in self.hypothesesModel:
                     self.hypothesesModel.appendRow(ObjectItem(hypothèse))
                 else:
-                    QMessageBox.warning(self, 'Hypothèse existante',
+                    QMessageBox.warning(self, 'Erreur',
                                         "L'hypothèse " + str(hypothèse) + " existe dans la liste !")
 
     def supprimerHypothese(self):
+        if self.hypothesesModel.rowCount() == 0:
+            QMessageBox.warning(self, 'Erreur', 'Aucune hypothèse trouvée')
+            return
         selection_model = self.hypothesesListView.selectionModel()
         if selection_model.hasSelection():
             model_index_list = selection_model.selectedIndexes()
@@ -234,6 +243,9 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                         break
 
     def ajouterAgent(self):
+        if self.hypothesesModel.rowCount() == 0:
+            QMessageBox.warning(self, 'Erreur', 'Aucune hypothèse trouvée')
+            return
         agent_dialog = AgentDialog(self)
         if agent_dialog.exec_() == QDialog.Accepted:
             nom = agent_dialog.nomLineEdit.text()
@@ -252,9 +264,12 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                     agent_item.appendRow([ObjectItem(hypothèse_item.item), ObjectItem(masse_item.item),
                                           ObjectItem(affaiblissement_item.item)])
             else:
-                QMessageBox.warning(self, 'Agent existant', "L'agent '" + str(agent) + "' existe dans la liste !")
+                QMessageBox.warning(self, 'Erreur', "L'agent '" + str(agent) + "' existe dans la liste !")
 
     def supprimerAgent(self):
+        if self.agentsModel.rowCount() == 0:
+            QMessageBox.warning(self, 'Erreur', 'Aucun agent trouvé')
+            return
         selection_model = self.agentsTreeView.selectionModel()
         if selection_model.hasSelection():
             model_index_list = selection_model.selectedIndexes()
@@ -271,6 +286,9 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                         break
 
     def modifierAgent(self):
+        if self.agentsModel.rowCount() == 0:
+            QMessageBox.warning(self, 'Erreur', 'Aucun agent trouvé')
+            return
         selection_model = self.agentsTreeView.selectionModel()
         if selection_model.hasSelection():
             model_index_list = selection_model.selectedIndexes()
