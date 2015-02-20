@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'MainWindow.ui'
 #
-# Created: Tue Feb 17 11:38:31 2015
+# Created: Fri Feb 20 12:22:09 2015
 #      by: PyQt4 UI code generator 4.10.4
 #
 # WARNING! All changes made in this file will be lost!
@@ -119,11 +119,14 @@ class Ui_MainWindow(object):
         self.actionSmets = QtGui.QAction(MainWindow)
         self.actionSmets.setCheckable(True)
         self.actionSmets.setObjectName(_fromUtf8("actionSmets"))
-        self.menuFichier.addAction(self.actionTitre)
-        self.menuFichier.addAction(self.actionDescription)
-        self.menuFichier.addSeparator()
+        self.actionNouveau = QtGui.QAction(MainWindow)
+        self.actionNouveau.setObjectName(_fromUtf8("actionNouveau"))
+        self.menuFichier.addAction(self.actionNouveau)
         self.menuFichier.addAction(self.actionOuvrir)
         self.menuFichier.addAction(self.actionEnregistrer)
+        self.menuFichier.addSeparator()
+        self.menuFichier.addAction(self.actionTitre)
+        self.menuFichier.addAction(self.actionDescription)
         self.menuFichier.addSeparator()
         self.menuFichier.addAction(self.actionQuitter)
         self.menuHypotheses.addAction(self.actionAjouterHypothese)
@@ -185,4 +188,6 @@ class Ui_MainWindow(object):
         self.actionModifierAgent.setText(_translate("MainWindow", "Modifier", None))
         self.actionModifierAgent.setShortcut(_translate("MainWindow", "Alt+G", None))
         self.actionSmets.setText(_translate("MainWindow", "Smets", None))
+        self.actionNouveau.setText(_translate("MainWindow", "Nouveau", None))
+        self.actionNouveau.setShortcut(_translate("MainWindow", "Ctrl+N", None))
 

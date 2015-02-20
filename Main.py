@@ -4,7 +4,7 @@ from xml.dom.minidom import parseString
 import re
 
 from PyQt4.QtGui import QApplication, QMainWindow, QActionGroup, QDialog, QStandardItem, QStandardItemModel, \
-    QInputDialog, QHeaderView, QLineEdit, QMessageBox, QFileDialog
+    QInputDialog, QHeaderView, QLineEdit, QMessageBox, QFileDialog, QCloseEvent
 from PyQt4.QtCore import SIGNAL
 
 from HelperClasses.Etat import Etat
@@ -30,6 +30,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.title = ""
         self.description = ""
         self.agentsModelHeaderLabels = ["Agent/Hypothèse", "Fiabilité/Masse", "Activé/Affaiblissement"]
+        self.edited = False
 
         # Make methods actions mutually-exclusives :
         self.action_group = QActionGroup(self)
@@ -68,6 +69,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.connect(self.actionEnregistrer, SIGNAL("triggered(bool)"), self.enregistrer)
         self.connect(self.actionModifierAgent, SIGNAL("triggered(bool)"), self.modifierAgent)
         self.connect(self.actionOuvrir, SIGNAL("triggered(bool)"), self.ouvrir)
+        self.connect(self.actionNouveau, SIGNAL("triggered(bool)"), self.nouveau)
 
     def attribuer_titre(self):
         title, ok = QInputDialog.getText(self, "Titre", "Titre", QLineEdit.Normal, self.title)
@@ -80,13 +82,27 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         if description_dialog.exec_() == QDialog.Accepted:
             self.description = description_dialog.get_description()
 
+    def nouveau(self):
+        if self.edited:
+            ok = QMessageBox.warning(self, 'Changements non sauvegardés',
+                                     'Vous n\'avez pas sauvegardé vos changements, voulez vous continuer ?',
+                                     QMessageBox.Yes | QMessageBox.No)
+            if ok == QMessageBox.No:
+                return False
+        # Vider les modèles
+        self.etatsModel.clear()
+        self.hypothesesModel.clear()
+        self.agentsModel.clear()
+        self.agentsModel.setHorizontalHeaderLabels(self.agentsModelHeaderLabels)
+        self.edited = False
+        return True
+
     def enregistrer(self):
         file_path = QFileDialog.getSaveFileName(self, 'Enregistrer', '', 'Données (*.xml)')
         if not file_path:
-            return
+            return False
         root = Element('DSTI', {'xmlns:xsi': 'http://www.w3.org/2001/XMLSchema-instance',
                                 'xsi:noNamespaceSchemaLocation': 'validation.xsd'})
-        tree = ElementTree(root)
         title = Element('Title')
         title.text = self.title
         root.append(title)
@@ -121,8 +137,11 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             file = open(file_path, mode='w', encoding='utf-8')
             file.write(pretty_xml)
             file.close()
+            self.edited = False
+            return True
         except OSError as e:
             QMessageBox.critical(self, 'Erreur', 'Impossible de sauvegarder le fichier '+e.filename)
+            return False
 
     def ouvrir(self):
         file_path = QFileDialog.getOpenFileName(self, 'Ouvrir', '', 'Données (*.xml)')
@@ -133,7 +152,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         except OSError as e:
             QMessageBox.critical(self, 'Erreur', 'Impossible d\'ouvrir le fichier '+e.filename)
             return
-        self.resetEverything()
+        if not self.nouveau():
+            return
         # Les états
         highest_id = 0  # For états
         for element in tree.iter('Etat'):
@@ -141,7 +161,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             état.order = int(re.search(r'\d+', element.attrib['id']).group())
             highest_id = max(highest_id, état.order)
             self.etatsModel.appendRow(ObjectItem(état))
-        HelperClasses.Etat.idf = highest_id+1  # To protect old états IDs from being overwritten when editing a saved file
+        # To protect old états IDs from being overwritten when editing a saved file
+        HelperClasses.Etat.idf = highest_id+1
         # Les hypothèses
         for element in tree.iter('Hypothese'):
             états = []
@@ -161,7 +182,9 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             for hypothèse_element in element:
                 for hypothèse_item in self.hypothesesModel:
                     if hypothèse_element.attrib['id'] == hypothèse_item.item.id():
-                        agent.add_hypothese(hypothèse_item.item, float(hypothèse_element.attrib['mass']), float(hypothèse_element.attrib['weaking']))
+                        agent.add_hypothese(hypothèse_item.item,
+                                            float(hypothèse_element.attrib['mass']),
+                                            float(hypothèse_element.attrib['weaking']))
                         break
             agent_item = ObjectItem(agent)
             for hmw in agent:
@@ -177,6 +200,10 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                 self.etatsModel.appendRow(item)
             else:
                 QMessageBox.warning(self, 'Erreur', "L'état '" + str(état) + "' existe dans la liste !")
+                return
+        else:
+            return
+        self.edited = True
 
     def suprimmerEtat(self):
         if self.etatsModel.rowCount() == 0:
@@ -194,6 +221,9 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                         self.deleteHypotheseByEtat(self.etatsListView.model()[item.row()].item)
                         del self.etatsModel[item.row()]
                         break
+            else:
+                return
+        self.edited = True
 
     def ajouterHypothese(self):
         if self.etatsModel.rowCount() == 0:
@@ -211,6 +241,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             else:
                 QMessageBox.warning(self, 'Erreur',
                                     "L'hypothèse " + str(hypothèse) + " existe dans la liste !")
+                return
         else:
             hypotheses_dialog = HypotheseDialog(self)
             if hypotheses_dialog.exec_() == QDialog.Accepted:
@@ -222,6 +253,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                 else:
                     QMessageBox.warning(self, 'Erreur',
                                         "L'hypothèse " + str(hypothèse) + " existe dans la liste !")
+                    return
+        self.edited = True
 
     def supprimerHypothese(self):
         if self.hypothesesModel.rowCount() == 0:
@@ -241,6 +274,9 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                     if item.named(hypothèse_name):
                         self.deleteHypothese(item.row())
                         break
+            else:
+                return
+        self.edited = True
 
     def ajouterAgent(self):
         if self.hypothesesModel.rowCount() == 0:
@@ -265,6 +301,10 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                                           ObjectItem(affaiblissement_item.item)])
             else:
                 QMessageBox.warning(self, 'Erreur', "L'agent '" + str(agent) + "' existe dans la liste !")
+                return
+        else:
+            return
+        self.edited = True
 
     def supprimerAgent(self):
         if self.agentsModel.rowCount() == 0:
@@ -284,6 +324,9 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                     if item.named(agent_name):
                         del self.agentsModel[item.row()]
                         break
+            else:
+                return
+        self.edited = True
 
     def modifierAgent(self):
         if self.agentsModel.rowCount() == 0:
@@ -293,15 +336,21 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         if selection_model.hasSelection():
             model_index_list = selection_model.selectedIndexes()
             # Edit the first agent in the selection
-            self.editAgent(model_index_list[0].row())
+            if not self.editAgent(model_index_list[0].row()):
+                return
         else:
             agent_name, ok = QInputDialog.getItem(self, "Modifier un agent", "Agent", self.agentsModel.list_of_str(),
                                                   0, False)
             if ok:
                 for item in self.agentsModel:
                     if item.named(agent_name):
-                        self.editAgent(item.row())
-                        break
+                        if not self.editAgent(item.row()):
+                            return
+                        else:
+                            break
+            else:
+                return
+        self.edited = True
 
     def editAgent(self, selectedIndex):
         agent_dialog = AgentDialog(self)
@@ -322,10 +371,9 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             agent.disable(not agent_dialog.activeCheckBox.isChecked())
             # Edit the model
             self.agentsModel.removeRow(selectedIndex)
-            self.agentsModel.insertRow(selectedIndex, [ObjectItem(agent), ObjectItem(agent.reliability), ObjectItem(not agent.disabled)])
-            # self.agentsModel.setItem(selectedIndex, 0, ObjectItem(agent))
-            # self.agentsModel.setItem(selectedIndex, 1, ObjectItem(agent.reliability))
-            # self.agentsModel.setItem(selectedIndex, 2, ObjectItem(not agent.disabled))
+            self.agentsModel.insertRow(selectedIndex,
+                                       [ObjectItem(agent), ObjectItem(agent.reliability),
+                                        ObjectItem(not agent.disabled)])
             # Delete the old hypotheses
             agent.clear_hypotheses()
             self.agentsModel[selectedIndex].removeRows(0, self.agentsModel[selectedIndex].rowCount())
@@ -336,6 +384,9 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                 agent.add_hypothese(hypothèse_item.item, masse_item.item, affaiblissement_item.item)
             for hmw in agent:
                 self.agentsModel[selectedIndex].appendRow([ObjectItem(hmw[0]), ObjectItem(hmw[1]), ObjectItem(hmw[2])])
+            return True
+        else:
+            return False
 
     def delete_états_selection(self):
         selection_model = self.etatsListView.selectionModel()
@@ -356,12 +407,18 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                 del self.agentsModel[agent_item.row()]
         del self.hypothesesModel[rowIndex]
 
-    def resetEverything(self):
-        # Vider les modèles
-        self.etatsModel.clear()
-        self.hypothesesModel.clear()
-        self.agentsModel.clear()
-        self.agentsModel.setHorizontalHeaderLabels(self.agentsModelHeaderLabels)
+    def closeEvent(self, close_event: QCloseEvent):  # Reimplementing the window close event
+        if self.edited:
+            ok = QMessageBox.warning(self, 'Changements non sauvegardés',
+                                     'Voulez vous sauvegarder les changements avant de quitter ?',
+                                     QMessageBox.Yes | QMessageBox.No | QMessageBox.Cancel)
+            if ok == QMessageBox.Yes:
+                if self.enregistrer():
+                    close_event.accept()
+            elif ok == QMessageBox.No:
+                close_event.accept()
+            else:
+                close_event.ignore()
 
 
 class DescriptionDialog(QDialog, Ui_descriptionDialog):
@@ -406,7 +463,7 @@ class AgentDialog(QDialog, Ui_agentDialog):
             self.fiabiliteSlider.setEnabled(False)
             self.fiabiliteSpinBox.setEnabled(False)
 
-    def accept(self):
+    def accept(self):  # Reimplementing the dialog accept method
         if self.nomLineEdit.text() == '':
             QMessageBox.warning(self, 'Erreur', 'L\'agent ne peut pas être sans nom !')
             return
@@ -473,8 +530,11 @@ class MasseDialog(QDialog, Ui_masseDialog):
                      lambda value: self.affaiblissementSlider.setValue(value * 100))
         # Link the hypotheses combo box
         self.connect(self.hypotheseComboBox, SIGNAL('currentIndexChanged(const QString&)'), self.mass_weaking_change)
-        # Set the right values for the first time
-        self.mass_weaking_change(self.hypotheseComboBox.currentText())
+        # Set the right values for the selected option for the first time
+        selection_model = self.parent().hypothesesTableView.selectionModel()
+        if selection_model.hasSelection():
+            model_index = selection_model.selectedRows()[0]
+            self.hypotheseComboBox.setCurrentIndex(self.hypothese_index(model_index.row()))
 
     def mass_weaking_change(self, current_text: str):
         for i in range(self.parent().model.rowCount()):
@@ -483,7 +543,16 @@ class MasseDialog(QDialog, Ui_masseDialog):
                 weaking = self.parent().model.item(i, 2).item
                 self.masseSpinBox.setValue(mass)
                 self.affaiblissementSpinBox.setValue(weaking)
-                break
+                return
+        self.masseSpinBox.setValue(0)  # For non affected hypotheses
+        self.affaiblissementSpinBox.setValue(0)
+
+    def hypothese_index(self, agent_hypothese_index: int):
+        agent_hypotheses_model = self.parent().model
+        hypothèse = agent_hypotheses_model[agent_hypothese_index].item
+        for i in range(len(self.model)):
+            if self.model[i].named(str(hypothèse)):
+                return i
 
 
 class ObjectItem(QStandardItem):

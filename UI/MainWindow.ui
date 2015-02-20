@@ -84,11 +84,12 @@
     <property name="title">
      <string>&amp;Fichier</string>
     </property>
-    <addaction name="actionTitre"/>
-    <addaction name="actionDescription"/>
-    <addaction name="separator"/>
+    <addaction name="actionNouveau"/>
     <addaction name="actionOuvrir"/>
     <addaction name="actionEnregistrer"/>
+    <addaction name="separator"/>
+    <addaction name="actionTitre"/>
+    <addaction name="actionDescription"/>
     <addaction name="separator"/>
     <addaction name="actionQuitter"/>
    </widget>
@@ -260,6 +261,14 @@
    </property>
    <property name="text">
     <string>Smets</string>
+   </property>
+  </action>
+  <action name="actionNouveau">
+   <property name="text">
+    <string>Nouveau</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+N</string>
    </property>
   </action>
  </widget>
