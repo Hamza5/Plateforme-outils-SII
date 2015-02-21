@@ -189,7 +189,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             agent_item = ObjectItem(agent)
             for hmw in agent:
                 agent_item.appendRow([ObjectItem(hmw[0]), ObjectItem(hmw[1]), ObjectItem(hmw[2])])
-            self.agentsModel.appendRow([agent_item, ObjectItem(agent.reliability), ObjectItem(not agent.disabled)])
+            self.agentsModel.appendRow([agent_item, ObjectItem(agent.reliability),
+                                        ObjectItem('Désactivé' if agent.disabled else 'Activé')])
         HelperClasses.Agent.idf = highest_id+1
 
     def ajouterEtat(self):
@@ -291,7 +292,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             agent.disable(not activé)
             agent_item = ObjectItem(agent)
             if agent_item not in self.agentsModel:
-                self.agentsModel.appendRow([agent_item, ObjectItem(fiabilité), ObjectItem(activé)])
+                self.agentsModel.appendRow([agent_item, ObjectItem(fiabilité),
+                                            ObjectItem('Désactivé' if agent.disabled else 'Activé')])
                 for i in range(agent_dialog.model.rowCount()):
                     hypothèse_item = agent_dialog.model.item(i, 0)
                     masse_item = agent_dialog.model.item(i, 1)
@@ -373,7 +375,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             self.agentsModel.removeRow(selectedIndex)
             self.agentsModel.insertRow(selectedIndex,
                                        [ObjectItem(agent), ObjectItem(agent.reliability),
-                                        ObjectItem(not agent.disabled)])
+                                        ObjectItem('Désactivé' if agent.disabled else 'Activé')])
             # Delete the old hypotheses
             agent.clear_hypotheses()
             self.agentsModel[selectedIndex].removeRows(0, self.agentsModel[selectedIndex].rowCount())
