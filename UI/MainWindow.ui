@@ -88,36 +88,18 @@
     <addaction name="actionOuvrir"/>
     <addaction name="actionEnregistrer"/>
     <addaction name="separator"/>
-    <addaction name="actionTitre"/>
-    <addaction name="actionDescription"/>
-    <addaction name="separator"/>
     <addaction name="actionQuitter"/>
    </widget>
    <widget class="QMenu" name="menuEdition">
     <property name="title">
-     <string>&amp;Edition</string>
+     <string>&amp;Projet</string>
     </property>
-    <widget class="QMenu" name="menuHypotheses">
-     <property name="title">
-      <string>Hypothèses</string>
-     </property>
-     <addaction name="actionAjouterHypothese"/>
-     <addaction name="actionSupprimerHypothese"/>
-    </widget>
     <widget class="QMenu" name="menuEtats_du_monde">
      <property name="title">
       <string>Etats du monde</string>
      </property>
      <addaction name="actionAjouterEtat"/>
      <addaction name="actionSupprimerEtat"/>
-    </widget>
-    <widget class="QMenu" name="menuAgents">
-     <property name="title">
-      <string>Agents</string>
-     </property>
-     <addaction name="actionAjouterAgent"/>
-     <addaction name="actionSupprimerAgent"/>
-     <addaction name="actionModifierAgent"/>
     </widget>
     <widget class="QMenu" name="menuM_thode_de_calcule">
      <property name="title">
@@ -127,11 +109,31 @@
      <addaction name="actionDubois_Prade"/>
      <addaction name="actionSmets"/>
     </widget>
+    <widget class="QMenu" name="menuHypotheses">
+     <property name="title">
+      <string>Hypothèses</string>
+     </property>
+     <addaction name="actionAjouterHypothese"/>
+     <addaction name="actionSupprimerHypothese"/>
+    </widget>
+    <widget class="QMenu" name="menuAgents">
+     <property name="title">
+      <string>Agents</string>
+     </property>
+     <addaction name="actionAjouterAgent"/>
+     <addaction name="actionSupprimerAgent"/>
+     <addaction name="actionModifierAgent"/>
+    </widget>
+    <addaction name="actionTitre"/>
+    <addaction name="actionDescription"/>
+    <addaction name="separator"/>
     <addaction name="menuM_thode_de_calcule"/>
     <addaction name="separator"/>
     <addaction name="menuEtats_du_monde"/>
     <addaction name="menuHypotheses"/>
     <addaction name="menuAgents"/>
+    <addaction name="separator"/>
+    <addaction name="actionCalculer"/>
    </widget>
    <addaction name="menuFichier"/>
    <addaction name="menuEdition"/>
@@ -269,6 +271,17 @@
    </property>
    <property name="shortcut">
     <string>Ctrl+N</string>
+   </property>
+  </action>
+  <action name="actionCalculer">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
+   <property name="text">
+    <string>Calculer</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+K</string>
    </property>
   </action>
  </widget>

@@ -84,12 +84,16 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
     def nouveau(self):
         if self.edited:
-            ok = QMessageBox.warning(self, 'Changements non sauvegardés',
-                                     'Vous n\'avez pas sauvegardé vos changements, voulez vous continuer ?',
-                                     QMessageBox.Yes | QMessageBox.No)
+            msg = QMessageBox(self)
+            msg.setWindowTitle('Changements non sauvegardés')
+            msg.setText('<b>Vous n\'avez pas sauvegardé vos changements</b>')
+            msg.setInformativeText('Voulez vous continuer ?')
+            msg.setStandardButtons(QMessageBox.Yes | QMessageBox.No)
+            msg.setIcon(QMessageBox.Warning)
+            ok = msg.exec_()
             if ok == QMessageBox.No:
                 return False
-        # Vider les modèles
+        # Empty the models
         self.etatsModel.clear()
         self.hypothesesModel.clear()
         self.agentsModel.clear()
@@ -140,7 +144,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             self.edited = False
             return True
         except OSError as e:
-            QMessageBox.critical(self, 'Erreur', 'Impossible de sauvegarder le fichier '+e.filename)
+            QMessageBox.critical(self, 'Erreur', '<b>Impossible de sauvegarder le fichier '+e.filename+'</b>')
             return False
 
     def ouvrir(self):
@@ -150,10 +154,20 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         try:
             tree = ElementTree(file=file_path)
         except OSError as e:
-            QMessageBox.critical(self, 'Erreur', 'Impossible d\'ouvrir le fichier '+e.filename)
+            QMessageBox.critical(self, 'Erreur', '<b>Impossible d\'ouvrir le fichier '+e.filename+'</b>')
             return
         if not self.nouveau():
             return
+        # The title and the description
+        self.title = tree.find('Title').text
+        self.setWindowTitle(app_name + (' - ' + self.title if self.title != '' else ''))
+        self.description = tree.find('Description').text
+        # The method
+        method = tree.find('Method').text
+        for action in self.action_group.actions():
+            if method == action.data():
+                action.setChecked(True)
+                break
         # Les états
         highest_id = 0  # For états
         for element in tree.iter('Etat'):
@@ -200,7 +214,12 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             if item not in self.etatsModel:
                 self.etatsModel.appendRow(item)
             else:
-                QMessageBox.warning(self, 'Erreur', "L'état '" + str(état) + "' existe dans la liste !")
+                msg = QMessageBox(self)
+                msg.setWindowTitle('Erreur')
+                msg.setText("<b>L'état '" + str(état) + "' existe dans la liste !</b>")
+                msg.setInformativeText('Vous ne pouvez pas ajouter un état plus d\'une fois')
+                msg.setIcon(QMessageBox.Warning)
+                msg.exec_()
                 return
         else:
             return
@@ -208,7 +227,12 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
     def suprimmerEtat(self):
         if self.etatsModel.rowCount() == 0:
-            QMessageBox.warning(self, 'Erreur', 'Aucun état trouvé')
+            msg = QMessageBox(self)
+            msg.setWindowTitle('Erreur')
+            msg.setText('<b>Aucun état trouvé !</b>')
+            msg.setInformativeText('Vous devez ajouter un état d\'abord')
+            msg.setIcon(QMessageBox.Warning)
+            msg.exec_()
             return
         selection_model = self.etatsListView.selectionModel()
         if selection_model.hasSelection():
@@ -228,7 +252,12 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
     def ajouterHypothese(self):
         if self.etatsModel.rowCount() == 0:
-            QMessageBox.warning(self, 'Erreur', 'Aucun état trouvé')
+            msg = QMessageBox(self)
+            msg.setWindowTitle('Erreur')
+            msg.setText('<b>Aucun état trouvé !</b>')
+            msg.setInformativeText('Vous ne pouvez pas ajouter une hypothèse avant d\'ajouter les états')
+            msg.setIcon(QMessageBox.Warning)
+            msg.exec_()
             return
         selection_model = self.etatsListView.selectionModel()
         états = list()
@@ -240,8 +269,12 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             if ObjectItem(hypothèse) not in self.hypothesesModel:
                 self.hypothesesModel.appendRow(ObjectItem(hypothèse))
             else:
-                QMessageBox.warning(self, 'Erreur',
-                                    "L'hypothèse " + str(hypothèse) + " existe dans la liste !")
+                msg = QMessageBox(self)
+                msg.setWindowTitle('Erreur')
+                msg.setText("<b>L'hypothèse " + str(hypothèse) + " existe dans la liste !</b>")
+                msg.setInformativeText('Vous ne pouvez pas ajouter une hypothèse plus d\'une fois')
+                msg.setIcon(QMessageBox.Warning)
+                msg.exec_()
                 return
         else:
             hypotheses_dialog = HypotheseDialog(self)
@@ -252,14 +285,23 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                 if ObjectItem(hypothèse) not in self.hypothesesModel:
                     self.hypothesesModel.appendRow(ObjectItem(hypothèse))
                 else:
-                    QMessageBox.warning(self, 'Erreur',
-                                        "L'hypothèse " + str(hypothèse) + " existe dans la liste !")
+                    msg = QMessageBox(self)
+                    msg.setWindowTitle('Erreur')
+                    msg.setText("<b>L'hypothèse " + str(hypothèse) + " existe dans la liste !</b>")
+                    msg.setInformativeText('Vous ne pouvez pas ajouter une hypothèse plus d\'une fois')
+                    msg.setIcon(QMessageBox.Warning)
+                    msg.exec_()
                     return
         self.edited = True
 
     def supprimerHypothese(self):
         if self.hypothesesModel.rowCount() == 0:
-            QMessageBox.warning(self, 'Erreur', 'Aucune hypothèse trouvée')
+            msg = QMessageBox(self)
+            msg.setWindowTitle('Erreur')
+            msg.setText('<b>Aucune hypothèse trouvée !</b>')
+            msg.setInformativeText('Vous devez ajouter une hypothèse d\'abord')
+            msg.setIcon(QMessageBox.Warning)
+            msg.exec_()
             return
         selection_model = self.hypothesesListView.selectionModel()
         if selection_model.hasSelection():
@@ -281,7 +323,12 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
     def ajouterAgent(self):
         if self.hypothesesModel.rowCount() == 0:
-            QMessageBox.warning(self, 'Erreur', 'Aucune hypothèse trouvée')
+            msg = QMessageBox(self)
+            msg.setWindowTitle('Erreur')
+            msg.setText('<b>Aucune hypothèse trouvée !</b>')
+            msg.setInformativeText('Vous ne pouvez pas ajouter un agent avant d\'ajouter les hypothèses')
+            msg.setIcon(QMessageBox.Warning)
+            msg.exec_()
             return
         agent_dialog = AgentDialog(self)
         if agent_dialog.exec_() == QDialog.Accepted:
@@ -302,7 +349,12 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                     agent_item.appendRow([ObjectItem(hypothèse_item.item), ObjectItem(masse_item.item),
                                           ObjectItem(affaiblissement_item.item)])
             else:
-                QMessageBox.warning(self, 'Erreur', "L'agent '" + str(agent) + "' existe dans la liste !")
+                msg = QMessageBox(self)
+                msg.setWindowTitle('Erreur')
+                msg.setText("<b>L'agent '" + str(agent) + "' existe dans la liste !</b>")
+                msg.setInformativeText('Vous ne pouvez pas ajouter un agent plus d\'une fois')
+                msg.setIcon(QMessageBox.Warning)
+                msg.exec_()
                 return
         else:
             return
@@ -310,7 +362,12 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
     def supprimerAgent(self):
         if self.agentsModel.rowCount() == 0:
-            QMessageBox.warning(self, 'Erreur', 'Aucun agent trouvé')
+            msg = QMessageBox(self)
+            msg.setWindowTitle('Erreur')
+            msg.setText('<b>Aucun agent trouvé</b>')
+            msg.setInformativeText('Vous devez ajouter un agent d\'abord')
+            msg.setIcon(QMessageBox.Warning)
+            msg.exec_()
             return
         selection_model = self.agentsTreeView.selectionModel()
         if selection_model.hasSelection():
@@ -332,7 +389,12 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
     def modifierAgent(self):
         if self.agentsModel.rowCount() == 0:
-            QMessageBox.warning(self, 'Erreur', 'Aucun agent trouvé')
+            msg = QMessageBox(self)
+            msg.setWindowTitle('Erreur')
+            msg.setText('<b>Aucun agent trouvé</b>')
+            msg.setInformativeText('Vous devez ajouter un agent d\'abord')
+            msg.setIcon(QMessageBox.Warning)
+            msg.exec_()
             return
         selection_model = self.agentsTreeView.selectionModel()
         if selection_model.hasSelection():
@@ -411,13 +473,17 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
     def closeEvent(self, close_event: QCloseEvent):  # Reimplementing the window close event
         if self.edited:
-            ok = QMessageBox.warning(self, 'Changements non sauvegardés',
-                                     'Voulez vous sauvegarder les changements avant de quitter ?',
-                                     QMessageBox.Yes | QMessageBox.No | QMessageBox.Cancel)
-            if ok == QMessageBox.Yes:
+            msg = QMessageBox(self)
+            msg.setWindowTitle('Changements non sauvegardés')
+            msg.setText('<b>Vous n\'avez pas sauvegardé vos changements</b>')
+            msg.setInformativeText('Voulez vous sauvegarder les changements avant de quitter ?')
+            msg.setIcon(QMessageBox.Warning)
+            msg.setStandardButtons(QMessageBox.Save | QMessageBox.Discard | QMessageBox.Cancel)
+            ok = msg.exec_()
+            if ok == QMessageBox.Save:
                 if self.enregistrer():
                     close_event.accept()
-            elif ok == QMessageBox.No:
+            elif ok == QMessageBox.Discard:
                 close_event.accept()
             else:
                 close_event.ignore()
@@ -467,13 +533,20 @@ class AgentDialog(QDialog, Ui_agentDialog):
 
     def accept(self):  # Reimplementing the dialog accept method
         if self.nomLineEdit.text() == '':
-            QMessageBox.warning(self, 'Erreur', 'L\'agent ne peut pas être sans nom !')
+            msg = QMessageBox(self)
+            msg.setWindowTitle('Erreur')
+            msg.setText('<b>L\'agent ne peut pas être sans nom !</b>')
+            msg.setInformativeText('Vous devez donner un nom à cet agent')
+            msg.setIcon(QMessageBox.Warning)
             return
         s = 0
         for i in range(len(self.model)):
             s += self.model.item(i, 1).item
         if s > 1:
-            QMessageBox.warning(self, 'Erreur', 'La somme de masses ne peut pas dépasser 1 !')
+            msg = QMessageBox(self)
+            msg.setWindowTitle('Erreur')
+            msg.setText('<b>La somme de masses ne peut pas dépasser 1.0 !</b>')
+            msg.setInformativeText('La somme de vos masses est '+str(s))
         else:
             super(AgentDialog, self).accept()
 
@@ -537,6 +610,8 @@ class MasseDialog(QDialog, Ui_masseDialog):
         if selection_model.hasSelection():
             model_index = selection_model.selectedRows()[0]
             self.hypotheseComboBox.setCurrentIndex(self.hypothese_index(model_index.row()))
+        else:
+            self.hypotheseComboBox.setCurrentIndex(self.hypothese_index(0))
 
     def mass_weaking_change(self, current_text: str):
         for i in range(self.parent().model.rowCount()):
