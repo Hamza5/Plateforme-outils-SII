@@ -52,7 +52,7 @@
 		<xs:sequence maxOccurs="unbounded">
 			<xs:element name="Agent">
 				<xs:complexType>
-					<xs:sequence maxOccurs="unbounded">
+					<xs:sequence maxOccurs="unbounded" minOccurs="0">
 						<xs:element name="Knowledge">
 							<xs:complexType>
 								<xs:attribute name="id" use="required" type="customID"/>
