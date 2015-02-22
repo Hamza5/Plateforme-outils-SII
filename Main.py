@@ -538,6 +538,7 @@ class AgentDialog(QDialog, Ui_agentDialog):
             msg.setText('<b>L\'agent ne peut pas être sans nom !</b>')
             msg.setInformativeText('Vous devez donner un nom à cet agent')
             msg.setIcon(QMessageBox.Warning)
+            msg.exec_()
             return
         s = 0
         for i in range(len(self.model)):
@@ -547,6 +548,8 @@ class AgentDialog(QDialog, Ui_agentDialog):
             msg.setWindowTitle('Erreur')
             msg.setText('<b>La somme de masses ne peut pas dépasser 1.0 !</b>')
             msg.setInformativeText('La somme de vos masses est '+str(s))
+            msg.setIcon(QMessageBox.Warning)
+            msg.exec_()
         else:
             super(AgentDialog, self).accept()
 
@@ -605,13 +608,19 @@ class MasseDialog(QDialog, Ui_masseDialog):
                      lambda value: self.affaiblissementSlider.setValue(value * 100))
         # Link the hypotheses combo box
         self.connect(self.hypotheseComboBox, SIGNAL('currentIndexChanged(const QString&)'), self.mass_weaking_change)
+        if len(self.parent().model) == 0:
+            return
         # Set the right values for the selected option for the first time
         selection_model = self.parent().hypothesesTableView.selectionModel()
         if selection_model.hasSelection():
             model_index = selection_model.selectedRows()[0]
             self.hypotheseComboBox.setCurrentIndex(self.hypothese_index(model_index.row()))
+            # Required when the first hypothesis in the table is the first hypothesis in the combo box
+            self.mass_weaking_change(self.hypotheseComboBox.currentText())
         else:
             self.hypotheseComboBox.setCurrentIndex(self.hypothese_index(0))
+            # Required when the first hypothesis in the table is the first hypothesis in the combo box
+            self.mass_weaking_change(self.hypotheseComboBox.currentText())
 
     def mass_weaking_change(self, current_text: str):
         for i in range(self.parent().model.rowCount()):
