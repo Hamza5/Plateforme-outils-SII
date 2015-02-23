@@ -326,10 +326,11 @@ public class Main{
 		HashSet<Element> agents = new HashSet<>();
 		NodeList agt = données.getElementsByTagName("Agent");
 		for(int i=0; i<agt.getLength(); i++) agents.add((Element)agt.item(i));
-		
+	    boolean AgentVerifier=false;
 		for(Element a : agents){
 			//System.out.printf("Agent : %s%n", a.getAttribute("id"));
 			if (a.getAttribute("disabled").equals("true")){continue;}//condition pour éliminer les agent desactivés 
+			else{AgentVerifier=true;}
 			Agent A =new Agent();
 			A.id=new String(a.getAttribute("id"));
 			A.name=new String(a.getAttribute("name"));
@@ -341,8 +342,8 @@ public class Main{
 				Element e = (Element)(hyp.item(i));
 				//System.out.printf("Hypothèse %s masse = %s%n", e.getAttribute("id"), e.getAttribute("mass"));
 				massVerifier+=Double.parseDouble(e.getAttribute("mass"));
-				omegaToAdd+=Double.parseDouble(e.getAttribute("mass"))*Double.parseDouble(e.getAttribute("weakening"));
-				A.knowleges.put(e.getAttribute("id"),Double.parseDouble(e.getAttribute("mass"))*(1-Double.parseDouble(e.getAttribute("weakening"))));//String to double
+				omegaToAdd+=Double.parseDouble(e.getAttribute("mass"))*Double.parseDouble(e.getAttribute("weaking"));
+				A.knowleges.put(e.getAttribute("id"),Double.parseDouble(e.getAttribute("mass"))*(1-Double.parseDouble(e.getAttribute("weaking"))));//String to double
 				//System.out.println(e.getAttribute("mass"));
 			
 				
@@ -383,8 +384,12 @@ public class Main{
 			hashSet.add(A);//Ajouter l'element dans le hashSet
 			
 			  Set<Set<String>> setTest = powerSet(HopoGen);
-			  System.out.println("A "+A.knowleges.toString());
 			  
+			
+//			  Set<String> outputSet = new LinkedHashSet<>();
+//	            outputSet.add("h0");
+//	            setTest.add(outputSet);
+	            System.out.println("A "+setTest);
 			  if(massVerifier < 1){System.out.print("omegaToAdd avent "+omegaToAdd);omegaToAdd+=(1-massVerifier); System.out.println("massVerifier "+(massVerifier)+" omegaToAdd "+(float)omegaToAdd);}//Ajouter la difference entre la somme des masses et 1
 			  for (Set elm : setTest){
 				  int length=elm.toString().substring(1,elm.toString().length()-1).replaceAll(", ", "-").length();
@@ -399,13 +404,14 @@ public class Main{
 					 if(length==omegaDetecter*2+omegaDetecter-1){
 						 //System.out.println("Omega mass "+A.knowleges.get(elm.toString().substring(1,elm.toString().length()-1).replaceAll(", ", "-"))+"omegaToAdd"+omegaToAdd);
 						 A.knowleges.put(elm.toString().substring(1,elm.toString().length()-1).replaceAll(", ", "-"),A.knowleges.get(elm.toString().substring(1,elm.toString().length()-1).replaceAll(", ", "-"))+omegaToAdd);
-						 }
+					  }
 				 }
 				 System.out.println("Apres ajout du omega "+ A.knowleges);
 			  }
 			System.out.println("Lala "+setTest);
 			
 		}
+		if(AgentVerifier==false){Runtime.getRuntime().exit(3);}
 		int choix =0;
 		final Element methode = (Element) données.getElementsByTagName("Method").item(0);
 		switch (methode.getTextContent()){
@@ -441,6 +447,7 @@ public class Main{
 				
 		//System.exit 0 pas d'erreur
 		//System.exit 1 pas de fichier en entré 
-		//System.exit 2 somme de masse != 1
+		//System.exit 2 somme de masse > 1
+		//System.exit 3 nombre d'agent ==0 
 	}
 }
