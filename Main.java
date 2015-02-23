@@ -246,13 +246,13 @@ public class Main{
 		    	     //arrondir à 4 chiffres après la virgule
 		    	     DecimalFormat df = new DecimalFormat ();
 		    	     df.setMaximumFractionDigits (4);
-		    	     System.out.println(number1.toString()+" mass: "+vect.get(number1)+" bel "+som1+" Pl "+som2);
+		    	     //System.out.println(number1.toString()+" mass: "+vect.get(number1)+" bel "+som1+" Pl "+som2);
 	                 //Creation du fichier xml
 		        	 //  System.out.println(number1.toString()+" mass: "+vect.get(number1)+" bel "+df.format(som1)+" Pl "+df.format(som2));
 		    			final Element hypo = document.createElement("Hypothese");
 		    		    racine.appendChild(hypo);
 		    		    hypo.setAttribute("id",number1.toString().substring(1,number1.toString().length()-1).replaceAll(", ", "-"));
-		    		    System.out.println("number "+number1.toString().length());
+		    		    //System.out.println("number "+number1.toString().length());
 		    		    hypo.setAttribute("mass",df.format(Double.parseDouble(vect.get(number1).toString())));
 		    		    final Element Bel = document.createElement("Bel");
 		    		    final Element Pl = document.createElement("Pl");
@@ -263,7 +263,7 @@ public class Main{
 		    		    final DOMSource source = new DOMSource(document);
 		    		    final TransformerFactory transformerFactory = TransformerFactory.newInstance();
 		         	    final Transformer transformer = transformerFactory.newTransformer();
-		         	    final StreamResult sortie = new StreamResult(new File(NomFichier+".xml"));
+		         	    final StreamResult sortie = new StreamResult(new File(NomFichier));
 		         	
 		         		 //prologue
 		         	    transformer.setOutputProperty(OutputKeys.VERSION, "1.0");
@@ -360,8 +360,8 @@ public class Main{
    	    
    	      //verif
    	    
-            System.out.println("massVerif "+(float)massVerifier+" round "+df.format(massVerifier));
-			if( ((float)massVerifier)>1){System.out.println("massVerif "+massVerifier);Runtime.getRuntime().exit(2);}
+            //System.out.println("massVerif "+(float)massVerifier+" round "+df.format(massVerifier));
+			if( ((float)massVerifier)>1){/*System.out.println("massVerif "+massVerifier);*/Runtime.getRuntime().exit(2);}
    	     	Vector HopoGen=new Vector(); 
 			//Lecture des Hypotheses integrer les Hypotheses avec des masses nulles 
 			HashSet<Element> Etats = new HashSet<>();
@@ -389,26 +389,26 @@ public class Main{
 //			  Set<String> outputSet = new LinkedHashSet<>();
 //	            outputSet.add("h0");
 //	            setTest.add(outputSet);
-	            System.out.println("A "+setTest);
-			  if(massVerifier < 1){System.out.print("omegaToAdd avent "+omegaToAdd);omegaToAdd+=(1-massVerifier); System.out.println("massVerifier "+(massVerifier)+" omegaToAdd "+(float)omegaToAdd);}//Ajouter la difference entre la somme des masses et 1
+	            //System.out.println("A "+setTest);
+			  if(massVerifier < 1){/*System.out.print("omegaToAdd avent "+omegaToAdd);*/omegaToAdd+=(1-massVerifier);/* System.out.println("massVerifier "+(massVerifier)+" omegaToAdd "+(float)omegaToAdd);*/}//Ajouter la difference entre la somme des masses et 1
 			  for (Set elm : setTest){
 				  int length=elm.toString().substring(1,elm.toString().length()-1).replaceAll(", ", "-").length();
 				 if(!A.knowleges.containsKey(elm.toString().substring(1,elm.toString().length()-1).replaceAll(", ", "-"))&& elm.size()!=0){
 					 //Ajouter pour chaque agent l'Hypothese non existante avec mass=0 
-					 System.out.println("elm "+elm);
+					 //System.out.println("elm "+elm);
 					 if(length==omegaDetecter*2+omegaDetecter-1){A.knowleges.put(elm.toString().substring(1,elm.toString().length()-1).replaceAll(", ", "-"),omegaToAdd);
 					/* System.out.println("length "+length+" omegaDetecter+omegaDetecter-1 "+(omegaDetecter*2+omegaDetecter-1));*/}
 					  else{A.knowleges.put(elm.toString().substring(1,elm.toString().length()-1).replaceAll(", ", "-"),(double) 0);}
 				 }else{
-					 System.out.println("length "+length+" omegaDetecter*2+omegaDetecter-1 "+(omegaDetecter*2+omegaDetecter-1));
+					 //System.out.println("length "+length+" omegaDetecter*2+omegaDetecter-1 "+(omegaDetecter*2+omegaDetecter-1));
 					 if(length==omegaDetecter*2+omegaDetecter-1){
 						 //System.out.println("Omega mass "+A.knowleges.get(elm.toString().substring(1,elm.toString().length()-1).replaceAll(", ", "-"))+"omegaToAdd"+omegaToAdd);
 						 A.knowleges.put(elm.toString().substring(1,elm.toString().length()-1).replaceAll(", ", "-"),A.knowleges.get(elm.toString().substring(1,elm.toString().length()-1).replaceAll(", ", "-"))+omegaToAdd);
 					  }
 				 }
-				 System.out.println("Apres ajout du omega "+ A.knowleges);
+				 //System.out.println("Apres ajout du omega "+ A.knowleges);
 			  }
-			System.out.println("Lala "+setTest);
+			//System.out.println("Lala "+setTest);
 			
 		}
 		if(AgentVerifier==false){Runtime.getRuntime().exit(3);}
@@ -437,8 +437,8 @@ public class Main{
 				         Iterator iterator = set.iterator();
 				         while(iterator.hasNext()) {
 					         Map.Entry mentry = (Map.Entry)iterator.next();
-					         System.out.print("key is: "+ mentry.getKey() + " & Value is: ");//Affichage pour tester
-					         System.out.println(mentry.getValue());
+					        // System.out.print("key is: "+ mentry.getKey() + " & Value is: ");//Affichage pour tester
+					         //System.out.println(mentry.getValue());
 				        }
 					 }
 					clalculPlBel(AgTr,args[1]);//Appler la fonction pour calcul Bel et Pl et creer le fichier xml
