@@ -32,7 +32,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.title = ""
         self.description = ""
         self.agentsModelHeaderLabels = ["Agent/Hypothèse", "Fiabilité/Masse", "Activé/Affaiblissement"]
-        self.edited = False
+        self.setUnmodified()
         self.executable = 'Main'  # Command of the engine executable
         self.input = 'input.xml'  # Input file for calculation
         self.output = 'output.xml'  # Output file of calculation
@@ -76,17 +76,18 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.connect(self.actionOuvrir, SIGNAL("triggered(bool)"), self.ouvrir)
         self.connect(self.actionNouveau, SIGNAL("triggered(bool)"), self.nouveau)
         self.connect(self.actionCalculer, SIGNAL("triggered(bool)"), self.calculer)
-
+        self.connect(self.action_group, SIGNAL("selected(QAction *)"), self.setModified)
     def attribuer_titre(self):
         title, ok = QInputDialog.getText(self, "Titre", "Titre", QLineEdit.Normal, self.title)
         if ok:
             self.title = title
-            self.setWindowTitle(app_name + (' - ' + self.title if self.title != '' else ''))
+            self.setModified()
 
     def attribuer_description(self):
         description_dialog = DescriptionDialog(self, self.description)
         if description_dialog.exec_() == QDialog.Accepted:
             self.description = description_dialog.get_description()
+            self.setModified()
 
     def nouveau(self):
         if self.edited:
@@ -104,10 +105,10 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.hypothesesModel.clear()
         self.agentsModel.clear()
         self.agentsModel.setHorizontalHeaderLabels(self.agentsModelHeaderLabels)
-        self.edited = False
+        self.setUnmodified()
         return True
 
-    def enregistrer(self, path):
+    def enregistrer(self, path=''):
         if isinstance(path, str) and path != '':
             file_path = path
         else:
@@ -150,7 +151,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             file = open(file_path, mode='w', encoding='utf-8')
             file.write(pretty_xml)
             file.close()
-            self.edited = False
+            self.setUnmodified()
             self.input = file_path
             return True
         except OSError as e:
@@ -234,7 +235,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                 return
         else:
             return
-        self.edited = True
+        self.setModified()
 
     def suprimmerEtat(self):
         if self.etatsModel.rowCount() == 0:
@@ -259,7 +260,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                         break
             else:
                 return
-        self.edited = True
+        self.setModified()
 
     def ajouterHypothese(self):
         if self.etatsModel.rowCount() == 0:
@@ -303,7 +304,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                     msg.setIcon(QMessageBox.Warning)
                     msg.exec_()
                     return
-        self.edited = True
+        self.setModified()
 
     def supprimerHypothese(self):
         if self.hypothesesModel.rowCount() == 0:
@@ -330,7 +331,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                         break
             else:
                 return
-        self.edited = True
+        self.setModified()
 
     def ajouterAgent(self):
         if self.hypothesesModel.rowCount() == 0:
@@ -369,7 +370,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                 return
         else:
             return
-        self.edited = True
+        self.setModified()
 
     def supprimerAgent(self):
         if self.agentsModel.rowCount() == 0:
@@ -396,7 +397,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                         break
             else:
                 return
-        self.edited = True
+        self.setModified()
 
     def modifierAgent(self):
         if self.agentsModel.rowCount() == 0:
@@ -425,7 +426,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                             break
             else:
                 return
-        self.edited = True
+        self.setModified()
 
     def calculer(self):
         agents_available = False
@@ -529,6 +530,14 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                 close_event.accept()
             else:
                 close_event.ignore()
+
+    def setModified(self):
+        self.edited = True
+        self.setWindowTitle(app_name + ' - ' + self.title + '*')
+
+    def setUnmodified(self):
+        self.edited = False
+        self.setWindowTitle(app_name + ' - ' + self.title)
 
 
 class DescriptionDialog(QDialog, Ui_descriptionDialog):
