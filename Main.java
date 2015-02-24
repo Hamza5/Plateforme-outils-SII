@@ -82,7 +82,7 @@ public class Main{
 				    		  //System.out.println("Vec.get(i).set "+Vec.get(i).set);
 				    		  if(Vec.get(i).set.toString().equals("[h0]")){
 				    			  Vec.get(i).mass=k;
-				    			  System.out.println("Vec.get(i).set "+Vec.get(i).set);
+				    			  //System.out.println("Vec.get(i).set "+Vec.get(i).set);
 				    		  }
 			    	  }
 			     }
@@ -386,9 +386,9 @@ public class Main{
 			  Set<Set<String>> setTest = powerSet(HopoGen);
 			  
 			
-//			  Set<String> outputSet = new LinkedHashSet<>();
-//	            outputSet.add("h0");
-//	            setTest.add(outputSet);
+			  Set<String> outputSet = new LinkedHashSet<>();
+	            outputSet.add("h0");
+	            setTest.add(outputSet);
 	            //System.out.println("A "+setTest);
 			  if(massVerifier < 1){/*System.out.print("omegaToAdd avent "+omegaToAdd);*/omegaToAdd+=(1-massVerifier);/* System.out.println("massVerifier "+(massVerifier)+" omegaToAdd "+(float)omegaToAdd);*/}//Ajouter la difference entre la somme des masses et 1
 			  for (Set elm : setTest){
