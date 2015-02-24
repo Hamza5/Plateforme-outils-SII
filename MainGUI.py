@@ -526,6 +526,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             if ok == QMessageBox.Save:
                 if self.enregistrer():
                     close_event.accept()
+                else:
+                    close_event.ignore()
             elif ok == QMessageBox.Discard:
                 close_event.accept()
             else:
