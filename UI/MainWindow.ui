@@ -153,7 +153,9 @@
   <widget class="QStatusBar" name="statusbar"/>
   <action name="actionTitre">
    <property name="icon">
-    <iconset theme="document-edit"/>
+    <iconset theme="document-edit">
+     <normaloff/>
+    </iconset>
    </property>
    <property name="text">
     <string>&amp;Titre</string>
@@ -167,7 +169,9 @@
   </action>
   <action name="actionDescription">
    <property name="icon">
-    <iconset theme="document-properties"/>
+    <iconset theme="document-properties">
+     <normaloff/>
+    </iconset>
    </property>
    <property name="text">
     <string>&amp;Description</string>
@@ -181,7 +185,9 @@
   </action>
   <action name="actionOuvrir">
    <property name="icon">
-    <iconset theme="document-open"/>
+    <iconset theme="document-open">
+     <normaloff/>
+    </iconset>
    </property>
    <property name="text">
     <string>&amp;Ouvrir</string>
@@ -195,7 +201,9 @@
   </action>
   <action name="actionEnregistrer">
    <property name="icon">
-    <iconset theme="document-save"/>
+    <iconset theme="document-save">
+     <normaloff/>
+    </iconset>
    </property>
    <property name="text">
     <string>&amp;Enregistrer</string>
@@ -209,7 +217,9 @@
   </action>
   <action name="actionQuitter">
    <property name="icon">
-    <iconset theme="application-exit"/>
+    <iconset theme="application-exit">
+     <normaloff/>
+    </iconset>
    </property>
    <property name="text">
     <string>&amp;Quitter</string>
@@ -245,7 +255,9 @@
   </action>
   <action name="actionAjouterEtat">
    <property name="icon">
-    <iconset theme="list-add"/>
+    <iconset theme="list-add">
+     <normaloff/>
+    </iconset>
    </property>
    <property name="text">
     <string>Ajouter</string>
@@ -256,7 +268,9 @@
   </action>
   <action name="actionSupprimerEtat">
    <property name="icon">
-    <iconset theme="list-remove"/>
+    <iconset theme="list-remove">
+     <normaloff/>
+    </iconset>
    </property>
    <property name="text">
     <string>Supprimer</string>
@@ -267,7 +281,9 @@
   </action>
   <action name="actionAjouterHypothese">
    <property name="icon">
-    <iconset theme="list-add"/>
+    <iconset theme="list-add">
+     <normaloff/>
+    </iconset>
    </property>
    <property name="text">
     <string>Ajouter</string>
@@ -278,7 +294,9 @@
   </action>
   <action name="actionSupprimerHypothese">
    <property name="icon">
-    <iconset theme="list-remove"/>
+    <iconset theme="list-remove">
+     <normaloff/>
+    </iconset>
    </property>
    <property name="text">
     <string>Supprimer</string>
@@ -289,7 +307,9 @@
   </action>
   <action name="actionAjouterAgent">
    <property name="icon">
-    <iconset theme="list-add"/>
+    <iconset theme="list-add">
+     <normaloff/>
+    </iconset>
    </property>
    <property name="text">
     <string>Ajouter</string>
@@ -300,7 +320,9 @@
   </action>
   <action name="actionSupprimerAgent">
    <property name="icon">
-    <iconset theme="list-remove"/>
+    <iconset theme="list-remove">
+     <normaloff/>
+    </iconset>
    </property>
    <property name="text">
     <string>Supprimer</string>
@@ -311,7 +333,9 @@
   </action>
   <action name="actionModifierAgent">
    <property name="icon">
-    <iconset theme="edit-rename"/>
+    <iconset theme="edit-rename">
+     <normaloff/>
+    </iconset>
    </property>
    <property name="text">
     <string>Modifier</string>
@@ -330,7 +354,9 @@
   </action>
   <action name="actionNouveau">
    <property name="icon">
-    <iconset theme="document-new"/>
+    <iconset theme="document-new">
+     <normaloff/>
+    </iconset>
    </property>
    <property name="text">
     <string>&amp;Nouveau</string>
@@ -343,11 +369,10 @@
    </property>
   </action>
   <action name="actionCalculer">
-   <property name="enabled">
-    <bool>false</bool>
-   </property>
    <property name="icon">
-    <iconset theme="system-run"/>
+    <iconset theme="system-run">
+     <normaloff/>
+    </iconset>
    </property>
    <property name="text">
     <string>&amp;Calculer</string>

@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'MainWindow.ui'
 #
-# Created: Sun Feb 22 11:54:51 2015
+# Created: Mon Feb 23 12:24:57 2015
 #      by: PyQt4 UI code generator 4.10.4
 #
 # WARNING! All changes made in this file will be lost!
@@ -152,7 +152,6 @@ class Ui_MainWindow(object):
         self.actionNouveau.setIcon(icon)
         self.actionNouveau.setObjectName(_fromUtf8("actionNouveau"))
         self.actionCalculer = QtGui.QAction(MainWindow)
-        self.actionCalculer.setEnabled(False)
         icon = QtGui.QIcon.fromTheme(_fromUtf8("system-run"))
         self.actionCalculer.setIcon(icon)
         self.actionCalculer.setObjectName(_fromUtf8("actionCalculer"))

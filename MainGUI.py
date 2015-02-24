@@ -1,7 +1,9 @@
+#!/usr/bin/env python3
 import sys
 from xml.etree.ElementTree import Element, ElementTree, tostring
 from xml.dom.minidom import parseString
 import re
+import os
 
 from PyQt4.QtGui import QApplication, QMainWindow, QActionGroup, QDialog, QStandardItem, QStandardItemModel, \
     QInputDialog, QHeaderView, QLineEdit, QMessageBox, QFileDialog, QCloseEvent
@@ -31,6 +33,9 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.description = ""
         self.agentsModelHeaderLabels = ["Agent/Hypothèse", "Fiabilité/Masse", "Activé/Affaiblissement"]
         self.edited = False
+        self.executable = 'Main'  # Command of the engine executable
+        self.input = 'input.xml'  # Input file for calculation
+        self.output = 'output.xml'  # Output file of calculation
 
         # Make methods actions mutually-exclusives :
         self.action_group = QActionGroup(self)
@@ -70,6 +75,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.connect(self.actionModifierAgent, SIGNAL("triggered(bool)"), self.modifierAgent)
         self.connect(self.actionOuvrir, SIGNAL("triggered(bool)"), self.ouvrir)
         self.connect(self.actionNouveau, SIGNAL("triggered(bool)"), self.nouveau)
+        self.connect(self.actionCalculer, SIGNAL("triggered(bool)"), self.calculer)
 
     def attribuer_titre(self):
         title, ok = QInputDialog.getText(self, "Titre", "Titre", QLineEdit.Normal, self.title)
@@ -101,8 +107,11 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.edited = False
         return True
 
-    def enregistrer(self):
-        file_path = QFileDialog.getSaveFileName(self, 'Enregistrer', '', 'Données (*.xml)')
+    def enregistrer(self, path):
+        if isinstance(path, str) and path != '':
+            file_path = path
+        else:
+            file_path = QFileDialog.getSaveFileName(self, 'Enregistrer', '', 'Données (*.xml)')
         if not file_path:
             return False
         root = Element('DSTI', {'xmlns:xsi': 'http://www.w3.org/2001/XMLSchema-instance',
@@ -142,6 +151,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             file.write(pretty_xml)
             file.close()
             self.edited = False
+            self.input = file_path
             return True
         except OSError as e:
             QMessageBox.critical(self, 'Erreur', '<b>Impossible de sauvegarder le fichier '+e.filename+'</b>')
@@ -206,6 +216,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             self.agentsModel.appendRow([agent_item, ObjectItem(agent.reliability),
                                         ObjectItem('Désactivé' if agent.disabled else 'Activé')])
         HelperClasses.Agent.idf = highest_id+1
+        self.input = file_path
 
     def ajouterEtat(self):
         état, ok = QInputDialog.getText(self, "Ajouter un état", "Etat")
@@ -415,6 +426,37 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             else:
                 return
         self.edited = True
+
+    def calculer(self):
+        agents_available = False
+        for agent_item in self.agentsModel:
+            if not agent_item.item.disabled:
+                agents_available = True
+                break
+        if not agents_available:
+            msg = QMessageBox(self)
+            msg.setWindowTitle('Pas d\'agents')
+            msg.setText('<b>Aucun agent trouvé</b>')
+            msg.setInformativeText('Il faut au moins un agent <em>activé</em> pour le calcul')
+            msg.setIcon(QMessageBox.Warning)
+            msg.exec_()
+            return
+        if self.edited:
+            msg = QMessageBox(self)
+            msg.setWindowTitle('Changements non sauvegardés')
+            msg.setText('<b>Vous n\'avez pas sauvegardé vos changements</b>')
+            msg.setInformativeText('Vos changements seront automatiquement sauvegardés.\nVoulez vous continuer ?')
+            msg.setIcon(QMessageBox.Warning)
+            msg.setStandardButtons(QMessageBox.Yes | QMessageBox.No)
+            ok = msg.exec_()
+            if ok == QMessageBox.No:
+                return
+            self.enregistrer(self.input)
+        try:
+            os.spawnlpe(os.P_WAIT, 'java', 'java', self.executable, self.input, self.output, {'CLASSPATH': '.'})
+        except OSError as e:
+            QMessageBox.critical(self, 'Erreur', 'Impossible de lancer le programme de calcul\n'+e.filename)
+            return
 
     def editAgent(self, selectedIndex):
         agent_dialog = AgentDialog(self)
