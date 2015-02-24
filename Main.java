@@ -392,10 +392,13 @@ public class Main{
 	            //System.out.println("A "+setTest);
 			  if(massVerifier < 1){/*System.out.print("omegaToAdd avent "+omegaToAdd);*/omegaToAdd+=(1-massVerifier);/* System.out.println("massVerifier "+(massVerifier)+" omegaToAdd "+(float)omegaToAdd);*/}//Ajouter la difference entre la somme des masses et 1
 			  for (Set elm : setTest){
+				  //System.out.println("A.knowleges "+A.knowleges);
 				  int length=elm.toString().substring(1,elm.toString().length()-1).replaceAll(", ", "-").length();
-				 if(!A.knowleges.containsKey(elm.toString().substring(1,elm.toString().length()-1).replaceAll(", ", "-"))&& elm.size()!=0){
+				 // System.out.println("element a rechercher "+elm.toString().substring(1,elm.toString().length()-1).replaceAll(", ", "-"));
+				  if(!A.knowleges.containsKey(elm.toString().substring(1,elm.toString().length()-1).replaceAll(", ", "-"))&& elm.size()!=0){
 					 //Ajouter pour chaque agent l'Hypothese non existante avec mass=0 
 					 //System.out.println("elm "+elm);
+					 //System.out.println("element  "+elm.toString().substring(1,elm.toString().length()-1).replaceAll(", ", "-")+" non trouvé ");
 					 if(length==omegaDetecter*2+omegaDetecter-1){A.knowleges.put(elm.toString().substring(1,elm.toString().length()-1).replaceAll(", ", "-"),omegaToAdd);
 					/* System.out.println("length "+length+" omegaDetecter+omegaDetecter-1 "+(omegaDetecter*2+omegaDetecter-1));*/}
 					  else{A.knowleges.put(elm.toString().substring(1,elm.toString().length()-1).replaceAll(", ", "-"),(double) 0);}
@@ -406,7 +409,7 @@ public class Main{
 						 A.knowleges.put(elm.toString().substring(1,elm.toString().length()-1).replaceAll(", ", "-"),A.knowleges.get(elm.toString().substring(1,elm.toString().length()-1).replaceAll(", ", "-"))+omegaToAdd);
 					  }
 				 }
-				 //System.out.println("Apres ajout du omega "+ A.knowleges);
+				// System.out.println("Apres ajout du omega "+ A.knowleges);
 			  }
 			//System.out.println("Lala "+setTest);
 			
@@ -421,15 +424,21 @@ public class Main{
 			choix = 2;break; 
 		case "Smets":
 			choix = 3;break; 
-		}
+		}       
 				Iterator<Agent> it = hashSet.iterator();
-				if(hashSet.size()==1){clalculPlBel(Trans(it.next()),args[1]);}
+				if(hashSet.size()==1){
+					// System.out.println("calcul BL PL "+ it.next().knowleges);
+					clalculPlBel(Trans(it.next()),args[1]);
+					 }
 				else{
 					if(hashSet.size()>=1){
+						// System.out.println("calcul BL PL ");
 					AgentTrans AgTr =new AgentTrans();
 					AgTr=Trans(it.next());
 					while (it.hasNext()) {
-						AgentTrans ag=Trans( it.next());
+						AgentTrans ag=Trans(it.next());
+						//System.out.println("AgTr "+AgTr.knowleges);
+						//System.out.println("ag "+ag.knowleges);
 						if (choix==1){AgTr=MultiAg(AgTr,ag);}//Calculer le Multi Agent Dempster and Shaver
 						if (choix==2){AgTr=MultiAgDuboisPrade(AgTr,ag);}//Calculer le Multi Agent Dubois Prade
 						if (choix==3){AgTr=MultiAgSmets(AgTr,ag);}//Calculer le Multi Agent Smets
@@ -441,6 +450,7 @@ public class Main{
 					         //System.out.println(mentry.getValue());
 				        }
 					 }
+					
 					clalculPlBel(AgTr,args[1]);//Appler la fonction pour calcul Bel et Pl et creer le fichier xml
 				}
 			        }
