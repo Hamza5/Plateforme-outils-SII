@@ -25,4 +25,6 @@ class Hypothese:
         return "{" + str([str(e) for e in self.états])[1:-1] + "}"
 
     def id(self):
+        if len(self.états) == 0:
+            return 'h0'
         return '-'.join([x.id() for x in self.états])
