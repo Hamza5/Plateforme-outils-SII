@@ -29,7 +29,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
     def __init__(self, parent=None):
         super().__init__(parent)
         self.setupUi(self)
-        self.title = ""
+        self.untitled = "Sans titre"
+        self.title = self.untitled
         self.description = ""
         self.agentsModelHeaderLabels = ["Agent/Hypothèse", "Fiabilité/Masse", "Activé/Affaiblissement"]
         self.setUnmodified()
@@ -80,7 +81,10 @@ class MainWindow(QMainWindow, Ui_MainWindow):
     def attribuer_titre(self):
         title, ok = QInputDialog.getText(self, "Titre", "Titre", QLineEdit.Normal, self.title)
         if ok:
-            self.title = title
+            if title:
+                self.title = title
+            else:
+                self.title = self.untitled
             self.setModified()
 
     def attribuer_description(self):
@@ -101,6 +105,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             if ok == QMessageBox.No:
                 return False
         # Empty the models
+        self.title = self.untitled
+        self.description = ''
         self.etatsModel.clear()
         self.hypothesesModel.clear()
         self.agentsModel.clear()
