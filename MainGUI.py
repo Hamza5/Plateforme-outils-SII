@@ -3,7 +3,7 @@ import sys
 from xml.etree.ElementTree import Element, ElementTree, tostring
 from xml.dom.minidom import parseString
 import re
-import os
+import subprocess
 
 from PyQt4.QtGui import QApplication, QMainWindow, QActionGroup, QDialog, QStandardItem, QStandardItemModel, \
     QInputDialog, QHeaderView, QLineEdit, QMessageBox, QFileDialog, QCloseEvent
@@ -460,7 +460,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                 return
             self.enregistrer(self.input)
         try:
-            os.spawnlpe(os.P_WAIT, 'java', 'java', self.executable, self.input, self.output, {'CLASSPATH': '.'})
+            subprocess.call(['java', '-cp',  '.', self.executable, self.input, self.output])
         except OSError as e:
             QMessageBox.critical(self, 'Erreur', 'Impossible de lancer le programme de calcul\n'+e.filename)
             return
@@ -671,7 +671,7 @@ class MasseDialog(QDialog, Ui_masseDialog):
             return
         # Set the right values for the selected option for the first time
         selection_model = self.parent().hypothesesTableView.selectionModel()
-        if selection_model.hasSelection():
+        if len(selection_model.selectedRows()) > 0:
             model_index = selection_model.selectedRows()[0]
             self.hypotheseComboBox.setCurrentIndex(self.hypothese_index(model_index.row()))
             # Required when the first hypothesis in the table is the first hypothesis in the combo box
