@@ -609,8 +609,19 @@ class AgentDialog(QDialog, Ui_agentDialog):
             msg.setInformativeText('La somme de vos masses est '+str(s))
             msg.setIcon(QMessageBox.Warning)
             msg.exec_()
-        else:
-            super(AgentDialog, self).accept()
+            return
+        elif s < 1:
+            omega = Hypothese([x.item for x in self.parent().etatsModel])
+            msg = QMessageBox(self)
+            msg.setWindowTitle('Erreur')
+            msg.setText('<b>La somme des masses est inférieur à 1.0 !</b>')
+            msg.setInformativeText(str(round(1-s, 2)) + ' non attribué, voulez vous l\'ajouter à ' + str(omega) + ' ?')
+            msg.setIcon(QMessageBox.Warning)
+            msg.setStandardButtons(QMessageBox.Yes | QMessageBox.No)
+            ok = msg.exec_()
+            if ok == QMessageBox.No:
+                return
+        super(AgentDialog, self).accept()
 
     def ajouterHypothese(self):
         masse_dialog = MasseDialog(self)
