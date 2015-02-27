@@ -30,7 +30,7 @@
 		<xs:sequence maxOccurs="unbounded">
 			<xs:element name="Etat">
 				<xs:complexType>
-					<xs:attribute name="id" use="required" type="customID"/>
+					<xs:attribute name="id" use="required" type="simpleID"/>
 					<xs:attribute name="title" type="xs:token"/>
 				</xs:complexType>
 			</xs:element>
@@ -69,10 +69,16 @@
 			</xs:element>
 		</xs:sequence>
 	</xs:complexType>
-	
+
+    <xs:simpleType name="simpleID">
+        <xs:restriction base="xs:string">
+            <xs:pattern value="([a-zA-Z])+\d+"/>
+        </xs:restriction>
+    </xs:simpleType>
+
 	<xs:simpleType name="customID">
 		<xs:restriction base="xs:string">
-			<xs:pattern value="(\w)+(-(\w)+)*"/>
+			<xs:pattern value="([a-zA-Z])+\d+(-([a-zA-Z])+\d+)*"/>
 		</xs:restriction>
 	</xs:simpleType>
 	

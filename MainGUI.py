@@ -1,13 +1,21 @@
 #!/usr/bin/env python3
 import sys
-from xml.etree.ElementTree import Element, ElementTree, tostring
-from xml.dom.minidom import parseString
 import re
 import subprocess
 
-from PyQt4.QtGui import QApplication, QMainWindow, QActionGroup, QDialog, QStandardItem, QStandardItemModel, \
-    QInputDialog, QHeaderView, QLineEdit, QMessageBox, QFileDialog, QCloseEvent
-from PyQt4.QtCore import SIGNAL
+try:
+    from PyQt4.QtGui import QApplication, QMainWindow, QActionGroup, QDialog, QStandardItem, QStandardItemModel, \
+        QInputDialog, QHeaderView, QLineEdit, QMessageBox, QFileDialog, QCloseEvent
+    from PyQt4.QtCore import SIGNAL
+except ImportError as e:
+    print('Can not use PyQt4 !', e.msg, file=sys.stderr, sep='\n')
+    sys.exit(2)
+
+try:
+    from lxml.etree import ElementTree, Element, tostring, XMLSchema, ParseError
+except ImportError:
+    from xml.etree.ElementTree import Element, ElementTree, tostring, ParseError
+    from xml.dom.minidom import parseString
 
 from HelperClasses.Etat import Etat
 from HelperClasses.Hypothese import Hypothese
@@ -121,8 +129,16 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             file_path = QFileDialog.getSaveFileName(self, 'Enregistrer', '', 'Données (*.xml)')
         if not file_path:
             return False
-        root = Element('DSTI', {'xmlns:xsi': 'http://www.w3.org/2001/XMLSchema-instance',
-                                'xsi:noNamespaceSchemaLocation': 'validation.xsd'})
+        try:  # Using xml.etree.ElementTree
+            root = Element('DSTI',
+                           {'xmlns:xsi': 'http://www.w3.org/2001/XMLSchema-instance',
+                            'xsi:noNamespaceSchemaLocation': 'validation.xsd'},
+                           )
+        except ValueError:  # Using lxml.etree
+            root = Element('DSTI',
+                           {'{http://www.w3.org/2001/XMLSchema-instance}noNamespaceSchemaLocation': 'validation.xsd'},
+                            nsmap = {'xsi': 'http://www.w3.org/2001/XMLSchema-instance'}
+                           )
         title = Element('Title')
         title.text = self.title
         root.append(title)
@@ -151,10 +167,13 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                 agent.append(Element('Knowledge', {'id': hmw[0].id(), 'mass': str(hmw[1]), 'weaking': str(hmw[2])}))
             agents.append(agent)
         root.append(agents)
-        dom = parseString(tostring(root, encoding='utf-8'))
-        pretty_xml = dom.toprettyxml()
+        try:  # Using xml.etree.ElementTree
+            dom = parseString(tostring(root, encoding='utf-8'))
+            pretty_xml = dom.toprettyxml(encoding='UTF-8')
+        except NameError:  # Using lxml.etree
+            pretty_xml = tostring(root, encoding='UTF-8', xml_declaration=True, pretty_print=True)
         try:
-            file = open(file_path, mode='w', encoding='utf-8')
+            file = open(file_path, mode='wb')
             file.write(pretty_xml)
             file.close()
             self.setUnmodified()
@@ -168,62 +187,121 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         file_path = QFileDialog.getOpenFileName(self, 'Ouvrir', '', 'Données (*.xml)')
         if not file_path:
             return
+        # Create the document
         try:
             tree = ElementTree(file=file_path)
-        except OSError as e:
+        except OSError as e:  # Can't open the file
             QMessageBox.critical(self, 'Erreur', '<b>Impossible d\'ouvrir le fichier '+e.filename+'</b>')
             return
+        except ParseError:  # XML contains syntax errors
+            msg = QMessageBox(self)
+            msg.setWindowTitle('Erreur')
+            msg.setText('<b>Document invalide !</b>')
+            msg.setInformativeText('Le document contient des erreurs')
+            msg.setIcon(QMessageBox.Critical)
+            msg.exec_()
+            return
+        try:
+            schema = XMLSchema(file='validation.xsd')
+            if not schema(tree):
+                msg = QMessageBox(self)
+                msg.setWindowTitle('Erreur')
+                msg.setText('<b>Document invalide !</b>')
+                msg.setInformativeText('Vérifier que vous avez choisie le bon fichier')
+                msg.setIcon(QMessageBox.Critical)
+                msg.exec_()
+                return
+        except NameError:  # lxml library not found, can't validate the document
+            msg = QMessageBox(self)
+            msg.setWindowTitle('Erreur')
+            msg.setText('<b>La bibliothèque <i>lxml</i> est introuvable</b>')
+            msg.setInformativeText('Le programme ne peut pas assurer la validité de du fichier choisie')
+            msg.setIcon(QMessageBox.Warning)
+            msg.exec_()
         if not self.nouveau():
             return
-        # The title and the description
-        self.title = tree.find('Title').text
-        self.setWindowTitle(app_name + (' - ' + self.title if self.title != '' else ''))
-        self.description = tree.find('Description').text
-        # The method
-        method = tree.find('Method').text
-        for action in self.action_group.actions():
-            if method == action.data():
-                action.setChecked(True)
-                break
-        # Les états
-        highest_id = 0  # For états
-        for element in tree.iter('Etat'):
-            état = Etat(element.get('title'))
-            état.order = int(re.search(r'\d+', element.attrib['id']).group())
-            highest_id = max(highest_id, état.order)
-            self.etatsModel.appendRow(ObjectItem(état))
-        # To protect old états IDs from being overwritten when editing a saved file
-        HelperClasses.Etat.idf = highest_id+1
-        # Les hypothèses
-        for element in tree.iter('Hypothese'):
-            états = []
-            for idf in element.attrib['id'].split('-'):
-                for état in self.etatsModel:
-                    if état.item.id() == idf:
-                        états.append(état.item)
-            hypothèse = Hypothese(états)
-            self.hypothesesModel.appendRow(ObjectItem(hypothèse))
-        # Les agents
-        highest_id = 0  # For agents
-        for element in tree.iter('Agent'):
-            agent = Agent(element.get('name'), float(element.get('reliability')))
-            agent.disable(element.get('disabled') == 'true')
-            agent.order = int(re.search(r'\d+', element.attrib['id']).group())
-            highest_id = max(highest_id, agent.order)
-            for hypothèse_element in element:
+        try:
+            # The title and the description
+            self.title = tree.find('Title').text
+            self.setWindowTitle(app_name + (' - ' + self.title if self.title != '' else ''))
+            self.description = tree.find('Description').text
+            # The method
+            method = tree.find('Method').text
+            for action in self.action_group.actions():
+                if method == action.data():
+                    action.setChecked(True)
+                    break
+            # Les états
+            highest_id = 0  # For états
+            for element in tree.iter('Etat'):
+                état = Etat(element.get('title'))
+                état.order = int(re.search(r'\d+', element.attrib['id']).group())
+                highest_id = max(highest_id, état.order)
+                état_item = ObjectItem(état)
+                if état_item not in self.etatsModel:  # Check if the état isn't doubled
+                    self.etatsModel.appendRow(état_item)
+                else:
+                    raise ValueError
+            # To protect old états IDs from being overwritten when editing a saved file
+            HelperClasses.Etat.idf = highest_id+1
+            # Les hypothèses
+            for element in tree.iter('Hypothese'):
+                états = []
+                ids = element.attrib['id'].split('-')
+                for idf in ids:
+                    for état_item in self.etatsModel:
+                        if état_item.item.id() == idf and état_item.item not in états:  # The état mustn't be doubled
+                            états.append(état_item.item)
+                if len(états) < len(ids):  # Can't find some états
+                    raise ValueError
+                hypothèse = Hypothese(états)
                 for hypothèse_item in self.hypothesesModel:
-                    if hypothèse_element.attrib['id'] == hypothèse_item.item.id():
-                        agent.add_hypothese(hypothèse_item.item,
-                                            float(hypothèse_element.attrib['mass']),
-                                            float(hypothèse_element.attrib['weaking']))
-                        break
-            agent_item = ObjectItem(agent)
-            for hmw in agent:
-                agent_item.appendRow([ObjectItem(hmw[0]), ObjectItem(hmw[1]), ObjectItem(hmw[2])])
-            self.agentsModel.appendRow([agent_item, ObjectItem(agent.reliability),
-                                        ObjectItem('Désactivé' if agent.disabled else 'Activé')])
-        HelperClasses.Agent.idf = highest_id+1
-        self.input = file_path
+                    if hypothèse == hypothèse_item.item:
+                        raise ValueError
+                self.hypothesesModel.appendRow(ObjectItem(hypothèse))
+            # Les agents
+            highest_id = 0  # For agents
+            for element in tree.iter('Agent'):
+                agent = Agent(element.get('name'), float(element.get('reliability')))
+                agent.disable(element.get('disabled') == 'true')
+                agent.order = int(re.search(r'\d+', element.attrib['id']).group())
+                highest_id = max(highest_id, agent.order)
+                mass_sum = 0
+                for hypothèse_element in element:
+                    found = False
+                    for hypothèse_item in self.hypothesesModel:
+                        if hypothèse_element.attrib['id'] == hypothèse_item.item.id():
+                            mass = float(hypothèse_element.attrib['mass'])
+                            weaking = float(hypothèse_element.attrib['weaking'])
+                            if hypothèse_item.item not in agent:  # Check if the hypothesis isn't doubled
+                                agent.add_hypothese(hypothèse_item.item, mass, weaking)
+                            else:
+                                raise ValueError
+                            mass_sum += mass
+                            found = True
+                            break
+                    if not found:
+                        raise ValueError
+                if mass_sum > 1:
+                    raise ValueError
+                agent_item = ObjectItem(agent)
+                for hmw in agent:
+                    agent_item.appendRow([ObjectItem(hmw[0]), ObjectItem(hmw[1]), ObjectItem(hmw[2])])
+                if agent_item not in self.agentsModel:
+                    self.agentsModel.appendRow([agent_item, ObjectItem(agent.reliability),
+                                                ObjectItem('Désactivé' if agent.disabled else 'Activé')])
+                else:
+                    raise ValueError
+            HelperClasses.Agent.idf = highest_id+1
+            self.input = file_path
+        except Exception:
+            self.nouveau()
+            msg = QMessageBox(self)
+            msg.setWindowTitle('Erreur')
+            msg.setText('<b>Document invalide !</b>')
+            msg.setInformativeText('Vérifier que vous avez choisie le bon fichier')
+            msg.setIcon(QMessageBox.Critical)
+            msg.exec_()
 
     def ajouterEtat(self):
         état, ok = QInputDialog.getText(self, "Ajouter un état", "Etat")
