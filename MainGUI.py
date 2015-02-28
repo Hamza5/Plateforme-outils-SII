@@ -6,7 +6,7 @@ import subprocess
 try:
     from PyQt4.QtGui import QApplication, QMainWindow, QActionGroup, QDialog, QStandardItem, QStandardItemModel, \
         QInputDialog, QHeaderView, QLineEdit, QMessageBox, QFileDialog, QCloseEvent
-    from PyQt4.QtCore import SIGNAL
+    from PyQt4.QtCore import SIGNAL, QModelIndex
 except ImportError as e:
     print('Can not use PyQt4 !', e.msg, file=sys.stderr, sep='\n')
     sys.exit(2)
@@ -496,7 +496,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         if selection_model.hasSelection():
             model_index_list = selection_model.selectedIndexes()
             # Edit the first agent in the selection
-            if not self.editAgent(model_index_list[0].row()):
+            if not self.editAgent(model_index_list[0]):
                 return
         else:
             agent_name, ok = QInputDialog.getItem(self, "Modifier un agent", "Agent", self.agentsModel.list_of_str(),
@@ -504,7 +504,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             if ok:
                 for item in self.agentsModel:
                     if item.named(agent_name):
-                        if not self.editAgent(item.row()):
+                        if not self.editAgent(item.index()):
                             return
                         else:
                             break
@@ -543,10 +543,10 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             QMessageBox.critical(self, 'Erreur', 'Impossible de lancer le programme de calcul\n'+e.filename)
             return
 
-    def editAgent(self, selectedIndex):
+    def editAgent(self, selectedIndex: QModelIndex):
         agent_dialog = AgentDialog(self)
         # Extract the agent object
-        agent = self.agentsModel[selectedIndex].item
+        agent = self.agentsModel[selectedIndex.row()].item
         # Setting up the dialog
         agent_dialog.setWindowTitle("Modifier l'agent")
         agent_dialog.nomLineEdit.setText(agent.name)
@@ -561,20 +561,23 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             agent.reliability = agent_dialog.fiabiliteSpinBox.value()
             agent.disable(not agent_dialog.activeCheckBox.isChecked())
             # Edit the model
-            self.agentsModel.removeRow(selectedIndex)
-            self.agentsModel.insertRow(selectedIndex,
-                                       [ObjectItem(agent), ObjectItem(agent.reliability),
-                                        ObjectItem('Désactivé' if agent.disabled else 'Activé')])
+            was_expanded = self.agentsTreeView.isExpanded(selectedIndex)
+            self.agentsTreeView.collapse(selectedIndex)  # Program will crash if the edited item is expanded
+            self.agentsModel.setItem(selectedIndex.row(), 0, ObjectItem(agent))
+            self.agentsModel.setItem(selectedIndex.row(), 1, ObjectItem(agent.reliability))
+            self.agentsModel.setItem(selectedIndex.row(), 2, ObjectItem('Désactivé' if agent.disabled else 'Activé'))
+            if was_expanded:
+                self.agentsTreeView.expand(selectedIndex)
             # Delete the old hypotheses
             agent.clear_hypotheses()
-            self.agentsModel[selectedIndex].removeRows(0, self.agentsModel[selectedIndex].rowCount())
+            self.agentsModel[selectedIndex.row()].removeRows(0, self.agentsModel[selectedIndex.row()].rowCount())
             for i in range(agent_dialog.model.rowCount()):  # Insert the new ones
                 hypothèse_item = agent_dialog.model.item(i, 0)
                 masse_item = agent_dialog.model.item(i, 1)
                 affaiblissement_item = agent_dialog.model.item(i, 2)
                 agent.add_hypothese(hypothèse_item.item, masse_item.item, affaiblissement_item.item)
             for hmw in agent:
-                self.agentsModel[selectedIndex].appendRow([ObjectItem(hmw[0]), ObjectItem(hmw[1]), ObjectItem(hmw[2])])
+                self.agentsModel[selectedIndex.row()].appendRow([ObjectItem(hmw[0]), ObjectItem(hmw[1]), ObjectItem(hmw[2])])
             return True
         else:
             return False
