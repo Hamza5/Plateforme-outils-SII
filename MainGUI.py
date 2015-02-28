@@ -51,9 +51,11 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.action_group.addAction(self.actionDempster_Shafer)
         self.action_group.addAction(self.actionDubois_Prade)
         self.action_group.addAction(self.actionSmets)
+        self.action_group.addAction(self.actionYager)
         self.actionDempster_Shafer.setData('Dempster-Shafer')
         self.actionDubois_Prade.setData('Dubois-Prade')
         self.actionSmets.setData('Smets')
+        self.actionYager.setData('Yager')
 
         # Center the main window on the screen
         self.move(QApplication.desktop().availableGeometry().center() - self.rect().center())

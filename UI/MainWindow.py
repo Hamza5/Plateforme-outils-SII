@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'MainWindow.ui'
 #
-# Created: Mon Feb 23 12:24:57 2015
+# Created: Sat Feb 28 11:26:36 2015
 #      by: PyQt4 UI code generator 4.10.4
 #
 # WARNING! All changes made in this file will be lost!
@@ -155,6 +155,9 @@ class Ui_MainWindow(object):
         icon = QtGui.QIcon.fromTheme(_fromUtf8("system-run"))
         self.actionCalculer.setIcon(icon)
         self.actionCalculer.setObjectName(_fromUtf8("actionCalculer"))
+        self.actionYager = QtGui.QAction(MainWindow)
+        self.actionYager.setCheckable(True)
+        self.actionYager.setObjectName(_fromUtf8("actionYager"))
         self.menuFichier.addAction(self.actionNouveau)
         self.menuFichier.addAction(self.actionOuvrir)
         self.menuFichier.addAction(self.actionEnregistrer)
@@ -163,6 +166,7 @@ class Ui_MainWindow(object):
         self.menuM_thode_de_calcule.addAction(self.actionDempster_Shafer)
         self.menuM_thode_de_calcule.addAction(self.actionDubois_Prade)
         self.menuM_thode_de_calcule.addAction(self.actionSmets)
+        self.menuM_thode_de_calcule.addAction(self.actionYager)
         self.menuHypotheses.addAction(self.actionAjouterHypothese)
         self.menuHypotheses.addAction(self.actionSupprimerHypothese)
         self.menuAgents.addAction(self.actionAjouterAgent)
@@ -234,4 +238,5 @@ class Ui_MainWindow(object):
         self.actionNouveau.setShortcut(_translate("MainWindow", "Ctrl+N", None))
         self.actionCalculer.setText(_translate("MainWindow", "&Calculer", None))
         self.actionCalculer.setShortcut(_translate("MainWindow", "Ctrl+K", None))
+        self.actionYager.setText(_translate("MainWindow", "Yager", None))
 

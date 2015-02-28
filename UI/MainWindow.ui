@@ -104,6 +104,7 @@
      <addaction name="actionDempster_Shafer"/>
      <addaction name="actionDubois_Prade"/>
      <addaction name="actionSmets"/>
+     <addaction name="actionYager"/>
     </widget>
     <widget class="QMenu" name="menuHypotheses">
      <property name="locale">
@@ -379,6 +380,14 @@
    </property>
    <property name="shortcut">
     <string>Ctrl+K</string>
+   </property>
+  </action>
+  <action name="actionYager">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Yager</string>
    </property>
   </action>
  </widget>

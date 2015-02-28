@@ -23,6 +23,7 @@
 			<xs:enumeration value="Dempster-Shafer"/>
 			<xs:enumeration value="Smets"/>
 			<xs:enumeration value="Dubois-Prade"/>
+            <xs:enumeration value="Yager"/>
 		</xs:restriction>
 	</xs:simpleType>
 	
