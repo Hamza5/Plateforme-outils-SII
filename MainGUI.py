@@ -5,7 +5,7 @@ import subprocess
 
 try:
     from PyQt4.QtGui import QApplication, QMainWindow, QActionGroup, QDialog, QStandardItem, QStandardItemModel, \
-        QInputDialog, QHeaderView, QLineEdit, QMessageBox, QFileDialog, QCloseEvent
+        QInputDialog, QHeaderView, QLineEdit, QMessageBox, QFileDialog, QCloseEvent, QTableWidgetItem
     from PyQt4.QtCore import SIGNAL, QModelIndex
 except ImportError as e:
     print('Can not use PyQt4 !', e.msg, file=sys.stderr, sep='\n')
@@ -25,6 +25,7 @@ from UI.HypotheseDialog import Ui_hypothesesDialog
 from UI.AgentDialog import Ui_agentDialog
 from UI.MasseDialog import Ui_masseDialog
 from UI.DescriptionDialog import Ui_descriptionDialog
+from UI.ResultatsDialog import Ui_resultsDialog
 import HelperClasses.Etat
 import HelperClasses.Agent
 
@@ -544,6 +545,46 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         except OSError as e:
             QMessageBox.critical(self, 'Erreur', 'Impossible de lancer le programme de calcul\n'+e.filename)
             return
+        self.afficher()
+
+    def afficher(self):
+        try:
+            tree = ElementTree(file=self.output)
+        except OSError as e:  # Can't open the file
+            QMessageBox.critical(self, 'Erreur', '<b>Impossible d\'ouvrir le fichier '+e.filename+'</b>')
+            return
+        try:
+            schema = XMLSchema(file='validation_output.xsd')
+            if not schema(tree):
+                msg = QMessageBox(self)
+                msg.setWindowTitle('Erreur')
+                msg.setText('<b>Document invalide !</b>')
+                msg.setInformativeText('Le fichier contient des erreurs')
+                msg.setIcon(QMessageBox.Critical)
+                msg.exec_()
+        except NameError:
+            pass
+        results_dialog = ResultsDialog(self)
+        i = 0
+        try:
+            hypotheses = tree.findall('Hypothese')
+            results_dialog.resultsTableWidget.setRowCount(len(hypotheses))
+            for hypothèse_element in hypotheses:
+                bel = hypothèse_element.find('Bel').text
+                pl = hypothèse_element.find('Pl').text
+                results_dialog.resultsTableWidget.setItem(i, 0, QTableWidgetItem(hypothèse_element.attrib['id']))
+                results_dialog.resultsTableWidget.setItem(i, 1, QTableWidgetItem(bel))
+                results_dialog.resultsTableWidget.setItem(i, 2, QTableWidgetItem(pl))
+                i += 1
+        except ValueError:
+            msg = QMessageBox(self)
+            msg.setWindowTitle('Erreur')
+            msg.setText('<b>Document invalide !</b>')
+            msg.setInformativeText('Le fichier contient des erreurs')
+            msg.setIcon(QMessageBox.Critical)
+            msg.exec_()
+            return
+        results_dialog.exec_()
 
     def editAgent(self, selectedIndex: QModelIndex):
         agent_dialog = AgentDialog(self)
@@ -792,6 +833,12 @@ class MasseDialog(QDialog, Ui_masseDialog):
         for i in range(len(self.model)):
             if self.model[i].named(str(hypothèse)):
                 return i
+
+
+class ResultsDialog(QDialog, Ui_resultsDialog):
+    def __init__(self, parent: MainWindow):
+        super(ResultsDialog, self).__init__(parent)
+        self.setupUi(self)
 
 
 class ObjectItem(QStandardItem):
