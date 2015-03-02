@@ -4,6 +4,9 @@
     <xs:element name="DSTO">
 		<xs:complexType>
             <xs:sequence>
+                <xs:element name="Title" type="xs:token"/>
+                <xs:element name="Description" type="xs:token"/>
+                <xs:element name="Method" type="xs:token"/>
                 <xs:element name="Etats">
                     <xs:complexType>
                         <xs:sequence maxOccurs="unbounded">

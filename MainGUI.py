@@ -571,12 +571,21 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         results_dialog = ResultsDialog(self)
         i = 0
         try:
-            hypotheses = tree.findall('Hypothese')
-            results_dialog.resultsTableWidget.setRowCount(len(hypotheses))
-            for hypothèse_element in hypotheses:
+            états = []
+            for element in tree.iter('Etat'):
+                état = Etat(element.attrib['title'])
+                état.order = int(re.search(r'\d+', element.attrib['id']).group())
+                états.append(état)
+            hypotheses_elements = tree.findall('Hypotheses/Hypothese')
+            results_dialog.resultsTableWidget.setRowCount(len(hypotheses_elements))
+            results_dialog.resultsTableWidget.horizontalHeader().setStretchLastSection(True)
+            results_dialog.resultsTableWidget.horizontalHeader().setResizeMode(QHeaderView.ResizeToContents)
+            for hypothèse_element in hypotheses_elements:
                 bel = hypothèse_element.find('Bel').text
                 pl = hypothèse_element.find('Pl').text
-                results_dialog.resultsTableWidget.setItem(i, 0, QTableWidgetItem(hypothèse_element.attrib['id']))
+                idf = hypothèse_element.attrib['id']
+                hypothèse_états = [état for état in états if état.id() in idf.split('-')]
+                results_dialog.resultsTableWidget.setItem(i, 0, QTableWidgetItem(str(Hypothese(hypothèse_états))))
                 results_dialog.resultsTableWidget.setItem(i, 1, QTableWidgetItem(bel))
                 results_dialog.resultsTableWidget.setItem(i, 2, QTableWidgetItem(pl))
                 i += 1
