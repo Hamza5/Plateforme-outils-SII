@@ -44,8 +44,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.agentsModelHeaderLabels = ["Agent/Hypothèse", "Fiabilité/Masse", "Activé/Affaiblissement"]
         self.setUnmodified()
         self.executable = 'Main'  # Command of the engine executable
-        self.input = 'input.xml'  # Input file for calculation
-        self.output = 'output.xml'  # Output file of calculation
+        self.input = 'input.dsti.xml'  # Input file for calculation
+        self.output = 'output.dsto.xml'  # Output file of calculation
 
         # Make methods actions mutually-exclusives :
         self.action_group = QActionGroup(self)
@@ -131,7 +131,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         if isinstance(path, str) and path != '':
             file_path = path
         else:
-            file_path = QFileDialog.getSaveFileName(self, 'Enregistrer', '', 'Données (*.xml)')
+            file_path = QFileDialog.getSaveFileName(self, 'Enregistrer', '', 'Données (*.dsti.xml)')
         if not file_path:
             return False
         try:  # Using xml.etree.ElementTree
@@ -189,7 +189,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             return False
 
     def ouvrir(self):
-        file_path = QFileDialog.getOpenFileName(self, 'Ouvrir', '', 'Données (*.xml)')
+        file_path = QFileDialog.getOpenFileName(self, 'Ouvrir', '', 'Données (*.dsti.xml)')
         if not file_path:
             return
         # Create the document
@@ -551,7 +551,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
     def afficher(self, path=None):
         if not path:
-            path = QFileDialog.getOpenFileName(self, 'Ouvrir', '', 'Résultats (*.xml)')
+            path = QFileDialog.getOpenFileName(self, 'Ouvrir', '', 'Résultats (*.dsto.xml)')
         try:
             tree = ElementTree(file=path)
         except OSError as e:  # Can't open the file

@@ -3,18 +3,36 @@
 
     <xs:element name="DSTO">
 		<xs:complexType>
-			<xs:sequence maxOccurs="unbounded">
-				<xs:element name="Hypothese">
+            <xs:sequence>
+                <xs:element name="Etats">
                     <xs:complexType>
-                        <xs:sequence>
-                            <xs:element name="Bel" type="customDecimal"/>
-                            <xs:element name="Pl" type="customDecimal"/>
+                        <xs:sequence maxOccurs="unbounded">
+                            <xs:element name="Etat">
+                                <xs:complexType>
+                                    <xs:attribute name="id" type="simpleID"/>
+                                    <xs:attribute name="title" type="xs:token"/>
+                                </xs:complexType>
+                            </xs:element>
                         </xs:sequence>
-                        <xs:attribute name="id" type="customID"/>
-                        <xs:attribute name="mass" type="customDecimal" default="0"/>
                     </xs:complexType>
                 </xs:element>
-			</xs:sequence>
+                <xs:element name="Hypotheses">
+                    <xs:complexType>
+                        <xs:sequence maxOccurs="unbounded">
+                            <xs:element name="Hypothese">
+                                <xs:complexType>
+                                    <xs:sequence>
+                                        <xs:element name="Bel" type="customDecimal"/>
+                                        <xs:element name="Pl" type="customDecimal"/>
+                                    </xs:sequence>
+                                    <xs:attribute name="id" type="customID"/>
+                                    <xs:attribute name="mass" type="customDecimal" default="0"/>
+                                </xs:complexType>
+                            </xs:element>
+                        </xs:sequence>
+                    </xs:complexType>
+                </xs:element>
+            </xs:sequence>
 		</xs:complexType>
 	</xs:element>
 
@@ -22,6 +40,12 @@
         <xs:restriction base="xs:decimal">
             <xs:minInclusive value="0"/>
             <xs:maxInclusive value="1"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:simpleType name="simpleID">
+        <xs:restriction base="xs:string">
+            <xs:pattern value="([a-zA-Z])+\d+"/>
         </xs:restriction>
     </xs:simpleType>
 
