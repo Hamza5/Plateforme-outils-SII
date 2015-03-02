@@ -89,6 +89,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.connect(self.actionNouveau, SIGNAL("triggered(bool)"), self.nouveau)
         self.connect(self.actionCalculer, SIGNAL("triggered(bool)"), self.calculer)
         self.connect(self.action_group, SIGNAL("selected(QAction *)"), self.setModified)
+        self.connect(self.actionOuvrir_des_resultats, SIGNAL("triggered(bool)"), self.afficher)
+
     def attribuer_titre(self):
         title, ok = QInputDialog.getText(self, "Titre", "Titre", QLineEdit.Normal, self.title)
         if ok:
@@ -545,11 +547,13 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         except OSError as e:
             QMessageBox.critical(self, 'Erreur', 'Impossible de lancer le programme de calcul\n'+e.filename)
             return
-        self.afficher()
+        self.afficher(self.output)
 
-    def afficher(self):
+    def afficher(self, path=None):
+        if not path:
+            path = QFileDialog.getOpenFileName(self, 'Ouvrir', '', 'Résultats (*.xml)')
         try:
-            tree = ElementTree(file=self.output)
+            tree = ElementTree(file=path)
         except OSError as e:  # Can't open the file
             QMessageBox.critical(self, 'Erreur', '<b>Impossible d\'ouvrir le fichier '+e.filename+'</b>')
             return

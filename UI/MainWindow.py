@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'MainWindow.ui'
 #
-# Created: Sat Feb 28 11:26:36 2015
+# Created: Mon Mar  2 10:31:26 2015
 #      by: PyQt4 UI code generator 4.10.4
 #
 # WARNING! All changes made in this file will be lost!
@@ -158,8 +158,13 @@ class Ui_MainWindow(object):
         self.actionYager = QtGui.QAction(MainWindow)
         self.actionYager.setCheckable(True)
         self.actionYager.setObjectName(_fromUtf8("actionYager"))
+        self.actionOuvrir_des_resultats = QtGui.QAction(MainWindow)
+        icon = QtGui.QIcon.fromTheme(_fromUtf8("document-import"))
+        self.actionOuvrir_des_resultats.setIcon(icon)
+        self.actionOuvrir_des_resultats.setObjectName(_fromUtf8("actionOuvrir_des_resultats"))
         self.menuFichier.addAction(self.actionNouveau)
         self.menuFichier.addAction(self.actionOuvrir)
+        self.menuFichier.addAction(self.actionOuvrir_des_resultats)
         self.menuFichier.addAction(self.actionEnregistrer)
         self.menuFichier.addSeparator()
         self.menuFichier.addAction(self.actionQuitter)
@@ -239,4 +244,5 @@ class Ui_MainWindow(object):
         self.actionCalculer.setText(_translate("MainWindow", "&Calculer", None))
         self.actionCalculer.setShortcut(_translate("MainWindow", "Ctrl+K", None))
         self.actionYager.setText(_translate("MainWindow", "Yager", None))
+        self.actionOuvrir_des_resultats.setText(_translate("MainWindow", "Ouvrir des &résultats", None))
 
