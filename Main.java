@@ -42,6 +42,67 @@ import org.xml.sax.SAXException;
  }
 
 public class Main{
+	public static AgentTrans MultiAgYager (AgentTrans Agt1,AgentTrans Agt2){
+		Vector <multiHash> Vec= new Vector <multiHash>();
+		//Creation du Set qui contient les du Agt1 et Agt2
+		 Set<Set<String>> set = new HashSet<Set<String>>();
+		 for (Set number1 : Agt1.knowleges.keySet()) {
+			set.add(number1);
+		 }
+		 for (Set number2 : Agt2.knowleges.keySet()) {
+				set.add(number2);
+			 }
+		 HashMap <Set, Double> vide =new HashMap<Set, Double>();
+		 Set<String> in = new HashSet<String>();
+		 in.add("h0");
+		 set.add(in);//Creer l'ensemble vide et le ajouter dans l'ensemble globale
+		//Remplissage du vec avec les elements du set
+		 int omegaDetecter=0;
+		 for (Set number3 : set) {
+			 multiHash mu =new multiHash();
+			 mu.set=number3;
+			 mu.mass=0;
+			 Vec.add(mu);
+			 if(omegaDetecter<number3.toString().length()){omegaDetecter=number3.toString().length();}
+			}
+		 //Calcul la constante k
+		 //Calcul des nouvels masses
+		 double k=0;
+		 for (Set number1 : Agt1.knowleges.keySet()) {
+			 multiHash temp =new multiHash();
+			 for (Set number2 : Agt2.knowleges.keySet()) {
+	    		  Set<String> intersection = new HashSet<String>(number1); // use the copy constructor
+		    	  intersection.retainAll(number2);
+		    	   temp.set=intersection;
+		    	 temp.mass=Agt1.knowleges.get(number1)*Agt2.knowleges.get(number2);
+		    	  if (intersection.size()==0){k+=temp.mass;}//Calcul la constante k
+		    	  //rechercher cet ensemble dans le tableau
+		    	  for(int i=0;i<Vec.size();i++){
+			    		  if(Vec.get(i).set.equals(intersection)){
+			    			  Vec.get(i).mass=Vec.get(i).mass+temp.mass;
+			    		  }
+			    		  //System.out.println("Vec.get(i).set "+Vec.get(i).set);
+//			    		  if(Vec.get(i).set.toString().equals("[h0]")){
+//			    			  Vec.get(i).mass=k;
+//			    			  System.out.println(Vec.get(i).set+" Vec.get(i).set.mass "+Vec.get(i).mass);}
+		    	  }
+		     }
+		 }
+		// System.out.println("k = "+k);
+		 AgentTrans temp = new AgentTrans();
+		for(int i=0;i<Vec.size();i++){
+			if(Vec.get(i).set.size()!=0){//pour eviter l'ensemble vide
+				//if(Vec.get(i).set.toString().equals("[h0]")){ Vec.get(i).mass=0;}
+				if(Vec.get(i).set.toString().length()==omegaDetecter){System.out.println("omega "+Vec.get(i).set+" k = "+k);Vec.get(i).mass= Vec.get(i).mass+k;System.out.println("mass "+Vec.get(i).mass);}
+				//if(Vec.get(i).set.toString().equals("[h0]")){temp.knowleges.put(Vec.get(i).set,(double) 0); }
+				temp.knowleges.put(Vec.get(i).set,Vec.get(i).mass );
+			}
+		}
+		
+		return temp;//Retouner la collection resultat
+		
+
+	}
 	public static AgentTrans MultiAgSmets(AgentTrans Agt1,AgentTrans Agt2){
 		  Vector <multiHash> Vec= new Vector <multiHash>();
 			//Creation du Set qui contient les du Agt1 et Agt2
@@ -87,6 +148,7 @@ public class Main{
 			    	  }
 			     }
 			 }
+			 System.out.println("k = "+k);
 			 AgentTrans temp = new AgentTrans();
 			for(int i=0;i<Vec.size();i++){
 				if(Vec.get(i).set.size()!=0){//pour eviter l'ensemble vide
@@ -155,8 +217,8 @@ public class Main{
 
 	//Methode pour caluler le Multi Agent
 	public static AgentTrans MultiAg(AgentTrans Agt1,AgentTrans Agt2){
-		System.out.println("Agt1 "+Agt1.knowleges);
-		System.out.println("Agt2 "+Agt2.knowleges);
+	//	System.out.println("Agt1 "+Agt1.knowleges);
+	//	System.out.println("Agt2 "+Agt2.knowleges);
 	  Vector <multiHash> Vec= new Vector <multiHash>();
 		//Creation du Set qui contient les du Agt1 et Agt2
 		 Set<Set<String>> set = new HashSet<Set<String>>();
@@ -192,8 +254,10 @@ public class Main{
 		    	  }
 	    	 }
     	 }
+		 System.out.println("k "+k);
 		k=1-k;
         //Calcul la nouvel masse
+		
 		AgentTrans temp = new AgentTrans();
 		for(int i=0;i<Vec.size();i++){
 			Vec.get(i).mass*=1/k;//deviser les masses des ensembles sur la constante k
@@ -226,17 +290,57 @@ public class Main{
 		      return AgTran;
 		}
 		//Methode calcul croyance  plausibilité
-		public static void clalculPlBel(AgentTrans Ag,String NomFichier){
+		public static void clalculPlBel(AgentTrans Ag,String NomFichierEntrée,String NomFichier) throws SAXException, IOException{
 			try {
 				//System.out.printf("AG BL PL "+Ag.knowleges);
 			    final DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
 				final DocumentBuilder builder = factory.newDocumentBuilder();
 				final Document document= builder.newDocument();
     		    final Element racine = document.createElement("DSTO");
-    		    document.appendChild(racine);
-				  // Get a set of the entries
-				  HashMap <Set, Double>vect = new HashMap<Set, Double>();
-				  vect=Ag.knowleges;
+    		    SchemaFactory xsdf = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
+    			DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+    			dbf.setSchema(xsdf.newSchema(new File("validation.xsd")));
+    			DocumentBuilder db = dbf.newDocumentBuilder();
+    			Document données = db.parse(NomFichierEntrée);
+    			document.appendChild(racine);
+			     // Get a set of the entries
+			    HashMap <Set, Double>vect = new HashMap<Set, Double>();
+			    vect=Ag.knowleges;
+			    final Element Titre = document.createElement("Title");
+    		    racine.appendChild(Titre);
+    	     	final Element Description = document.createElement("Description");
+    		    racine.appendChild(Description);	
+    		    final Element Method = document.createElement("Method");
+    		    racine.appendChild(Method);
+    		    final Element Etats = document.createElement("Etats");
+    		    racine.appendChild(Etats);
+    		    final Element Hypotheses = document.createElement("Hypotheses");
+    		    racine.appendChild(Hypotheses);
+    		    
+    		    final NodeList racineNoeuds = données.getChildNodes();
+    		    final Element ElementAEcrire = (Element) racineNoeuds.item(0);
+    		    Element nom = (Element) ElementAEcrire.getElementsByTagName("Title").item(0);
+    		    Titre.appendChild(document.createTextNode(nom.getTextContent()));
+    		    nom = (Element) ElementAEcrire.getElementsByTagName("Description").item(0);
+    		    Description.appendChild(document.createTextNode(nom.getTextContent()));
+    		    nom = (Element) ElementAEcrire.getElementsByTagName("Method").item(0);
+    		    Method.appendChild(document.createTextNode(nom.getTextContent()));
+    		    NodeList agt = données.getElementsByTagName("Etat");
+   	   			for(int i=0; i<agt.getLength(); i++) {
+    				Element e = (Element)(agt.item(i));
+    				final Element Etat = document.createElement("Etat");
+    				Etats.appendChild(Etat);
+    				Etat.setAttribute("id",e.getAttribute("id"));
+    				Etat.setAttribute("title",e.getAttribute("title"));
+    			}
+    		    NodeList agt2 = données.getElementsByTagName("Hypothese");
+   	   			for(int i=0; i<agt2.getLength(); i++) {
+    				Element e = (Element)(agt2.item(i));
+    				final Element Hypothese = document.createElement("Hypothese");
+    				Hypotheses.appendChild(Hypothese);
+    				Hypothese.setAttribute("id",e.getAttribute("id"));
+    				Hypothese.setAttribute("title",e.getAttribute("title"));
+    			}
 	             for (Set number1 : vect.keySet()) {
 		    	     double som1=0;
 		    	     for (Set number2 : vect.keySet()) {
@@ -251,13 +355,13 @@ public class Main{
 		    	     //arrondir à 4 chiffres après la virgule
 		    	     DecimalFormat df = new DecimalFormat ();
 		    	     df.setMaximumFractionDigits (10);
-		    	     //System.out.println(number1.toString()+" mass: "+vect.get(number1)+" bel "+som1+" Pl "+som2);
+		    	   
 	                 //Creation du fichier xml
-		        	 //  System.out.println(number1.toString()+" mass: "+vect.get(number1)+" bel "+df.format(som1)+" Pl "+df.format(som2));
-		    			final Element hypo = document.createElement("Hypothese");
+		        	
+
+		    		    final Element hypo = document.createElement("Hypothese");
 		    		    racine.appendChild(hypo);
 		    		    hypo.setAttribute("id",number1.toString().substring(1,number1.toString().length()-1).replaceAll(", ", "-"));
-		    		    //System.out.println("number "+number1.toString().length());
 		    		    hypo.setAttribute("mass",df.format(Double.parseDouble(vect.get(number1).toString())));
 		    		    final Element Bel = document.createElement("Bel");
 		    		    final Element Pl = document.createElement("Pl");
@@ -349,8 +453,7 @@ public class Main{
 				massVerifier+=Double.parseDouble(e.getAttribute("mass"));
 				omegaToAdd+=Double.parseDouble(e.getAttribute("mass"))*Double.parseDouble(e.getAttribute("weaking"));
 				A.knowleges.put(e.getAttribute("id"),Double.parseDouble(e.getAttribute("mass"))*(1-Double.parseDouble(e.getAttribute("weaking"))));//String to double
-				//System.out.println(e.getAttribute("mass"));
-			} 
+			}
 			//System.out.println("omaga to Add "+omegaToAdd);
 			//Ajouter a Omega les Alpha d'affaiblissement des sous ensembles de Omega
 //			for(int i=0; i<hyp.getLength(); i++){
@@ -425,7 +528,7 @@ public class Main{
 					 //System.out.println("length "+length+" omegaDetecter*2+omegaDetecter-1 "+(omegaDetecter*2+omegaDetecter-1));
 					 String omegaString = null;
 					 if(length==omegaDetecter*2+omegaDetecter-1){
-						  for(String elm2 : A.knowleges.keySet()){if(elm2.length()==length){omegaString=new String(elm2);break;}}
+						  for(String elm2 : A.knowleges.keySet()){if(elm2.length()==length){omegaString=new String(elm2);}}
 						 //for(int i=0;i>A.knowleges.keySet().size();i++){if()}
 						 //System.out.println("Omega mass "+A.knowleges+"omegaToAdd"+omegaToAdd);
 			             
@@ -450,11 +553,13 @@ public class Main{
 			choix = 2;break; 
 		case "Smets":
 			choix = 3;break; 
+		case "Yager":
+			choix = 4;break; 
 		}    
 				Iterator<Agent> it = hashSet.iterator();
 				if(hashSet.size()==1){
 					// System.out.println("calcul BL PL "+ it.next().knowleges);
-					clalculPlBel(Trans(it.next()),args[1]);
+					clalculPlBel(Trans(it.next()),args[0],args[1]);
 					 }
 				else{
 					if(hashSet.size()>=1){
@@ -467,16 +572,17 @@ public class Main{
 						if (choix==1){AgTr=MultiAg(AgTr,ag);}//Calculer le Multi Agent Dempster and Shaver
 						if (choix==2){AgTr=MultiAgDuboisPrade(AgTr,ag);}//Calculer le Multi Agent Dubois Prade
 						if (choix==3){AgTr=MultiAgSmets(AgTr,ag);}//Calculer le Multi Agent Smets
+						if (choix==4){AgTr=MultiAgYager(AgTr,ag);}//Calculer le Multi Agent Yager
 						 Set set = ag.knowleges.entrySet();
 				         Iterator iterator = set.iterator();
-				         while(iterator.hasNext()) {
-					         Map.Entry mentry = (Map.Entry)iterator.next();
+//				         while(iterator.hasNext()) {
+					       //  Map.Entry mentry = (Map.Entry)iterator.next();
 					        // System.out.print("key is: "+ mentry.getKey() + " & Value is: ");//Affichage pour tester
 					         //System.out.println(mentry.getValue());
-				        }
+//				        }
 					 }
 					
-					clalculPlBel(AgTr,args[1]);//Appler la fonction pour calcul Bel et Pl et creer le fichier xml
+					clalculPlBel(AgTr,args[0],args[1]);//Appler la fonction pour calcul Bel et Pl et creer le fichier xml
 				}
 			        }
 		//System.exit 0 pas d'erreur
