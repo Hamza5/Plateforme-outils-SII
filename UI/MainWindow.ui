@@ -86,6 +86,7 @@
     </property>
     <addaction name="actionNouveau"/>
     <addaction name="actionOuvrir"/>
+    <addaction name="actionOuvrir_des_resultats"/>
     <addaction name="actionEnregistrer"/>
     <addaction name="separator"/>
     <addaction name="actionQuitter"/>
@@ -388,6 +389,14 @@
    </property>
    <property name="text">
     <string>Yager</string>
+   </property>
+  </action>
+  <action name="actionOuvrir_des_resultats">
+   <property name="icon">
+    <iconset theme="document-import"/>
+   </property>
+   <property name="text">
+    <string>Ouvrir des &amp;résultats</string>
    </property>
   </action>
  </widget>

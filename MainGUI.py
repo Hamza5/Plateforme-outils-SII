@@ -5,7 +5,7 @@ import subprocess
 
 try:
     from PyQt4.QtGui import QApplication, QMainWindow, QActionGroup, QDialog, QStandardItem, QStandardItemModel, \
-        QInputDialog, QHeaderView, QLineEdit, QMessageBox, QFileDialog, QCloseEvent
+        QInputDialog, QHeaderView, QLineEdit, QMessageBox, QFileDialog, QCloseEvent, QTableWidgetItem
     from PyQt4.QtCore import SIGNAL, QModelIndex
 except ImportError as e:
     print('Can not use PyQt4 !', e.msg, file=sys.stderr, sep='\n')
@@ -25,6 +25,7 @@ from UI.HypotheseDialog import Ui_hypothesesDialog
 from UI.AgentDialog import Ui_agentDialog
 from UI.MasseDialog import Ui_masseDialog
 from UI.DescriptionDialog import Ui_descriptionDialog
+from UI.ResultatsDialog import Ui_resultsDialog
 import HelperClasses.Etat
 import HelperClasses.Agent
 
@@ -43,8 +44,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.agentsModelHeaderLabels = ["Agent/Hypothèse", "Fiabilité/Masse", "Activé/Affaiblissement"]
         self.setUnmodified()
         self.executable = 'Main'  # Command of the engine executable
-        self.input = 'input.xml'  # Input file for calculation
-        self.output = 'output.xml'  # Output file of calculation
+        self.input = 'input.dsti.xml'  # Input file for calculation
+        self.output = 'output.dsto.xml'  # Output file of calculation
 
         # Make methods actions mutually-exclusives :
         self.action_group = QActionGroup(self)
@@ -88,6 +89,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.connect(self.actionNouveau, SIGNAL("triggered(bool)"), self.nouveau)
         self.connect(self.actionCalculer, SIGNAL("triggered(bool)"), self.calculer)
         self.connect(self.action_group, SIGNAL("selected(QAction *)"), self.setModified)
+        self.connect(self.actionOuvrir_des_resultats, SIGNAL("triggered(bool)"), self.afficher)
+
     def attribuer_titre(self):
         title, ok = QInputDialog.getText(self, "Titre", "Titre", QLineEdit.Normal, self.title)
         if ok:
@@ -128,7 +131,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         if isinstance(path, str) and path != '':
             file_path = path
         else:
-            file_path = QFileDialog.getSaveFileName(self, 'Enregistrer', '', 'Données (*.xml)')
+            file_path = QFileDialog.getSaveFileName(self, 'Enregistrer', '', 'Données (*.dsti.xml)')
         if not file_path:
             return False
         try:  # Using xml.etree.ElementTree
@@ -186,7 +189,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             return False
 
     def ouvrir(self):
-        file_path = QFileDialog.getOpenFileName(self, 'Ouvrir', '', 'Données (*.xml)')
+        file_path = QFileDialog.getOpenFileName(self, 'Ouvrir', '', 'Données (*.dsti.xml)')
         if not file_path:
             return
         # Create the document
@@ -544,6 +547,48 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         except OSError as e:
             QMessageBox.critical(self, 'Erreur', 'Impossible de lancer le programme de calcul\n'+e.filename)
             return
+        self.afficher(self.output)
+
+    def afficher(self, path=None):
+        if not path:
+            path = QFileDialog.getOpenFileName(self, 'Ouvrir', '', 'Résultats (*.dsto.xml)')
+        try:
+            tree = ElementTree(file=path)
+        except OSError as e:  # Can't open the file
+            QMessageBox.critical(self, 'Erreur', '<b>Impossible d\'ouvrir le fichier '+e.filename+'</b>')
+            return
+        try:
+            schema = XMLSchema(file='validation_output.xsd')
+            if not schema(tree):
+                msg = QMessageBox(self)
+                msg.setWindowTitle('Erreur')
+                msg.setText('<b>Document invalide !</b>')
+                msg.setInformativeText('Le fichier contient des erreurs')
+                msg.setIcon(QMessageBox.Critical)
+                msg.exec_()
+        except NameError:
+            pass
+        results_dialog = ResultsDialog(self)
+        i = 0
+        try:
+            hypotheses = tree.findall('Hypothese')
+            results_dialog.resultsTableWidget.setRowCount(len(hypotheses))
+            for hypothèse_element in hypotheses:
+                bel = hypothèse_element.find('Bel').text
+                pl = hypothèse_element.find('Pl').text
+                results_dialog.resultsTableWidget.setItem(i, 0, QTableWidgetItem(hypothèse_element.attrib['id']))
+                results_dialog.resultsTableWidget.setItem(i, 1, QTableWidgetItem(bel))
+                results_dialog.resultsTableWidget.setItem(i, 2, QTableWidgetItem(pl))
+                i += 1
+        except ValueError:
+            msg = QMessageBox(self)
+            msg.setWindowTitle('Erreur')
+            msg.setText('<b>Document invalide !</b>')
+            msg.setInformativeText('Le fichier contient des erreurs')
+            msg.setIcon(QMessageBox.Critical)
+            msg.exec_()
+            return
+        results_dialog.exec_()
 
     def editAgent(self, selectedIndex: QModelIndex):
         agent_dialog = AgentDialog(self)
@@ -792,6 +837,12 @@ class MasseDialog(QDialog, Ui_masseDialog):
         for i in range(len(self.model)):
             if self.model[i].named(str(hypothèse)):
                 return i
+
+
+class ResultsDialog(QDialog, Ui_resultsDialog):
+    def __init__(self, parent: MainWindow):
+        super(ResultsDialog, self).__init__(parent)
+        self.setupUi(self)
 
 
 class ObjectItem(QStandardItem):
