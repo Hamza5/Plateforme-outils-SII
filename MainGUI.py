@@ -568,9 +568,12 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                 msg.exec_()
         except NameError:
             pass
-        results_dialog = ResultsDialog(self)
         i = 0
         try:
+            results_dialog = ResultsDialog(self)
+            results_dialog.titleLabel.setText('<b>'+tree.find('Title').text+'</b>')
+            results_dialog.descriptionLabel.setText('<i>'+tree.find('Title').text+'</i>')
+            results_dialog.methodLabel.setText('Methode : '+self.action_group.checkedAction().text())
             états = []
             for element in tree.iter('Etat'):
                 état = Etat(element.attrib['title'])

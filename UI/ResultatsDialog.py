@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'ResultatsDialog.ui'
 #
-# Created: Tue Mar  3 10:50:13 2015
+# Created: Tue Mar  3 11:44:49 2015
 #      by: PyQt4 UI code generator 4.10.4
 #
 # WARNING! All changes made in this file will be lost!
@@ -32,6 +32,17 @@ class Ui_resultsDialog(object):
         resultsDialog.setModal(True)
         self.verticalLayout = QtGui.QVBoxLayout(resultsDialog)
         self.verticalLayout.setObjectName(_fromUtf8("verticalLayout"))
+        self.titleLabel = QtGui.QLabel(resultsDialog)
+        self.titleLabel.setAlignment(QtCore.Qt.AlignCenter)
+        self.titleLabel.setObjectName(_fromUtf8("titleLabel"))
+        self.verticalLayout.addWidget(self.titleLabel)
+        self.descriptionLabel = QtGui.QLabel(resultsDialog)
+        self.descriptionLabel.setAlignment(QtCore.Qt.AlignCenter)
+        self.descriptionLabel.setObjectName(_fromUtf8("descriptionLabel"))
+        self.verticalLayout.addWidget(self.descriptionLabel)
+        self.methodLabel = QtGui.QLabel(resultsDialog)
+        self.methodLabel.setObjectName(_fromUtf8("methodLabel"))
+        self.verticalLayout.addWidget(self.methodLabel)
         self.resultsTableWidget = QtGui.QTableWidget(resultsDialog)
         self.resultsTableWidget.setAutoFillBackground(True)
         self.resultsTableWidget.setObjectName(_fromUtf8("resultsTableWidget"))
@@ -58,6 +69,9 @@ class Ui_resultsDialog(object):
 
     def retranslateUi(self, resultsDialog):
         resultsDialog.setWindowTitle(_translate("resultsDialog", "Résultats", None))
+        self.titleLabel.setText(_translate("resultsDialog", "Titre", None))
+        self.descriptionLabel.setText(_translate("resultsDialog", "Description", None))
+        self.methodLabel.setText(_translate("resultsDialog", "Method", None))
         item = self.resultsTableWidget.horizontalHeaderItem(0)
         item.setText(_translate("resultsDialog", "Hypothèse", None))
         item = self.resultsTableWidget.horizontalHeaderItem(1)
