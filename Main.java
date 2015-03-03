@@ -42,7 +42,9 @@ import org.xml.sax.SAXException;
  }
 
 public class Main{
-	public static AgentTrans MultiAgYager (AgentTrans Agt1,AgentTrans Agt2){
+	private static double k=0;
+	public static AgentTrans MultiAgYager (AgentTrans Agt1,AgentTrans Agt2,int count){
+
 		Vector <multiHash> Vec= new Vector <multiHash>();
 		//Creation du Set qui contient les du Agt1 et Agt2
 		 Set<Set<String>> set = new HashSet<Set<String>>();
@@ -67,7 +69,7 @@ public class Main{
 			}
 		 //Calcul la constante k
 		 //Calcul des nouvels masses
-		 double k=0;
+		 //double k=0;
 		 for (Set number1 : Agt1.knowleges.keySet()) {
 			 multiHash temp =new multiHash();
 			 for (Set number2 : Agt2.knowleges.keySet()) {
@@ -83,26 +85,33 @@ public class Main{
 			    		  }
 			    		  //System.out.println("Vec.get(i).set "+Vec.get(i).set);
 //			    		  if(Vec.get(i).set.toString().equals("[h0]")){
-//			    			  Vec.get(i).mass=k;
-//			    			  System.out.println(Vec.get(i).set+" Vec.get(i).set.mass "+Vec.get(i).mass);}
+//			    			  Vec.get(i).mass=k;}
 		    	  }
 		     }
 		 }
-		// System.out.println("k = "+k);
+		 System.out.println("k = "+k);
 		 AgentTrans temp = new AgentTrans();
 		for(int i=0;i<Vec.size();i++){
 			if(Vec.get(i).set.size()!=0){//pour eviter l'ensemble vide
-				//if(Vec.get(i).set.toString().equals("[h0]")){ Vec.get(i).mass=0;}
-				if(Vec.get(i).set.toString().length()==omegaDetecter){System.out.println("omega "+Vec.get(i).set+" k = "+k);Vec.get(i).mass= Vec.get(i).mass+k;System.out.println("mass "+Vec.get(i).mass);}
-				//if(Vec.get(i).set.toString().equals("[h0]")){temp.knowleges.put(Vec.get(i).set,(double) 0); }
+				if(Vec.get(i).set.toString().equals("[h0]")){ Vec.get(i).mass=0;}
+				if((Vec.get(i).set.toString().length()==omegaDetecter)&&count==0){
+					
+					Vec.get(i).mass= Vec.get(i).mass+k;
+				}
+				if(Vec.get(i).set.toString().equals("[h0]")){
+				temp.knowleges.put(Vec.get(i).set,(double) 0);
+				System.out.println("mass "+Vec.get(i).mass);
+				System.out.println("omega "+Vec.get(i).set+" k = "+k);}
 				temp.knowleges.put(Vec.get(i).set,Vec.get(i).mass );
 			}
 		}
-		
+//		 Set<String> kk = new HashSet<String>();
+//		 kk.add("K");
+//		 if(!temp.knowleges.get(kk).equals(0)){};
+//		 temp.knowleges.put(kk, (double)0);
+		//System.out.println("yaya "+temp.knowleges.get("[h0]"));
 		return temp;//Retouner la collection resultat
-		
-
-	}
+}
 	public static AgentTrans MultiAgSmets(AgentTrans Agt1,AgentTrans Agt2){
 		  Vector <multiHash> Vec= new Vector <multiHash>();
 			//Creation du Set qui contient les du Agt1 et Agt2
@@ -290,18 +299,36 @@ public class Main{
 		      return AgTran;
 		}
 		//Methode calcul croyance  plausibilité
-		public static void clalculPlBel(AgentTrans Ag,String NomFichierEntrée,String NomFichier) throws SAXException, IOException{
+		public static void clalculPlBel(AgentTrans Ag,String NomFichierEntrée,String NomFichier) throws IOException{
 			try {
 				//System.out.printf("AG BL PL "+Ag.knowleges);
 			    final DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
 				final DocumentBuilder builder = factory.newDocumentBuilder();
 				final Document document= builder.newDocument();
     		    final Element racine = document.createElement("DSTO");
+    		    racine.setAttribute("xmlns:xsi","http://www.w3.org/2001/XMLSchema-instance");
+    		    racine.setAttribute("xsi:noNamespaceSchemaLocation","validation_output.xsd");
     		    SchemaFactory xsdf = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
     			DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
-    			dbf.setSchema(xsdf.newSchema(new File("validation.xsd")));
-    			DocumentBuilder db = dbf.newDocumentBuilder();
-    			Document données = db.parse(NomFichierEntrée);
+    			///////////////////////////////////////////////////////////////////
+    			Document données=null; 
+    			try {
+    				dbf.setSchema(xsdf.newSchema(new File("validation.xsd")));
+    				DocumentBuilder db = dbf.newDocumentBuilder();
+    				données = db.parse(NomFichierEntrée);
+    				 }catch (ParserConfigurationException e) {
+    			            System.out.println("Parser not configured: " + e.getMessage());
+    			        } catch (SAXException e) {
+    			            System.out.print("Parsing XML failed due to a "
+    			                    + e.getClass().getName() + ":");
+    			            System.out.println(e.getMessage());
+    			        } catch (IOException e) {
+    			            System.out.println("IOException thrown");
+    			            e.printStackTrace();
+    			        }
+//    			dbf.setSchema(xsdf.newSchema(new File("validation.xsd")));
+//    			DocumentBuilder db = dbf.newDocumentBuilder();
+//    			Document données = db.parse(NomFichierEntrée);
     			document.appendChild(racine);
 			     // Get a set of the entries
 			    HashMap <Set, Double>vect = new HashMap<Set, Double>();
@@ -334,13 +361,13 @@ public class Main{
     				Etat.setAttribute("title",e.getAttribute("title"));
     			}
     		    NodeList agt2 = données.getElementsByTagName("Hypothese");
-   	   			for(int i=0; i<agt2.getLength(); i++) {
-    				Element e = (Element)(agt2.item(i));
-    				final Element Hypothese = document.createElement("Hypothese");
-    				Hypotheses.appendChild(Hypothese);
-    				Hypothese.setAttribute("id",e.getAttribute("id"));
-    				Hypothese.setAttribute("title",e.getAttribute("title"));
-    			}
+//   	   			for(int i=0; i<agt2.getLength(); i++) {
+//    				Element e = (Element)(agt2.item(i));
+//    				final Element Hypothese = document.createElement("Hypothese");
+//    				Hypotheses.appendChild(Hypothese);
+//    				Hypothese.setAttribute("id",e.getAttribute("id"));
+//    				Hypothese.setAttribute("title",e.getAttribute("title"));
+//    			}
 	             for (Set number1 : vect.keySet()) {
 		    	     double som1=0;
 		    	     for (Set number2 : vect.keySet()) {
@@ -360,7 +387,7 @@ public class Main{
 		        	
 
 		    		    final Element hypo = document.createElement("Hypothese");
-		    		    racine.appendChild(hypo);
+		    		    Hypotheses.appendChild(hypo);
 		    		    hypo.setAttribute("id",number1.toString().substring(1,number1.toString().length()-1).replaceAll(", ", "-"));
 		    		    hypo.setAttribute("mass",df.format(Double.parseDouble(vect.get(number1).toString())));
 		    		    final Element Bel = document.createElement("Bel");
@@ -423,15 +450,28 @@ public class Main{
 
 		        return all;
 		    }
-	public static void main(String[] args) throws ParserConfigurationException, SAXException, IOException {
+	public static void main(String[] args) throws  IOException {
       
 		if(args.length!=2){Runtime.getRuntime().exit(1);}
 		HashSet<Agent> hashSet = new HashSet<Agent>();
 		SchemaFactory xsdf = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
 		DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+		
+		Document données=null; 
+		try {
 		dbf.setSchema(xsdf.newSchema(new File("validation.xsd")));
 		DocumentBuilder db = dbf.newDocumentBuilder();
-		Document données = db.parse(args[0]);
+		données = db.parse(args[0]);
+		 }catch (ParserConfigurationException e) {
+	            System.out.println("Parser not configured: " + e.getMessage());
+	        } catch (SAXException e) {
+	            System.out.print("Parsing XML failed due to a "
+	                    + e.getClass().getName() + ":");
+	            System.out.println(e.getMessage());
+	        } catch (IOException e) {
+	            System.out.println("IOException thrown");
+	            e.printStackTrace();
+	        }
 		HashSet<Element> agents = new HashSet<>();
 		NodeList agt = données.getElementsByTagName("Agent");
 		for(int i=0; i<agt.getLength(); i++) agents.add((Element)agt.item(i));
@@ -499,7 +539,6 @@ public class Main{
 			  if(massVerifier < 1){/*System.out.print("omegaToAdd avent "+omegaToAdd);*/omegaToAdd+=(1-massVerifier);/* System.out.println("massVerifier "+(massVerifier)+" omegaToAdd "+(float)omegaToAdd);*/}//Ajouter la difference entre la somme des masses et 1
 		         
 			  for (Set elm : setTest){
-				  //////////////////////////////////////
 				  Set<String> set =  new HashSet<String>();
 				  String[] splitString = ((elm.toString().substring(1,elm.toString().length()-1).replaceAll(", ", "-").split("-")));
 			         for(int i1=0;i1<splitString.length;i1++){set.add(splitString[i1]);} 
@@ -558,21 +597,22 @@ public class Main{
 		}    
 				Iterator<Agent> it = hashSet.iterator();
 				if(hashSet.size()==1){
-					// System.out.println("calcul BL PL "+ it.next().knowleges);
 					clalculPlBel(Trans(it.next()),args[0],args[1]);
 					 }
 				else{
 					if(hashSet.size()>=1){
+						int count=hashSet.size();
 					AgentTrans AgTr =new AgentTrans();
 					AgTr=Trans(it.next());
 					while (it.hasNext()) {
+						count--;
 						AgentTrans ag=Trans(it.next());
 //						System.out.println("AgTr AV"+AgTr.knowleges);
 //						System.out.println("ag AV"+ag.knowleges);
 						if (choix==1){AgTr=MultiAg(AgTr,ag);}//Calculer le Multi Agent Dempster and Shaver
 						if (choix==2){AgTr=MultiAgDuboisPrade(AgTr,ag);}//Calculer le Multi Agent Dubois Prade
 						if (choix==3){AgTr=MultiAgSmets(AgTr,ag);}//Calculer le Multi Agent Smets
-						if (choix==4){AgTr=MultiAgYager(AgTr,ag);}//Calculer le Multi Agent Yager
+						if (choix==4){AgTr=MultiAgYager(AgTr,ag,count);}//Calculer le Multi Agent Yager
 						 Set set = ag.knowleges.entrySet();
 				         Iterator iterator = set.iterator();
 //				         while(iterator.hasNext()) {
