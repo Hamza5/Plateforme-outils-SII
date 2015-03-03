@@ -6,7 +6,7 @@ import subprocess
 try:
     from PyQt4.QtGui import QApplication, QMainWindow, QActionGroup, QDialog, QStandardItem, QStandardItemModel, \
         QInputDialog, QHeaderView, QLineEdit, QMessageBox, QFileDialog, QCloseEvent, QTableWidgetItem
-    from PyQt4.QtCore import SIGNAL, QModelIndex
+    from PyQt4.QtCore import SIGNAL, QModelIndex, Qt
 except ImportError as e:
     print('Can not use PyQt4 !', e.msg, file=sys.stderr, sep='\n')
     sys.exit(2)
@@ -72,6 +72,14 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.hypothesesListView.setModel(self.hypothesesModel)
         self.agentsTreeView.setModel(self.agentsModel)
         self.agentsTreeView.header().setResizeMode(QHeaderView.ResizeToContents)
+
+        # Create the context menus
+        self.etatsListView.addActions([self.actionAjouterEtat, self.actionSupprimerEtat])
+        self.hypothesesListView.addActions([self.actionAjouterHypothese, self.actionSupprimerHypothese])
+        self.agentsTreeView.addActions([self.actionAjouterAgent, self.actionModifierAgent, self.actionSupprimerAgent])
+        self.etatsListView.setContextMenuPolicy(Qt.ActionsContextMenu)
+        self.hypothesesListView.setContextMenuPolicy(Qt.ActionsContextMenu)
+        self.agentsTreeView.setContextMenuPolicy(Qt.ActionsContextMenu)
 
         # Connecting Signals to slots :
         self.connect(self.actionAjouterEtat, SIGNAL("triggered(bool)"), self.ajouterEtat)
@@ -572,8 +580,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         try:
             results_dialog = ResultsDialog(self)
             results_dialog.titleLabel.setText('<b>'+tree.find('Title').text+'</b>')
-            results_dialog.descriptionLabel.setText('<i>'+tree.find('Title').text+'</i>')
-            results_dialog.methodLabel.setText('Methode : '+self.action_group.checkedAction().text())
+            results_dialog.descriptionLabel.setText('<i>'+tree.find('Description').text+'</i>')
+            results_dialog.methodLabel.setText('Méthode : '+tree.find('Method').text)
             états = []
             for element in tree.iter('Etat'):
                 état = Etat(element.attrib['title'])
