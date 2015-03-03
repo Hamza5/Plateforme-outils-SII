@@ -581,15 +581,17 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             results_dialog.resultsTableWidget.horizontalHeader().setStretchLastSection(True)
             results_dialog.resultsTableWidget.horizontalHeader().setResizeMode(QHeaderView.ResizeToContents)
             for hypothèse_element in hypotheses_elements:
+                mass = hypothèse_element.attrib['mass']
                 bel = hypothèse_element.find('Bel').text
                 pl = hypothèse_element.find('Pl').text
                 idf = hypothèse_element.attrib['id']
                 hypothèse_états = [état for état in états if état.id() in idf.split('-')]
                 results_dialog.resultsTableWidget.setItem(i, 0, QTableWidgetItem(str(Hypothese(hypothèse_états))))
-                results_dialog.resultsTableWidget.setItem(i, 1, QTableWidgetItem(bel))
-                results_dialog.resultsTableWidget.setItem(i, 2, QTableWidgetItem(pl))
+                results_dialog.resultsTableWidget.setItem(i, 1, QTableWidgetItem(mass))
+                results_dialog.resultsTableWidget.setItem(i, 2, QTableWidgetItem(bel))
+                results_dialog.resultsTableWidget.setItem(i, 3, QTableWidgetItem(pl))
                 i += 1
-        except ValueError:
+        except (ValueError, KeyError):
             msg = QMessageBox(self)
             msg.setWindowTitle('Erreur')
             msg.setText('<b>Document invalide !</b>')
