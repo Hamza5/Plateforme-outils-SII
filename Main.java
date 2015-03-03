@@ -307,7 +307,7 @@ public class Main{
 				final Document document= builder.newDocument();
     		    final Element racine = document.createElement("DSTO");
     		    racine.setAttribute("xmlns:xsi","http://www.w3.org/2001/XMLSchema-instance");
-    		    racine.setAttribute("xsi:noNamespaceSchemaLocation","validation_output");
+    		    racine.setAttribute("xsi:noNamespaceSchemaLocation","validation_output.xsd");
     		    SchemaFactory xsdf = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
     			DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
     			///////////////////////////////////////////////////////////////////
@@ -361,13 +361,13 @@ public class Main{
     				Etat.setAttribute("title",e.getAttribute("title"));
     			}
     		    NodeList agt2 = données.getElementsByTagName("Hypothese");
-   	   			for(int i=0; i<agt2.getLength(); i++) {
-    				Element e = (Element)(agt2.item(i));
-    				final Element Hypothese = document.createElement("Hypothese");
-    				Hypotheses.appendChild(Hypothese);
-    				Hypothese.setAttribute("id",e.getAttribute("id"));
-    				Hypothese.setAttribute("title",e.getAttribute("title"));
-    			}
+//   	   			for(int i=0; i<agt2.getLength(); i++) {
+//    				Element e = (Element)(agt2.item(i));
+//    				final Element Hypothese = document.createElement("Hypothese");
+//    				Hypotheses.appendChild(Hypothese);
+//    				Hypothese.setAttribute("id",e.getAttribute("id"));
+//    				Hypothese.setAttribute("title",e.getAttribute("title"));
+//    			}
 	             for (Set number1 : vect.keySet()) {
 		    	     double som1=0;
 		    	     for (Set number2 : vect.keySet()) {
@@ -387,7 +387,7 @@ public class Main{
 		        	
 
 		    		    final Element hypo = document.createElement("Hypothese");
-		    		    racine.appendChild(hypo);
+		    		    Hypotheses.appendChild(hypo);
 		    		    hypo.setAttribute("id",number1.toString().substring(1,number1.toString().length()-1).replaceAll(", ", "-"));
 		    		    hypo.setAttribute("mass",df.format(Double.parseDouble(vect.get(number1).toString())));
 		    		    final Element Bel = document.createElement("Bel");
