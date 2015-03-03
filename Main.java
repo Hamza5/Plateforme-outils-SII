@@ -83,26 +83,19 @@ public class Main{
 			    		  if(Vec.get(i).set.equals(intersection)){
 			    			  Vec.get(i).mass=Vec.get(i).mass+temp.mass;
 			    		  }
-			    		  //System.out.println("Vec.get(i).set "+Vec.get(i).set);
-//			    		  if(Vec.get(i).set.toString().equals("[h0]")){
-//			    			  Vec.get(i).mass=k;}
+
 		    	  }
 		     }
 		 }
-		 System.out.println("k = "+k);
+		// System.out.println("k = "+k);
 		 AgentTrans temp = new AgentTrans();
 		for(int i=0;i<Vec.size();i++){
 			if(Vec.get(i).set.size()!=0){//pour eviter l'ensemble vide
-				if(Vec.get(i).set.toString().equals("[h0]")){ Vec.get(i).mass=0;}
-				if((Vec.get(i).set.toString().length()==omegaDetecter)&&count==0){
+				if((Vec.get(i).set.toString().length()==omegaDetecter)&&count==1){
 					
 					Vec.get(i).mass= Vec.get(i).mass+k;
 				}
-				if(Vec.get(i).set.toString().equals("[h0]")){
-				temp.knowleges.put(Vec.get(i).set,(double) 0);
-				System.out.println("mass "+Vec.get(i).mass);
-				System.out.println("omega "+Vec.get(i).set+" k = "+k);}
-				temp.knowleges.put(Vec.get(i).set,Vec.get(i).mass );
+			temp.knowleges.put(Vec.get(i).set,Vec.get(i).mass );
 			}
 		}
 //		 Set<String> kk = new HashSet<String>();
@@ -157,7 +150,7 @@ public class Main{
 			    	  }
 			     }
 			 }
-			 System.out.println("k = "+k);
+			// System.out.println("k = "+k);
 			 AgentTrans temp = new AgentTrans();
 			for(int i=0;i<Vec.size();i++){
 				if(Vec.get(i).set.size()!=0){//pour eviter l'ensemble vide
@@ -263,7 +256,7 @@ public class Main{
 		    	  }
 	    	 }
     	 }
-		 System.out.println("k "+k);
+		// System.out.println("k "+k);
 		k=1-k;
         //Calcul la nouvel masse
 		
@@ -547,6 +540,7 @@ public class Main{
 			         AgentTrans AgentTransTempTest =new AgentTrans();
 			         AgentTransTempTest =Trans(AgentTempTest);
 			         int length=elm.toString().substring(1,elm.toString().length()-1).replaceAll(", ", "-").length();
+			         
 				 // System.out.println("element a rechercher "+elm.toString().substring(1,elm.toString().length()-1).replaceAll(", ", "-"));
 				 //System.out.println("A.knowleges "+A.knowleges);
 				 //System.out.println("tester l'existance "+elm.toString().substring(1,elm.toString().length()-1).replaceAll(", ", "-"));
@@ -556,18 +550,26 @@ public class Main{
 					 //System.out.println("elm "+elm);
 					 //System.out.println("element  "+elm.toString().substring(1,elm.toString().length()-1).replaceAll(", ", "-")+" non trouvé \n");
 					  
-					  if(length==omegaDetecter*2+omegaDetecter-1){
+					  if(omegaDetecter==elm.size()){
+						  
 						 //System.out.println("ensemble "+elm.toString().substring(1,elm.toString().length()-1).replaceAll(", ", "-")+" Avant "+ A.knowleges.get(elm.toString().substring(1,elm.toString().length()-1).replaceAll(", ", "-")));
 						 A.knowleges.put(elm.toString().substring(1,elm.toString().length()-1).replaceAll(", ", "-"),omegaToAdd);
 						 //System.out.println("length "+length+" omegaDetecter+omegaDetecter-1 "+(omegaDetecter*2+omegaDetecter-1)+" omega "+elm+"="+A.knowleges.get(elm.toString().substring(1,elm.toString().length()-1).replaceAll(", ", "-")));
-					 }
+						 
+					  }
 					  else{A.knowleges.put(elm.toString().substring(1,elm.toString().length()-1).replaceAll(", ", "-"),(double) 0);
-					 /* System.out.println("Omega ne faut qu'il soit ici"+elm);*/}
+					  /* System.out.println("Omega ne faut qu'il soit ici"+elm);*/}
 				 }else{
 					 //System.out.println("length "+length+" omegaDetecter*2+omegaDetecter-1 "+(omegaDetecter*2+omegaDetecter-1));
 					 String omegaString = null;
-					 if(length==omegaDetecter*2+omegaDetecter-1){
+
+					 if(omegaDetecter==elm.size()){
+						 
+						  System.out.println("omegaDetecter "+omegaDetecter+" elm.size "+elm.size());
+						  System.out.println("length "+length+" omegaDetecter*2+omegaDetecter-1 "+(omegaDetecter*2+omegaDetecter-1));
+						  
 						  for(String elm2 : A.knowleges.keySet()){if(elm2.length()==length){omegaString=new String(elm2);}}
+						  System.out.println("omegaString "+omegaString);
 						 //for(int i=0;i>A.knowleges.keySet().size();i++){if()}
 						 //System.out.println("Omega mass "+A.knowleges+"omegaToAdd"+omegaToAdd);
 			             
