@@ -43,7 +43,6 @@
 			<xs:element name="Hypothese">
 				<xs:complexType>
 					<xs:attribute name="id" use="required" type="customID"/>
-					<xs:attribute name="title" type="xs:token"/>
 				</xs:complexType>
 			</xs:element>
 		</xs:sequence>
