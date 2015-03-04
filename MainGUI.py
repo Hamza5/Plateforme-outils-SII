@@ -167,7 +167,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         root.append(etats)
         hypotheses = Element('Hypotheses')
         for hypothèse_item in self.hypothesesModel:
-            hypotheses.append(Element('Hypothese', {'id': hypothèse_item.item.id(), 'title': str(hypothèse_item)}))
+            hypotheses.append(Element('Hypothese', {'id': hypothèse_item.item.id()}))
         root.append(hypotheses)
         agents = Element('Agents')
         for agent_item in self.agentsModel:
