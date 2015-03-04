@@ -70,7 +70,8 @@ public class Main{
 		 //Calcul la constante k
 		 //Calcul des nouvels masses
 		 //double k=0;
-		 for (Set number1 : Agt1.knowleges.keySet()) {
+		 laGrandeboucle:for (Set number1 : Agt1.knowleges.keySet()) {
+			 for(int i=0;i<Vec.size();i++){if(Agt1.knowleges.get(number1)==0) {continue laGrandeboucle;}}	
 			 multiHash temp =new multiHash();
 			 for (Set number2 : Agt2.knowleges.keySet()) {
 	    		  Set<String> intersection = new HashSet<String>(number1); // use the copy constructor
@@ -129,9 +130,11 @@ public class Main{
 			 //Calcul la constante k
 			 //Calcul des nouvels masses
 			 double k=0;
-			 for (Set number1 : Agt1.knowleges.keySet()) {
+			 laGrandeboucle	:for (Set number1 : Agt1.knowleges.keySet()) {
+				 for(int i=0;i<Vec.size();i++){if(Agt1.knowleges.get(number1)==0) {continue laGrandeboucle;}}				 
 				 multiHash temp =new multiHash();
 				 for (Set number2 : Agt2.knowleges.keySet()) {
+					// System.out.println("yo");
 		    		  Set<String> intersection = new HashSet<String>(number1); // use the copy constructor
 			    	  intersection.retainAll(number2);
 			    	   temp.set=intersection;
@@ -179,7 +182,8 @@ public class Main{
 			//Calcul la constante k
 			 //Calcul des nouvels masses
 			 double k=0;
-			 for (Set number1 : Agt1.knowleges.keySet()) {
+			 laGrandeboucle:for (Set number1 : Agt1.knowleges.keySet()) {
+				 for(int i=0;i<Vec.size();i++){if(Agt1.knowleges.get(number1)==0) {continue laGrandeboucle;}}
 				 multiHash temp =new multiHash();
 				 multiHash tempUN =new multiHash();
 	    	     for (Set number2 : Agt2.knowleges.keySet()) { 
@@ -240,12 +244,15 @@ public class Main{
 		 //Calcul la constante k
 		 //Calcul des nouvels masses
 		 double k=0;
-		 for (Set number1 : Agt1.knowleges.keySet()) {
-			 multiHash temp =new multiHash();
+		 laGrandeboucle:for (Set number1 : Agt1.knowleges.keySet()) {
+			 for(int i=0;i<Vec.size();i++){if(Agt1.knowleges.get(number1)==0) {continue laGrandeboucle;}}
+	//System.out.println("number1 "+number1);
+		 multiHash temp =new multiHash();
     	     for (Set number2 : Agt2.knowleges.keySet()) { 
+
 	    		  Set<String> intersection = new HashSet<String>(number1); // use the copy constructor
 		    	  intersection.retainAll(number2);
-		    	   temp.set=intersection;
+		    	  temp.set=intersection;
 		    	  temp.mass=Agt1.knowleges.get(number1)*Agt2.knowleges.get(number2);
 		    	  if (intersection.size()==0){k+=temp.mass;}//Calcul la constante k
 		    	  //rechercher cet ensemble dans le tableau
@@ -292,7 +299,7 @@ public class Main{
 		      return AgTran;
 		}
 		//Methode calcul croyance  plausibilité
-		public static void clalculPlBel(AgentTrans Ag,String NomFichierEntrée,String NomFichier) throws IOException{
+		public static void clalculPlBel(AgentTrans Ag,Document données,String NomFichier){
 			try {
 				//System.out.printf("AG BL PL "+Ag.knowleges);
 			    final DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
@@ -303,22 +310,7 @@ public class Main{
     		    racine.setAttribute("xsi:noNamespaceSchemaLocation","validation_output.xsd");
     		    SchemaFactory xsdf = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
     			DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
-    			///////////////////////////////////////////////////////////////////
-    			Document données=null; 
-    			try {
-    				dbf.setSchema(xsdf.newSchema(new File("validation.xsd")));
-    				DocumentBuilder db = dbf.newDocumentBuilder();
-    				données = db.parse(NomFichierEntrée);
-    				 }catch (ParserConfigurationException e) {
-    			            System.out.println("Parser not configured: " + e.getMessage());
-    			        } catch (SAXException e) {
-    			            System.out.print("Parsing XML failed due to a "
-    			                    + e.getClass().getName() + ":");
-    			            System.out.println(e.getMessage());
-    			        } catch (IOException e) {
-    			            System.out.println("IOException thrown");
-    			            e.printStackTrace();
-    			        }
+
 //    			dbf.setSchema(xsdf.newSchema(new File("validation.xsd")));
 //    			DocumentBuilder db = dbf.newDocumentBuilder();
 //    			Document données = db.parse(NomFichierEntrée);
@@ -389,23 +381,25 @@ public class Main{
 		    		    hypo.appendChild(Pl);
 		    		    Bel.appendChild(document.createTextNode(df.format(som1)));
 		    		    Pl.appendChild(document.createTextNode(df.format(som2)));
-		    		    final DOMSource source = new DOMSource(document);
-		    		    final TransformerFactory transformerFactory = TransformerFactory.newInstance();
-		         	    final Transformer transformer = transformerFactory.newTransformer();
-		         	    final StreamResult sortie = new StreamResult(new File(NomFichier));
+		    		    
 		         	
-		         		 //prologue
-		         	    transformer.setOutputProperty(OutputKeys.VERSION, "1.0");
-		         	    transformer.setOutputProperty(OutputKeys.ENCODING, "UTF-8");
-		         	    transformer.setOutputProperty(OutputKeys.STANDALONE, "yes");
-		         	    		
-		         	    //formatage
-		         	    transformer.setOutputProperty(OutputKeys.INDENT, "yes");
-		         	    transformer.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "2");
 
-		         	    //sortie
-		         	    transformer.transform(source, sortie);
 		    	  }
+	             	final DOMSource source = new DOMSource(document);
+	    		    final TransformerFactory transformerFactory = TransformerFactory.newInstance();
+	         	    final Transformer transformer = transformerFactory.newTransformer();
+	         	    final StreamResult sortie = new StreamResult(new File(NomFichier));
+         		 //prologue
+	         	    transformer.setOutputProperty(OutputKeys.VERSION, "1.0");
+	         	    transformer.setOutputProperty(OutputKeys.ENCODING, "UTF-8");
+	         	    transformer.setOutputProperty(OutputKeys.STANDALONE, "yes");
+	         	    		
+	         	    //formatage
+	         	    transformer.setOutputProperty(OutputKeys.INDENT, "yes");
+	         	    transformer.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "2");
+
+	         	    //sortie
+	         	    transformer.transform(source, sortie);
 	     	}
 		    catch (final ParserConfigurationException e) {e.printStackTrace();}
 			catch (TransformerConfigurationException e) {e.printStackTrace();}
@@ -426,7 +420,6 @@ public class Main{
 		        return all;
 		    }
 
-		    //Assuming that T[] is an array with no repeated elements ...
 		    public static Set<Set<String>> powerSet(Vector input) {
 		     if (input.size() == 0) {
 		            Set <Set<String>>emptySet = new LinkedHashSet<>();
@@ -443,7 +436,7 @@ public class Main{
 
 		        return all;
 		    }
-	public static void main(String[] args) throws  IOException {
+	public static void main(String[] args) {
       
 		if(args.length!=2){Runtime.getRuntime().exit(1);}
 		HashSet<Agent> hashSet = new HashSet<Agent>();
@@ -565,11 +558,11 @@ public class Main{
 
 					 if(omegaDetecter==elm.size()){
 						 
-						  System.out.println("omegaDetecter "+omegaDetecter+" elm.size "+elm.size());
-						  System.out.println("length "+length+" omegaDetecter*2+omegaDetecter-1 "+(omegaDetecter*2+omegaDetecter-1));
+//						  System.out.println("omegaDetecter "+omegaDetecter+" elm.size "+elm.size());
+//						  System.out.println("length "+length+" omegaDetecter*2+omegaDetecter-1 "+(omegaDetecter*2+omegaDetecter-1));
 						  
 						  for(String elm2 : A.knowleges.keySet()){if(elm2.length()==length){omegaString=new String(elm2);}}
-						  System.out.println("omegaString "+omegaString);
+//						  System.out.println("omegaString "+omegaString);
 						 //for(int i=0;i>A.knowleges.keySet().size();i++){if()}
 						 //System.out.println("Omega mass "+A.knowleges+"omegaToAdd"+omegaToAdd);
 			             
@@ -599,7 +592,7 @@ public class Main{
 		}    
 				Iterator<Agent> it = hashSet.iterator();
 				if(hashSet.size()==1){
-					clalculPlBel(Trans(it.next()),args[0],args[1]);
+					clalculPlBel(Trans(it.next()),données,args[1]);
 					 }
 				else{
 					if(hashSet.size()>=1){
@@ -609,22 +602,15 @@ public class Main{
 					while (it.hasNext()) {
 						count--;
 						AgentTrans ag=Trans(it.next());
-//						System.out.println("AgTr AV"+AgTr.knowleges);
-//						System.out.println("ag AV"+ag.knowleges);
 						if (choix==1){AgTr=MultiAg(AgTr,ag);}//Calculer le Multi Agent Dempster and Shaver
 						if (choix==2){AgTr=MultiAgDuboisPrade(AgTr,ag);}//Calculer le Multi Agent Dubois Prade
 						if (choix==3){AgTr=MultiAgSmets(AgTr,ag);}//Calculer le Multi Agent Smets
 						if (choix==4){AgTr=MultiAgYager(AgTr,ag,count);}//Calculer le Multi Agent Yager
 						 Set set = ag.knowleges.entrySet();
 				         Iterator iterator = set.iterator();
-//				         while(iterator.hasNext()) {
-					       //  Map.Entry mentry = (Map.Entry)iterator.next();
-					        // System.out.print("key is: "+ mentry.getKey() + " & Value is: ");//Affichage pour tester
-					         //System.out.println(mentry.getValue());
-//				        }
 					 }
 					
-					clalculPlBel(AgTr,args[0],args[1]);//Appler la fonction pour calcul Bel et Pl et creer le fichier xml
+					clalculPlBel(AgTr,données,args[1]);//Appler la fonction pour calcul Bel et Pl et creer le fichier xml
 				}
 			        }
 		//System.exit 0 pas d'erreur
