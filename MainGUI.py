@@ -2,11 +2,12 @@
 import sys
 import re
 import subprocess
+from os.path import join
 
 try:
     from PyQt4.QtGui import QApplication, QMainWindow, QActionGroup, QDialog, QStandardItem, QStandardItemModel, \
-        QInputDialog, QHeaderView, QLineEdit, QMessageBox, QFileDialog, QCloseEvent, QTableWidgetItem
-    from PyQt4.QtCore import SIGNAL, QModelIndex, Qt
+        QInputDialog, QHeaderView, QLineEdit, QMessageBox, QFileDialog, QCloseEvent, QTableWidgetItem, QMovie
+    from PyQt4.QtCore import SIGNAL, QModelIndex, Qt, QThread
 except ImportError as e:
     print('Can not use PyQt4 !', e.msg, file=sys.stderr, sep='\n')
     sys.exit(2)
@@ -26,6 +27,7 @@ from UI.AgentDialog import Ui_agentDialog
 from UI.MasseDialog import Ui_masseDialog
 from UI.DescriptionDialog import Ui_descriptionDialog
 from UI.ResultatsDialog import Ui_resultsDialog
+from UI.WaitDialog import Ui_waitDialog
 import HelperClasses.Etat
 import HelperClasses.Agent
 
@@ -46,6 +48,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.executable = 'Main'  # Command of the engine executable
         self.input = 'input.dsti.xml'  # Input file for calculation
         self.output = 'output.dsto.xml'  # Output file of calculation
+        self.round_digits = 3
 
         # Make methods actions mutually-exclusives :
         self.action_group = QActionGroup(self)
@@ -551,11 +554,15 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                 return
             self.enregistrer(self.input)
         try:
-            subprocess.call(['java', '-cp',  '.', self.executable, self.input, self.output])
+            args = ['java', '-cp',  '.', self.executable, self.input, self.output]
+            wait_dialog = WaitDialog(self)
+            launcher = ProgramLauncher(self, args, wait_dialog)
+            wait_dialog.process = launcher
+            if wait_dialog.exec_() == QDialog.Accepted:
+                self.afficher(self.output)
         except OSError as e:
             QMessageBox.critical(self, 'Erreur', 'Impossible de lancer le programme de calcul\n'+e.filename)
             return
-        self.afficher(self.output)
 
     def afficher(self, path=None):
         if not path:
@@ -592,15 +599,15 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             results_dialog.resultsTableWidget.horizontalHeader().setStretchLastSection(True)
             results_dialog.resultsTableWidget.horizontalHeader().setResizeMode(QHeaderView.ResizeToContents)
             for hypothèse_element in hypotheses_elements:
-                mass = hypothèse_element.attrib['mass']
-                bel = hypothèse_element.find('Bel').text
-                pl = hypothèse_element.find('Pl').text
+                mass = round(float(hypothèse_element.attrib['mass']), self.round_digits)
+                bel = round(float(hypothèse_element.find('Bel').text), self.round_digits)
+                pl = round(float(hypothèse_element.find('Pl').text), self.round_digits)
                 idf = hypothèse_element.attrib['id']
                 hypothèse_états = [état for état in états if état.id() in idf.split('-')]
                 results_dialog.resultsTableWidget.setItem(i, 0, QTableWidgetItem(str(Hypothese(hypothèse_états))))
-                results_dialog.resultsTableWidget.setItem(i, 1, QTableWidgetItem(mass))
-                results_dialog.resultsTableWidget.setItem(i, 2, QTableWidgetItem(bel))
-                results_dialog.resultsTableWidget.setItem(i, 3, QTableWidgetItem(pl))
+                results_dialog.resultsTableWidget.setItem(i, 1, QTableWidgetItem(str(mass)))
+                results_dialog.resultsTableWidget.setItem(i, 2, QTableWidgetItem(str(bel)))
+                results_dialog.resultsTableWidget.setItem(i, 3, QTableWidgetItem(str(pl)))
                 i += 1
         except (ValueError, KeyError):
             msg = QMessageBox(self)
@@ -865,6 +872,37 @@ class ResultsDialog(QDialog, Ui_resultsDialog):
     def __init__(self, parent: MainWindow):
         super(ResultsDialog, self).__init__(parent)
         self.setupUi(self)
+
+
+class WaitDialog(QDialog, Ui_waitDialog):
+    def __init__(self, parent: MainWindow):
+        super(WaitDialog, self).__init__(parent)
+        self.setupUi(self)
+        self.process = None
+        self.iconLabel.setMovie(QMovie(join('UI', 'loader.gif')))
+
+    def exec_(self):
+        self.connect(self, SIGNAL('rejected()'), self.process.quit)
+        self.iconLabel.movie().start()
+        self.process.start()
+        return super(WaitDialog, self).exec_()
+
+
+class ProgramLauncher(QThread):
+    def __init__(self, parent: MainWindow, args: list, wait_dialog: WaitDialog):
+        super(ProgramLauncher, self).__init__(parent)
+        self.process = None
+        self.args = args
+        self.dialog = wait_dialog
+        self.connect(self, SIGNAL('finished()'), self.dialog.accept)
+
+    def run(self):
+        with subprocess.Popen(self.args) as self.process:
+            self.process.wait()
+
+    def quit(self):
+        self.process.terminate()
+        super(ProgramLauncher, self).quit()
 
 
 class ObjectItem(QStandardItem):
