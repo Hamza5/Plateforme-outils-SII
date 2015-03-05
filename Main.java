@@ -80,9 +80,9 @@ public class Main{
 		    	 temp.mass=Agt1.knowleges.get(number1)*Agt2.knowleges.get(number2);
 		    	  if (intersection.size()==0){k+=temp.mass;}//Calcul la constante k
 		    	  //rechercher cet ensemble dans le tableau
-		    	  for(int i=0;i<Vec.size();i++){
+		    	  loop: for(int i=0;i<Vec.size();i++){
 			    		  if(Vec.get(i).set.equals(intersection)){
-			    			  Vec.get(i).mass=Vec.get(i).mass+temp.mass;
+			    			  Vec.get(i).mass=Vec.get(i).mass+temp.mass;break loop;
 			    		  }
 
 		    	  }
@@ -197,15 +197,15 @@ public class Main{
 			    	  
 			    	  if (intersection.size()==0){k+=temp.mass;}//Calcul la constante k
 			    	  //rechercher cet ensemble dans le tableau
-			    	  for(int i=0;i<Vec.size();i++){
+			    	  loop1 :for(int i=0;i<Vec.size();i++){
 			    		  
 				    		  if(Vec.get(i).set.equals(intersection)) {
-				    			  Vec.get(i).mass=Vec.get(i).mass+temp.mass;
+				    			  Vec.get(i).mass=Vec.get(i).mass+temp.mass;break loop1;
 				    		  }
 			    	  }
-			    	  for(int i=0;i<Vec.size();i++){
+			    	  loop2: for(int i=0;i<Vec.size();i++){
 			    		  if(Vec.get(i).set.equals(tempUN.set)&&intersection.size()==0){
-			    			  Vec.get(i).mass=Vec.get(i).mass+temp.mass;
+			    			  Vec.get(i).mass=Vec.get(i).mass+temp.mass;break loop2;
 			    		  }
 		    	     }
 		    	 }
@@ -256,9 +256,9 @@ public class Main{
 		    	  temp.mass=Agt1.knowleges.get(number1)*Agt2.knowleges.get(number2);
 		    	  if (intersection.size()==0){k+=temp.mass;}//Calcul la constante k
 		    	  //rechercher cet ensemble dans le tableau
-		    	  for(int i=0;i<Vec.size();i++){
+		    	  loop:for(int i=0;i<Vec.size();i++){
 			    		  if(Vec.get(i).set.equals(intersection)){
-			    			  Vec.get(i).mass=Vec.get(i).mass+temp.mass;
+			    			  Vec.get(i).mass=Vec.get(i).mass+temp.mass;break loop;
 			    		  }
 		    	  }
 	    	 }
