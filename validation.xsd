@@ -7,7 +7,7 @@
 		<xs:complexType>
 			<xs:sequence>
 				<xs:element name="Title" type="xs:token"/>
-				<xs:element name="Description" type="xs:token"/>
+				<xs:element name="Description" type="xs:string"/>
 				<xs:element name="Method" type="methodType"/>
 				<xs:element name="Etats" type="etatsType"/>
 				<xs:element name="Hypotheses" type="hypothesesType"/>

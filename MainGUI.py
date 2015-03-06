@@ -2,7 +2,7 @@
 import sys
 import re
 import subprocess
-from os.path import join
+from os.path import join, splitext
 
 try:
     from PyQt4.QtGui import QApplication, QMainWindow, QActionGroup, QDialog, QStandardItem, QStandardItemModel, \
@@ -194,6 +194,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             file.close()
             self.setUnmodified()
             self.input = file_path
+            self.output = splitext(splitext(self.input)[0])[0] + '.dsto.xml'
             return True
         except OSError as e:
             QMessageBox.critical(self, 'Erreur', '<b>Impossible de sauvegarder le fichier '+e.filename+'</b>')
@@ -310,6 +311,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                     raise ValueError
             HelperClasses.Agent.idf = highest_id+1
             self.input = file_path
+            self.output = splitext(splitext(self.input)[0])[0] + '.dsto.xml'
         except Exception:
             self.nouveau()
             msg = QMessageBox(self)
