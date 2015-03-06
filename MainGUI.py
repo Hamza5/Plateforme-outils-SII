@@ -61,6 +61,15 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.actionSmets.setData('Smets')
         self.actionYager.setData('Yager')
 
+        # Make decision actions mutually-exclusives :
+        self.action_group2 = QActionGroup(self)
+        self.action_group2.addAction(self.actionOptimiste)
+        self.action_group2.addAction(self.actionPessimiste)
+        self.action_group2.addAction(self.actionPignistique)
+        self.actionOptimiste.setData('Optimiste')
+        self.actionPessimiste.setData('Pessimiste')
+        self.actionPignistique.setData('Pignistique')
+
         # Center the main window on the screen
         self.move(QApplication.desktop().availableGeometry().center() - self.rect().center())
 
@@ -131,6 +140,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         # Empty the models
         self.title = self.untitled
         self.description = ''
+        self.actionDempster_Shafer.setChecked(True)
+        self.actionOptimiste.setChecked(True)
         self.etatsModel.clear()
         self.hypothesesModel.clear()
         self.agentsModel.clear()
@@ -164,6 +175,9 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         method = Element('Method')
         method.text = self.action_group.checkedAction().data()
         root.append(method)
+        decision = Element('Decision')
+        decision.text = self.action_group2.checkedAction().data()
+        root.append(decision)
         etats = Element('Etats')
         for état_item in self.etatsModel:
             etats.append(Element('Etat', {'id': état_item.item.id(), 'title': str(état_item)}))
@@ -248,6 +262,11 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                 if method == action.data():
                     action.setChecked(True)
                     break
+            decision = tree.find('Decision').text
+            for action in self.action_group2.actions():
+                if decision == action.data():
+                    action.setChecked(True)
+                    break
             # Les états
             highest_id = 0  # For états
             for element in tree.iter('Etat'):
@@ -312,7 +331,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             HelperClasses.Agent.idf = highest_id+1
             self.input = file_path
             self.output = splitext(splitext(self.input)[0])[0] + '.dsto.xml'
-        except Exception:
+        except (ValueError, KeyError, AttributeError):
             self.nouveau()
             msg = QMessageBox(self)
             msg.setWindowTitle('Erreur')
@@ -583,14 +602,16 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                 msg.setInformativeText('Le fichier contient des erreurs')
                 msg.setIcon(QMessageBox.Critical)
                 msg.exec_()
+                return
         except NameError:
             pass
         i = 0
         try:
             results_dialog = ResultsDialog(self)
             results_dialog.titleLabel.setText('<b>'+tree.find('Title').text+'</b>')
-            results_dialog.descriptionLabel.setText('<i>'+tree.find('Description').text+'</i>')
-            results_dialog.methodLabel.setText('Méthode : '+tree.find('Method').text)
+            results_dialog.descriptionLabel.setText('<i>'+tree.find('Description').text.replace('\n', '<br>')+'</i>')
+            results_dialog.methodLabel.setText('Méthode de fusion : '+tree.find('Method').text)
+            results_dialog.decisionMethodLabel.setText('Méthode de décision : '+tree.find('Decision').text)
             états = []
             for element in tree.iter('Etat'):
                 état = Etat(element.attrib['title'])
@@ -611,7 +632,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                 results_dialog.resultsTableWidget.setItem(i, 2, QTableWidgetItem(str(bel)))
                 results_dialog.resultsTableWidget.setItem(i, 3, QTableWidgetItem(str(pl)))
                 i += 1
-        except (ValueError, KeyError):
+        except (ValueError, KeyError, AttributeError):
             msg = QMessageBox(self)
             msg.setWindowTitle('Erreur')
             msg.setText('<b>Document invalide !</b>')

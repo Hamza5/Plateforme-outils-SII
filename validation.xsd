@@ -9,6 +9,7 @@
 				<xs:element name="Title" type="xs:token"/>
 				<xs:element name="Description" type="xs:string"/>
 				<xs:element name="Method" type="methodType"/>
+                <xs:element name="Decision" type="decisionType"/>
 				<xs:element name="Etats" type="etatsType"/>
 				<xs:element name="Hypotheses" type="hypothesesType"/>
 				<xs:element name="Agents" type="agentsType"/>
@@ -26,6 +27,14 @@
             <xs:enumeration value="Yager"/>
 		</xs:restriction>
 	</xs:simpleType>
+    
+    <xs:simpleType name="decisionType">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="Optimiste"/>
+			<xs:enumeration value="Pessimiste"/>
+			<xs:enumeration value="Pignistique"/>
+        </xs:restriction>
+    </xs:simpleType>
 	
 	<xs:complexType name="etatsType">
 		<xs:sequence maxOccurs="unbounded">

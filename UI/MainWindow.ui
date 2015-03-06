@@ -95,18 +95,6 @@
     <property name="title">
      <string>&amp;Projet</string>
     </property>
-    <widget class="QMenu" name="menuM_thode_de_calcule">
-     <property name="locale">
-      <locale language="French" country="France"/>
-     </property>
-     <property name="title">
-      <string>&amp;Méthode de calcule</string>
-     </property>
-     <addaction name="actionDempster_Shafer"/>
-     <addaction name="actionDubois_Prade"/>
-     <addaction name="actionSmets"/>
-     <addaction name="actionYager"/>
-    </widget>
     <widget class="QMenu" name="menuHypotheses">
      <property name="locale">
       <locale language="French" country="France"/>
@@ -138,11 +126,32 @@
      <addaction name="actionAjouterEtat"/>
      <addaction name="actionSupprimerEtat"/>
     </widget>
+    <widget class="QMenu" name="menuM_thode_de_d_cision">
+     <property name="title">
+      <string>Méthode de décision</string>
+     </property>
+     <addaction name="actionOptimiste"/>
+     <addaction name="actionPessimiste"/>
+     <addaction name="actionPignistique"/>
+    </widget>
+    <widget class="QMenu" name="menuM_thode_de_calcule">
+     <property name="locale">
+      <locale language="French" country="France"/>
+     </property>
+     <property name="title">
+      <string>&amp;Méthode de fusion</string>
+     </property>
+     <addaction name="actionDempster_Shafer"/>
+     <addaction name="actionDubois_Prade"/>
+     <addaction name="actionSmets"/>
+     <addaction name="actionYager"/>
+    </widget>
     <addaction name="actionTitre"/>
     <addaction name="actionDescription"/>
     <addaction name="separator"/>
-    <addaction name="separator"/>
     <addaction name="menuM_thode_de_calcule"/>
+    <addaction name="menuM_thode_de_d_cision"/>
+    <addaction name="separator"/>
     <addaction name="menuEtats_du_monde"/>
     <addaction name="menuHypotheses"/>
     <addaction name="menuAgents"/>
@@ -393,10 +402,39 @@
   </action>
   <action name="actionOuvrir_des_resultats">
    <property name="icon">
-    <iconset theme="document-import"/>
+    <iconset theme="document-import">
+     <normaloff/>
+    </iconset>
    </property>
    <property name="text">
     <string>Ouvrir des &amp;résultats</string>
+   </property>
+  </action>
+  <action name="actionOptimiste">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="checked">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Optimiste</string>
+   </property>
+  </action>
+  <action name="actionPessimiste">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Pessimiste</string>
+   </property>
+  </action>
+  <action name="actionPignistique">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Pignistique</string>
    </property>
   </action>
  </widget>

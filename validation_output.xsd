@@ -6,7 +6,8 @@
             <xs:sequence>
                 <xs:element name="Title" type="xs:token"/>
                 <xs:element name="Description" type="xs:string"/>
-                <xs:element name="Method" type="xs:token"/>
+                <xs:element name="Method" type="methodType"/>
+                <xs:element name="Decision" type="decisionType"/>
                 <xs:element name="Etats">
                     <xs:complexType>
                         <xs:sequence maxOccurs="unbounded">
@@ -57,5 +58,22 @@
 			<xs:pattern value="([a-zA-Z])+\d+(-([a-zA-Z])+\d+)*"/>
 		</xs:restriction>
 	</xs:simpleType>
+
+    <xs:simpleType name="methodType">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="Dempster-Shafer"/>
+			<xs:enumeration value="Smets"/>
+			<xs:enumeration value="Dubois-Prade"/>
+            <xs:enumeration value="Yager"/>
+		</xs:restriction>
+	</xs:simpleType>
+
+    <xs:simpleType name="decisionType">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="Optimiste"/>
+			<xs:enumeration value="Pessimiste"/>
+			<xs:enumeration value="Pignistique"/>
+        </xs:restriction>
+    </xs:simpleType>
 
 </xs:schema>

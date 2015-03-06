@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'ResultatsDialog.ui'
 #
-# Created: Tue Mar  3 11:44:49 2015
+# Created: Fri Mar  6 15:28:12 2015
 #      by: PyQt4 UI code generator 4.10.4
 #
 # WARNING! All changes made in this file will be lost!
@@ -57,6 +57,12 @@ class Ui_resultsDialog(object):
         item = QtGui.QTableWidgetItem()
         self.resultsTableWidget.setHorizontalHeaderItem(3, item)
         self.verticalLayout.addWidget(self.resultsTableWidget)
+        self.decisionMethodLabel = QtGui.QLabel(resultsDialog)
+        self.decisionMethodLabel.setObjectName(_fromUtf8("decisionMethodLabel"))
+        self.verticalLayout.addWidget(self.decisionMethodLabel)
+        self.decisionLabel = QtGui.QLabel(resultsDialog)
+        self.decisionLabel.setObjectName(_fromUtf8("decisionLabel"))
+        self.verticalLayout.addWidget(self.decisionLabel)
         self.buttonBox = QtGui.QDialogButtonBox(resultsDialog)
         self.buttonBox.setStandardButtons(QtGui.QDialogButtonBox.Ok)
         self.buttonBox.setCenterButtons(True)
@@ -71,7 +77,7 @@ class Ui_resultsDialog(object):
         resultsDialog.setWindowTitle(_translate("resultsDialog", "Résultats", None))
         self.titleLabel.setText(_translate("resultsDialog", "Titre", None))
         self.descriptionLabel.setText(_translate("resultsDialog", "Description", None))
-        self.methodLabel.setText(_translate("resultsDialog", "Method", None))
+        self.methodLabel.setText(_translate("resultsDialog", "Méthod de fusion", None))
         item = self.resultsTableWidget.horizontalHeaderItem(0)
         item.setText(_translate("resultsDialog", "Hypothèse", None))
         item = self.resultsTableWidget.horizontalHeaderItem(1)
@@ -80,4 +86,6 @@ class Ui_resultsDialog(object):
         item.setText(_translate("resultsDialog", "Croyance", None))
         item = self.resultsTableWidget.horizontalHeaderItem(3)
         item.setText(_translate("resultsDialog", "Plausibilité", None))
+        self.decisionMethodLabel.setText(_translate("resultsDialog", "Méthode de décision", None))
+        self.decisionLabel.setText(_translate("resultsDialog", "Décision", None))
 
