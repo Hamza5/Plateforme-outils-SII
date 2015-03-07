@@ -462,6 +462,29 @@ public class Main{
 		NodeList agt = données.getElementsByTagName("Agent");
 		for(int i=0; i<agt.getLength(); i++) agents.add((Element)agt.item(i));
 	    boolean AgentVerifier=false;
+	     	Vector HopoGen=new Vector(); 
+		//Lecture des Hypotheses integrer les Hypotheses avec des masses nulles 
+		HashSet<Element> Etats = new HashSet<>();
+		NodeList hyposs = données.getElementsByTagName("Etats");
+		for(int i=0; i<hyposs.getLength(); i++) Etats.add((Element)hyposs.item(i));
+		int omegaDetecter =0;
+		for(Element b : Etats){
+			NodeList Etat =  b.getElementsByTagName("Etat");
+			for(int i=0; i<Etat.getLength(); i++){
+				Element e1 = (Element)(Etat.item(i));
+				omegaDetecter++;
+				HopoGen.add(e1.getAttribute("id")); 
+				//System.out.printf("Hypothèse %s masse = %s%n", e.getAttribute("id"), e.getAttribute("mass"));
+//				if(!A.knowleges.containsKey(e1.getAttribute("id"))){
+//					A.knowleges.put(e1.getAttribute("id"),(double) 0);//Ajouter pour chaque agent l'Hypothese non ewistante avec mass=0 
+//				}
+			}
+		}
+			Set<Set<String>> setTest = powerSet(HopoGen);
+		    Set<String> outputSet = new LinkedHashSet<>();
+            outputSet.add("h0");
+            setTest.add(outputSet);
+            
 		for(Element a : agents){
 			//System.out.printf("Agent : %s%n", a.getAttribute("id"));
 			if (a.getAttribute("disabled").equals("true")){continue;}//condition pour éliminer les agent desactivés 
@@ -494,33 +517,7 @@ public class Main{
    	    
             //System.out.println("massVerif "+(float)massVerifier+" round "+df.format(massVerifier));
 			if( ((float)massVerifier)>1){/*System.out.println("massVerif "+massVerifier);*/Runtime.getRuntime().exit(2);}
-   	     	Vector HopoGen=new Vector(); 
-			//Lecture des Hypotheses integrer les Hypotheses avec des masses nulles 
-			HashSet<Element> Etats = new HashSet<>();
-			NodeList hyposs = données.getElementsByTagName("Etats");
-			for(int i=0; i<hyposs.getLength(); i++) Etats.add((Element)hyposs.item(i));
-			int omegaDetecter =0;
-			for(Element b : Etats){
-				NodeList Etat =  b.getElementsByTagName("Etat");
-				for(int i=0; i<Etat.getLength(); i++){
-					Element e1 = (Element)(Etat.item(i));
-					omegaDetecter++;
-					HopoGen.add(e1.getAttribute("id")); 
-					//System.out.printf("Hypothèse %s masse = %s%n", e.getAttribute("id"), e.getAttribute("mass"));
-//					if(!A.knowleges.containsKey(e1.getAttribute("id"))){
-//						A.knowleges.put(e1.getAttribute("id"),(double) 0);//Ajouter pour chaque agent l'Hypothese non ewistante avec mass=0 
-//					}
-				}
-			}
-			
-			
-			
-			  Set<Set<String>> setTest = powerSet(HopoGen);
-			  
-			
-			  Set<String> outputSet = new LinkedHashSet<>();
-	            outputSet.add("h0");
-	            setTest.add(outputSet);
+
 	            //System.out.println("A "+setTest);
 			  if(massVerifier < 1){/*System.out.print("omegaToAdd avent "+omegaToAdd);*/omegaToAdd+=(1-massVerifier);/* System.out.println("massVerifier "+(massVerifier)+" omegaToAdd "+(float)omegaToAdd);*/}//Ajouter la difference entre la somme des masses et 1
 		         
@@ -589,7 +586,7 @@ public class Main{
 			choix = 3;break; 
 		case "Yager":
 			choix = 4;break; 
-		}    
+		}
 				Iterator<Agent> it = hashSet.iterator();
 				if(hashSet.size()==1){
 					clalculPlBel(Trans(it.next()),données,args[1]);
