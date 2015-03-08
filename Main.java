@@ -324,10 +324,13 @@ public class Main{
     		    racine.appendChild(Description);	
     		    final Element Method = document.createElement("Method");
     		    racine.appendChild(Method);
+     		    final Element Decision = document.createElement("Decision");
+    		    racine.appendChild(Decision);
     		    final Element Etats = document.createElement("Etats");
     		    racine.appendChild(Etats);
     		    final Element Hypotheses = document.createElement("Hypotheses");
     		    racine.appendChild(Hypotheses);
+  
     		    
     		    final NodeList racineNoeuds = données.getChildNodes();
     		    final Element ElementAEcrire = (Element) racineNoeuds.item(0);
@@ -337,54 +340,91 @@ public class Main{
     		    Description.appendChild(document.createTextNode(nom.getTextContent()));
     		    nom = (Element) ElementAEcrire.getElementsByTagName("Method").item(0);
     		    Method.appendChild(document.createTextNode(nom.getTextContent()));
+    		    Element DecisionGrab = (Element) ElementAEcrire.getElementsByTagName("Decision").item(0);
+                Decision.appendChild(document.createTextNode(DecisionGrab.getTextContent()));
+     		   
+    		    String DecisionStr = new String(DecisionGrab.getTextContent());
+    		    
     		    NodeList agt = données.getElementsByTagName("Etat");
-   	   			for(int i=0; i<agt.getLength(); i++) {
+    		    double maxDecision1=0;
+    		    double maxDecision2=0;
+    		    int choix =0; 
+    		    Set <String> setDeci = null;
+	             System.out.println("DecisionStr "+DecisionStr+" "+choix+" Optimiste "+" Pessimsite " +" Pignistique" ); 
+    		    switch (DecisionStr){
+    		    case "Optimiste" :choix=0;break;
+    		    case "Pessimiste" :choix=1;break;
+    		    case "Pignistique" :choix=2;break;
+    		    }
+
+    		    for(int i=0; i<agt.getLength(); i++) {
     				Element e = (Element)(agt.item(i));
     				final Element Etat = document.createElement("Etat");
     				Etats.appendChild(Etat);
     				Etat.setAttribute("id",e.getAttribute("id"));
-    				Etat.setAttribute("title",e.getAttribute("title"));
-    			}
-    		    NodeList agt2 = données.getElementsByTagName("Hypothese");
-//   	   			for(int i=0; i<agt2.getLength(); i++) {
-//    				Element e = (Element)(agt2.item(i));
-//    				final Element Hypothese = document.createElement("Hypothese");
-//    				Hypotheses.appendChild(Hypothese);
-//    				Hypothese.setAttribute("id",e.getAttribute("id"));
-//    				Hypothese.setAttribute("title",e.getAttribute("title"));
-//    			}
+    				Etat.setAttribute("title",e.getAttribute("title"));}
+
+    		     HashMap <String, Double> vectSingleton = new HashMap<String, Double>();
 	             for (Set number1 : vect.keySet()) {
 		    	     double som1=0;
 		    	     for (Set number2 : vect.keySet()) {
 		    	    	 if(number1.containsAll(number2)){som1=som1+ vect.get(number2);}
 		    	     }
 		    	     double som2=0;
+		    	     double som2Decision =0;
 		    	     for (Set number3 : vect.keySet()) {
 			    		  Set<String> intersection = new HashSet<String>(number1); // use the copy constructor
 				    	  intersection.retainAll(number3);
-			    		  if(intersection.size()!=0){som2=som2+ vect.get(number3);}
+			    		  if(intersection.size()!=0){som2=som2+ vect.get(number3);
+			    		  if(choix==2){som2Decision+=vect.get(number3)/number3.size();}
+			    			  }
+			    		  
 		    	     }
 		    	     //arrondir à 4 chiffres après la virgule
 		    	     DecimalFormat df = new DecimalFormat ();
 		    	     df.setMaximumFractionDigits (10);
 		    	   
 	                 //Creation du fichier xml
-		        	
 
 		    		    final Element hypo = document.createElement("Hypothese");
 		    		    Hypotheses.appendChild(hypo);
 		    		    hypo.setAttribute("id",number1.toString().substring(1,number1.toString().length()-1).replaceAll(", ", "-"));
-		    		    hypo.setAttribute("mass",df.format(Double.parseDouble(vect.get(number1).toString())));
+		    		    hypo.setAttribute("mass",df.format(Double.parseDouble(vect.get(number1).toString())).toString().replaceAll(",","."));
 		    		    final Element Bel = document.createElement("Bel");
 		    		    final Element Pl = document.createElement("Pl");
 		    		    hypo.appendChild(Bel);
 		    		    hypo.appendChild(Pl);
-		    		    Bel.appendChild(document.createTextNode(df.format(som1)));
-		    		    Pl.appendChild(document.createTextNode(df.format(som2)));
+		    		    Bel.appendChild(document.createTextNode(df.format(som1).toString().replaceAll(",",".")));
+		    		    Pl.appendChild(document.createTextNode(df.format(som2).toString().replaceAll(",",".")));
+		    		    if(choix==0&&(number1.size()==1)&&(maxDecision2<som2)){
+		    		    	maxDecision2=som2;
+		    		    	setDeci=number1;}
+			             System.out.println("choix "+choix ); 
+		    		    if(choix==1&&(number1.size()==1)&&(maxDecision1<som1)){
+		    		    	maxDecision1=som1;
+		    		    	setDeci=number1;}
+			             System.out.println("Som1 "+maxDecision1 ); 
+			             System.out.println("Som2 "+maxDecision2 ); 
+		    		    if((choix==2)&&(number1.size()==1)){vectSingleton.put(number1.toString().substring(1,number1.toString().length()-1),som2Decision );}
 		    		    
-		         	
+		    		}
+	             if(choix==2){
+	            	 double max=0 ;
+	            	 Set <String> temp = new HashSet<String>();
+	    		    for(String setMax : vectSingleton.keySet()) {
+	    		    	if(max<vectSingleton.get(setMax)){
+	    		    		max=vectSingleton.get(setMax);
+	    		    		temp.clear();
+	    		    		//temp=null;
+	    		    		temp.add(setMax);
+	    		    		setDeci=temp;}
+	    				}
+		             System.out.printf("max "+max ); 
+	    		     }
 
-		    	  }
+	             	final Element ResultatDecision = document.createElement("ResultatDecision");
+	    		    racine.appendChild(ResultatDecision);
+	    		    ResultatDecision.appendChild(document.createTextNode(setDeci.toString().substring(1,setDeci.toString().length()-1)));
 	             	final DOMSource source = new DOMSource(document);
 	    		    final TransformerFactory transformerFactory = TransformerFactory.newInstance();
 	         	    final Transformer transformer = transformerFactory.newTransformer();
