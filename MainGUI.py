@@ -627,10 +627,13 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                 pl = round(float(hypothèse_element.find('Pl').text), self.round_digits)
                 idf = hypothèse_element.attrib['id']
                 hypothèse_états = [état for état in états if état.id() in idf.split('-')]
-                results_dialog.resultsTableWidget.setItem(i, 0, QTableWidgetItem(str(Hypothese(hypothèse_états))))
+                hypothèse = Hypothese(hypothèse_états)
+                results_dialog.resultsTableWidget.setItem(i, 0, QTableWidgetItem(str(hypothèse)))
                 results_dialog.resultsTableWidget.setItem(i, 1, QTableWidgetItem(str(mass)))
                 results_dialog.resultsTableWidget.setItem(i, 2, QTableWidgetItem(str(bel)))
                 results_dialog.resultsTableWidget.setItem(i, 3, QTableWidgetItem(str(pl)))
+                if hypothèse_element.attrib['id'] == tree.find('ResultatDecision').text:
+                    results_dialog.decisionLabel.setText('Décision : '+str(hypothèse))
                 i += 1
         except (ValueError, KeyError, AttributeError):
             msg = QMessageBox(self)
@@ -782,6 +785,7 @@ class AgentDialog(QDialog, Ui_agentDialog):
         s = 0
         for i in range(len(self.model)):
             s += self.model.item(i, 1).item
+        s = round(s, 5)
         if s > 1:
             msg = QMessageBox(self)
             msg.setWindowTitle('Erreur')
@@ -851,6 +855,7 @@ class MasseDialog(QDialog, Ui_masseDialog):
                      lambda value: self.masseSpinBox.setValue(value / 100))
         self.connect(self.masseSpinBox, SIGNAL("valueChanged(double)"),
                      lambda value: self.masseSlider.setValue(value * 100))
+        self.connect(self.masseSpinBox, SIGNAL("valueChanged(double)"), self.remaining_mass)
         # Weaking
         self.connect(self.affaiblissementSlider, SIGNAL("valueChanged(int)"),
                      lambda value: self.affaiblissementSpinBox.setValue(value / 100))
@@ -889,6 +894,16 @@ class MasseDialog(QDialog, Ui_masseDialog):
         for i in range(len(self.model)):
             if self.model[i].named(str(hypothèse)):
                 return i
+
+    def remaining_mass(self):
+        agent_hypotheses_model = self.parent().model
+        s = 0
+        for i in range(len(agent_hypotheses_model)):
+            if str(agent_hypotheses_model[i].item) == self.hypotheseComboBox.currentText():
+                continue
+            s += agent_hypotheses_model.item(i, 1).item
+        s += self.masseSpinBox.value()
+        self.remainingMassLabel.setText('Masse restante : '+str(round(1-s, 2)))
 
 
 class ResultsDialog(QDialog, Ui_resultsDialog):
