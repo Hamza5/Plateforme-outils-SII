@@ -627,10 +627,13 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                 pl = round(float(hypothèse_element.find('Pl').text), self.round_digits)
                 idf = hypothèse_element.attrib['id']
                 hypothèse_états = [état for état in états if état.id() in idf.split('-')]
-                results_dialog.resultsTableWidget.setItem(i, 0, QTableWidgetItem(str(Hypothese(hypothèse_états))))
+                hypothèse = Hypothese(hypothèse_états)
+                results_dialog.resultsTableWidget.setItem(i, 0, QTableWidgetItem(str(hypothèse)))
                 results_dialog.resultsTableWidget.setItem(i, 1, QTableWidgetItem(str(mass)))
                 results_dialog.resultsTableWidget.setItem(i, 2, QTableWidgetItem(str(bel)))
                 results_dialog.resultsTableWidget.setItem(i, 3, QTableWidgetItem(str(pl)))
+                if hypothèse_element.attrib['id'] == tree.find('ResultatDecision').text:
+                    results_dialog.decisionLabel.setText('Décision : '+str(hypothèse))
                 i += 1
         except (ValueError, KeyError, AttributeError):
             msg = QMessageBox(self)
