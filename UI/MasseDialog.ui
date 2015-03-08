@@ -48,14 +48,7 @@
       </widget>
      </item>
      <item>
-      <widget class="QSlider" name="masseSlider">
-       <property name="maximum">
-        <number>100</number>
-       </property>
-       <property name="orientation">
-        <enum>Qt::Horizontal</enum>
-       </property>
-      </widget>
+      <widget class="QDial" name="masseSlider"/>
      </item>
      <item>
       <widget class="QDoubleSpinBox" name="masseSpinBox">
@@ -67,10 +60,6 @@
        </property>
       </widget>
      </item>
-    </layout>
-   </item>
-   <item>
-    <layout class="QHBoxLayout" name="horizontalLayout_3">
      <item>
       <widget class="QLabel" name="affaiblissementLabel">
        <property name="text">
@@ -79,14 +68,7 @@
       </widget>
      </item>
      <item>
-      <widget class="QSlider" name="affaiblissementSlider">
-       <property name="maximum">
-        <number>100</number>
-       </property>
-       <property name="orientation">
-        <enum>Qt::Horizontal</enum>
-       </property>
-      </widget>
+      <widget class="QDial" name="affaiblissementSlider"/>
      </item>
      <item>
       <widget class="QDoubleSpinBox" name="affaiblissementSpinBox">
@@ -98,6 +80,17 @@
        </property>
        <property name="value">
         <double>0.000000000000000</double>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <layout class="QHBoxLayout" name="horizontalLayout_3">
+     <item>
+      <widget class="QLabel" name="remainingMassLabel">
+       <property name="text">
+        <string>Masse restante</string>
        </property>
       </widget>
      </item>

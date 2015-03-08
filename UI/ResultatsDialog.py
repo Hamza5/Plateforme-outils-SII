@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'ResultatsDialog.ui'
 #
-# Created: Fri Mar  6 15:28:12 2015
+# Created: Sat Mar  7 22:24:15 2015
 #      by: PyQt4 UI code generator 4.10.4
 #
 # WARNING! All changes made in this file will be lost!
@@ -49,12 +49,16 @@ class Ui_resultsDialog(object):
         self.resultsTableWidget.setColumnCount(4)
         self.resultsTableWidget.setRowCount(0)
         item = QtGui.QTableWidgetItem()
+        item.setTextAlignment(QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
         self.resultsTableWidget.setHorizontalHeaderItem(0, item)
         item = QtGui.QTableWidgetItem()
+        item.setTextAlignment(QtCore.Qt.AlignHCenter|QtCore.Qt.AlignVCenter|QtCore.Qt.AlignCenter)
         self.resultsTableWidget.setHorizontalHeaderItem(1, item)
         item = QtGui.QTableWidgetItem()
+        item.setTextAlignment(QtCore.Qt.AlignHCenter|QtCore.Qt.AlignVCenter|QtCore.Qt.AlignCenter)
         self.resultsTableWidget.setHorizontalHeaderItem(2, item)
         item = QtGui.QTableWidgetItem()
+        item.setTextAlignment(QtCore.Qt.AlignHCenter|QtCore.Qt.AlignVCenter|QtCore.Qt.AlignCenter)
         self.resultsTableWidget.setHorizontalHeaderItem(3, item)
         self.verticalLayout.addWidget(self.resultsTableWidget)
         self.decisionMethodLabel = QtGui.QLabel(resultsDialog)

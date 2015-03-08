@@ -36,6 +36,7 @@
                         </xs:sequence>
                     </xs:complexType>
                 </xs:element>
+                <xs:element name="ResultatDecision" type="simpleID"/>
             </xs:sequence>
 		</xs:complexType>
 	</xs:element>
