@@ -1,6 +1,7 @@
 import java.io.File;
 import java.io.IOException;
 import java.text.DecimalFormat;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -26,6 +27,7 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
+
  class Agent{
 	HashMap <String, Double>knowleges = new HashMap<String, Double>();
 	String id;
@@ -399,12 +401,9 @@ public class Main{
 		    		    if(choix==0&&(number1.size()==1)&&(maxDecision2<som2)){
 		    		    	maxDecision2=som2;
 		    		    	setDeci=number1;}
-			             System.out.println("choix "+choix ); 
 		    		    if(choix==1&&(number1.size()==1)&&(maxDecision1<som1)){
 		    		    	maxDecision1=som1;
 		    		    	setDeci=number1;}
-			             System.out.println("Som1 "+maxDecision1 ); 
-			             System.out.println("Som2 "+maxDecision2 ); 
 		    		    if((choix==2)&&(number1.size()==1)){vectSingleton.put(number1.toString().substring(1,number1.toString().length()-1),som2Decision );}
 		    		    
 		    		}
@@ -419,7 +418,6 @@ public class Main{
 	    		    		temp.add(setMax);
 	    		    		setDeci=temp;}
 	    				}
-		             System.out.printf("max "+max ); 
 	    		     }
 
 	             	final Element ResultatDecision = document.createElement("ResultatDecision");
@@ -476,6 +474,7 @@ public class Main{
 
 		        return all;
 		    }
+	
 	public static void main(String[] args) {
       
 		if(args.length!=2){Runtime.getRuntime().exit(1);}
@@ -489,15 +488,12 @@ public class Main{
 		DocumentBuilder db = dbf.newDocumentBuilder();
 		données = db.parse(args[0]);
 		 }catch (ParserConfigurationException e) {
-	            System.out.println("Parser not configured: " + e.getMessage());
+	            Runtime.getRuntime().exit(6);
 	        } catch (SAXException e) {
-	            System.out.print("Parsing XML failed due to a "
-	                    + e.getClass().getName() + ":");
-	            System.out.println(e.getMessage());
+	        	Runtime.getRuntime().exit(5);
 	        } catch (IOException e) {
-	            System.out.println("IOException thrown");
-	            e.printStackTrace();
-	        }
+	        	Runtime.getRuntime().exit(4);
+	         }
 		HashSet<Element> agents = new HashSet<>();
 		NodeList agt = données.getElementsByTagName("Agent");
 		for(int i=0; i<agt.getLength(); i++) agents.add((Element)agt.item(i));
@@ -654,5 +650,8 @@ public class Main{
 		//System.exit 1 pas de fichier en entré 
 		//System.exit 2 somme de masse > 1
 		//System.exit 3 nombre d'agent ==0 
+		//System.exit 4 IOException thrown	
+		//System.exit 5 Parsing XML failed
+		//System.exit 6 Parser not configured
 	}
 }
