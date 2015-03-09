@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'ResultatsDialog.ui'
 #
-# Created: Sat Mar  7 22:24:15 2015
+# Created: Mon Mar  9 10:43:47 2015
 #      by: PyQt4 UI code generator 4.10.4
 #
 # WARNING! All changes made in this file will be lost!
@@ -67,11 +67,17 @@ class Ui_resultsDialog(object):
         self.decisionLabel = QtGui.QLabel(resultsDialog)
         self.decisionLabel.setObjectName(_fromUtf8("decisionLabel"))
         self.verticalLayout.addWidget(self.decisionLabel)
+        self.horizontalLayout = QtGui.QHBoxLayout()
+        self.horizontalLayout.setObjectName(_fromUtf8("horizontalLayout"))
+        self.agentButton = QtGui.QPushButton(resultsDialog)
+        self.agentButton.setObjectName(_fromUtf8("agentButton"))
+        self.horizontalLayout.addWidget(self.agentButton)
         self.buttonBox = QtGui.QDialogButtonBox(resultsDialog)
         self.buttonBox.setStandardButtons(QtGui.QDialogButtonBox.Ok)
-        self.buttonBox.setCenterButtons(True)
+        self.buttonBox.setCenterButtons(False)
         self.buttonBox.setObjectName(_fromUtf8("buttonBox"))
-        self.verticalLayout.addWidget(self.buttonBox)
+        self.horizontalLayout.addWidget(self.buttonBox)
+        self.verticalLayout.addLayout(self.horizontalLayout)
 
         self.retranslateUi(resultsDialog)
         QtCore.QObject.connect(self.buttonBox, QtCore.SIGNAL(_fromUtf8("accepted()")), resultsDialog.accept)
@@ -92,4 +98,5 @@ class Ui_resultsDialog(object):
         item.setText(_translate("resultsDialog", "Plausibilité", None))
         self.decisionMethodLabel.setText(_translate("resultsDialog", "Méthode de décision", None))
         self.decisionLabel.setText(_translate("resultsDialog", "Décision", None))
+        self.agentButton.setText(_translate("resultsDialog", "Créer un nouveau agent à partir de ces résultats", None))
 

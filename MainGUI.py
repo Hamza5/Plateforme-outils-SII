@@ -454,7 +454,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                 return
         self.setModified()
 
-    def ajouterAgent(self):
+    def ajouterAgent(self, name=None, enabled=None, reliability=None, hypotheses=None, masses=None):
         if self.hypothesesModel.rowCount() == 0:
             msg = QMessageBox(self)
             msg.setWindowTitle('Erreur')
@@ -464,6 +464,15 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             msg.exec_()
             return
         agent_dialog = AgentDialog(self)
+        if hypotheses:
+            agent_dialog.nomLineEdit.setText(name)
+            agent_dialog.activeCheckBox.setChecked(enabled)
+            agent_dialog.fiabiliteSpinBox.setValue(reliability)
+            agent = Agent(name, reliability)
+            agent.disable(not enabled)
+            for hypothesis, mass in zip(hypotheses, masses):
+                agent.add_hypothese(hypothesis, mass, 0)
+                agent_dialog.model.appendRow([ObjectItem(hypothesis), ObjectItem(mass), ObjectItem(0)])
         if agent_dialog.exec_() == QDialog.Accepted:
             nom = agent_dialog.nomLineEdit.text()
             fiabilité = agent_dialog.fiabiliteSpinBox.value()
@@ -588,6 +597,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
     def afficher(self, path=None):
         if not path:
             path = QFileDialog.getOpenFileName(self, 'Ouvrir', '', 'Résultats (*.dsto.xml)')
+            if not path:
+                return
         try:
             tree = ElementTree(file=path)
         except OSError as e:  # Can't open the file
@@ -894,6 +905,7 @@ class MasseDialog(QDialog, Ui_masseDialog):
         for i in range(len(self.model)):
             if self.model[i].named(str(hypothèse)):
                 return i
+        return 0
 
     def remaining_mass(self):
         agent_hypotheses_model = self.parent().model
@@ -910,6 +922,16 @@ class ResultsDialog(QDialog, Ui_resultsDialog):
     def __init__(self, parent: MainWindow):
         super(ResultsDialog, self).__init__(parent)
         self.setupUi(self)
+        self.connect(self.agentButton, SIGNAL('clicked()'), self.add_agent)
+
+    def add_agent(self):
+        hypotheses = []
+        for i in range(self.resultsTableWidget.rowCount()):
+            hypothesis_str = self.resultsTableWidget.item(i, 0).text()
+            états = [Etat(état_str[1:-1]) for état_str in hypothesis_str[1:-1].split(', ')]
+            hypotheses.append(Hypothese(états))
+        masses = [float(self.resultsTableWidget.item(i, 1).text()) for i in range(self.resultsTableWidget.rowCount())]
+        self.parent().ajouterAgent(name='', enabled=True, reliability=1, hypotheses=hypotheses, masses=masses)
 
 
 class WaitDialog(QDialog, Ui_waitDialog):

@@ -50,7 +50,7 @@
       </font>
      </property>
      <property name="text">
-      <string>&lt;b&gt;Calcul en cours&lt;/b&gt;&lt;br&gt;Veuillez attendre</string>
+      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Calcul en cours&lt;/span&gt;&lt;br/&gt;Veuillez patienter&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
      </property>
      <property name="scaledContents">
       <bool>false</bool>

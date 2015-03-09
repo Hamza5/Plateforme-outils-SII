@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'WaitDialog.ui'
 #
-# Created: Thu Mar  5 13:51:19 2015
+# Created: Mon Mar  9 15:29:09 2015
 #      by: PyQt4 UI code generator 4.10.4
 #
 # WARNING! All changes made in this file will be lost!
@@ -40,7 +40,6 @@ class Ui_waitDialog(object):
         self.verticalLayout.setObjectName(_fromUtf8("verticalLayout"))
         self.iconLabel = QtGui.QLabel(waitDialog)
         self.iconLabel.setText(_fromUtf8(""))
-        self.iconLabel.setPixmap(QtGui.QPixmap(_fromUtf8("loader.gif")))
         self.iconLabel.setAlignment(QtCore.Qt.AlignCenter)
         self.iconLabel.setObjectName(_fromUtf8("iconLabel"))
         self.verticalLayout.addWidget(self.iconLabel)
@@ -66,5 +65,5 @@ class Ui_waitDialog(object):
 
     def retranslateUi(self, waitDialog):
         waitDialog.setWindowTitle(_translate("waitDialog", "Veuillez attendre", None))
-        self.waitLabel.setText(_translate("waitDialog", "<b>Calcul en cours</b><br>Veuillez attendre", None))
+        self.waitLabel.setText(_translate("waitDialog", "<html><head/><body><p><span style=\" font-weight:600;\">Calcul en cours</span><br/>Veuillez patienter</p></body></html>", None))
 
