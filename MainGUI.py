@@ -33,7 +33,7 @@ import HelperClasses.Agent
 
 
 __author__ = 'hamza'
-app_name = 'Calculateur'
+app_name = 'Calculateur de Dempster-Shafer'
 
 
 class MainWindow(QMainWindow, Ui_MainWindow):
@@ -926,11 +926,15 @@ class ResultsDialog(QDialog, Ui_resultsDialog):
 
     def add_agent(self):
         hypotheses = []
+        masses = []
         for i in range(self.resultsTableWidget.rowCount()):
+            mass = float(self.resultsTableWidget.item(i, 1).text())
+            if mass == 0:
+                continue
             hypothesis_str = self.resultsTableWidget.item(i, 0).text()
             états = [Etat(état_str[1:-1]) for état_str in hypothesis_str[1:-1].split(', ')]
             hypotheses.append(Hypothese(états))
-        masses = [float(self.resultsTableWidget.item(i, 1).text()) for i in range(self.resultsTableWidget.rowCount())]
+            masses.append(mass)
         self.parent().ajouterAgent(name='', enabled=True, reliability=1, hypotheses=hypotheses, masses=masses)
 
 
