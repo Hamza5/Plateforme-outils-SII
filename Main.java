@@ -1,7 +1,6 @@
 import java.io.File;
 import java.io.IOException;
 import java.text.DecimalFormat;
-import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -34,12 +33,12 @@ import org.xml.sax.SAXException;
 	String name;
 	}
  class AgentTrans{
-	 HashMap <Set, Double>knowleges = new HashMap<Set, Double>();
+	 HashMap <Set <String>, Double>knowleges = new HashMap<Set<String>, Double>();
 	 String id;
 	 String name;
  }
  class multiHash{
-	 Set set;
+	 Set <String>set;
 	 double mass;
  }
 
@@ -50,19 +49,18 @@ public class Main{
 		Vector <multiHash> Vec= new Vector <multiHash>();
 		//Creation du Set qui contient les du Agt1 et Agt2
 		 Set<Set<String>> set = new HashSet<Set<String>>();
-		 for (Set number1 : Agt1.knowleges.keySet()) {
+		 for (Set<String> number1 : Agt1.knowleges.keySet()) {
 			set.add(number1);
 		 }
-		 for (Set number2 : Agt2.knowleges.keySet()) {
+		 for (Set<String> number2 : Agt2.knowleges.keySet()) {
 				set.add(number2);
 			 }
-		 HashMap <Set, Double> vide =new HashMap<Set, Double>();
 		 Set<String> in = new HashSet<String>();
 		 in.add("h0");
 		 set.add(in);//Creer l'ensemble vide et le ajouter dans l'ensemble globale
 		//Remplissage du vec avec les elements du set
 		 int omegaDetecter=0;
-		 for (Set number3 : set) {
+		 for (Set<String>number3 : set) {
 			 multiHash mu =new multiHash();
 			 mu.set=number3;
 			 mu.mass=0;
@@ -72,10 +70,10 @@ public class Main{
 		 //Calcul la constante k
 		 //Calcul des nouvels masses
 		 //double k=0;
-		 laGrandeboucle:for (Set number1 : Agt1.knowleges.keySet()) {
+		 laGrandeboucle:for (Set <String> number1 : Agt1.knowleges.keySet()) {
 			 for(int i=0;i<Vec.size();i++){if(Agt1.knowleges.get(number1)==0) {continue laGrandeboucle;}}	
 			 multiHash temp =new multiHash();
-			 for (Set number2 : Agt2.knowleges.keySet()) {
+			 for (Set<String> number2 : Agt2.knowleges.keySet()) {
 	    		  Set<String> intersection = new HashSet<String>(number1); // use the copy constructor
 		    	  intersection.retainAll(number2);
 		    	   temp.set=intersection;
@@ -90,7 +88,7 @@ public class Main{
 		    	  }
 		     }
 		 }
-		// System.out.println("k = "+k);
+		//System.out.println("k = "+k);
 		 AgentTrans temp = new AgentTrans();
 		for(int i=0;i<Vec.size();i++){
 			if(Vec.get(i).set.size()!=0){//pour eviter l'ensemble vide
@@ -101,6 +99,7 @@ public class Main{
 			temp.knowleges.put(Vec.get(i).set,Vec.get(i).mass );
 			}
 		}
+		
 //		 Set<String> kk = new HashSet<String>();
 //		 kk.add("K");
 //		 if(!temp.knowleges.get(kk).equals(0)){};
@@ -112,18 +111,17 @@ public class Main{
 		  Vector <multiHash> Vec= new Vector <multiHash>();
 			//Creation du Set qui contient les du Agt1 et Agt2
 			 Set<Set<String>> set = new HashSet<Set<String>>();
-			 for (Set number1 : Agt1.knowleges.keySet()) {
+			 for (Set<String> number1 : Agt1.knowleges.keySet()) {
 				set.add(number1);
 			 }
-			 for (Set number2 : Agt2.knowleges.keySet()) {
+			 for (Set<String> number2 : Agt2.knowleges.keySet()) {
 					set.add(number2);
 				 }
-			 HashMap <Set, Double> vide =new HashMap<Set, Double>();
 			 Set<String> in = new HashSet<String>();
 			 in.add("h0");
 			 set.add(in);//Creer l'ensemble vide et le ajouter dans l'ensemble globale
 			//Remplissage du vec avec les elements du set
-			 for (Set number3 : set) {
+			 for (Set<String> number3 : set) {
 				 multiHash mu =new multiHash();
 				 mu.set=number3;
 				 mu.mass=0;
@@ -132,10 +130,10 @@ public class Main{
 			 //Calcul la constante k
 			 //Calcul des nouvels masses
 			 double k=0;
-			 laGrandeboucle	:for (Set number1 : Agt1.knowleges.keySet()) {
+			 laGrandeboucle	:for (Set<String> number1 : Agt1.knowleges.keySet()) {
 				 for(int i=0;i<Vec.size();i++){if(Agt1.knowleges.get(number1)==0) {continue laGrandeboucle;}}				 
 				 multiHash temp =new multiHash();
-				 for (Set number2 : Agt2.knowleges.keySet()) {
+				 for (Set <String> number2 : Agt2.knowleges.keySet()) {
 					// System.out.println("yo");
 		    		  Set<String> intersection = new HashSet<String>(number1); // use the copy constructor
 			    	  intersection.retainAll(number2);
@@ -155,7 +153,7 @@ public class Main{
 			    	  }
 			     }
 			 }
-			// System.out.println("k = "+k);
+			//System.out.println("k = "+k);
 			 AgentTrans temp = new AgentTrans();
 			for(int i=0;i<Vec.size();i++){
 				if(Vec.get(i).set.size()!=0){//pour eviter l'ensemble vide
@@ -168,27 +166,27 @@ public class Main{
 		  Vector <multiHash> Vec= new Vector <multiHash>();
 			//Creation du Set qui contient les du Agt1 et Agt2
 			 Set<Set<String>> set = new HashSet<Set<String>>();
-			 for (Set number1 : Agt1.knowleges.keySet()){
+			 for (Set<String> number1 : Agt1.knowleges.keySet()){
 				set.add(number1);
 			 }
-			 for (Set number2 : Agt2.knowleges.keySet()){
+			 for (Set <String> number2 : Agt2.knowleges.keySet()){
 					set.add(number2);
 				 }
 			//Remplissage du vec avec les elements du set
-			 for (Set number3 : set) {
+			 for (Set<String> number3 : set) {
 				 multiHash mu =new multiHash();
 				 mu.set=number3;
 				 mu.mass=0;
 				 Vec.add(mu);
 				}
-			//Calcul la constante k
+
 			 //Calcul des nouvels masses
-			 double k=0;
-			 laGrandeboucle:for (Set number1 : Agt1.knowleges.keySet()) {
+
+			 laGrandeboucle:for (Set<String> number1 : Agt1.knowleges.keySet()) {
 				 for(int i=0;i<Vec.size();i++){if(Agt1.knowleges.get(number1)==0) {continue laGrandeboucle;}}
 				 multiHash temp =new multiHash();
 				 multiHash tempUN =new multiHash();
-	    	     for (Set number2 : Agt2.knowleges.keySet()) { 
+	    	     for (Set<String> number2 : Agt2.knowleges.keySet()) { 
 		    		  Set<String> intersection = new HashSet<String>(number1); // use the copy constructor
 			    	  intersection.retainAll(number2);
 			    	  temp.set=intersection;
@@ -197,7 +195,7 @@ public class Main{
 			    	  temp.mass=Agt1.knowleges.get(number1)*Agt2.knowleges.get(number2);
 			    	  tempUN.mass=Agt1.knowleges.get(number1)*Agt2.knowleges.get(number2);
 			    	  
-			    	  if (intersection.size()==0){k+=temp.mass;}//Calcul la constante k
+			    	  
 			    	  //rechercher cet ensemble dans le tableau
 			    	  loop1 :for(int i=0;i<Vec.size();i++){
 			    		  
@@ -230,14 +228,14 @@ public class Main{
 	  Vector <multiHash> Vec= new Vector <multiHash>();
 		//Creation du Set qui contient les du Agt1 et Agt2
 		 Set<Set<String>> set = new HashSet<Set<String>>();
-		 for (Set number1 : Agt1.knowleges.keySet()) {
+		 for (Set<String> number1 : Agt1.knowleges.keySet()) {
 			set.add(number1);
 		 }
-		 for (Set number2 : Agt2.knowleges.keySet()) {
+		 for (Set<String> number2 : Agt2.knowleges.keySet()) {
 				set.add(number2);
 			 }
 		//Remplissage du vec avec les elements du set
-		 for (Set number3 : set) {
+		 for (Set <String>number3 : set) {
 			 multiHash mu =new multiHash();
 			 mu.set=number3;
 			 mu.mass=0;
@@ -246,11 +244,11 @@ public class Main{
 		 //Calcul la constante k
 		 //Calcul des nouvels masses
 		 double k=0;
-		 laGrandeboucle:for (Set number1 : Agt1.knowleges.keySet()) {
+		 laGrandeboucle:for (Set <String>number1 : Agt1.knowleges.keySet()) {
 			 for(int i=0;i<Vec.size();i++){if(Agt1.knowleges.get(number1)==0) {continue laGrandeboucle;}}
 	//System.out.println("number1 "+number1);
 		 multiHash temp =new multiHash();
-    	     for (Set number2 : Agt2.knowleges.keySet()) { 
+    	     for (Set<String> number2 : Agt2.knowleges.keySet()) { 
 
 	    		  Set<String> intersection = new HashSet<String>(number1); // use the copy constructor
 		    	  intersection.retainAll(number2);
@@ -280,9 +278,8 @@ public class Main{
 	}
         //Methode transforamtion de format <String, Double> -> <Set, Double>
 		public static AgentTrans Trans(Agent Ag){
-			HashMap <Set, Double>vect = new HashMap<Set, Double>();
+			HashMap <Set<String>, Double>vect = new HashMap<Set<String>, Double>();
 	          Set set1 = Ag.knowleges.entrySet();
-		      Set set2 =Ag.knowleges.keySet();
 		      Iterator i = set1.iterator();
 		      while(i.hasNext()){
 		         Map.Entry me = (Map.Entry)i.next();
@@ -310,15 +307,15 @@ public class Main{
     		    final Element racine = document.createElement("DSTO");
     		    racine.setAttribute("xmlns:xsi","http://www.w3.org/2001/XMLSchema-instance");
     		    racine.setAttribute("xsi:noNamespaceSchemaLocation","validation_output.xsd");
-    		    SchemaFactory xsdf = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
-    			DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+//    		    SchemaFactory xsdf = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
+//    			DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
 
 //    			dbf.setSchema(xsdf.newSchema(new File("validation.xsd")));
 //    			DocumentBuilder db = dbf.newDocumentBuilder();
 //    			Document données = db.parse(NomFichierEntrée);
     			document.appendChild(racine);
 			     // Get a set of the entries
-			    HashMap <Set, Double>vect = new HashMap<Set, Double>();
+			    HashMap <Set<String>, Double>vect = new HashMap<Set<String>, Double>();
 			    vect=Ag.knowleges;
 			    final Element Titre = document.createElement("Title");
     		    racine.appendChild(Titre);
@@ -352,7 +349,7 @@ public class Main{
     		    double maxDecision2=0;
     		    int choix =0; 
     		    Set <String> setDeci = null;
-	             System.out.println("DecisionStr "+DecisionStr+" "+choix+" Optimiste "+" Pessimsite " +" Pignistique" ); 
+	            // System.out.println("DecisionStr "+DecisionStr+" "+choix+" Optimiste "+" Pessimsite " +" Pignistique" ); 
     		    switch (DecisionStr){
     		    case "Optimiste" :choix=0;break;
     		    case "Pessimiste" :choix=1;break;
@@ -367,14 +364,14 @@ public class Main{
     				Etat.setAttribute("title",e.getAttribute("title"));}
 
     		     HashMap <String, Double> vectSingleton = new HashMap<String, Double>();
-	             for (Set number1 : vect.keySet()) {
+	             for (Set <String> number1 : vect.keySet()) {
 		    	     double som1=0;
-		    	     for (Set number2 : vect.keySet()) {
+		    	     for (Set <String>number2 : vect.keySet()) {
 		    	    	 if(number1.containsAll(number2)){som1=som1+ vect.get(number2);}
 		    	     }
 		    	     double som2=0;
 		    	     double som2Decision =0;
-		    	     for (Set number3 : vect.keySet()) {
+		    	     for (Set<String> number3 : vect.keySet()) {
 			    		  Set<String> intersection = new HashSet<String>(number1); // use the copy constructor
 				    	  intersection.retainAll(number3);
 			    		  if(intersection.size()!=0){som2=som2+ vect.get(number3);
@@ -458,16 +455,16 @@ public class Main{
 		        return all;
 		    }
 
-		    public static Set<Set<String>> powerSet(Vector input) {
+		    public static Set<Set<String>> powerSet(Vector<String> input) {
 		     if (input.size() == 0) {
 		            Set <Set<String>>emptySet = new LinkedHashSet<>();
 		            emptySet.add(new LinkedHashSet<String>());
 		            return emptySet;
 		        }
 		     	String head = (String) input.get(0);
-		        Vector newInputSet =  new Vector();
+		        Vector <String>newInputSet =  new Vector<String>();
 		        for (int i = 1; i < input.size(); ++i) {
-		            newInputSet.add(i - 1, input.get(i));
+		            newInputSet.add(i - 1, (String) input.get(i));
 		        }
 
 		        Set<Set<String>> all = combine(head, powerSet(newInputSet));
@@ -498,7 +495,7 @@ public class Main{
 		NodeList agt = données.getElementsByTagName("Agent");
 		for(int i=0; i<agt.getLength(); i++) agents.add((Element)agt.item(i));
 	    boolean AgentVerifier=false;
-	     	Vector HopoGen=new Vector(); 
+	     	Vector <String>HopoGen=new Vector<String>(); 
 		//Lecture des Hypotheses integrer les Hypotheses avec des masses nulles 
 		HashSet<Element> Etats = new HashSet<>();
 		NodeList hyposs = données.getElementsByTagName("Etats");
@@ -557,7 +554,7 @@ public class Main{
 	            //System.out.println("A "+setTest);
 			  if(massVerifier < 1){/*System.out.print("omegaToAdd avent "+omegaToAdd);*/omegaToAdd+=(1-massVerifier);/* System.out.println("massVerifier "+(massVerifier)+" omegaToAdd "+(float)omegaToAdd);*/}//Ajouter la difference entre la somme des masses et 1
 		         
-			  for (Set elm : setTest){
+			  for (Set <String> elm : setTest){
 				  Set<String> set =  new HashSet<String>();
 				  String[] splitString = ((elm.toString().substring(1,elm.toString().length()-1).replaceAll(", ", "-").split("-")));
 			         for(int i1=0;i1<splitString.length;i1++){set.add(splitString[i1]);} 
@@ -639,8 +636,7 @@ public class Main{
 						if (choix==2){AgTr=MultiAgDuboisPrade(AgTr,ag);}//Calculer le Multi Agent Dubois Prade
 						if (choix==3){AgTr=MultiAgSmets(AgTr,ag);}//Calculer le Multi Agent Smets
 						if (choix==4){AgTr=MultiAgYager(AgTr,ag,count);}//Calculer le Multi Agent Yager
-						 Set set = ag.knowleges.entrySet();
-				         Iterator iterator = set.iterator();
+						
 					 }
 					
 					clalculPlBel(AgTr,données,args[1]);//Appler la fonction pour calcul Bel et Pl et creer le fichier xml
