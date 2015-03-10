@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'ResultatsDialog.ui'
 #
-# Created: Mon Mar  9 10:43:47 2015
+# Created: Tue Mar 10 18:57:47 2015
 #      by: PyQt4 UI code generator 4.10.4
 #
 # WARNING! All changes made in this file will be lost!
@@ -45,6 +45,8 @@ class Ui_resultsDialog(object):
         self.verticalLayout.addWidget(self.methodLabel)
         self.resultsTableWidget = QtGui.QTableWidget(resultsDialog)
         self.resultsTableWidget.setAutoFillBackground(True)
+        self.resultsTableWidget.setEditTriggers(QtGui.QAbstractItemView.NoEditTriggers)
+        self.resultsTableWidget.setSelectionBehavior(QtGui.QAbstractItemView.SelectRows)
         self.resultsTableWidget.setObjectName(_fromUtf8("resultsTableWidget"))
         self.resultsTableWidget.setColumnCount(4)
         self.resultsTableWidget.setRowCount(0)
@@ -60,10 +62,23 @@ class Ui_resultsDialog(object):
         item = QtGui.QTableWidgetItem()
         item.setTextAlignment(QtCore.Qt.AlignHCenter|QtCore.Qt.AlignVCenter|QtCore.Qt.AlignCenter)
         self.resultsTableWidget.setHorizontalHeaderItem(3, item)
+        self.resultsTableWidget.horizontalHeader().setStretchLastSection(True)
+        self.resultsTableWidget.verticalHeader().setSortIndicatorShown(True)
         self.verticalLayout.addWidget(self.resultsTableWidget)
+        self.horizontalLayout_2 = QtGui.QHBoxLayout()
+        self.horizontalLayout_2.setObjectName(_fromUtf8("horizontalLayout_2"))
         self.decisionMethodLabel = QtGui.QLabel(resultsDialog)
         self.decisionMethodLabel.setObjectName(_fromUtf8("decisionMethodLabel"))
-        self.verticalLayout.addWidget(self.decisionMethodLabel)
+        self.horizontalLayout_2.addWidget(self.decisionMethodLabel)
+        self.rechercheLineEdit = QtGui.QLineEdit(resultsDialog)
+        sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.Preferred, QtGui.QSizePolicy.Fixed)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.rechercheLineEdit.sizePolicy().hasHeightForWidth())
+        self.rechercheLineEdit.setSizePolicy(sizePolicy)
+        self.rechercheLineEdit.setObjectName(_fromUtf8("rechercheLineEdit"))
+        self.horizontalLayout_2.addWidget(self.rechercheLineEdit)
+        self.verticalLayout.addLayout(self.horizontalLayout_2)
         self.decisionLabel = QtGui.QLabel(resultsDialog)
         self.decisionLabel.setObjectName(_fromUtf8("decisionLabel"))
         self.verticalLayout.addWidget(self.decisionLabel)
@@ -88,6 +103,7 @@ class Ui_resultsDialog(object):
         self.titleLabel.setText(_translate("resultsDialog", "Titre", None))
         self.descriptionLabel.setText(_translate("resultsDialog", "Description", None))
         self.methodLabel.setText(_translate("resultsDialog", "Méthod de fusion", None))
+        self.resultsTableWidget.setSortingEnabled(True)
         item = self.resultsTableWidget.horizontalHeaderItem(0)
         item.setText(_translate("resultsDialog", "Hypothèse", None))
         item = self.resultsTableWidget.horizontalHeaderItem(1)
@@ -97,6 +113,7 @@ class Ui_resultsDialog(object):
         item = self.resultsTableWidget.horizontalHeaderItem(3)
         item.setText(_translate("resultsDialog", "Plausibilité", None))
         self.decisionMethodLabel.setText(_translate("resultsDialog", "Méthode de décision", None))
+        self.rechercheLineEdit.setPlaceholderText(_translate("resultsDialog", "Rechercher", None))
         self.decisionLabel.setText(_translate("resultsDialog", "Décision", None))
-        self.agentButton.setText(_translate("resultsDialog", "Créer un nouveau agent à partir de ces résultats", None))
+        self.agentButton.setText(_translate("resultsDialog", "&Créer un nouveau agent à partir de ces résultats", None))
 

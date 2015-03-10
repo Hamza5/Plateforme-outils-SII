@@ -55,6 +55,21 @@
      <property name="autoFillBackground">
       <bool>true</bool>
      </property>
+     <property name="editTriggers">
+      <set>QAbstractItemView::NoEditTriggers</set>
+     </property>
+     <property name="selectionBehavior">
+      <enum>QAbstractItemView::SelectRows</enum>
+     </property>
+     <property name="sortingEnabled">
+      <bool>true</bool>
+     </property>
+     <attribute name="horizontalHeaderStretchLastSection">
+      <bool>true</bool>
+     </attribute>
+     <attribute name="verticalHeaderShowSortIndicator" stdset="0">
+      <bool>true</bool>
+     </attribute>
      <column>
       <property name="text">
        <string>Hypothèse</string>
@@ -90,11 +105,28 @@
     </widget>
    </item>
    <item>
-    <widget class="QLabel" name="decisionMethodLabel">
-     <property name="text">
-      <string>Méthode de décision</string>
-     </property>
-    </widget>
+    <layout class="QHBoxLayout" name="horizontalLayout_2">
+     <item>
+      <widget class="QLabel" name="decisionMethodLabel">
+       <property name="text">
+        <string>Méthode de décision</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLineEdit" name="rechercheLineEdit">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="placeholderText">
+        <string>Rechercher</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
    </item>
    <item>
     <widget class="QLabel" name="decisionLabel">
@@ -108,7 +140,7 @@
      <item>
       <widget class="QPushButton" name="agentButton">
        <property name="text">
-        <string>Créer un nouveau agent à partir de ces résultats</string>
+        <string>&amp;Créer un nouveau agent à partir de ces résultats</string>
        </property>
       </widget>
      </item>

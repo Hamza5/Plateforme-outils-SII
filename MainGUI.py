@@ -7,7 +7,7 @@ from os.path import join, splitext
 try:
     from PyQt4.QtGui import QApplication, QMainWindow, QActionGroup, QDialog, QStandardItem, QStandardItemModel, \
         QInputDialog, QHeaderView, QLineEdit, QMessageBox, QFileDialog, QCloseEvent, QTableWidgetItem, QMovie
-    from PyQt4.QtCore import SIGNAL, QModelIndex, Qt, QThread
+    from PyQt4.QtCore import SIGNAL, QModelIndex, Qt, QThread, QMimeData
 except ImportError as e:
     print('Can not use PyQt4 !', e.msg, file=sys.stderr, sep='\n')
     sys.exit(2)
@@ -384,7 +384,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                 return
         self.setModified()
 
-    def ajouterHypothese(self):
+    def ajouterHypothese(self, hypothesis=None):
         if self.etatsModel.rowCount() == 0:
             msg = QMessageBox(self)
             msg.setWindowTitle('Erreur')
@@ -392,6 +392,11 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             msg.setInformativeText('Vous ne pouvez pas ajouter une hypothèse avant d\'ajouter les états')
             msg.setIcon(QMessageBox.Warning)
             msg.exec_()
+            return
+        if hypothesis:
+            hypothesis_item = ObjectItem(hypothesis)
+            if hypothesis_item not in self.hypothesesModel:
+                self.hypothesesModel.appendRow(hypothesis_item)
             return
         selection_model = self.etatsListView.selectionModel()
         états = list()
@@ -924,6 +929,15 @@ class ResultsDialog(QDialog, Ui_resultsDialog):
         super(ResultsDialog, self).__init__(parent)
         self.setupUi(self)
         self.connect(self.agentButton, SIGNAL('clicked()'), self.add_agent)
+        self.connect(self.rechercheLineEdit, SIGNAL('textChanged(const QString&)'), self.search)
+
+    def search(self, text):
+        items = self.resultsTableWidget.findItems(text, Qt.MatchContains)
+        self.resultsTableWidget.clearSelection()
+        if not text:
+            return
+        for table_item in items:
+            table_item.setSelected(True)
 
     def add_agent(self):
         hypotheses = []
@@ -933,8 +947,18 @@ class ResultsDialog(QDialog, Ui_resultsDialog):
             if mass == 0:
                 continue
             hypothesis_str = self.resultsTableWidget.item(i, 0).text()
-            états = [Etat(état_str[1:-1]) for état_str in hypothesis_str[1:-1].split(', ')]
-            hypotheses.append(Hypothese(états))
+            états = []
+            for état_str in hypothesis_str[1:-1].split(', '):
+                état_str = état_str[1:-1]
+                état = Etat(état_str)
+                for état_item in self.parent().etatsModel:
+                    if str(état) == str(état_item.item):
+                        état.order = état_item.item.order
+                        break
+                états.append(état)
+            hypothèse = Hypothese(états)
+            self.parent().ajouterHypothese(hypothèse)
+            hypotheses.append(hypothèse)
             masses.append(mass)
         self.parent().ajouterAgent(name='', enabled=True, reliability=1, hypotheses=hypotheses, masses=masses)
 

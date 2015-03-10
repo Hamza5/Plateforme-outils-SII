@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'MainWindow.ui'
 #
-# Created: Fri Mar  6 15:35:02 2015
+# Created: Tue Mar 10 08:56:01 2015
 #      by: PyQt4 UI code generator 4.10.4
 #
 # WARNING! All changes made in this file will be lost!
@@ -45,7 +45,7 @@ class Ui_MainWindow(object):
         self.horizontalLayout = QtGui.QHBoxLayout(self.etatsGroupBox)
         self.horizontalLayout.setObjectName(_fromUtf8("horizontalLayout"))
         self.etatsListView = QtGui.QListView(self.etatsGroupBox)
-        self.etatsListView.setSelectionMode(QtGui.QAbstractItemView.MultiSelection)
+        self.etatsListView.setSelectionMode(QtGui.QAbstractItemView.ExtendedSelection)
         self.etatsListView.setObjectName(_fromUtf8("etatsListView"))
         self.horizontalLayout.addWidget(self.etatsListView)
         self.hypothesesGroupBox = QtGui.QGroupBox(self.splitter)
@@ -53,7 +53,7 @@ class Ui_MainWindow(object):
         self.horizontalLayout_2 = QtGui.QHBoxLayout(self.hypothesesGroupBox)
         self.horizontalLayout_2.setObjectName(_fromUtf8("horizontalLayout_2"))
         self.hypothesesListView = QtGui.QListView(self.hypothesesGroupBox)
-        self.hypothesesListView.setSelectionMode(QtGui.QAbstractItemView.MultiSelection)
+        self.hypothesesListView.setSelectionMode(QtGui.QAbstractItemView.ExtendedSelection)
         self.hypothesesListView.setObjectName(_fromUtf8("hypothesesListView"))
         self.horizontalLayout_2.addWidget(self.hypothesesListView)
         self.AgentsGroupBox = QtGui.QGroupBox(self.splitter)

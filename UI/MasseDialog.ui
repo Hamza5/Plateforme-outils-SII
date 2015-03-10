@@ -22,7 +22,10 @@
      <item>
       <widget class="QLabel" name="hypotheseLabel">
        <property name="text">
-        <string>Hypothèse</string>
+        <string>&amp;Hypothèse</string>
+       </property>
+       <property name="buddy">
+        <cstring>hypotheseComboBox</cstring>
        </property>
       </widget>
      </item>
@@ -45,7 +48,10 @@
        <item>
         <widget class="QLabel" name="masseLabel">
          <property name="text">
-          <string>Masse</string>
+          <string>&amp;Masse</string>
+         </property>
+         <property name="buddy">
+          <cstring>masseSpinBox</cstring>
          </property>
         </widget>
        </item>
@@ -92,7 +98,10 @@
        <item>
         <widget class="QLabel" name="affaiblissementLabel">
          <property name="text">
-          <string>Affaiblissement</string>
+          <string>&amp;Affaiblissement</string>
+         </property>
+         <property name="buddy">
+          <cstring>affaiblissementSpinBox</cstring>
          </property>
         </widget>
        </item>

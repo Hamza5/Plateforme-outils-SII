@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'AgentDialog.ui'
 #
-# Created: Sun Feb 15 21:11:54 2015
+# Created: Tue Mar 10 21:43:33 2015
 #      by: PyQt4 UI code generator 4.10.4
 #
 # WARNING! All changes made in this file will be lost!
@@ -81,6 +81,7 @@ class Ui_agentDialog(object):
         self.hypothesesTableView = QtGui.QTableView(self.hypothesesGroupBox)
         self.hypothesesTableView.setSelectionBehavior(QtGui.QAbstractItemView.SelectRows)
         self.hypothesesTableView.setObjectName(_fromUtf8("hypothesesTableView"))
+        self.hypothesesTableView.verticalHeader().setVisible(False)
         self.verticalLayout_2.addWidget(self.hypothesesTableView)
         self.verticalLayout.addWidget(self.hypothesesGroupBox)
         self.buttonBox = QtGui.QDialogButtonBox(agentDialog)
@@ -88,6 +89,8 @@ class Ui_agentDialog(object):
         self.buttonBox.setStandardButtons(QtGui.QDialogButtonBox.Cancel|QtGui.QDialogButtonBox.Ok)
         self.buttonBox.setObjectName(_fromUtf8("buttonBox"))
         self.verticalLayout.addWidget(self.buttonBox)
+        self.nomLabel.setBuddy(self.nomLineEdit)
+        self.fiabiliteLabel.setBuddy(self.fiabiliteSpinBox)
 
         self.retranslateUi(agentDialog)
         QtCore.QObject.connect(self.buttonBox, QtCore.SIGNAL(_fromUtf8("accepted()")), agentDialog.accept)
@@ -96,10 +99,10 @@ class Ui_agentDialog(object):
 
     def retranslateUi(self, agentDialog):
         agentDialog.setWindowTitle(_translate("agentDialog", "Ajouter un agent", None))
-        self.nomLabel.setText(_translate("agentDialog", "Nom", None))
-        self.activeCheckBox.setText(_translate("agentDialog", "Activé", None))
-        self.fiabiliteLabel.setText(_translate("agentDialog", "Fiabilité", None))
+        self.nomLabel.setText(_translate("agentDialog", "&Nom", None))
+        self.activeCheckBox.setText(_translate("agentDialog", "A&ctivé", None))
+        self.fiabiliteLabel.setText(_translate("agentDialog", "&Fiabilité", None))
         self.hypothesesGroupBox.setTitle(_translate("agentDialog", "Hypothèses / Masses", None))
-        self.ajouterMasseButton.setText(_translate("agentDialog", "Affecter une hypothèse", None))
-        self.supprimerMasseButton.setText(_translate("agentDialog", "Supprimer", None))
+        self.ajouterMasseButton.setText(_translate("agentDialog", "&Affecter une hypothèse", None))
+        self.supprimerMasseButton.setText(_translate("agentDialog", "&Supprimer", None))
 

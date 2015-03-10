@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'MasseDialog.ui'
 #
-# Created: Sun Mar  8 20:03:37 2015
+# Created: Tue Mar 10 09:20:41 2015
 #      by: PyQt4 UI code generator 4.10.4
 #
 # WARNING! All changes made in this file will be lost!
@@ -96,6 +96,9 @@ class Ui_masseDialog(object):
         self.buttonBox.setStandardButtons(QtGui.QDialogButtonBox.Cancel|QtGui.QDialogButtonBox.Ok)
         self.buttonBox.setObjectName(_fromUtf8("buttonBox"))
         self.verticalLayout.addWidget(self.buttonBox)
+        self.hypotheseLabel.setBuddy(self.hypotheseComboBox)
+        self.masseLabel.setBuddy(self.masseSpinBox)
+        self.affaiblissementLabel.setBuddy(self.affaiblissementSpinBox)
 
         self.retranslateUi(masseDialog)
         QtCore.QObject.connect(self.buttonBox, QtCore.SIGNAL(_fromUtf8("accepted()")), masseDialog.accept)
@@ -104,8 +107,8 @@ class Ui_masseDialog(object):
 
     def retranslateUi(self, masseDialog):
         masseDialog.setWindowTitle(_translate("masseDialog", "Affecter une hypothèse", None))
-        self.hypotheseLabel.setText(_translate("masseDialog", "Hypothèse", None))
-        self.masseLabel.setText(_translate("masseDialog", "Masse", None))
-        self.affaiblissementLabel.setText(_translate("masseDialog", "Affaiblissement", None))
+        self.hypotheseLabel.setText(_translate("masseDialog", "&Hypothèse", None))
+        self.masseLabel.setText(_translate("masseDialog", "&Masse", None))
+        self.affaiblissementLabel.setText(_translate("masseDialog", "&Affaiblissement", None))
         self.remainingMassLabel.setText(_translate("masseDialog", "Masse restante", None))
 

@@ -37,7 +37,7 @@
         <item>
          <widget class="QListView" name="etatsListView">
           <property name="selectionMode">
-           <enum>QAbstractItemView::MultiSelection</enum>
+           <enum>QAbstractItemView::ExtendedSelection</enum>
           </property>
          </widget>
         </item>
@@ -51,7 +51,7 @@
         <item>
          <widget class="QListView" name="hypothesesListView">
           <property name="selectionMode">
-           <enum>QAbstractItemView::MultiSelection</enum>
+           <enum>QAbstractItemView::ExtendedSelection</enum>
           </property>
          </widget>
         </item>
