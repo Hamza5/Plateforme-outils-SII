@@ -2,7 +2,7 @@
 import sys
 import re
 import subprocess
-from os.path import join, splitext
+from os.path import join, splitext, dirname
 
 try:
     from PyQt4.QtGui import QApplication, QMainWindow, QActionGroup, QDialog, QStandardItem, QStandardItemModel, \
@@ -49,6 +49,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.input = 'input.dsti.xml'  # Input file for calculation
         self.output = 'output.dsto.xml'  # Output file of calculation
         self.round_digits = 3
+        self.last_path = ""
 
         # Make methods actions mutually-exclusives :
         self.action_group = QActionGroup(self)
@@ -154,7 +155,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         if isinstance(path, str) and path != '':
             file_path = path
         else:
-            file_path = QFileDialog.getSaveFileName(self, 'Enregistrer', '', 'Données (*.dsti.xml)')
+            file_path = QFileDialog.getSaveFileName(self, 'Enregistrer', self.last_path, 'Données (*.dsti.xml)')
         if not file_path:
             return False
         try:  # Using xml.etree.ElementTree
@@ -210,13 +211,14 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             self.setUnmodified()
             self.input = file_path
             self.output = splitext(splitext(self.input)[0])[0] + '.dsto.xml'
+            self.last_path = dirname(self.output)
             return True
         except OSError as e:
             QMessageBox.critical(self, 'Erreur', '<b>Impossible de sauvegarder le fichier '+e.filename+'</b>')
             return False
 
     def ouvrir(self):
-        file_path = QFileDialog.getOpenFileName(self, 'Ouvrir', '', 'Données (*.dsti.xml)')
+        file_path = QFileDialog.getOpenFileName(self, 'Ouvrir', self.last_path, 'Données (*.dsti.xml)')
         if not file_path:
             return
         # Create the document
@@ -332,6 +334,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             HelperClasses.Agent.idf = highest_id+1
             self.input = file_path
             self.output = splitext(splitext(self.input)[0])[0] + '.dsto.xml'
+            self.last_path = dirname(self.input)
         except (ValueError, KeyError, AttributeError):
             self.nouveau()
             msg = QMessageBox(self)
@@ -602,7 +605,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
     def afficher(self, path=None):
         if not path:
-            path = QFileDialog.getOpenFileName(self, 'Ouvrir', '', 'Résultats (*.dsto.xml)')
+            path = QFileDialog.getOpenFileName(self, 'Ouvrir', self.last_path, 'Résultats (*.dsto.xml)')
             if not path:
                 return
         try:
@@ -660,6 +663,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             msg.setIcon(QMessageBox.Critical)
             msg.exec_()
             return
+        self.last_path = dirname(self.output)
         results_dialog.exec_()
 
     def editAgent(self, selectedIndex: QModelIndex):
