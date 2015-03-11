@@ -664,6 +664,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             msg.exec_()
             return
         self.last_path = dirname(self.output)
+        if self.agentsModel.rowCount() == 0:
+            results_dialog.agentButton.setEnabled(False)
         results_dialog.exec_()
 
     def editAgent(self, selectedIndex: QModelIndex):
@@ -806,7 +808,7 @@ class AgentDialog(QDialog, Ui_agentDialog):
         s = 0
         for i in range(len(self.model)):
             s += self.model.item(i, 1).item
-        s = round(s, 5)
+        s = round(s, self.parent().round_digits)
         if s > 1:
             msg = QMessageBox(self)
             msg.setWindowTitle('Erreur')
@@ -820,7 +822,7 @@ class AgentDialog(QDialog, Ui_agentDialog):
             msg = QMessageBox(self)
             msg.setWindowTitle('Erreur')
             msg.setText('<b>La somme des masses est inférieur à 1.0 !</b>')
-            msg.setInformativeText(str(round(1-s, 2)) + ' non attribué, voulez vous l\'ajouter à ' + str(omega) + ' ?')
+            msg.setInformativeText(str(round(1-s, self.parent().round_digits)) + ' non attribué, voulez vous l\'ajouter à ' + str(omega) + ' ?')
             msg.setIcon(QMessageBox.Warning)
             msg.setStandardButtons(QMessageBox.Yes | QMessageBox.No)
             ok = msg.exec_()
@@ -925,7 +927,7 @@ class MasseDialog(QDialog, Ui_masseDialog):
                 continue
             s += agent_hypotheses_model.item(i, 1).item
         s += self.masseSpinBox.value()
-        self.remainingMassLabel.setText('Masse restante : '+str(round(1-s, 2)))
+        self.remainingMassLabel.setText('Masse restante : '+str(round(1-s, self.parent().parent().round_digits)))
 
 
 class ResultsDialog(QDialog, Ui_resultsDialog):
