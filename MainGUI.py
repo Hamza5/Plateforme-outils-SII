@@ -224,8 +224,11 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         # Create the document
         try:
             tree = ElementTree(file=file_path)
-        except OSError as e:  # Can't open the file
-            QMessageBox.critical(self, 'Erreur', '<b>Impossible d\'ouvrir le fichier '+e.filename+'</b>')
+        except OSError:  # Can't open the file
+            QMessageBox.critical(self, 'Erreur', '<b>Impossible d\'ouvrir le fichier</b>')
+            return
+        except SyntaxError:
+            QMessageBox.critical(self, 'Erreur', '<b>Le fichier est invalide</b>')
             return
         except ParseError:  # XML contains syntax errors
             msg = QMessageBox(self)
@@ -611,8 +614,18 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         try:
             tree = ElementTree(file=path)
         except OSError as e:  # Can't open the file
-            QMessageBox.critical(self, 'Erreur', '<b>Impossible d\'ouvrir le fichier '+e.filename+'</b>')
+            QMessageBox.critical(self, 'Erreur', '<b>Impossible d\'ouvrir le fichier</b>')
             return
+        except SyntaxError:
+            QMessageBox.critical(self, 'Erreur', '<b>Le fichier est invalide</b>')
+            return
+        except ParseError:  # XML contains syntax errors
+            msg = QMessageBox(self)
+            msg.setWindowTitle('Erreur')
+            msg.setText('<b>Document invalide !</b>')
+            msg.setInformativeText('Le document contient des erreurs')
+            msg.setIcon(QMessageBox.Critical)
+            msg.exec_()
         try:
             schema = XMLSchema(file='validation_output.xsd')
             if not schema(tree):
