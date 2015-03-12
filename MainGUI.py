@@ -616,9 +616,6 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         except OSError as e:  # Can't open the file
             QMessageBox.critical(self, 'Erreur', '<b>Impossible d\'ouvrir le fichier</b>')
             return
-        except SyntaxError:
-            QMessageBox.critical(self, 'Erreur', '<b>Le fichier est invalide</b>')
-            return
         except ParseError:  # XML contains syntax errors
             msg = QMessageBox(self)
             msg.setWindowTitle('Erreur')
@@ -626,6 +623,9 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             msg.setInformativeText('Le document contient des erreurs')
             msg.setIcon(QMessageBox.Critical)
             msg.exec_()
+        except SyntaxError:
+            QMessageBox.critical(self, 'Erreur', '<b>Le fichier est invalide</b>')
+            return
         try:
             schema = XMLSchema(file='validation_output.xsd')
             if not schema(tree):
