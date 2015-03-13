@@ -607,6 +607,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             return
 
     def afficher(self, path=None):
+        opened_from_menu = not path
         if not path:
             path = QFileDialog.getOpenFileName(self, 'Ouvrir', self.last_path, 'Résultats (*.dsto.xml)')
             if not path:
@@ -677,7 +678,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             msg.exec_()
             return
         self.last_path = dirname(self.output)
-        if self.agentsModel.rowCount() == 0:
+        if opened_from_menu:
             results_dialog.agentButton.setEnabled(False)
         results_dialog.exec_()
 
