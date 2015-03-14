@@ -2,16 +2,21 @@ package Plugins;
 
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 import java.awt.*;
 import java.awt.event.ActionEvent;
+import java.awt.event.KeyEvent;
+import java.util.List;
 
 public class Tools extends JPanel {
-    private JTabbedPane tabs;
-    private JPanel ubcsatPage;
-    private DefaultListModel<String> modèle;
-    private JList<String> modèleList;
-    private AbstractAction ajouterFormuleAction;
-    private JPanel weightedmaxsatPage;
+    private final JTabbedPane tabs;
+    private final JPanel ubcsatPage;
+    private final DefaultListModel<String> modèle;
+    private final JList<String> modèleList;
+    private final AbstractAction ajouterFormuleAction;
+    private final AbstractAction supprimerFormuleAction;
+    private final JPanel weightedmaxsatPage;
     private final String title = "Tools";
     private final int spacing = 5;
     public Tools(){
@@ -34,17 +39,38 @@ public class Tools extends JPanel {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
                 String formule = JOptionPane.showInputDialog(tools, "La formule (Utiliser '-' ou '!' pour le négation)", "Nouvelle formule", JOptionPane.QUESTION_MESSAGE);
-                if ( formule != null && !formule.isEmpty())
+                if (formule != null && !formule.isEmpty())
                     if (formule.matches("(([!-]?\\w+)\\s+)*([!-]?\\w+)"))
                         modèle.addElement(formule.replaceAll("\\s+", " "));
                     else JOptionPane.showMessageDialog(tools, "La syntaxe de la formule est invalide !", "Formule invalide", JOptionPane.WARNING_MESSAGE);
             }
         };
-        JButton ajouterFormuleButton = new JButton(ajouterFormuleAction);
+        ajouterFormuleAction.putValue(Action.MNEMONIC_KEY, KeyEvent.VK_A);
+        final JButton ajouterFormuleButton = new JButton(ajouterFormuleAction);
+        supprimerFormuleAction = new AbstractAction("Supprimer") {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                List<String> selected = modèleList.getSelectedValuesList();
+                for (String value : selected) {
+                    modèle.removeElement(value);
+                }
+            }
+        };
+        supprimerFormuleAction.putValue(Action.MNEMONIC_KEY, KeyEvent.VK_S);
+        final JButton supprimerFormuleButton = new JButton(supprimerFormuleAction);
+        supprimerFormuleButton.setEnabled(false);
+        modèleList.addListSelectionListener(new ListSelectionListener() {
+            @Override
+            public void valueChanged(ListSelectionEvent listSelectionEvent) {
+                supprimerFormuleButton.setEnabled(modèleList.getSelectedIndices().length > 0);
+            }
+        });
         ubcsatPage.add(new JScrollPane(modèleList));
         Box buttonsBox = new Box(BoxLayout.LINE_AXIS);
         buttonsBox.setBorder(BorderFactory.createEmptyBorder(spacing,0,0,0));
         buttonsBox.add(ajouterFormuleButton);
+        buttonsBox.add(Box.createRigidArea(new Dimension(spacing, 0)));
+        buttonsBox.add(supprimerFormuleButton);
         buttonsBox.add(Box.createHorizontalGlue());
         ubcsatPage.add(buttonsBox);
         ubcsatPage.setBorder(BorderFactory.createEmptyBorder(spacing, spacing, spacing, spacing));
