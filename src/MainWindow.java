@@ -52,6 +52,7 @@ public class MainWindow extends JFrame {
                 MainWindow mainWindow = new MainWindow();
                 mainWindow.setDefaultCloseOperation(EXIT_ON_CLOSE);
                 mainWindow.pack();
+                mainWindow.setLocationRelativeTo(null);
                 mainWindow.setVisible(true);
             }
         });
