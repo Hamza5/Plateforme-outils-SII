@@ -1,8 +1,9 @@
 #!/usr/bin/env python3
+import os
 import sys
 import re
 import subprocess
-from os.path import join, splitext, dirname
+from os.path import join, splitext, dirname, realpath
 
 try:
     from PyQt4.QtGui import QApplication, QMainWindow, QActionGroup, QDialog, QStandardItem, QStandardItemModel, \
@@ -239,7 +240,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             msg.exec_()
             return
         try:
-            schema = XMLSchema(file='validation.xsd')
+            schema = XMLSchema(file=join(dirname(realpath(__file__)), 'validation.xsd'))
             if not schema(tree):
                 msg = QMessageBox(self)
                 msg.setWindowTitle('Erreur')
@@ -596,7 +597,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                 return
             self.enregistrer(self.input)
         try:
-            args = ['java', '-cp',  '.', self.executable, self.input, self.output]
+            args = ['java', '-cp',  dirname(realpath(__file__)), self.executable, self.input, self.output]
             wait_dialog = WaitDialog(self)
             launcher = ProgramLauncher(self, args, wait_dialog)
             wait_dialog.process = launcher
@@ -628,7 +629,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             QMessageBox.critical(self, 'Erreur', '<b>Le fichier est invalide</b>')
             return
         try:
-            schema = XMLSchema(file='validation_output.xsd')
+            schema = XMLSchema(file=join(dirname(realpath(__file__)), 'validation_output.xsd'))
             if not schema(tree):
                 msg = QMessageBox(self)
                 msg.setWindowTitle('Erreur')
@@ -988,7 +989,7 @@ class WaitDialog(QDialog, Ui_waitDialog):
         super(WaitDialog, self).__init__(parent)
         self.setupUi(self)
         self.process = None
-        self.iconLabel.setMovie(QMovie(join('UI', 'loader.gif')))
+        self.iconLabel.setMovie(QMovie(join(dirname(realpath(__file__)), join('UI', 'loader.gif'))))
 
     def exec_(self):
         self.connect(self, SIGNAL('rejected()'), self.process.quit)
@@ -1006,7 +1007,7 @@ class ProgramLauncher(QThread):
         self.connect(self, SIGNAL('finished()'), self.dialog.accept)
 
     def run(self):
-        with subprocess.Popen(self.args) as self.process:
+        with subprocess.Popen(self.args, cwd=self.args[2]) as self.process:
             self.process.wait()
 
     def quit(self):
