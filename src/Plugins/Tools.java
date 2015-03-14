@@ -28,14 +28,16 @@ public class Tools extends JPanel {
         modèleList = new JList<>(modèle);
         TitledBorder modèleListBorder = BorderFactory.createTitledBorder("Le modèle");
         modèleList.setBorder(modèleListBorder);
-        modèleList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        modèleList.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
         final Component tools = this;
         ajouterFormuleAction = new AbstractAction("Ajouter une formule") {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
-                String formule = JOptionPane.showInputDialog(tools, "La formule", "Nouvelle formule", JOptionPane.QUESTION_MESSAGE);
+                String formule = JOptionPane.showInputDialog(tools, "La formule (Utiliser '-' ou '!' pour le négation)", "Nouvelle formule", JOptionPane.QUESTION_MESSAGE);
                 if ( formule != null && !formule.isEmpty())
-                    modèle.addElement(formule);
+                    if (formule.matches("(([!-]?\\w+)\\s+)*([!-]?\\w+)"))
+                        modèle.addElement(formule.replaceAll("\\s+", " "));
+                    else JOptionPane.showMessageDialog(tools, "La syntaxe de la formule est invalide !", "Formule invalide", JOptionPane.WARNING_MESSAGE);
             }
         };
         JButton ajouterFormuleButton = new JButton(ajouterFormuleAction);
