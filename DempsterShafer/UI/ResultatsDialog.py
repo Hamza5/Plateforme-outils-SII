@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'ResultatsDialog.ui'
 #
-# Created: Tue Mar 10 18:57:47 2015
+# Created: Sun Mar 15 10:57:00 2015
 #      by: PyQt4 UI code generator 4.10.4
 #
 # WARNING! All changes made in this file will be lost!

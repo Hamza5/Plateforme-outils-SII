@@ -654,8 +654,6 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                 états.append(état)
             hypotheses_elements = tree.findall('Hypotheses/Hypothese')
             results_dialog.resultsTableWidget.setRowCount(len(hypotheses_elements))
-            results_dialog.resultsTableWidget.horizontalHeader().setStretchLastSection(True)
-            results_dialog.resultsTableWidget.horizontalHeader().setResizeMode(QHeaderView.ResizeToContents)
             for hypothèse_element in hypotheses_elements:
                 mass = round(float(hypothèse_element.attrib['mass']), self.round_digits)
                 bel = round(float(hypothèse_element.find('Bel').text), self.round_digits)
@@ -949,6 +947,7 @@ class ResultsDialog(QDialog, Ui_resultsDialog):
     def __init__(self, parent: MainWindow):
         super(ResultsDialog, self).__init__(parent)
         self.setupUi(self)
+        self.resultsTableWidget.horizontalHeader().setStretchLastSection(True)
         self.connect(self.agentButton, SIGNAL('clicked()'), self.add_agent)
         self.connect(self.rechercheLineEdit, SIGNAL('textChanged(const QString&)'), self.search)
 
