@@ -12,8 +12,8 @@ import java.awt.event.KeyEvent;
 import java.io.*;
 import java.net.URL;
 import java.nio.file.Paths;
-import java.util.HashMap;
 import java.util.List;
+import java.util.Vector;
 
 public class Tools extends JPanel {
     private final JTabbedPane tabs;
@@ -78,15 +78,17 @@ public class Tools extends JPanel {
                 try {
                     File tempFile = File.createTempFile("UBCSAT", ".txt");
                     PrintWriter writer = new PrintWriter(tempFile);
-                    HashMap<String, Integer> clauses = new HashMap<>();
+                    Vector<String> clauses  = new Vector<>();
+                    Vector<Integer> indices = new Vector<>();
                     int k = 1;
                     String content = "";
                     for (int i=0; i<modèle.size(); i++) {
                         for (String c : modèle.get(i).split("\\s")) {
                             String c_ = c.replace("-", "");
-                            if (!clauses.keySet().contains(c_))
-                                clauses.put(c_, k++);
-                            content += (c.charAt(0) == '-' ? "-" : "") + clauses.get(c_)+"\t";
+                            if (!clauses.contains(c_))
+                                clauses.add(c_);
+                                indices.add(k++);
+                            content += (c.charAt(0) == '-' ? "-" : "") + indices.get(clauses.indexOf(c_))+"\t";
                         }
                         content += "0\n";
                     }
@@ -94,12 +96,12 @@ public class Tools extends JPanel {
                     Runtime runtime = Runtime.getRuntime();
                     writer.print(content);
                     writer.close();
-                    URL pluginsURL = ClassLoader.getSystemClassLoader().getResource("Plugins");
-                    if (pluginsURL == null) throw new FileNotFoundException("Plugins package not found");
-                    String pluginsPath = pluginsURL.getPath();
-                    String[] cmd = {Paths.get(pluginsPath, "ubcsat").toString(), "-alg", "saps", "-i",
+                    URL toolsURL = ClassLoader.getSystemClassLoader().getResource("Plugins/Tools");
+                    if (toolsURL == null) throw new FileNotFoundException("Plugins package not found");
+                    String toolsPath = toolsURL.getPath();
+                    String[] cmd = {Paths.get(toolsPath, "ubcsat").toString(), "-alg", "saps", "-i",
                                     tempFile.getAbsolutePath(), "-solve", "-r", "out", "null", "-r", "stats", "null"};
-                    Process process = runtime.exec(cmd, null, new File(pluginsPath));
+                    Process process = runtime.exec(cmd, null, new File(toolsPath));
                     InputStream output = process.getInputStream();
                     InputStream errorsOutput = process.getErrorStream();
                     int c;
@@ -112,7 +114,12 @@ public class Tools extends JPanel {
                         errors += (char)c;
                     }
                     if (!errors.isEmpty()) JOptionPane.showMessageDialog(tools, errors, "Erreur", JOptionPane.ERROR_MESSAGE);
-                    else JOptionPane.showMessageDialog(tools, results, "Résultats", JOptionPane.INFORMATION_MESSAGE);
+                    else {
+                        results = results.replaceAll("^(?:.*\\n){3}", "").substring(1);
+                        for (int i=0; i<clauses.size(); i++)
+                            results = results.replaceAll(indices.elementAt(i).toString(), clauses.elementAt(i));
+                        JOptionPane.showMessageDialog(tools, results, "Résultats", JOptionPane.INFORMATION_MESSAGE);
+                    }
                 }
                 catch (IOException e){
                     JOptionPane.showMessageDialog(tools, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
