@@ -31,8 +31,8 @@ public class MainWindow extends JFrame {
                     try {
                         String className = tabsDirectory.getName() + '.' + c.getName().substring(0, c.getName().length() - 6); // Package.Class
                         Class<?> tabClass = loader.loadClass(className);
-                        if(Component.class.isAssignableFrom(tabClass)){
-                            tabs.add((Component)tabClass.newInstance());
+                        if(JPanel.class.isAssignableFrom(tabClass)){
+                            tabs.add((JPanel)tabClass.newInstance());
                         }
                     }
                     catch (ClassNotFoundException | InstantiationException | IllegalAccessException | LinkageError e){
