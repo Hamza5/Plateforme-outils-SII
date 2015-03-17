@@ -1,6 +1,7 @@
 package Plugins;
 
 import javax.swing.*;
+import javax.swing.border.EmptyBorder;
 import javax.swing.border.TitledBorder;
 import javax.swing.event.ListDataEvent;
 import javax.swing.event.ListDataListener;
@@ -10,6 +11,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.io.*;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.file.Paths;
 import java.util.List;
@@ -26,6 +28,46 @@ public class Tools extends JPanel {
     private final JPanel weightedmaxsatPage;
     private final String title = "Tools";
     private final int spacing = 5;
+    class ResultsDialog extends JDialog {
+        private final JTextArea resultsTextArea;
+        private final AbstractAction closeAction;
+        private final JLabel label;
+        ResultsDialog() {
+            super();
+            BorderLayout layout = new BorderLayout();
+            setLayout(layout);
+            setPreferredSize(new Dimension(300, 200));
+            setModal(true);
+            final ResultsDialog dialog = this;
+            closeAction = new AbstractAction("OK") {
+                @Override
+                public void actionPerformed(ActionEvent actionEvent) {
+                    dialog.setVisible(false);
+                }
+            };
+            label = new JLabel("Resultats");
+            label.setBorder(new EmptyBorder(spacing, spacing, spacing, spacing));
+            resultsTextArea = new JTextArea();
+            resultsTextArea.setFont(new Font("Monospaced", Font.BOLD, 14));
+            resultsTextArea.setEditable(false);
+            JButton okButton = new JButton(closeAction);
+            Box textAreaBox = Box.createHorizontalBox();
+            textAreaBox.setBorder(new EmptyBorder(0, spacing, 0, spacing));
+            textAreaBox.add(new JScrollPane(resultsTextArea));
+            Box buttonsBox = Box.createHorizontalBox();
+            buttonsBox.setBorder(label.getBorder());
+            buttonsBox.add(Box.createHorizontalGlue());
+            buttonsBox.add(okButton);
+            buttonsBox.add(Box.createHorizontalGlue());
+            add(label, BorderLayout.PAGE_START);
+            add(textAreaBox, BorderLayout.CENTER);
+            add(buttonsBox, BorderLayout.PAGE_END);
+            getRootPane().setDefaultButton(okButton);
+        }
+        void setText(String text){
+            resultsTextArea.setText(text);
+        }
+    }
     public Tools(){
         super();
         setName(title); // Will be the title of the tab
@@ -42,14 +84,14 @@ public class Tools extends JPanel {
         modèleList.setBorder(modèleListBorder);
         modèleList.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
         final Component tools = this;
-        ajouterFormuleAction = new AbstractAction("Ajouter une formule") {
+        ajouterFormuleAction = new AbstractAction("Ajouter une clause") {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
-                String formule = JOptionPane.showInputDialog(tools, "La formule (Utiliser '-' pour le négation)", "Nouvelle formule", JOptionPane.QUESTION_MESSAGE);
+                String formule = JOptionPane.showInputDialog(tools, "La clause (Utiliser '-' pour le négation)", "Nouvelle clause", JOptionPane.QUESTION_MESSAGE);
                 if (formule != null && !formule.isEmpty())
                     if (formule.matches("(([-]?\\w+)\\s+)*([-]?\\w+)"))
                         modèle.addElement(formule.replaceAll("\\s+", " "));
-                    else JOptionPane.showMessageDialog(tools, "La syntaxe de la formule est invalide !", "Formule invalide", JOptionPane.WARNING_MESSAGE);
+                    else JOptionPane.showMessageDialog(tools, "La syntaxe de la clause est invalide !", "Clause invalide", JOptionPane.WARNING_MESSAGE);
             }
         };
         ajouterFormuleAction.putValue(Action.MNEMONIC_KEY, KeyEvent.VK_A);
@@ -98,7 +140,7 @@ public class Tools extends JPanel {
                     writer.close();
                     URL toolsURL = ClassLoader.getSystemClassLoader().getResource("Plugins/Tools");
                     if (toolsURL == null) throw new FileNotFoundException("Plugins package not found");
-                    String toolsPath = toolsURL.getPath();
+                    String toolsPath = new File(toolsURL.toURI()).getAbsolutePath();
                     String[] cmd = {Paths.get(toolsPath, "ubcsat").toString(), "-alg", "saps", "-i",
                                     tempFile.getAbsolutePath(), "-solve", "-r", "out", "null", "-r", "stats", "null"};
                     Process process = runtime.exec(cmd, null, new File(toolsPath));
@@ -118,10 +160,14 @@ public class Tools extends JPanel {
                         results = results.replaceAll("^(?:.*\\n){3}", "").substring(1);
                         for (int i=0; i<clauses.size(); i++)
                             results = results.replaceAll(indices.elementAt(i).toString(), clauses.elementAt(i));
-                        JOptionPane.showMessageDialog(tools, results, "Résultats", JOptionPane.INFORMATION_MESSAGE);
+                        ResultsDialog resultsDialog = new ResultsDialog();
+                        resultsDialog.setText(results);
+                        resultsDialog.pack();
+                        resultsDialog.setLocationRelativeTo(tools);
+                        resultsDialog.setVisible(true);
                     }
                 }
-                catch (IOException e){
+                catch (IOException | URISyntaxException e){
                     JOptionPane.showMessageDialog(tools, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
                 }
             }
