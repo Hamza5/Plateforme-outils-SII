@@ -24,10 +24,92 @@ public class Tools extends JPanel {
     private final JList<String> modèleList;
     private final AbstractAction ajouterFormuleAction;
     private final AbstractAction supprimerFormuleAction;
+    private final JList<String> wmodèleList;
+    private final AbstractAction wajouterFormuleAction;
+    private final AbstractAction wsupprimerFormuleAction;
+    private final DefaultListModel<String> wmodèle;
     private final AbstractAction calculerAction;
     private final JPanel weightedmaxsatPage;
     private final String title = "Tools";
+    private final String dialogTitle = "Nouvelle clasue";
+    private final String dialogText = "La clause (Utiliser '-' pour la négation)";
     private final int spacing = 5;
+    class WeightedMaxSATDialog extends JDialog {
+        private final JLabel clauseLabel;
+        private final JTextField clauseField;
+        private final JLabel poidsLabel;
+        private final JTextField poidsField;
+        private final JButton cancelButton;
+        private final JButton okButton;
+        WeightedMaxSATDialog() {
+            super();
+            setModal(true);
+            BoxLayout layout = new BoxLayout(getContentPane(), BoxLayout.PAGE_AXIS);
+            getContentPane().setLayout(layout);
+            setTitle(dialogTitle);
+            clauseLabel = new JLabel(dialogText);
+            clauseField = new JTextField();
+            poidsLabel = new JLabel("Poids");
+            poidsField = new JTextField(3);
+            final Color poidsFieldBackground = poidsField.getBackground();
+            final Color poidsFieldForeground = poidsField.getForeground();
+            poidsField.setInputVerifier(new InputVerifier() {
+                @Override
+                public boolean verify(JComponent jComponent) {
+                    String text = ((JTextField) jComponent).getText();
+                    try {
+                        Float.parseFloat(text);
+                        jComponent.setBackground(poidsFieldBackground);
+                        jComponent.setForeground(poidsFieldForeground);
+                        return true;
+                    } catch (NumberFormatException e) {
+                        jComponent.setBackground(Color.RED);
+                        jComponent.setForeground(Color.WHITE);
+                        return false;
+                    }
+                }
+            });
+            final WeightedMaxSATDialog dialog = this;
+            AbstractAction cancelAction = new AbstractAction("Annuler") {
+                @Override
+                public void actionPerformed(ActionEvent actionEvent) {
+                    dialog.setVisible(false);
+                }
+            };
+            cancelButton = new JButton(cancelAction);
+            getRootPane().getInputMap(WHEN_ANCESTOR_OF_FOCUSED_COMPONENT).put(KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), "cancel");
+            getRootPane().getActionMap().put("cancel", cancelAction);
+            AbstractAction okAction = new AbstractAction("OK") {
+                @Override
+                public void actionPerformed(ActionEvent actionEvent) {
+                    dialog.setVisible(false);
+                }
+            };
+            okButton = new JButton(okAction);
+            Box clauseBox = Box.createHorizontalBox();
+            clauseBox.add(clauseLabel);
+            Box fieldsBox =  Box.createHorizontalBox();
+            fieldsBox.add(clauseField);
+            fieldsBox.add(Box.createRigidArea(new Dimension(2*spacing, 0)));
+            fieldsBox.add(poidsLabel);
+            fieldsBox.add(Box.createRigidArea(new Dimension(spacing, 0)));
+            fieldsBox.add(poidsField);
+            poidsField.setMaximumSize(poidsField.getPreferredSize());
+            Box buttonsBox = Box.createHorizontalBox();
+            buttonsBox.add(okButton);
+            buttonsBox.add(Box.createRigidArea(new Dimension(spacing, 0)));
+            buttonsBox.add(cancelButton);
+            clauseBox.setBorder(new EmptyBorder(spacing, spacing, spacing, spacing));
+            fieldsBox.setBorder(new EmptyBorder(0, spacing, spacing, spacing));
+            buttonsBox.setBorder(fieldsBox.getBorder());
+            add(clauseBox);
+            add(fieldsBox);
+            add(buttonsBox);
+            pack();
+            getRootPane().setDefaultButton(okButton);
+            setResizable(false);
+        }
+    }
     class ResultsDialog extends JDialog {
         private final JTextArea resultsTextArea;
         private final AbstractAction closeAction;
@@ -87,7 +169,7 @@ public class Tools extends JPanel {
         ajouterFormuleAction = new AbstractAction("Ajouter une clause") {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
-                String formule = JOptionPane.showInputDialog(tools, "La clause (Utiliser '-' pour le négation)", "Nouvelle clause", JOptionPane.QUESTION_MESSAGE);
+                String formule = JOptionPane.showInputDialog(tools, dialogText, dialogTitle, JOptionPane.QUESTION_MESSAGE);
                 if (formule != null && !formule.isEmpty())
                     if (formule.matches("(([-]?\\w+)\\s+)*([-]?\\w+)"))
                         modèle.addElement(formule.replaceAll("\\s+", " "));
@@ -203,6 +285,49 @@ public class Tools extends JPanel {
         ubcsatPage.setBorder(BorderFactory.createEmptyBorder(spacing, spacing, spacing, spacing));
         // Content of Weighted Max SAT
         weightedmaxsatPage = new JPanel();
+        weightedmaxsatPage.setLayout(new BoxLayout(weightedmaxsatPage, BoxLayout.PAGE_AXIS));
+        wmodèle = new DefaultListModel<>();
+        wmodèleList = new JList<>(wmodèle);
+        TitledBorder wmodèleListBorder = BorderFactory.createTitledBorder("Le modèle");
+        wmodèleList.setBorder(wmodèleListBorder);
+        wmodèleList.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
+        wajouterFormuleAction = new AbstractAction("Ajouter une clause") {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                WeightedMaxSATDialog dialog = new WeightedMaxSATDialog();
+                dialog.setLocationRelativeTo(tools);
+                dialog.setVisible(true);
+            }
+        };
+        wajouterFormuleAction.putValue(Action.MNEMONIC_KEY, KeyEvent.VK_A);
+        final JButton wajouterFormuleButton = new JButton(wajouterFormuleAction);
+        wsupprimerFormuleAction = new AbstractAction("Supprimer") {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                List<String> selected = wmodèleList.getSelectedValuesList();
+                for (String value : selected) {
+                    wmodèle.removeElement(value);
+                }
+            }
+        };
+        wsupprimerFormuleAction.putValue(Action.MNEMONIC_KEY, KeyEvent.VK_S);
+        final JButton wsupprimerFormuleButton = new JButton(wsupprimerFormuleAction);
+        wsupprimerFormuleAction.setEnabled(false);
+        wmodèleList.addListSelectionListener(new ListSelectionListener() {
+            @Override
+            public void valueChanged(ListSelectionEvent listSelectionEvent) {
+                wsupprimerFormuleAction.setEnabled(wmodèleList.getSelectedIndices().length > 0);
+            }
+        });
+        Box wbuttonsBox = new Box(BoxLayout.LINE_AXIS);
+        wbuttonsBox.setBorder(BorderFactory.createEmptyBorder(spacing,0,0,0));
+        wbuttonsBox.add(wajouterFormuleButton);
+        wbuttonsBox.add(Box.createRigidArea(new Dimension(spacing, 0)));
+        wbuttonsBox.add(wsupprimerFormuleButton);
+        wbuttonsBox.add(Box.createHorizontalGlue());
+        weightedmaxsatPage.add(new JScrollPane(wmodèleList));
+        weightedmaxsatPage.add(wbuttonsBox);
+        weightedmaxsatPage.setBorder(BorderFactory.createEmptyBorder(spacing, spacing, spacing, spacing));
         // Add the pages
         tabs.addTab("UBCSAT", ubcsatPage);
         tabs.addTab("Weighted Max SAT", weightedmaxsatPage);
