@@ -1,29 +1,15 @@
 package Plugins;
 
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
-import java.awt.Insets;
+import javax.swing.*;
+import javax.swing.filechooser.FileNameExtensionFilter;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.BufferedInputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
+import java.io.*;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.file.Paths;
 
-import javax.swing.JButton;
-import javax.swing.JFileChooser;
-import javax.swing.JFrame;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.JTextField;
-import javax.swing.JTextPane;
-import javax.swing.filechooser.FileNameExtensionFilter;
-
-import matlabcontrol.MatlabInvocationException;
 public class Incertain extends JPanel implements ActionListener{
 	private static String LireSousFormeString(String filePath) {
 		 byte[] buffer = new byte[(int) new File(filePath).length()];
@@ -51,7 +37,7 @@ public class Incertain extends JPanel implements ActionListener{
 	JButton btnNewButton;
 	JButton btnClaculer;
 	JTextPane textPane;
-	public Incertain() throws MatlabInvocationException, IOException, URISyntaxException {
+	public Incertain() throws IOException, URISyntaxException {
 		super();
         setName("Incertain"); // Will be the title of the tab
 		
@@ -64,9 +50,9 @@ public class Incertain extends JPanel implements ActionListener{
     System.out.println("path : "+Paths.get(new File(url.toURI()).getAbsolutePath(),"FullBNT-1.0.4").toFile()); 
    //  p=Runtime.getRuntime().exec("cd "+Paths.get(new File(url.toURI()).getAbsolutePath(),"FullBNT-1.0.4").toFile());
 
-     p=Runtime.getRuntime().exec("matlab -nodesktop -nodisplay -minimize -noFigureWindows -nosplash -r addpath(genpathKPM(pwd));quit;",null,Paths.get(new File(url.toURI()).getAbsolutePath(),"FullBNT-1.0.4").toFile());
-     try {p.waitFor();} catch (InterruptedException e) {e.printStackTrace();
-	}
+//     p=Runtime.getRuntime().exec("matlab -nodesktop -nodisplay -minimize -noFigureWindows -nosplash -r addpath(genpathKPM(pwd));quit;",null,Paths.get(new File(url.toURI()).getAbsolutePath(),"FullBNT-1.0.4").toFile());
+//     try {p.waitFor();} catch (InterruptedException e) {e.printStackTrace();
+//	}
 		GridBagLayout gridBagLayout = new GridBagLayout();
 		gridBagLayout.columnWidths = new int[]{306, 109, 0};
 		gridBagLayout.rowHeights = new int[]{20, 150, 39, 14, 0};

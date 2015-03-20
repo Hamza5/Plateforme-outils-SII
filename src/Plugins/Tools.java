@@ -162,8 +162,6 @@ public class Tools extends JPanel {
         ubcsatPage.setLayout(new BoxLayout(ubcsatPage, BoxLayout.PAGE_AXIS));
         modèle = new DefaultListModel<>();
         modèleList = new JList<>(modèle);
-        TitledBorder modèleListBorder = BorderFactory.createTitledBorder("Le modèle");
-        modèleList.setBorder(modèleListBorder);
         modèleList.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
         final Component tools = this;
         ajouterFormuleAction = new AbstractAction("Ajouter une clause") {
@@ -171,7 +169,7 @@ public class Tools extends JPanel {
             public void actionPerformed(ActionEvent actionEvent) {
                 String formule = JOptionPane.showInputDialog(tools, dialogText, dialogTitle, JOptionPane.QUESTION_MESSAGE);
                 if (formule != null && !formule.isEmpty())
-                    if (formule.matches("(([-]?\\w+)\\s+)*([-]?\\w+)"))
+                    if (formule.matches("(([-]?\\w+)\\s+)*([-]?\\w+)")) // Check whether the syntax is valid
                         modèle.addElement(formule.replaceAll("\\s+", " "));
                     else JOptionPane.showMessageDialog(tools, "La syntaxe de la clause est invalide !", "Clause invalide", JOptionPane.WARNING_MESSAGE);
             }
@@ -220,7 +218,7 @@ public class Tools extends JPanel {
                     Runtime runtime = Runtime.getRuntime();
                     writer.print(content);
                     writer.close();
-                    URL toolsURL = ClassLoader.getSystemClassLoader().getResource("Plugins/Tools");
+                    URL toolsURL = ClassLoader.getSystemClassLoader().getResource("Plugins/tools");
                     if (toolsURL == null) throw new FileNotFoundException("Plugins package not found");
                     String toolsPath = new File(toolsURL.toURI()).getAbsolutePath();
                     String[] cmd = {Paths.get(toolsPath, "ubcsat").toString(), "-alg", "saps", "-i",
@@ -270,10 +268,13 @@ public class Tools extends JPanel {
 
             @Override
             public void contentsChanged(ListDataEvent listDataEvent) {
-
+                // Nothing
             }
         });
-        ubcsatPage.add(new JScrollPane(modèleList));
+        JScrollPane modèleScrollPane = new JScrollPane(modèleList);
+        TitledBorder modèleListBorder = BorderFactory.createTitledBorder("Le modèle");
+        modèleScrollPane.setBorder(modèleListBorder);
+        ubcsatPage.add(modèleScrollPane);
         Box buttonsBox = new Box(BoxLayout.LINE_AXIS);
         buttonsBox.setBorder(BorderFactory.createEmptyBorder(spacing,0,0,0));
         buttonsBox.add(ajouterFormuleButton);
@@ -329,7 +330,7 @@ public class Tools extends JPanel {
         weightedmaxsatPage.add(wbuttonsBox);
         weightedmaxsatPage.setBorder(BorderFactory.createEmptyBorder(spacing, spacing, spacing, spacing));
         // Add the pages
-        tabs.addTab("UBCSAT", ubcsatPage);
+        tabs.addTab("SAT", ubcsatPage);
         tabs.addTab("Weighted Max SAT", weightedmaxsatPage);
     }
 }
