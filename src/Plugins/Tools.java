@@ -12,7 +12,6 @@ import java.io.*;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.file.Paths;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Vector;
 
@@ -244,25 +243,41 @@ public class Tools extends JPanel {
                     Vector<Integer> indices = new Vector<>();
                     int k = 1;
                     String content = "";
-                    for (int i=0; i<modèle.size(); i++) {
-                        for (String c : modèle.get(i).split("\\s")) {
-                            String c_ = c.replace("-", "");
-                            if (!clauses.contains(c_))
-                                clauses.add(c_);
+                    if (tabs.getSelectedIndex() == 0){
+                        for (int i=0; i<modèle.size(); i++) {
+                            for (String c : modèle.get(i).split("\\s")) {
+                                String c_ = c.replace("-", "");
+                                if (!clauses.contains(c_))
+                                    clauses.add(c_);
                                 indices.add(k++);
-                            content += (c.charAt(0) == '-' ? "-" : "") + indices.get(clauses.indexOf(c_))+"\t";
+                                content += (c.charAt(0) == '-' ? "-" : "") + indices.get(clauses.indexOf(c_))+" ";
+                            }
+                            content += "0\n";
                         }
-                        content += "0\n";
+                        content = "p cnf "+clauses.size()+' '+modèle.size()+'\n' + content;
                     }
-                    content = "p\tcnf\t"+clauses.size()+'\t'+modèle.size()+'\n' + content;
+                    else {
+                        for (int i=0; i<wmodèle.getRowCount(); i++) {
+                            content += ((Vector<String>)wmodèle.getDataVector().elementAt(i)).elementAt(1) + ' ';
+                            for (String c : ((Vector<String>)wmodèle.getDataVector().elementAt(i)).elementAt(0).split("\\s")) {
+                                String c_ = c.replace("-", "");
+                                if (!clauses.contains(c_))
+                                    clauses.add(c_);
+                                indices.add(k++);
+                                content += (c.charAt(0) == '-' ? "-" : "") + indices.get(clauses.indexOf(c_))+" ";
+                            }
+                            content += "0\n";
+                        }
+                        content = "p wcnf "+clauses.size()+' '+wmodèle.getRowCount()+'\n' + content;
+                    }
                     Runtime runtime = Runtime.getRuntime();
                     writer.print(content);
                     writer.close();
                     URL toolsURL = ClassLoader.getSystemClassLoader().getResource("Plugins/tools/ubcsat");
                     if (toolsURL == null) throw new FileNotFoundException("Plugins package not found");
                     String toolsPath = new File(toolsURL.toURI()).getAbsolutePath();
-                    String[] cmd = {Paths.get(toolsPath, "ubcsat").toString(), "-alg", "saps", "-i",
-                                    tempFile.getAbsolutePath(), "-solve", "-r", "out", "null", "-r", "stats", "null"};
+                    String cmd = Paths.get(toolsPath, "ubcsat").toString() + ' ' + (tabs.getSelectedIndex() == 1 ? "-w" : "")
+                                + " -alg gsat -i " + tempFile.getAbsolutePath() + " -solve -r out null -r stats null";
                     Process process = runtime.exec(cmd, null, new File(toolsPath));
                     InputStream output = process.getInputStream();
                     InputStream errorsOutput = process.getErrorStream();
@@ -275,7 +290,7 @@ public class Tools extends JPanel {
                     while ((c = errorsOutput.read()) != -1) {
                         errors += (char)c;
                     }
-                    if (!errors.isEmpty()) JOptionPane.showMessageDialog(tools, errors, "Erreur", JOptionPane.ERROR_MESSAGE);
+                    if (!errors.isEmpty()) JOptionPane.showMessageDialog(tools, errors.replaceAll("#.*\\n", "").substring(1), "Erreur", JOptionPane.ERROR_MESSAGE);
                     else {
                         results = results.replaceAll("^(?:.*\\n){3}", "").substring(1);
                         for (int i=0; i<clauses.size(); i++)
