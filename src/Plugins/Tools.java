@@ -3,10 +3,7 @@ package Plugins;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.TitledBorder;
-import javax.swing.event.ListDataEvent;
-import javax.swing.event.ListDataListener;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
+import javax.swing.event.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -42,6 +39,8 @@ public class Tools extends JPanel {
     private final String formuleRegExp = "(([-]?\\w+)\\s+)*([-]?\\w+)";
     private final Color invalidForground = Color.WHITE;
     private final Color invalidBackground = Color.RED;
+    private final String modèleListName = "list";
+    private final String modèleTableName = "table";
     private final int spacing = 5;
     class WeightedMaxSATDialog extends JDialog {
         private final JLabel clauseLabel;
@@ -202,6 +201,7 @@ public class Tools extends JPanel {
         ubcsatPage.setLayout(new BoxLayout(ubcsatPage, BoxLayout.PAGE_AXIS));
         modèle = new DefaultListModel<>();
         modèleList = new JList<>(modèle);
+        modèleList.setName(modèleListName);
         modèleList.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
         final Component tools = this;
         ajouterFormuleAction = new AbstractAction(ajouterFormuleText) {
@@ -295,7 +295,7 @@ public class Tools extends JPanel {
         calculerAction.setEnabled(false);
         calculerAction.putValue(Action.MNEMONIC_KEY, KeyEvent.VK_C);
         final JButton calculerButton = new JButton(calculerAction);
-        modèle.addListDataListener(new ListDataListener() {
+        ListDataListener calculerListDataListener = new ListDataListener() {
             @Override
             public void intervalAdded(ListDataEvent listDataEvent) {
                 calculerAction.setEnabled(true);
@@ -310,18 +310,24 @@ public class Tools extends JPanel {
             public void contentsChanged(ListDataEvent listDataEvent) {
                 // Nothing
             }
-        });
+        };
+        TableModelListener calculerTableModelListener = new TableModelListener() {
+            @Override
+            public void tableChanged(TableModelEvent tableModelEvent) {
+                calculerAction.setEnabled(tableModelEvent.getType() == TableModelEvent.INSERT);
+                calculerAction.setEnabled(!(tableModelEvent.getType() == TableModelEvent.DELETE && wmodèleTable.getRowCount() == 0));
+            }
+        };
+        modèle.addListDataListener(calculerListDataListener);
         JScrollPane modèleScrollPane = new JScrollPane(modèleList);
         TitledBorder modèleListBorder = BorderFactory.createTitledBorder("Le modèle");
         modèleScrollPane.setBorder(modèleListBorder);
         ubcsatPage.add(modèleScrollPane);
         Box buttonsBox = new Box(BoxLayout.LINE_AXIS);
-        buttonsBox.setBorder(BorderFactory.createEmptyBorder(spacing,0,0,0));
+        buttonsBox.setBorder(BorderFactory.createEmptyBorder(spacing, 0, 0, 0));
         buttonsBox.add(ajouterFormuleButton);
         buttonsBox.add(Box.createRigidArea(new Dimension(spacing, 0)));
         buttonsBox.add(supprimerFormuleButton);
-        buttonsBox.add(Box.createHorizontalGlue());
-        buttonsBox.add(calculerButton);
         ubcsatPage.add(buttonsBox);
         ubcsatPage.setBorder(BorderFactory.createEmptyBorder(spacing, spacing, spacing, spacing));
         // Content of Weighted Max SAT
@@ -331,7 +337,9 @@ public class Tools extends JPanel {
         columnNames.add("Formule");
         columnNames.add("Poids");
         wmodèle = new DefaultTableModel(columnNames, 0);
+        wmodèle.addTableModelListener(calculerTableModelListener);
         wmodèleTable = new JTable(wmodèle);
+        wmodèleTable.setName(modèleTableName);
         wmodèleTable.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
         wmodèleTable.setCellSelectionEnabled(false);
         wmodèleTable.setRowSelectionAllowed(true);
@@ -365,16 +373,25 @@ public class Tools extends JPanel {
             }
         });
         Box wbuttonsBox = new Box(BoxLayout.LINE_AXIS);
-        wbuttonsBox.setBorder(BorderFactory.createEmptyBorder(spacing,0,0,0));
+        wbuttonsBox.setBorder(BorderFactory.createEmptyBorder(spacing, 0, 0, 0));
         wbuttonsBox.add(wajouterFormuleButton);
         wbuttonsBox.add(Box.createRigidArea(new Dimension(spacing, 0)));
         wbuttonsBox.add(wsupprimerFormuleButton);
-        wbuttonsBox.add(Box.createHorizontalGlue());
         weightedmaxsatPage.add(new JScrollPane(wmodèleTable));
         weightedmaxsatPage.add(wbuttonsBox);
         weightedmaxsatPage.setBorder(BorderFactory.createEmptyBorder(spacing, spacing, spacing, spacing));
         // Add the pages
         tabs.addTab("SAT", ubcsatPage);
         tabs.addTab("Weighted Max SAT", weightedmaxsatPage);
+        tabs.addChangeListener(new ChangeListener() {
+            @Override
+            public void stateChanged(ChangeEvent changeEvent) {
+                calculerAction.setEnabled((tabs.getSelectedIndex() == 0 && !modèle.isEmpty()) || (tabs.getSelectedIndex() == 1 && wmodèle.getRowCount() > 0));
+            }
+        });
+        Box bottomBox = Box.createHorizontalBox();
+        bottomBox.setBorder(ubcsatPage.getBorder());
+        bottomBox.add(calculerButton);
+        add(bottomBox);
     }
 }
