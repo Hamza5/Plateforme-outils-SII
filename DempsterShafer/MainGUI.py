@@ -644,7 +644,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         try:
             results_dialog = ResultsDialog(self)
             results_dialog.titleLabel.setText('<b>'+tree.find('Title').text+'</b>')
-            results_dialog.descriptionLabel.setText('<i>'+tree.find('Description').text.replace('\n', '<br>')+'</i>')
+            description = tree.find('Description').text or ""
+            results_dialog.descriptionLabel.setText('<i>'+description.replace('\n', '<br>')+'</i>')
             results_dialog.methodLabel.setText('Méthode de fusion : '+tree.find('Method').text)
             results_dialog.decisionMethodLabel.setText('Méthode de décision : '+tree.find('Decision').text)
             états = []
