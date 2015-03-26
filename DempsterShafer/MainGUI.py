@@ -214,8 +214,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             self.output = splitext(splitext(self.input)[0])[0] + '.dsto.xml'
             self.last_path = dirname(self.output)
             return True
-        except OSError as e:
-            QMessageBox.critical(self, 'Erreur', '<b>Impossible de sauvegarder le fichier '+e.filename+'</b>')
+        except OSError:
+            QMessageBox.critical(self, 'Erreur', '<b>Impossible de sauvegarder le fichier</b><br>'+file_path)
             return False
 
     def ouvrir(self):
@@ -226,7 +226,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         try:
             tree = ElementTree(file=file_path)
         except OSError:  # Can't open the file
-            QMessageBox.critical(self, 'Erreur', '<b>Impossible d\'ouvrir le fichier</b>')
+            QMessageBox.critical(self, 'Erreur', '<b>Impossible d\'ouvrir le fichier</b><br>'+file_path)
             return
         except SyntaxError:
             QMessageBox.critical(self, 'Erreur', '<b>Le fichier est invalide</b>')
@@ -602,9 +602,11 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             launcher = ProgramLauncher(self, args, wait_dialog)
             wait_dialog.process = launcher
             if wait_dialog.exec_() == QDialog.Accepted:
+                if launcher.return_code > 0:
+                    raise OSError
                 self.afficher(self.output)
-        except OSError as e:
-            QMessageBox.critical(self, 'Erreur', 'Impossible de lancer le programme de calcul\n'+e.filename)
+        except OSError:
+            QMessageBox.critical(self, 'Erreur', '<b>Une erreur est survenu dans le programme de calcul</b>')
             return
 
     def afficher(self, path=None):
@@ -615,8 +617,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                 return
         try:
             tree = ElementTree(file=path)
-        except OSError as e:  # Can't open the file
-            QMessageBox.critical(self, 'Erreur', '<b>Impossible d\'ouvrir le fichier</b>')
+        except OSError:  # Can't open the file
+            QMessageBox.critical(self, 'Erreur', '<b>Impossible d\'ouvrir le fichier</b><br>'+path)
             return
         except ParseError:  # XML contains syntax errors
             msg = QMessageBox(self)
@@ -625,6 +627,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             msg.setInformativeText('Le document contient des erreurs')
             msg.setIcon(QMessageBox.Critical)
             msg.exec_()
+            return
         except SyntaxError:
             QMessageBox.critical(self, 'Erreur', '<b>Le fichier est invalide</b>')
             return
@@ -992,7 +995,7 @@ class WaitDialog(QDialog, Ui_waitDialog):
         self.iconLabel.setMovie(QMovie(join(dirname(realpath(__file__)), join('UI', 'loader.gif'))))
 
     def exec_(self):
-        self.connect(self, SIGNAL('rejected()'), self.process.quit)
+        self.connect(self, SIGNAL('rejected()'), self.process.exit)
         self.iconLabel.movie().start()
         self.process.start()
         return super(WaitDialog, self).exec_()
@@ -1004,15 +1007,23 @@ class ProgramLauncher(QThread):
         self.process = None
         self.args = args
         self.dialog = wait_dialog
+        self.return_code = 0
+        self.stderr_data = ''
         self.connect(self, SIGNAL('finished()'), self.dialog.accept)
 
     def run(self):
-        with subprocess.Popen(self.args, cwd=self.args[2]) as self.process:
-            self.process.wait()
+        with subprocess.Popen(self.args, cwd=self.args[2], stderr=subprocess.PIPE, universal_newlines=True) as self.process:
+            self.stderr_data = self.process.communicate()[1]
+            self.return_code = self.process.returncode
+            if self.process.returncode > 0:
+                self.exit(self.process.returncode)
 
-    def quit(self):
-        self.process.terminate()
-        super(ProgramLauncher, self).quit()
+    def exit(self, return_code=0):
+        try:
+            self.process.terminate()
+        except ProcessLookupError:
+            pass
+        super(ProgramLauncher, self).exit(return_code)
 
 
 class ObjectItem(QStandardItem):
