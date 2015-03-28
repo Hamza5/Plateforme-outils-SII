@@ -22,17 +22,21 @@ public class Tools extends JPanel {
     private final JList<String> modèleList;
     private final AbstractAction ajouterFormuleAction;
     private final AbstractAction supprimerFormuleAction;
+    private final AbstractAction modifierFormuleAction;
     private final JTable wmodèleTable;
     private final AbstractAction wajouterFormuleAction;
     private final AbstractAction wsupprimerFormuleAction;
+//    private final AbstractAction wmodifierFormuleAction;
     private final DefaultTableModel wmodèle;
     private final AbstractAction calculerAction;
     private final JPanel weightedmaxsatPage;
     private final String title = "Tools";
     private final String dialogTitle = "Nouvelle formule";
+    private final String dialogEditTitle = "Modifier la formule";
     private final String dialogText = "La formule (Utiliser '-' pour la négation)";
     private final String ajouterFormuleText = "Ajouter une formule";
     private final String supprimerText = "Supprimer";
+    private final String modifierText = "Modifier";
     private final String formuleInvalideText = "La syntaxe de la formule est invalide !";
     private final String formuleInvalideTitle = "Formule invalide";
     private final String formuleRegExp = "(([-]?\\w+)\\s+)*([-]?\\w+)";
@@ -207,10 +211,8 @@ public class Tools extends JPanel {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
                 String formule = JOptionPane.showInputDialog(tools, dialogText, dialogTitle, JOptionPane.QUESTION_MESSAGE);
-                if (formule != null && !formule.isEmpty())
-                    if (formule.matches("(([-]?\\w+)\\s+)*([-]?\\w+)")) // Check whether the syntax is valid
-                        modèle.addElement(formule.replaceAll("\\s+", " "));
-                    else JOptionPane.showMessageDialog(tools, formuleInvalideText, formuleInvalideTitle, JOptionPane.WARNING_MESSAGE);
+                if (formuleIsValid(formule)) modèle.addElement(formule.replaceAll("\\s+", " "));
+                else JOptionPane.showMessageDialog(tools, formuleInvalideText, formuleInvalideTitle, JOptionPane.WARNING_MESSAGE);
             }
         };
         ajouterFormuleAction.putValue(Action.MNEMONIC_KEY, KeyEvent.VK_A);
@@ -227,10 +229,23 @@ public class Tools extends JPanel {
         supprimerFormuleAction.putValue(Action.MNEMONIC_KEY, KeyEvent.VK_S);
         final JButton supprimerFormuleButton = new JButton(supprimerFormuleAction);
         supprimerFormuleAction.setEnabled(false);
+        modifierFormuleAction = new AbstractAction(modifierText) {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                String formule = (String)JOptionPane.showInputDialog(tools, dialogText, dialogEditTitle, JOptionPane.QUESTION_MESSAGE, null, null, modèleList.getSelectedValue());
+                if (formule != null)
+                    modèle.setElementAt(formule, modèleList.getSelectedIndex());
+            }
+        };
+        modifierFormuleAction.putValue(Action.MNEMONIC_KEY, KeyEvent.VK_M);
+        modifierFormuleAction.setEnabled(false);
+        JButton modifierFormuleButton = new JButton(modifierFormuleAction);
         modèleList.addListSelectionListener(new ListSelectionListener() {
             @Override
             public void valueChanged(ListSelectionEvent listSelectionEvent) {
-                supprimerFormuleAction.setEnabled(modèleList.getSelectedIndices().length > 0);
+                boolean somethingSelected = modèleList.getSelectedIndices().length > 0;
+                supprimerFormuleAction.setEnabled(somethingSelected);
+                modifierFormuleAction.setEnabled(somethingSelected);
             }
         });
         calculerAction = new AbstractAction("Calculer") {
@@ -342,6 +357,8 @@ public class Tools extends JPanel {
         buttonsBox.setBorder(BorderFactory.createEmptyBorder(spacing, 0, 0, 0));
         buttonsBox.add(ajouterFormuleButton);
         buttonsBox.add(Box.createRigidArea(new Dimension(spacing, 0)));
+        buttonsBox.add(modifierFormuleButton);
+        buttonsBox.add(Box.createRigidArea(new Dimension(spacing, 0)));
         buttonsBox.add(supprimerFormuleButton);
         ubcsatPage.add(buttonsBox);
         ubcsatPage.setBorder(BorderFactory.createEmptyBorder(spacing, spacing, spacing, spacing));
@@ -351,7 +368,12 @@ public class Tools extends JPanel {
         Vector<String> columnNames = new Vector<>(2);
         columnNames.add("Formule");
         columnNames.add("Poids");
-        wmodèle = new DefaultTableModel(columnNames, 0);
+        wmodèle = new DefaultTableModel(columnNames, 0){
+            @Override
+            public boolean isCellEditable(int line, int column){
+                return false;
+            }
+        };
         wmodèle.addTableModelListener(calculerTableModelListener);
         wmodèleTable = new JTable(wmodèle);
         wmodèleTable.setName(modèleTableName);
@@ -408,5 +430,11 @@ public class Tools extends JPanel {
         bottomBox.setBorder(ubcsatPage.getBorder());
         bottomBox.add(calculerButton);
         add(bottomBox);
+    }
+    private boolean formuleIsValid(String formule){
+        if (formule != null && !formule.isEmpty())
+            if (formule.matches("(([-]?\\w+)\\s+)*([-]?\\w+)")) // Check whether the syntax is valid
+                return true;
+        return false;
     }
 }
