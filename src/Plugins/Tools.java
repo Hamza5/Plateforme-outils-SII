@@ -26,25 +26,26 @@ public class Tools extends JPanel {
     private final JTable wmodèleTable;
     private final AbstractAction wajouterFormuleAction;
     private final AbstractAction wsupprimerFormuleAction;
-//    private final AbstractAction wmodifierFormuleAction;
+    private final AbstractAction wmodifierFormuleAction;
     private final DefaultTableModel wmodèle;
     private final AbstractAction calculerAction;
     private final JPanel weightedmaxsatPage;
-    private final String title = "Tools";
-    private final String dialogTitle = "Nouvelle formule";
-    private final String dialogEditTitle = "Modifier la formule";
-    private final String dialogText = "La formule (Utiliser '-' pour la négation)";
-    private final String ajouterFormuleText = "Ajouter une formule";
-    private final String supprimerText = "Supprimer";
-    private final String modifierText = "Modifier";
-    private final String formuleInvalideText = "La syntaxe de la formule est invalide !";
-    private final String formuleInvalideTitle = "Formule invalide";
-    private final String formuleRegExp = "(([-]?\\w+)\\s+)*([-]?\\w+)";
-    private final Color invalidForground = Color.WHITE;
-    private final Color invalidBackground = Color.RED;
-    private final String modèleListName = "list";
-    private final String modèleTableName = "table";
-    private final int spacing = 5;
+    private static final String title = "Tools";
+    private static final String dialogTitle = "Nouvelle formule";
+    private static final String dialogEditTitle = "Modifier la formule";
+    private static final String dialogText = "La formule (Utiliser '-' pour la négation)";
+    private static final String ajouterFormuleText = "Ajouter une formule";
+    private static final String supprimerText = "Supprimer";
+    private static final String modifierText = "Modifier";
+    private static final String formuleInvalideText = "La syntaxe de la formule est invalide !";
+    private static final String formuleInvalideTitle = "Formule invalide";
+    private static final String poidsInvalideText = "Le poids est invalide";
+    private static final String formuleRegExp = "(([-]?\\w+)\\s+)*([-]?\\w+)";
+    private static final Color invalidForground = Color.WHITE;
+    private static final Color invalidBackground = new Color(247, 74, 49);
+    private static final String modèleListName = "list";
+    private static final String modèleTableName = "table";
+    private static final int spacing = 5;
     class WeightedMaxSATDialog extends JDialog {
         private final JLabel clauseLabel;
         private final JTextField clauseField;
@@ -52,7 +53,7 @@ public class Tools extends JPanel {
         private final JTextField poidsField;
         private final JButton cancelButton;
         private final JButton okButton;
-        WeightedMaxSATDialog() {
+        WeightedMaxSATDialog(final int selecetedRow) {
             super();
             setModal(true);
             BoxLayout layout = new BoxLayout(getContentPane(), BoxLayout.PAGE_AXIS);
@@ -62,18 +63,18 @@ public class Tools extends JPanel {
             clauseField = new JTextField();
             poidsLabel = new JLabel("Poids");
             poidsField = new JTextField(3);
-            final Color poidsFieldBackground = poidsField.getBackground();
-            final Color poidsFieldForeground = poidsField.getForeground();
+            final Color defaultFieldBackground = poidsField.getBackground();
+            final Color defaultFieldForeground = poidsField.getForeground();
             poidsField.setInputVerifier(new InputVerifier() {
                 @Override
                 public boolean verify(JComponent jComponent) {
                     String text = ((JTextField) jComponent).getText();
-                    try {
-                        Float.parseFloat(text);
-                        jComponent.setBackground(poidsFieldBackground);
-                        jComponent.setForeground(poidsFieldForeground);
+                    if(poidsIsValid(text)) {
+                        jComponent.setBackground(defaultFieldBackground);
+                        jComponent.setForeground(defaultFieldForeground);
                         return true;
-                    } catch (NumberFormatException e) {
+                    }
+                    else {
                         jComponent.setBackground(invalidBackground);
                         jComponent.setForeground(invalidForground);
                         return false;
@@ -84,9 +85,9 @@ public class Tools extends JPanel {
                 @Override
                 public boolean verify(JComponent jComponent) {
                     String text = ((JTextField) jComponent).getText();
-                    if (text.matches(formuleRegExp)) {
-                        jComponent.setBackground(poidsFieldBackground);
-                        jComponent.setForeground(poidsFieldForeground);
+                    if (formuleIsValid(text)) {
+                        jComponent.setBackground(defaultFieldBackground);
+                        jComponent.setForeground(defaultFieldForeground);
                         return true;
                     }
                     else {
@@ -112,13 +113,17 @@ public class Tools extends JPanel {
                     String text = clauseField.getText();
                     String poids = poidsField.getText();
                     if (!text.isEmpty() && !poidsField.getText().isEmpty())
-                        if (text.matches(formuleRegExp)){ // Check whether the syntax is valid
-                            try {
-                                String[] data = {text.replaceAll("\\s+", " "), String.valueOf(Float.parseFloat(poids))};
-                                wmodèle.addRow(data);
+                        if (formuleIsValid(text)){ // Check whether the syntax is valid
+                            if (poidsIsValid(poids)){
+                                String[] data = {text.replaceAll("\\s+", " "), poids};
+                                if (selecetedRow < 0) wmodèle.addRow(data);
+                                else {
+                                    wmodèle.setValueAt(data[0], selecetedRow, 0);
+                                    wmodèle.setValueAt(data[1], selecetedRow, 1);
+                                }
                             }
-                            catch (NumberFormatException e){
-                                JOptionPane.showMessageDialog(dialog, "Le poids est invalide", formuleInvalideTitle, JOptionPane.WARNING_MESSAGE);
+                            else {
+                                JOptionPane.showMessageDialog(dialog, poidsInvalideText, formuleInvalideTitle, JOptionPane.WARNING_MESSAGE);
                             }
                         }
                         else {
@@ -141,8 +146,8 @@ public class Tools extends JPanel {
             buttonsBox.add(okButton);
             buttonsBox.add(Box.createRigidArea(new Dimension(spacing, 0)));
             buttonsBox.add(cancelButton);
-            clauseBox.setBorder(new EmptyBorder(spacing, spacing, spacing, spacing));
-            fieldsBox.setBorder(new EmptyBorder(0, spacing, spacing, spacing));
+            clauseBox.setBorder(new EmptyBorder(2*spacing, 2*spacing, spacing, 2*spacing));
+            fieldsBox.setBorder(new EmptyBorder(0, 2*spacing, 2*spacing, 2*spacing));
             buttonsBox.setBorder(fieldsBox.getBorder());
             add(clauseBox);
             add(fieldsBox);
@@ -211,8 +216,10 @@ public class Tools extends JPanel {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
                 String formule = JOptionPane.showInputDialog(tools, dialogText, dialogTitle, JOptionPane.QUESTION_MESSAGE);
-                if (formuleIsValid(formule)) modèle.addElement(formule.replaceAll("\\s+", " "));
-                else JOptionPane.showMessageDialog(tools, formuleInvalideText, formuleInvalideTitle, JOptionPane.WARNING_MESSAGE);
+                if (formule != null) {
+                    if (formuleIsValid(formule)) modèle.addElement(formule.replaceAll("\\s+", " "));
+                    else JOptionPane.showMessageDialog(tools, formuleInvalideText, formuleInvalideTitle, JOptionPane.WARNING_MESSAGE);
+                }
             }
         };
         ajouterFormuleAction.putValue(Action.MNEMONIC_KEY, KeyEvent.VK_A);
@@ -233,8 +240,10 @@ public class Tools extends JPanel {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
                 String formule = (String)JOptionPane.showInputDialog(tools, dialogText, dialogEditTitle, JOptionPane.QUESTION_MESSAGE, null, null, modèleList.getSelectedValue());
-                if (formule != null)
-                    modèle.setElementAt(formule, modèleList.getSelectedIndex());
+                if (formule != null){
+                    if (formuleIsValid(formule)) modèle.setElementAt(formule, modèleList.getSelectedIndex());
+                    else JOptionPane.showMessageDialog(tools, formuleInvalideText, formuleInvalideTitle, JOptionPane.WARNING_MESSAGE);
+                }
             }
         };
         modifierFormuleAction.putValue(Action.MNEMONIC_KEY, KeyEvent.VK_M);
@@ -384,7 +393,7 @@ public class Tools extends JPanel {
         wajouterFormuleAction = new AbstractAction(ajouterFormuleText) {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
-                WeightedMaxSATDialog dialog = new WeightedMaxSATDialog();
+                WeightedMaxSATDialog dialog = new WeightedMaxSATDialog(-1);
                 dialog.setLocationRelativeTo(tools);
                 dialog.setVisible(true);
             }
@@ -403,15 +412,33 @@ public class Tools extends JPanel {
         wsupprimerFormuleAction.putValue(Action.MNEMONIC_KEY, KeyEvent.VK_S);
         final JButton wsupprimerFormuleButton = new JButton(wsupprimerFormuleAction);
         wsupprimerFormuleAction.setEnabled(false);
+        wmodifierFormuleAction = new AbstractAction(modifierText) {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                int selectedRow = wmodèleTable.getSelectedRow();
+                WeightedMaxSATDialog dialog = new WeightedMaxSATDialog(selectedRow);
+                dialog.clauseField.setText((String)wmodèle.getValueAt(selectedRow, 0));
+                dialog.poidsField.setText((String)wmodèle.getValueAt(selectedRow, 1));
+                dialog.setLocationRelativeTo(tools);
+                dialog.setVisible(true);
+            }
+        };
+        wmodifierFormuleAction.putValue(Action.MNEMONIC_KEY, KeyEvent.VK_M);
+        wmodifierFormuleAction.setEnabled(false);
+        JButton wmodifierFormuleButton = new JButton(wmodifierFormuleAction);
         wmodèleTable.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
             @Override
             public void valueChanged(ListSelectionEvent listSelectionEvent) {
-                wsupprimerFormuleAction.setEnabled(wmodèleTable.getSelectedRows().length > 0);
+                boolean somethingSelected = wmodèleTable.getSelectedRows().length > 0;
+                wsupprimerFormuleAction.setEnabled(somethingSelected);
+                wmodifierFormuleAction.setEnabled(somethingSelected);
             }
         });
         Box wbuttonsBox = new Box(BoxLayout.LINE_AXIS);
         wbuttonsBox.setBorder(BorderFactory.createEmptyBorder(spacing, 0, 0, 0));
         wbuttonsBox.add(wajouterFormuleButton);
+        wbuttonsBox.add(Box.createRigidArea(new Dimension(spacing, 0)));
+        wbuttonsBox.add(wmodifierFormuleButton);
         wbuttonsBox.add(Box.createRigidArea(new Dimension(spacing, 0)));
         wbuttonsBox.add(wsupprimerFormuleButton);
         weightedmaxsatPage.add(new JScrollPane(wmodèleTable));
@@ -431,10 +458,20 @@ public class Tools extends JPanel {
         bottomBox.add(calculerButton);
         add(bottomBox);
     }
-    private boolean formuleIsValid(String formule){
-        if (formule != null && !formule.isEmpty())
-            if (formule.matches("(([-]?\\w+)\\s+)*([-]?\\w+)")) // Check whether the syntax is valid
+    private static boolean formuleIsValid(String formule){
+        if (!formule.isEmpty())
+            if (formule.matches(formuleRegExp)) // Check whether the syntax is valid
                 return true;
         return false;
+    }
+    private static boolean poidsIsValid(String poids){
+        try{
+            float value = Float.parseFloat(poids);
+            if (value < 0) throw new NumberFormatException();
+            return true;
+        }
+        catch (NumberFormatException e){
+            return false;
+        }
     }
 }
