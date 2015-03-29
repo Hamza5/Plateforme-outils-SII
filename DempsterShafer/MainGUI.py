@@ -160,15 +160,9 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         if not file_path:
             return False
         try:  # Using xml.etree.ElementTree
-            root = Element('DSTI',
-                           {'xmlns:xsi': 'http://www.w3.org/2001/XMLSchema-instance',
-                            'xsi:noNamespaceSchemaLocation': 'validation.xsd'},
-                           )
+            root = Element('DSTI')
         except ValueError:  # Using lxml.etree
-            root = Element('DSTI',
-                           {'{http://www.w3.org/2001/XMLSchema-instance}noNamespaceSchemaLocation': 'validation.xsd'},
-                            nsmap = {'xsi': 'http://www.w3.org/2001/XMLSchema-instance'}
-                           )
+            root = Element('DSTI')
         title = Element('Title')
         title.text = self.title
         root.append(title)
@@ -228,9 +222,6 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         except OSError:  # Can't open the file
             QMessageBox.critical(self, 'Erreur', '<b>Impossible d\'ouvrir le fichier</b><br>'+file_path)
             return
-        except SyntaxError:
-            QMessageBox.critical(self, 'Erreur', '<b>Le fichier est invalide</b>')
-            return
         except ParseError:  # XML contains syntax errors
             msg = QMessageBox(self)
             msg.setWindowTitle('Erreur')
@@ -238,6 +229,9 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             msg.setInformativeText('Le document contient des erreurs')
             msg.setIcon(QMessageBox.Critical)
             msg.exec_()
+            return
+        except SyntaxError:
+            QMessageBox.critical(self, 'Erreur', '<b>Le fichier est invalide</b>')
             return
         try:
             schema = XMLSchema(file=join(dirname(realpath(__file__)), 'validation.xsd'))
