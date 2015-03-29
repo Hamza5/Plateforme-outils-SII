@@ -10,8 +10,6 @@ import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.BufferedInputStream;
@@ -57,7 +55,6 @@ import javax.swing.KeyStroke;
 import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.ListSelectionModel;
 import javax.swing.SwingConstants;
-import javax.swing.SwingUtilities;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.filechooser.FileNameExtensionFilter;
@@ -80,14 +77,6 @@ import com.mxgraph.swing.handler.mxRubberband;
 import com.mxgraph.util.mxConstants;
 import com.mxgraph.view.mxGraph;
 
-
-
-
-
-	  /**
-	 * 
-	 */
-
 public class Incertain extends JPanel implements ActionListener{
 	
 	private JTextField txtCheminVersLe;
@@ -106,7 +95,7 @@ public class Incertain extends JPanel implements ActionListener{
 	private JButton btnModifer;
 	Object [][] data2;
 	int nom = 1;
-	int x = 0, y = 0;
+	
 	JTable tableau; 
 	HashMap <String, List<Float>> donnéesDist = new HashMap<String, List<Float>>();
 	 public String[] columnsSaisie;
@@ -347,7 +336,9 @@ class Fenetre extends JFrame implements ListSelectionListener,ActionListener{
 		        group.add(rdbtnNewRadioButton_1);
 		        rdbtnNewRadioButton.addActionListener(this);
 		        rdbtnNewRadioButton_1.addActionListener(this);
-		        this.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+		        
+		        if(modifRow!=0){
+		        	this.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		        addWindowListener(new WindowAdapter() {
 		        	public void windowClosing(WindowEvent we)
 		        	  { 
@@ -362,6 +353,7 @@ class Fenetre extends JFrame implements ListSelectionListener,ActionListener{
 		        	    }
 		        	  }
 		        	});
+		        }
 		        GroupLayout gl_panel = new GroupLayout(panel);
 		        gl_panel.setHorizontalGroup(
 		            	gl_panel.createParallelGroup(Alignment.LEADING)
@@ -601,7 +593,7 @@ class Fenetre extends JFrame implements ListSelectionListener,ActionListener{
 
 	@Override
 	public void valueChanged(ListSelectionEvent event) {
-		// TODO Auto-generated method stub
+
 		if( event.getSource() == list
 				&& !event.getValueIsAdjusting() )
 {
@@ -670,7 +662,7 @@ class Fenetre extends JFrame implements ListSelectionListener,ActionListener{
 		{
 	
 			String stringValue2 = (String) comboBox.getSelectedItem();
-			String stringValue3 = (String) comboBox_1.getSelectedItem();
+			String stringValue3 = (String) comboBox_2.getSelectedItem();
 			if( stringValue2 != null )
 				{if(listData.isEmpty()){ JOptionPane.showMessageDialog(new JFrame(),
 					    "Il faut avoir au moin une evidence !",
@@ -705,7 +697,7 @@ class Fenetre extends JFrame implements ListSelectionListener,ActionListener{
 						      strPane+="\n";
 						      for(int i =0;i<edgeVec.size();i++)
 						      {  strPane+="dag("+edgeVec.get(i).get(0).replaceAll(" ", "_")+","+edgeVec.get(i).get(1).replaceAll(" ", "_")+") = 1;\n";  }
-						      strPane+="discrete_nodes = 1:N\n";
+						      strPane+="discrete_nodes = 1:N;\n";
 						      strPane+="node_sizes = 2*ones(1,N);\n";
 						      strPane+="bnet = mk_bnet(dag, node_sizes);\n";
 						      String stringValue = (String) comboBox.getSelectedItem();
@@ -744,8 +736,11 @@ class Fenetre extends JFrame implements ListSelectionListener,ActionListener{
 			try {
 				writer = new PrintWriter("calcul.m", "UTF-8");
 			} catch (FileNotFoundException | UnsupportedEncodingException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				JOptionPane.showMessageDialog(new JFrame(),
+					    "Erreur d'execution du scripte \nScripte non trouvée!",
+						   "Erreur",
+						   JOptionPane.ERROR_MESSAGE);
+			
 			}
 			writer.print(textPane.getText());
 			writer.close();
@@ -754,19 +749,23 @@ class Fenetre extends JFrame implements ListSelectionListener,ActionListener{
 				//Runtime.getRuntime().exec("matlab -nodesktop -nodisplay -minimize -noFigureWindows -nosplash -logfile -wait output -r calcul;quit;");
 				p=Runtime.getRuntime().exec("matlab -nodesktop -nodisplay -minimize -noFigureWindows -nosplash -logfile -wait output -r \"cd "+System.getProperty("user.dir")+";calcul;quit;\"");
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				JOptionPane.showMessageDialog(new JFrame(),
+					    "Erreur d'execution du scripte \nVerifier si Matlab est correctement installée!",
+						   "Erreur",
+						   JOptionPane.ERROR_MESSAGE);
 			}
 			System.out.println("haha "+LireSousFormeString("output"));
 			try {
 				p.waitFor();
 			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				JOptionPane.showMessageDialog(new JFrame(),
+					    "Erreur d'execution du scripte \nl'exécution du scripte a été interrompu !",
+						   "Erreur",
+						   JOptionPane.ERROR_MESSAGE);
 			}
 			JOptionPane.showMessageDialog(null,
 				    
-			LireSousFormeString("output").substring(LireSousFormeString("output").indexOf("discrete_nodes")),
+			LireSousFormeString("output").substring(LireSousFormeString("output").indexOf("ans =")),
 				    "Resultat",
 				    JOptionPane.PLAIN_MESSAGE);
 			
@@ -999,11 +998,10 @@ class Fenetre extends JFrame implements ListSelectionListener,ActionListener{
 	}
 
 	
-	@SuppressWarnings("null")
-	@Override
+
 	public void actionPerformed(ActionEvent e) {
-		// TODO Auto-generated method stub
-	   
+
+		mxGraphComponent graphComponent = new mxGraphComponent(graph);
 		switch(e.getActionCommand()){
 		case "choisir":
 			FileNameExtensionFilter matlabFilter = new FileNameExtensionFilter("Matlab", "m");
@@ -1053,12 +1051,16 @@ class Fenetre extends JFrame implements ListSelectionListener,ActionListener{
 				try {
 					p.waitFor();
 				} catch (InterruptedException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
+					JOptionPane.showMessageDialog(new JFrame(),
+						    "Erreur d'execution du scripte \nScripte non trouvée!",
+							   "Erreur",
+							   JOptionPane.ERROR_MESSAGE);
 				}
 			} catch (IOException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
+				JOptionPane.showMessageDialog(new JFrame(),
+					    "Erreur d'execution du scripte \nVerifier si Matlab est correctement installée!",
+						   "Erreur",
+						   JOptionPane.ERROR_MESSAGE);
 			}
 			textPaneSrptbnt.setText(LireSousFormeString(Paths.get(chooser.getCurrentDirectory().toString(),"output").toFile().toString()).substring(LireSousFormeString(Paths.get(chooser.getCurrentDirectory().toString(),"output").toFile().toString()).indexOf("ans =")));
 //Pour effacer le fichier output de l'execution precedente
@@ -1090,7 +1092,6 @@ class Fenetre extends JFrame implements ListSelectionListener,ActionListener{
 			System.out.println("AJOUTER  !!");
 			break;
 		case "Valider":
-			mxGraphComponent graphComponent = new mxGraphComponent(graph);
 			btnModifer.setEnabled(true);
 			Noeuxbtn.setEnabled(false);
 			Suppbutton.setEnabled(false);
@@ -1109,6 +1110,7 @@ class Fenetre extends JFrame implements ListSelectionListener,ActionListener{
 		    graphComponent.setConnectable(false);
 			break;
 		case "Modifier":
+			
 			btnValiderEtAttribuer.setEnabled(true);
 			Noeuxbtn.setEnabled(true);
 			btnPrametres.setEnabled(false);
@@ -1119,11 +1121,17 @@ class Fenetre extends JFrame implements ListSelectionListener,ActionListener{
 			graph.setDropEnabled(true);
 			graph.setCellsBendable(true);
 		    graph.setConnectableEdges(true);
-		    
+		    graph.setAllowDanglingEdges(true);
+		    graph.setAllowLoops(true);
+		    graph.setDropEnabled(true);
+		    graph.setSplitEnabled(true);
+		    graph.setCellsLocked(false);
+		    graphComponent.setExportEnabled(true);
+		    graphComponent.setConnectable(true);
 			break;
 		case "Parametres":
 		
-		
+			modifRow=0;
 			 vertex = new Vector<>();
 		    edgeVec = new ArrayList<List<String>>();
 		    graph.clearSelection(); 
@@ -1145,8 +1153,7 @@ class Fenetre extends JFrame implements ListSelectionListener,ActionListener{
 		    	System.out.println(cell.getValue().toString()+" cell.getSource(): ");
 		    	mxCell edge;
 		    	edge=cell;
-			    if (edge == null) {throw new IllegalArgumentException("Input 'edge' is null.");}
-				if (!(edge.isEdge())) {
+			    if (!(edge.isEdge())) {
 					throw new IllegalArgumentException("Input 'edge' is not an edge.");
 				}
 				mxICell source = edge.getSource();
@@ -1207,8 +1214,6 @@ class Fenetre extends JFrame implements ListSelectionListener,ActionListener{
 		    fen.setVisible(true);
 			break;
 		}
-	      
-		final mxGraphComponent graphComponent = new mxGraphComponent(graph);
 		graph.setMultigraph(true);
 		graph.setAllowDanglingEdges(false);
 		graphComponent.setConnectable(true);
