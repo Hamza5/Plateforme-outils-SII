@@ -44,7 +44,6 @@ import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-
 import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
@@ -63,9 +62,10 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.StyledDocument;
 
-import com.jgoodies.forms.layout.ColumnSpec;
-import com.jgoodies.forms.layout.FormLayout;
-import com.jgoodies.forms.layout.RowSpec;
+//import com.jgoodies.forms.factories.FormFactory;
+//import com.jgoodies.forms.layout.ColumnSpec;
+//import com.jgoodies.forms.layout.FormLayout;
+//import com.jgoodies.forms.layout.RowSpec;
 import com.mxgraph.layout.hierarchical.mxHierarchicalLayout;
 import com.mxgraph.model.mxCell;
 import com.mxgraph.model.mxGeometry;
@@ -108,6 +108,8 @@ public class Incertain extends JPanel implements ActionListener{
 	 JPanel panel;
 	 Vector<String> vertex;
 	 JButton btnNewButton_1;
+	 JRadioButton rdbtnBnt;
+	 JRadioButton rdbtnPnt;
  class ParametreProb extends JDialog implements ActionListener{
 	 JTable table;
 	 
@@ -180,7 +182,10 @@ public class Incertain extends JPanel implements ActionListener{
 			  
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				 table.setRowSelectionAllowed(true);
+			     table.setColumnSelectionAllowed(false);
 			swicth:	switch(e.getActionCommand()){
+			
 				case "Valider":
 					 Float[] rowData = new Float[table.getRowCount()*2];
 					 float x,y;
@@ -192,11 +197,13 @@ public class Incertain extends JPanel implements ActionListener{
 					       y=Float.parseFloat(table.getValueAt(i,colimnNonEditable+1).toString());
 					  }
 					  catch(NullPointerException  e1){
+						  table.setRowSelectionInterval(i, i);
 						  JOptionPane.showMessageDialog(null,
 							    "Le format de nombre est erroné",
 							    "Erreur",
 							    JOptionPane.ERROR_MESSAGE);break swicth;} 
 					  catch(NumberFormatException e1){
+						  table.setRowSelectionInterval(i, i);
 						  JOptionPane.showMessageDialog(null,
 								    "Le format de nombre est erroné",
 								    "Erreur",
@@ -204,8 +211,17 @@ public class Incertain extends JPanel implements ActionListener{
 					  }
 					  rowData[i]=x;
 					  rowData[i+(table.getRowCount())]=y;
-					  if((x+y)!=1){ JOptionPane.showMessageDialog(null,
+					  if((x+y)!=1&&rdbtnBnt.isSelected()){
+						  table.setRowSelectionInterval(i, i);
+						 JOptionPane.showMessageDialog(null,
 							    "La somme de chaque ligne doit être égale à 1 !",
+							    "Erreur",
+							    JOptionPane.ERROR_MESSAGE);
+					  break swicth;}
+					  if((x!=1&&y!=1)&&rdbtnPnt.isSelected()){ 
+						 table.setRowSelectionInterval(i, i);
+						  JOptionPane.showMessageDialog(null,
+							    "Dans chaque ligne une Cellule doit être égale à 1 !",
 							    "Erreur",
 							    JOptionPane.ERROR_MESSAGE);
 					  break swicth;}
@@ -337,6 +353,17 @@ class Fenetre extends JFrame implements ListSelectionListener,ActionListener{
 		        rdbtnNewRadioButton.addActionListener(this);
 		        rdbtnNewRadioButton_1.addActionListener(this);
 		        
+		        JRadioButton Prod = new JRadioButton("Prod",true);
+		        JRadioButton RdMIN = new JRadioButton("Min");
+		        ButtonGroup groupProdMin = new ButtonGroup();
+		        groupProdMin.add(Prod);
+		        groupProdMin.add(RdMIN);
+		        JRadioButton[] buttons = new JRadioButton[]{Prod,RdMIN};
+		         if(rdbtnBnt.isSelected()){
+		        	for (JRadioButton btn : buttons) {
+			            btn.setEnabled(false);
+			        }
+		        }
 		        if(modifRow!=0){
 		        	this.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		        addWindowListener(new WindowAdapter() {
@@ -360,7 +387,12 @@ class Fenetre extends JFrame implements ListSelectionListener,ActionListener{
 		            		.addGroup(gl_panel.createSequentialGroup()
 		            			.addGroup(gl_panel.createParallelGroup(Alignment.LEADING)
 		            				.addComponent(btnSupprimer)
-		            				.addComponent(btnNewButton_1)
+		            				.addGroup(gl_panel.createSequentialGroup()
+			            				.addComponent(btnNewButton_1)
+			            				.addGap(33)
+			            				.addComponent(Prod)
+			            				.addPreferredGap(ComponentPlacement.UNRELATED)
+			            				.addComponent(RdMIN))
 		            				.addComponent(scrollPane, GroupLayout.DEFAULT_SIZE, 371, Short.MAX_VALUE)
 		            				.addComponent(scrollPane_1, GroupLayout.DEFAULT_SIZE, 371, Short.MAX_VALUE)
 		            				.addGroup(gl_panel.createSequentialGroup()
@@ -409,7 +441,10 @@ class Fenetre extends JFrame implements ListSelectionListener,ActionListener{
 		            			.addPreferredGap(ComponentPlacement.RELATED)
 		            			.addComponent(btnSupprimer)
 		            			.addGap(5)
+		            			.addGroup(gl_panel.createParallelGroup(Alignment.BASELINE)
 		            			.addComponent(btnNewButton_1)
+		            			.addComponent(Prod)
+		            			.addComponent(RdMIN))
 		            			.addGap(7)
 		            			.addComponent(scrollPane, GroupLayout.DEFAULT_SIZE, 95, Short.MAX_VALUE)
 		            			.addPreferredGap(ComponentPlacement.RELATED)
@@ -859,140 +894,164 @@ class Fenetre extends JFrame implements ListSelectionListener,ActionListener{
 
 		graph = new mxGraph();
 		parent = graph.getDefaultParent();
-																										tabs = new JTabbedPane();
-																										ScripteBNT = new JPanel();
-																										tabs.addTab("Scripte BNT ",ScripteBNT);
-																										GridBagLayout gbl_ubcsatPage = new GridBagLayout();
-																										gbl_ubcsatPage.columnWidths = new int[]{333, 115, 0};
-																										gbl_ubcsatPage.rowHeights = new int[]{23, 226, 23, 0};
-																										gbl_ubcsatPage.columnWeights = new double[]{1.0, 0.0, Double.MIN_VALUE};
-																										gbl_ubcsatPage.rowWeights = new double[]{0.0, 1.0, 0.0, Double.MIN_VALUE};
-																										ScripteBNT.setLayout(gbl_ubcsatPage);
-																										
-																										
-																										btnNewButton = new JButton("Choisir un script");
-																										btnNewButton.addActionListener(this);
-																										
-																										txtCheminVersLe = new JTextField();
-																										txtCheminVersLe.setEditable(false);
-																										txtCheminVersLe.setText("Chemin vers le scripte");
-																										txtCheminVersLe.setToolTipText("");
-																										txtCheminVersLe.setColumns(10);
-																										//setFocusTraversalPolicy(new FocusTraversalOnArray(new Component[]{tabs, BNTScripteBuild, ScripteBNT, txtCheminVersLe, btnNewButton, textPane, btnClaculer}));
-																										GridBagConstraints gbc_txtCheminVersLe = new GridBagConstraints();
-																										gbc_txtCheminVersLe.fill = GridBagConstraints.HORIZONTAL;
-																										gbc_txtCheminVersLe.insets = new Insets(0, 0, 5, 5);
-																										gbc_txtCheminVersLe.gridx = 0;
-																										gbc_txtCheminVersLe.gridy = 0;
-																										ScripteBNT.add(txtCheminVersLe, gbc_txtCheminVersLe);
-																										btnNewButton.setActionCommand("choisir");
-																										GridBagConstraints gbc_btnNewButton = new GridBagConstraints();
-																										gbc_btnNewButton.anchor = GridBagConstraints.WEST;
-																										gbc_btnNewButton.insets = new Insets(0, 0, 5, 0);
-																										gbc_btnNewButton.gridx = 1;
-																										gbc_btnNewButton.gridy = 0;
-																										ScripteBNT.add(btnNewButton, gbc_btnNewButton);
-																										
-																										textPaneSrptbnt = new JTextPane();
-																										textPaneSrptbnt.setEditable(false);
-																										GridBagConstraints gbc_textPane = new GridBagConstraints();
-																										gbc_textPane.fill = GridBagConstraints.BOTH;
-																										gbc_textPane.insets = new Insets(0, 0, 5, 0);
-																										gbc_textPane.gridwidth = 2;
-																										gbc_textPane.gridx = 0;
-																										gbc_textPane.gridy = 1;
-																										ScripteBNT.add(textPaneSrptbnt, gbc_textPane);
-																										
-																										btnClaculer = new JButton("Claculer");
-																										btnClaculer.setActionCommand("Claculer");
-																										
-																										btnClaculer.addActionListener(this);
-																										btnClaculer.setEnabled(false);
-																										GridBagConstraints gbc_btnClaculer = new GridBagConstraints();
-																										gbc_btnClaculer.gridwidth = 2;
-																										gbc_btnClaculer.insets = new Insets(0, 0, 0, 5);
-																										gbc_btnClaculer.gridx = 0;
-																										gbc_btnClaculer.gridy = 2;
-																										ScripteBNT.add(btnClaculer, gbc_btnClaculer);
-																										BNTScripteBuild = new JPanel();
-																										
-																										
-																												tabs.addTab("BNT Scripte build", BNTScripteBuild);
-																																	GridBagLayout gbl_BNTScripteBuild = new GridBagLayout();
-																																	gbl_BNTScripteBuild.columnWidths = new int[]{114, 329, 0};
-																																	gbl_BNTScripteBuild.rowHeights = new int[]{23, 23, 23, 23, 166, 0};
-																																	gbl_BNTScripteBuild.columnWeights = new double[]{0.0, 1.0, Double.MIN_VALUE};
-																																	gbl_BNTScripteBuild.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 1.0, Double.MIN_VALUE};
-																																	BNTScripteBuild.setLayout(gbl_BNTScripteBuild);
-																																	btnModifer = new JButton("Modifier");
-																																	btnModifer.addActionListener(this);
-																																	
-																																	Noeuxbtn = new JButton("Ajouter noeud");
-																																	Noeuxbtn.addActionListener(this);
-																																	GridBagConstraints gbc_Noeuxbtn = new GridBagConstraints();
-																																	gbc_Noeuxbtn.anchor = GridBagConstraints.NORTH;
-																																	gbc_Noeuxbtn.fill = GridBagConstraints.HORIZONTAL;
-																																	gbc_Noeuxbtn.insets = new Insets(0, 0, 5, 5);
-																																	gbc_Noeuxbtn.gridx = 0;
-																																	gbc_Noeuxbtn.gridy = 0;
-																																	BNTScripteBuild.add(Noeuxbtn, gbc_Noeuxbtn);
-																																	
-																																						final mxGraphComponent graphComponent = new mxGraphComponent(graph);
-																																						new mxKeyboardHandler( graphComponent);
-																																						GridBagConstraints gbc_graphComponent = new GridBagConstraints();
-																																						gbc_graphComponent.fill = GridBagConstraints.BOTH;
-																																						gbc_graphComponent.gridheight = 5;
-																																						gbc_graphComponent.gridx = 1;
-																																						gbc_graphComponent.gridy = 0;
-																																						BNTScripteBuild.add(graphComponent, gbc_graphComponent);
-																																	btnPrametres = new JButton("Parametres");
-																																	btnPrametres.addActionListener(this);
-																																	
-																																	Suppbutton = new JButton("Supprimer");
-																																	Suppbutton.addActionListener(this);
+																																	 ButtonGroup group = new ButtonGroup();
+//																																        JRadioButton[] buttons = new JRadioButton[]{rdbtnBnt,rdbtnPnt};
+//																																         for (JRadioButton btn : buttons) {
+//																																	            btn.setEnabled(false);
+//																																	        }
+																																	tabs = new JTabbedPane();
+																																	ScripteBNT = new JPanel();
+																																	tabs.addTab("Scripte BNT ",ScripteBNT);
+																																	GridBagLayout gbl_ubcsatPage = new GridBagLayout();
+																																	gbl_ubcsatPage.columnWidths = new int[]{333, 115, 0};
+																																	gbl_ubcsatPage.rowHeights = new int[]{23, 226, 23, 0};
+																																	gbl_ubcsatPage.columnWeights = new double[]{1.0, 0.0, Double.MIN_VALUE};
+																																	gbl_ubcsatPage.rowWeights = new double[]{0.0, 1.0, 0.0, Double.MIN_VALUE};
+																																	ScripteBNT.setLayout(gbl_ubcsatPage);
 																																	
 																																	
+																																	btnNewButton = new JButton("Choisir un script");
+																																	btnNewButton.addActionListener(this);
 																																	
-																																	Suppbutton.setVerticalAlignment(SwingConstants.TOP);
-																																	GridBagConstraints gbc_btnNewButton_1 = new GridBagConstraints();
-																																	gbc_btnNewButton_1.anchor = GridBagConstraints.NORTH;
-																																	gbc_btnNewButton_1.fill = GridBagConstraints.HORIZONTAL;
-																																	gbc_btnNewButton_1.insets = new Insets(0, 0, 5, 5);
-																																	gbc_btnNewButton_1.gridx = 0;
-																																	gbc_btnNewButton_1.gridy = 1;
-																																	BNTScripteBuild.add(Suppbutton, gbc_btnNewButton_1);
+																																	txtCheminVersLe = new JTextField();
+																																	txtCheminVersLe.setEditable(false);
+																																	txtCheminVersLe.setText("Chemin vers le scripte");
+																																	txtCheminVersLe.setToolTipText("");
+																																	txtCheminVersLe.setColumns(10);
+																																	//setFocusTraversalPolicy(new FocusTraversalOnArray(new Component[]{tabs, BNTScripteBuild, ScripteBNT, txtCheminVersLe, btnNewButton, textPane, btnClaculer}));
+																																	GridBagConstraints gbc_txtCheminVersLe = new GridBagConstraints();
+																																	gbc_txtCheminVersLe.fill = GridBagConstraints.HORIZONTAL;
+																																	gbc_txtCheminVersLe.insets = new Insets(0, 0, 5, 5);
+																																	gbc_txtCheminVersLe.gridx = 0;
+																																	gbc_txtCheminVersLe.gridy = 0;
+																																	ScripteBNT.add(txtCheminVersLe, gbc_txtCheminVersLe);
+																																	btnNewButton.setActionCommand("choisir");
+																																	GridBagConstraints gbc_btnNewButton = new GridBagConstraints();
+																																	gbc_btnNewButton.anchor = GridBagConstraints.WEST;
+																																	gbc_btnNewButton.insets = new Insets(0, 0, 5, 0);
+																																	gbc_btnNewButton.gridx = 1;
+																																	gbc_btnNewButton.gridy = 0;
+																																	ScripteBNT.add(btnNewButton, gbc_btnNewButton);
 																																	
-																																	btnValiderEtAttribuer = new JButton("Valider");
-																																	btnValiderEtAttribuer.addActionListener(this);
-																																	setLayout(new FormLayout(new ColumnSpec[] {
-																																			ColumnSpec.decode("453px:grow"),},
-																																		new RowSpec[] {
-																																			RowSpec.decode("fill:309px:grow"),}));
-																																	GridBagConstraints gbc_btnValiderEtAttribuer = new GridBagConstraints();
-																																	gbc_btnValiderEtAttribuer.anchor = GridBagConstraints.NORTH;
-																																	gbc_btnValiderEtAttribuer.fill = GridBagConstraints.HORIZONTAL;
-																																	gbc_btnValiderEtAttribuer.insets = new Insets(0, 0, 5, 5);
-																																	gbc_btnValiderEtAttribuer.gridx = 0;
-																																	gbc_btnValiderEtAttribuer.gridy = 2;
-																																	BNTScripteBuild.add(btnValiderEtAttribuer, gbc_btnValiderEtAttribuer);
-																																	btnPrametres.setEnabled(false);
-																																	GridBagConstraints gbc_btnPrametres = new GridBagConstraints();
-																																	gbc_btnPrametres.anchor = GridBagConstraints.NORTH;
-																																	gbc_btnPrametres.fill = GridBagConstraints.HORIZONTAL;
-																																	gbc_btnPrametres.insets = new Insets(0, 0, 5, 5);
-																																	gbc_btnPrametres.gridx = 0;
-																																	gbc_btnPrametres.gridy = 3;
-																																	BNTScripteBuild.add(btnPrametres, gbc_btnPrametres);
-																																	btnModifer.setEnabled(false);
-																																	GridBagConstraints gbc_btnModifer = new GridBagConstraints();
-																																	gbc_btnModifer.anchor = GridBagConstraints.NORTH;
-																																	gbc_btnModifer.fill = GridBagConstraints.HORIZONTAL;
-																																	gbc_btnModifer.insets = new Insets(0, 0, 0, 5);
-																																	gbc_btnModifer.gridx = 0;
-																																	gbc_btnModifer.gridy = 4;
-																																	BNTScripteBuild.add(btnModifer, gbc_btnModifer);
-																																	tabs.setEnabledAt(1, true);
-																																	add(tabs, "1, 1, fill, fill");
+																																	textPaneSrptbnt = new JTextPane();
+																																	textPaneSrptbnt.setEditable(false);
+																																	GridBagConstraints gbc_textPane = new GridBagConstraints();
+																																	gbc_textPane.fill = GridBagConstraints.BOTH;
+																																	gbc_textPane.insets = new Insets(0, 0, 5, 0);
+																																	gbc_textPane.gridwidth = 2;
+																																	gbc_textPane.gridx = 0;
+																																	gbc_textPane.gridy = 1;
+																																	ScripteBNT.add(textPaneSrptbnt, gbc_textPane);
+																																	
+																																	btnClaculer = new JButton("Claculer");
+																																	btnClaculer.setActionCommand("Claculer");
+																																	
+																																	btnClaculer.addActionListener(this);
+																																	btnClaculer.setEnabled(false);
+																																	GridBagConstraints gbc_btnClaculer = new GridBagConstraints();
+																																	gbc_btnClaculer.gridwidth = 2;
+																																	gbc_btnClaculer.insets = new Insets(0, 0, 0, 5);
+																																	gbc_btnClaculer.gridx = 0;
+																																	gbc_btnClaculer.gridy = 2;
+																																	ScripteBNT.add(btnClaculer, gbc_btnClaculer);
+																																	BNTScripteBuild = new JPanel();
+																																	
+																																	
+																																			tabs.addTab("BNT/PNT Scripte build", BNTScripteBuild);
+																																			
+																																			Noeuxbtn = new JButton("Ajouter noeud");
+																																			Noeuxbtn.addActionListener(this);
+																																			
+																																								final mxGraphComponent graphComponent = new mxGraphComponent(graph);
+																																								new mxKeyboardHandler( graphComponent);
+																																								
+																																								btnValiderEtAttribuer = new JButton("Valider");
+																																								btnValiderEtAttribuer.addActionListener(this);
+																																								btnPrametres = new JButton("Parametres");
+																																								btnPrametres.addActionListener(this);
+																																								btnModifer = new JButton("Modifier");
+																																								btnModifer.addActionListener(this);
+//																																								setLayout(new FormLayout(new ColumnSpec[] {
+//																																										ColumnSpec.decode("454px:grow"),},
+//																																									new RowSpec[] {
+//																																										RowSpec.decode("309px:grow"),}));
+																																								btnModifer.setEnabled(false);
+																																								btnPrametres.setEnabled(false);
+																																								
+																																								rdbtnBnt = new JRadioButton("BNT",true);
+																																								
+																																								rdbtnPnt = new JRadioButton("PNT");
+																																								group.add(rdbtnPnt);
+																																								group.add(rdbtnBnt);
+																																								JRadioButton[] buttons = new JRadioButton[]{rdbtnBnt,rdbtnPnt};
+																																						         if(rdbtnBnt.isSelected()){
+																																						        	for (JRadioButton btn : buttons) {
+																																							            btn.setEnabled(false);
+																																							        }}
+																																								
+																																								Suppbutton = new JButton("Supprimer");
+																																								Suppbutton.addActionListener(this);
+																																								
+																																								
+																																								
+																																								Suppbutton.setVerticalAlignment(SwingConstants.TOP);
+																																								GroupLayout gl_BNTScripteBuild = new GroupLayout(BNTScripteBuild);
+																																								gl_BNTScripteBuild.setHorizontalGroup(
+																																									gl_BNTScripteBuild.createParallelGroup(Alignment.LEADING)
+																																										.addGroup(gl_BNTScripteBuild.createSequentialGroup()
+																																											.addGap(5)
+																																											.addGroup(gl_BNTScripteBuild.createParallelGroup(Alignment.LEADING)
+																																												.addComponent(Noeuxbtn)
+																																												.addComponent(Suppbutton, GroupLayout.PREFERRED_SIZE, 101, GroupLayout.PREFERRED_SIZE)
+																																												.addComponent(btnValiderEtAttribuer, GroupLayout.PREFERRED_SIZE, 101, GroupLayout.PREFERRED_SIZE)
+																																												.addComponent(btnModifer, GroupLayout.PREFERRED_SIZE, 101, GroupLayout.PREFERRED_SIZE)
+																																												.addGroup(gl_BNTScripteBuild.createSequentialGroup()
+																																													.addGap(1)
+																																													.addComponent(rdbtnBnt)
+																																													.addComponent(rdbtnPnt))
+																																												.addGroup(gl_BNTScripteBuild.createSequentialGroup()
+																																													.addGap(1)
+																																													.addComponent(btnPrametres, GroupLayout.PREFERRED_SIZE, 100, GroupLayout.PREFERRED_SIZE)))
+																																											.addPreferredGap(ComponentPlacement.RELATED)
+																																											.addComponent(graphComponent, GroupLayout.DEFAULT_SIZE, 358, Short.MAX_VALUE)
+																																											.addGap(0))
+																																								);
+																																								gl_BNTScripteBuild.setVerticalGroup(
+																																									gl_BNTScripteBuild.createParallelGroup(Alignment.LEADING)
+																																										.addGroup(gl_BNTScripteBuild.createSequentialGroup()
+																																											.addGap(5)
+																																											.addGroup(gl_BNTScripteBuild.createParallelGroup(Alignment.LEADING)
+																																												.addComponent(graphComponent, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+																																												.addGroup(gl_BNTScripteBuild.createSequentialGroup()
+																																													.addComponent(Noeuxbtn)
+																																													.addGap(6)
+																																													.addComponent(Suppbutton)
+																																													.addGap(6)
+																																													.addComponent(btnValiderEtAttribuer)
+																																													.addGap(6)
+																																													.addComponent(btnModifer)
+																																													.addGap(2)
+																																													.addGroup(gl_BNTScripteBuild.createParallelGroup(Alignment.LEADING)
+																																														.addComponent(rdbtnBnt)
+																																														.addComponent(rdbtnPnt))
+																																													.addGap(7)
+																																													.addComponent(btnPrametres)
+																																													.addGap(111))))
+																																								);
+																																								BNTScripteBuild.setLayout(gl_BNTScripteBuild);
+																																								tabs.setEnabledAt(1, true);
+																																								GroupLayout groupLayout = new GroupLayout(this);
+																																								groupLayout.setHorizontalGroup(
+																																									groupLayout.createParallelGroup(Alignment.LEADING)
+																																										.addGroup(groupLayout.createSequentialGroup()
+																																											.addComponent(tabs, GroupLayout.PREFERRED_SIZE, 449, Short.MAX_VALUE)
+																																											.addContainerGap())
+																																								);
+																																								groupLayout.setVerticalGroup(
+																																									groupLayout.createParallelGroup(Alignment.LEADING)
+																																										.addComponent(tabs, GroupLayout.DEFAULT_SIZE, 309, Short.MAX_VALUE)
+																																								);
+																																								setLayout(groupLayout);
 									                                
 																									
 	}
@@ -1096,6 +1155,12 @@ class Fenetre extends JFrame implements ListSelectionListener,ActionListener{
 			Noeuxbtn.setEnabled(false);
 			Suppbutton.setEnabled(false);
 			btnValiderEtAttribuer.setEnabled(false);
+			JRadioButton[] buttons = new JRadioButton[]{rdbtnBnt,rdbtnPnt};
+	         if(rdbtnBnt.isSelected()){
+	        	for (JRadioButton btn : buttons) {
+		            btn.setEnabled(true);
+		        }
+	        }
 			btnPrametres.setEnabled(true);
 			graph.setCellsEditable(false);
 		    graph.setAllowDanglingEdges(false);
@@ -1128,6 +1193,11 @@ class Fenetre extends JFrame implements ListSelectionListener,ActionListener{
 		    graph.setCellsLocked(false);
 		    graphComponent.setExportEnabled(true);
 		    graphComponent.setConnectable(true);
+		    buttons = new JRadioButton[]{rdbtnBnt,rdbtnPnt};
+	         if(rdbtnBnt.isSelected()){
+	        	for (JRadioButton btn : buttons) {
+		            btn.setEnabled(false);
+		        }}
 			break;
 		case "Parametres":
 		
@@ -1139,7 +1209,7 @@ class Fenetre extends JFrame implements ListSelectionListener,ActionListener{
 		     Object[] cells = graph.getSelectionCells();
               for (Object c : cells) { 
 			    mxCell cell = (mxCell) c; 
-			    if (cell.isVertex()) { 
+			    if (cell.isVertex()) {
 			    	System.out.println(cell.getValue().toString()+" cell.getSource(): ");
 			    	vertex.add(cell.getValue().toString());
 			    	}
@@ -1236,5 +1306,4 @@ class Fenetre extends JFrame implements ListSelectionListener,ActionListener{
 			
 		
 		}
-	
 }
