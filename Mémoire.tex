@@ -1,0 +1,17 @@
+\documentclass[a4paper,french,12pt]{report}
+\usepackage[utf8]{inputenc} % Encodage du fichier
+\usepackage[french]{babel} % Pour changer la langue des mots générés et choisir la bonne mise en page
+\usepackage[T1]{fontenc} % Encodage des fonts nécessaire pour le Latin
+\usepackage{lmodern} % Le latin modèrne
+\usepackage{amssymb} % Pour les signes mathématiques
+\usepackage{hyperref} % Pour utiliser la commande \phantomsection
+\renewcommand \thechapter{\Roman{chapter}} % Utiliser la numéros romans pour les chapitre
+% Title Page
+\title{Le mémoire}
+\author{Hamza Abbad \and Ahmed Zebouchi}
+
+
+\begin{document}
+\maketitle
+\include{Chapitre1}
+\end{document}          

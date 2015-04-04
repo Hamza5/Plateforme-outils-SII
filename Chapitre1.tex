@@ -1,0 +1,119 @@
+\chapter{Théorie de Dempster and Shafer}
+\phantomsection
+\addcontentsline{toc}{section}{Introduction}
+
+\section*{Introduction}
+
+La théorie de Dempster-Shafer, également connu comme la théorie de l'évidence,
+ou la théorie des fonctions de croyance, est une théorie mathématique du raisonnement
+sur l’évidence et la plausibilité. Elle a été développée par Glenn Shafer (1976)
+en basant sur des travaux antérieurs de Arthur Dempster (1968). La théorie a attirer
+l’attention des chercheurs de l'intelligence artificielle au début des années 80.
+
+Dans un espace discret finis, la théorie de Dempster-Shafer représente la généralisation
+de la théorie des probabilités où les les probabilités sont assignés à des ensembles
+contrairement aux singletons mutuellement exclusifs.
+
+\section{Concepts de base}
+
+\subsection{Quelques notations}
+
+Dans cette section, Nous allons présenter les conventions de notation utilisées dans le reste de ce mémoire.
+
+Soit $\Omega$ un univers (Un ensemble fini qui contient tout les propositions auxquels on s'intéresse),
+il est appelé également le cadre de discernement. On note $\varnothing$ l’ensemble qui
+ne contient aucun élément de $\Omega$. $\mathcal{P}(\Omega)$ représente l’ensemble contenant tous
+les parties (les sous-ensembles) de $\Omega$. On note aussi les opérations binaires
+sur les ensembles $\subset$, $\cup$ et $\cap$, l’inclusion, l’union et l’intersection,
+respectivement. On appel hypothèse un élément de $\mathcal{P}(\Omega)$.
+
+La théorie de de Dempster-Shafer est caractérisée par trois fonctions principales : \textbf{l’assignement
+de probabilité de base}, \textbf{la croyance} et \textbf{la plausibilité}.
+
+\subsection{L’assignement de probabilité de base}
+
+L’assignement de probabilité de base (\emph{Basic probability assignement bpa}),
+appelé aussi la fonction de masse, noté $m$, est une fonction qui affecte le degré d’évidence disponible à
+un élément $A$, et seulement à $A$, de $\mathcal{P}(\Omega)$ dans l’intervalle $[0,1]$, tel que
+les $m(A)$ s’additionnent à $1$. $m(\varnothing)$ --qui représente l’absence de solution-- est
+toujours égale à $0$ car $\Omega$ doit être exhaustive, et la somme de $m(A)$ vaut $1$. Chaque
+élément A tel que $m(A) > 0$ est appelé un élément focal.
+
+Généralement, le bpa n’est pas un équivalent de la fonction de probabilités classique. En effet,
+la valeur exacte de la probabilité (dans le sens classique) appartient à un intervalle borné par
+deux valeurs qui sont \emph{la croyance} et \emph{la plausibilité}.\\
+Formellement, on peut représenter ça par :
+\begin{equation}
+m : \mathcal{P}(\Omega) \mapsto [0,1]
+\end{equation}
+\begin{equation}
+m(\varnothing) = 0
+\end{equation}
+\begin{equation} \label{somme_masses}
+\sum_{A \in \mathcal{P}(\Omega)} m(A) = 1
+\end{equation}
+
+\subsubsection{Exemple}
+Dans une enquête d’un incident de vol, trois personnes \textit{P1}, \textit{P2}, \textit{P3} sont
+accusés. L’enquêteur pense à 30\% que P1 est le voleur, à 50\% que l’un de P2 ou P3 soit le voleur,
+et à 10\% que l’un de P1 ou P3 le soit.\\
+Le cadre de discernement $\Omega = \{P1, P2, P3\}$.\\
+$\mathcal{P}(\Omega) = \{\varnothing, \{P1\}, \{P2\}, \{P3\}, \{P1, P2\}, \{P1, P3\}, \{P2, P3\},
+\Omega\}$.\\La distribution des masses : $m(\{P1\}) = 0.3$, $m(\{P2, P3\})  = 0.5$, $m(\{P1, P3\}) = 0.1$
+et $m(\Omega) = 1 - (0.3+0.5+0.1) = 0.1$ à partir de l’équation \ref{somme_masses}. Les masses des
+hypothèses restantes sont tout égaux à $0$.
+
+\subsection{La croyance}
+
+La croyance (Belief) représente la quantité du confiance qui supporte une hypothèse $A$ de 
+$\mathcal{P}(\Omega)$ y compris tout ses parties. On la note $Cr(A$) ou plus souvent $Bel(A)$. Il est
+claire que $Bel(\varnothing)$ est nul, et $Bel(\Omega)$ est toujours 1. Noter que la croyance est une
+mesure non additive, c’est à dire que $Bel(A) + Bel(\Omega - A) \neq 1$.\\
+Formellement :
+\begin{equation}
+Bel(\varnothing)=0
+\end{equation}
+\begin{equation}
+Bel(\Omega)=1
+\end{equation}
+\begin{equation}
+Bel(A) = \sum_{B \slash B \subseteq A} m(B)
+\end{equation}
+\begin{equation}
+\forall p,q \in \mathcal{P}(\Omega) \medskip Bel(p \cup q) \geq Bel(p) + Bel(q) - Bel(p \cap q)
+\end{equation}
+Comme on peut obtenir le bpa avec la fonction inverse suivante :
+\begin{equation}
+m(A) = \sum_{B \slash B \subseteq A} (-1)^{|A-B|} Bel(B)
+\end{equation}
+Où $|A-B|$ est la différence des cardinalités entre les deux ensembles.
+
+\subsubsection{Exemple}
+Continuant de l'exemple précédent, on calcule la croyance de chaque hypothèse :
+
+\begin{table}[h]
+\begin{center}
+\begin{tabular}{|l|l|}
+\hline
+Hypothèse $A$ & Croyance $Bel(A)$\\
+\hline
+$\varnothing$ & $0$ \\
+\hline
+$\{P1\}$ & $0.3$ \\
+\hline
+$\{P2\}$ & $0$ \\
+\hline
+$\{P3\}$ & $0$ \\
+\hline
+$\{P1, P2\}$ & $0.3 + 0 + 0 = 0.3$ \\
+\hline
+$\{P1, P3\}$ & $0.3 + 0 + 0.1 = 0.4$ \\
+\hline
+$\{P2, P3\}$ & $0 + 0 + 0.1 = 0.1$ \\
+\hline
+$\Omega$ & $1$ \\
+\hline
+\end{tabular}
+\caption{Les croyances calculées à partir de la distribution de masses}
+\end{center}
+\end{table}
