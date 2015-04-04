@@ -280,7 +280,7 @@ public class Main{
 		public static AgentTrans Trans(Agent Ag){
 			HashMap <Set<String>, Double>vect = new HashMap<Set<String>, Double>();
 	          Set set1 = Ag.knowleges.entrySet();
-		      Iterator i = set1.iterator();
+	          Iterator i = set1.iterator();
 		      while(i.hasNext()){
 		         Map.Entry me = (Map.Entry)i.next();
 		         Set<String> set =  new HashSet<String>();
@@ -305,8 +305,7 @@ public class Main{
 				final DocumentBuilder builder = factory.newDocumentBuilder();
 				final Document document= builder.newDocument();
     		    final Element racine = document.createElement("DSTO");
-    		    racine.setAttribute("xmlns:xsi","http://www.w3.org/2001/XMLSchema-instance");
-    		    racine.setAttribute("xsi:noNamespaceSchemaLocation","validation_output.xsd");
+
 //    		    SchemaFactory xsdf = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
 //    			DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
 
@@ -436,9 +435,15 @@ public class Main{
 	         	    //sortie
 	         	    transformer.transform(source, sortie);
 	     	}
-		    catch (final ParserConfigurationException e) {e.printStackTrace();}
-			catch (TransformerConfigurationException e) {e.printStackTrace();}
-			catch (TransformerException e) {e.printStackTrace();}
+		    catch (final ParserConfigurationException e) {
+		    Runtime.getRuntime().exit(6);
+           System.err.println("Erreur d'analyse du fichier XML (ParserConfigurationException)");}
+			catch (TransformerConfigurationException e) {
+				System.err.println("Erreur de configuration du ficheir XML" +e.getMessage());
+						}
+			catch (TransformerException e) {
+				System.err.println("Erreur est produite pendant le processus de transformation du ficher XML :"+e.getMessage());
+				e.printStackTrace();}
 		  }
 
 
@@ -486,9 +491,12 @@ public class Main{
 		données = db.parse(args[0]);
 		 }catch (ParserConfigurationException e) {
 	            Runtime.getRuntime().exit(6);
+	            System.err.println("Erreur d'analyse du fichier XML (ParserConfigurationException)");
 	        } catch (SAXException e) {
 	        	Runtime.getRuntime().exit(5);
+	        	System.err.println("Erreur d'analysedu fichier XML (SAXException)");
 	        } catch (IOException e) {
+	        	System.err.println("Général E/S exception: " + e.getMessage());
 	        	Runtime.getRuntime().exit(4);
 	         }
 		HashSet<Element> agents = new HashSet<>();
@@ -638,7 +646,6 @@ public class Main{
 						if (choix==4){AgTr=MultiAgYager(AgTr,ag,count);}//Calculer le Multi Agent Yager
 						
 					 }
-					
 					clalculPlBel(AgTr,données,args[1]);//Appler la fonction pour calcul Bel et Pl et creer le fichier xml
 				}
 			        }
