@@ -1,3 +1,5 @@
+# Python
+__pycache__/
 # Java
 *.class
 *.jar
@@ -16,6 +18,7 @@ lib/
 *.aux
 *.log
 *.out
+*.toc
 *.dvi
 *.pdf
 # Backup files

@@ -54,14 +54,15 @@ m(\varnothing) = 0
 \end{equation}
 
 \subsubsection{Exemple}
-Dans une enquête d’un incident de vol, trois personnes \textit{P1}, \textit{P2}, \textit{P3} sont
-accusés. L’enquêteur pense à 30\% que P1 est le voleur, à 50\% que l’un de P2 ou P3 soit le voleur,
-et à 10\% que l’un de P1 ou P3 le soit.\\
+Dans une enquête d’un incident de vol, trois personnes \textit{P1}, \textit{P2}, \textit{P3}
+sont accusés. L’enquêteur pense à 30\% que P1 est le voleur, à 50\% que l’un de P2 ou P3 soit
+le voleur, et à 10\% que l’un de P1 ou P3 le soit.\\
 Le cadre de discernement $\Omega = \{P1, P2, P3\}$.\\
-$\mathcal{P}(\Omega) = \{\varnothing, \{P1\}, \{P2\}, \{P3\}, \{P1, P2\}, \{P1, P3\}, \{P2, P3\},
-\Omega\}$.\\La distribution des masses : $m(\{P1\}) = 0.3$, $m(\{P2, P3\})  = 0.5$, $m(\{P1, P3\}) = 0.1$
-et $m(\Omega) = 1 - (0.3+0.5+0.1) = 0.1$ à partir de l’équation \ref{somme_masses}. Les masses des
-hypothèses restantes sont tout égaux à $0$.
+$\mathcal{P}(\Omega) = \{\varnothing, \{P1\}, \{P2\}, \{P3\}, \{P1, P2\}, \{P1, P3\},
+\{P2, P3\}, \Omega\}$.\\
+La distribution des masses : $m(\{P1\}) = 0.3$, $m(\{P2, P3\})  = 0.5$,
+$m(\{P1, P3\}) = 0.1$ et $m(\Omega) = 1 - (0.3+0.5+0.1) = 0.1$ à partir de l’équation
+\ref{somme_masses}. Les masses des hypothèses restantes sont tout égaux à $0$.
 
 \subsection{La croyance}
 
@@ -117,3 +118,158 @@ $\Omega$ & $1$ \\
 \caption{Les croyances calculées à partir de la distribution de masses}
 \end{center}
 \end{table}
+
+\subsection{La plausibilité}
+
+La plausibilité (Plausibility) représente la croyance qu’elle soit possible
+d’être affectée à une hypothèse $A$ de $\mathcal{P}(\Omega)$, autrement dit
+: c’est la croyance affectée à A et aux hypothèses dont leurs intersection
+avec $A$ n’est pas vide. On la note $Pl(A)$. La valeur de la plausibilité est
+toujours supérieur ou égale à celle de la croyance. Identiquement à la
+croyance, $Pl(\varnothing)$ est nul, et $Pl(\Omega)$ vaut $1$.\\
+Formellement :
+\begin{equation}
+Pl(\varnothing) = 0
+\end{equation}
+\begin{equation}
+Pl(\Omega) = 1
+\end{equation}
+\begin{equation}
+Pl(A) = \sum_{B \slash B \cap A \neq \varnothing} m(B)
+\end{equation}
+La plausibilité peut aussi être dérivée à partir de la croyance:
+\begin{equation}
+Pl(A) = 1 - Bel(\bar{A})
+\end{equation}
+Où $A$ est le complément de $A$ dans $\Omega$
+
+La probabilité classique d’un évènement $A$, $P(A)$ est représentée par
+l’intervalle qui a comme borne inférieur et supérieur $Bel(A)$ et $Pl(A)$,
+respectivement, c’est à dire $Pl(A) \leq P(A) \leq Bel(A)$. Si $Bel(A) = Pl(A)$
+alors la probabilité de $A$ est unique et $P(A) = Bel(A) = Pl(A)$.
+
+\subsubsection{Exemple}
+On calcule les plausibilités pour le même exemple:
+
+\begin{table}[h]
+\begin{center}
+\begin{tabular}{|l|l|}
+\hline
+Hypothèse $A$ & Plausibilité $Pl(A)$\\
+\hline
+$\varnothing$ & $0$ \\
+\hline
+$\{P1\}$ & $0.3 + 0.1 + 0.1 = 0.5$ \\
+\hline
+$\{P2\}$ & $0.5 + 0.1 = 0.6$ \\
+\hline
+$\{P3\}$ & $0.5 + 0.1 + 0.1 = 0.6$ \\
+\hline
+$\{P1, P2\}$ & $0.3 + 0.5 + 0.1 + 0.1 = 1$ \\
+\hline
+$\{P1, P3\}$ & $0.3 + 0.5 + 0.1 + 0.1 = 1$ \\
+\hline
+$\{P2, P3\}$ & $0.5 + 0.1 + 0.1 = 0.7$ \\
+\hline
+$\Omega$ & $1$ \\
+\hline
+\end{tabular}
+\caption{Les plausibilités calculées à partir de la distribution de masses}
+\end{center}
+\end{table}
+\section{Règles de combinaison}
+
+Souvent, on obtient l’information à partir des sources distincts et indépendantes,
+et ces sources ne sont pas parfaites généralement, c’est pour ça on a besoin de
+fusionner les évidences fournies par ces sources en utilisant des règles de
+combinaison. Il existe trois types de combinaison : \emph{conjonctive},
+\emph{disjonctive}, et \emph{mixte}.
+
+\subsection{Combinaison conjonctive}
+
+Dempster à introduit une règle connue sous le nom de la règle de combinaison
+de Dempster (\emph{Dempster's Combination Rule}) pour fusionner deux pièces
+d’évidence qui peuvent être représentées par deux fonctions de croyance.Cette
+règle respecte les quatre propriétés algébriques suivantes : l’associativité,
+la commutativité, l’idempotence et la continuité.
+
+Soient deux fonctions de masse $m_1(A)$ et $m_2(A)$ associés à deux fonctions
+de croyances $Bel_1(A)$ et $Bel_2(A)$ respectivement, $(Bel_1 \oplus Bel_2)(A)$
+est définie à travers la masse $m_{1 \oplus 2}(A)$ comme suit :
+\begin{equation}
+m_{1 \oplus 2}(A) = \sum_{B \cap C = A} m_1(B) m_2(C)
+\end{equation}
+
+Néanmoins, cette règle a été critiqué par de nombreux chercheurs, parce qu’elle
+n’est pas normalisée, en d’autre termes, elle permet d’affecter des masses à
+des ensembles vides, ce problème est dû au fait que l’intersection de deux
+éléments focaux peut générer $\varnothing$, cela dénote le conflit entre les croyances.
+
+Pour corriger ce problème, Shafer a proposé d’ignorer carrément les conflits
+et étendre la distribution des masses. Le facteur de conflit est une valeur
+$K < 1$ et définie par :
+\begin{equation}
+K = \sum_{B \cap C = \varnothing} m_1(B) m_2(C)
+\end{equation}
+Afin de normaliser la distribution de masse la règle de Dempster doit être
+multipliée par la quantité $(1 - K)^{-1}$. Donc la règle de Dempster-Shafer
+est représentée par l’équation suivante :
+\begin{equation}
+m(\varnothing) = 0
+\end{equation}
+\begin{equation}
+m(A) = \frac{1}{1-K} \sum_{B \cap C = A \neq \varnothing} m_1(B) m_2(C)
+\end{equation}
+Cependant, la règle de Shafer n’est pas toujours satisfaisante à cause de la
+normalisation qui considère que le conflit vient de l’imperfection des sources.
+
+D’autres chercheurs ont proposé des règles différents, comme Smets qui a introduit
+une forme non normalisée pour prendre en compte les univers ouverts. Smets suppose
+que le conflit vient du fait que l’ensemble $\Omega$ n’est pas exhaustif. Pour
+cette raison, la règle de Smets affecte une masse $K$ à $\varnothing$ qui représente
+une hypothèse manquante. Elle est définie par ces équations :
+\begin{equation}
+K = m(\varnothing) = \sum_{B \cap C = \varnothing} m_1(B) m_2(C)
+\end{equation}
+\begin{equation}
+m(A) = \sum_{B \cap C = A \neq \varnothing} m_1(B) m_2(C)
+\end{equation}
+
+Par contre, Yager propose un modèle d’un univers fermé ($\Omega$ est exhaustif).
+La mesure de conflit est ajouté à la mesure du cadre de discernement $\Omega$.
+Donc le conflit sera transformé en ignorance. On obtient ces équations :
+\begin{equation}
+m(\varnothing) = \sum_{B \cap C = \varnothing} m_1(B) m_2(C)
+\end{equation}
+\begin{equation}
+m(\Omega) = \left(1 - \sum_{A \in \mathcal{P}(\Omega)}
+\sum_{B \cap C = A \neq \varnothing} m_1(B) m_2(C)\right) +
+\sum_{B \cap C = \varnothing} m_1(B) m_2(C)
+\end{equation}
+
+\subsection{Combinaison disjonctive}
+
+Dans la combinaison disjonctive on considère l’utilisation de l’union à la place
+de l’intersection. Les éléments focaux sont obtenus à partir de la table d’union.
+La fonction de masse de la règle de combinaison disjonctive est formalisé par
+cette équation :
+\begin{equation}
+m(A) = \sum_{B \cup C = A \neq \varnothing} m_1(B) m_2(C)
+\end{equation}
+Comme l’union de deux éléments focaux ne peut être jamais vide alors on est sûr
+que $m(\varnothing)=0$. Cela veut dire qu’il est impossible d’obtenir un conflit
+lors de combinaison. En contrepartie, elle peut causer une perte de spécificité
+vu que les masses sont élargis. Cette approche apparaît plus intéressante à
+l’absence des informations nécessaires sur la fiabilité des sources.
+
+\subsection{Combinaison mixte}
+
+Dubois et Prade ont proposé une combinaison mixte comme un compromis entre la
+combinaison conjonctive et la combinaison disjonctive comme un essai de conserver
+les avantages de ces deux. De même que la combinaison de  Yager, le modèle de Dubois
+et Prade suppose que le conflit est dû à la non fiabilité des sources. La règle de
+Dubois et Prade est définie comme suit :
+\begin{equation}
+m(A) = \sum_{B \cap C = A \neq \varnothing} m_1(B) m_2(C) +
+\sum_{\substack{B \cup C = A \neq \varnothing \\ B \cap C = \varnothing}} m_1(B) m_2(C)
+\end{equation}
