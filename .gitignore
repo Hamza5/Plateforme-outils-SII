@@ -1,8 +1,26 @@
-**/__pycache__/
+# Python
+__pycache__/
+# Java
 *.class
+*.jar
+# XML
 *.xml
+# Hidden files (Whose names begin with dot)
 .*
+# Exclude .gitignore from hidden files
 !.gitignore
+# IntelliJ IDEA project
 *.iml
+# Folders
 bin/
 lib/
+# Latex
+*.aux
+*.log
+*.out
+*.toc
+*.dvi
+*.pdf
+# Backup files
+*.bak
+*~
