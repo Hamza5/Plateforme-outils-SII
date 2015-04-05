@@ -3,6 +3,7 @@ package Plugins;
 import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Container;
+import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -28,13 +29,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Vector;
 
+import javax.swing.Action;
 import javax.swing.ButtonGroup;
 import javax.swing.DefaultCellEditor;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
+import javax.swing.AbstractAction;
 import javax.swing.InputMap;
 import javax.swing.JButton;
-import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JDialog;
@@ -74,44 +76,44 @@ import com.mxgraph.util.mxConstants;
 import com.mxgraph.view.mxGraph;
 
 public class Incertain extends JPanel implements ActionListener{
-	
-	private JTextField txtCheminVersLe;
-	JFileChooser chooser;
-	String choosertitle;
-	JButton btnNewButton;
-	JButton btnClaculer;
-	JTextPane textPaneSrptbnt;
-	JTabbedPane tabs;
-	JPanel ScripteBNT;
-	mxGraph graph;
-	Object parent;
-	JPanel BNTScripteBuild;
-	private JButton Noeuxbtn;
-	private JButton Suppbutton;
-	private JButton btnModifer;
-	Object [][] data2;
-	int nom = 1;
-	
-	JTable tableau; 
-	HashMap <String, List<Float>> donnéesDist = new HashMap<String, List<Float>>();
-	 public String[] columnsSaisie;
-	 public Object[][] dataSaisie;
-	int colimnNonEditable;
-	String VertexCourant;
-	Vector <Float> tempAffich;
-	List<List<String>> edgeVec;
-	int modifRow=0;
-	 JPanel panel;
-	 Vector<String> vertex;
-	 JButton btnNewButton_1;
-	 JRadioButton rdbtnBnt;
-	 JRadioButton rdbtnPnt;
+		 private JTextField txtCheminVersLe;
+		 JFileChooser chooser;
+		 String choosertitle;
+		 JButton btnNewButton;
+		 JButton btnClaculer;
+		 JTextPane textPaneSrptbnt;
+		 JTabbedPane tabs;
+		 JPanel ScripteBNT;
+		 mxGraph graph;
+		 Object parent;
+		 JPanel BNTScripteBuild;
+		 private JButton Noeuxbtn;
+		 private JButton Suppbutton;
+		 private JButton btnModifer;
+		 Object [][] data2;
+		 int nom = 1;
+		 JTable tableau; 
+		 HashMap <String, List<Float>> donnéesDist = new HashMap<String, List<Float>>();
+		 public String[] columnsSaisie;
+		 public Object[][] dataSaisie;
+		 int colimnNonEditable;
+		 String VertexCourant;
+		 Vector <Float> tempAffich;
+		 List<List<String>> edgeVec;
+		 int modifRow=0;
+		 JPanel panel;
+		 Vector<String> vertex;
+		 JButton btnNewButton_1;
+		 JRadioButton rdbtnBnt;
+		 JRadioButton rdbtnPnt;
+		   JButton btnModifier;
  class ParametreProb extends JDialog implements ActionListener{
 	 JTable table;
 	 
 			public ParametreProb()
 		    {			
-						
+				   	   super();
+					   setModal(true);
 		               GridBagLayout gridBagLayout = new GridBagLayout();
 		               gridBagLayout.columnWidths = new int[]{452, 0};
 		               gridBagLayout.rowHeights = new int[]{427, 23, 0};
@@ -214,6 +216,14 @@ public class Incertain extends JPanel implements ActionListener{
 							    "Erreur",
 							    JOptionPane.ERROR_MESSAGE);
 					  break swicth;}
+					  if((x<0 || y<0)){
+						  
+						  table.setRowSelectionInterval(i, i);
+						 JOptionPane.showMessageDialog(null,
+							    "Les valeurs doivent être positives!",
+							    "Erreur",
+							    JOptionPane.ERROR_MESSAGE);
+					  break swicth;}
 					  if((x!=1&&y!=1)&&rdbtnPnt.isSelected()){ 
 						 table.setRowSelectionInterval(i, i);
 						  JOptionPane.showMessageDialog(null,
@@ -236,6 +246,7 @@ public class Incertain extends JPanel implements ActionListener{
 						}
 					 System.out.println("donnéesDist "+donnéesDist.keySet());
 					 String temp;
+					 System.out.println("i= "+donnéesDist.size());
 					 for(int i=0;i<donnéesDist.size();i++){
 						 
 						 
@@ -252,31 +263,35 @@ public class Incertain extends JPanel implements ActionListener{
 					 modifRow++;
 					 if(modifRow==tableau.getRowCount()){btnNewButton_1.setEnabled(true);}
 					 System.out.println("modifRow "+modifRow);
-					  tableau.repaint();
+					   tableau.repaint();
+					   btnModifier.setEnabled(false);
 					 dispose();
 			}
 				
 			}
 }
-class Fenetre extends JFrame implements ListSelectionListener,ActionListener{
+class Fenetre extends JDialog implements ListSelectionListener,ActionListener{
 		
 		   private static final long serialVersionUID = 1L;
-		   JList list;
-		   Vector		listData;
+		   JList<String> list;
+		   Vector <String>		listData;
 		   JScrollPane  scrollPane_1;
 		   JButton btnAjouterListe;
 		   JButton btnSupprimer;
 		   ButtonGroup group;
 		   JRadioButton rdbtnNewRadioButton_1;
 		   JRadioButton rdbtnNewRadioButton;
-		   
-		   final JComboBox comboBox_1;
-		   JComboBox comboBox_2;
+		   JRadioButton RdMIN;
+		   final JComboBox<String> comboBox_1;
+		   JComboBox<String> comboBox_2;
 		   JComboBox<String> comboBox;
 		   JTextPane textPane;
 		   JButton Calculer;
 		   int nbrRem=0;
-		   public Fenetre(){
+		
+		    public Fenetre(){
+			   super();
+			  setModal(true);
 		      this.setLocationRelativeTo(null);
 		      this.setTitle("BNT");
 		      this.setSize(600, 250);
@@ -285,28 +300,10 @@ class Fenetre extends JFrame implements ListSelectionListener,ActionListener{
 		      System.out.println(donnéesDist.keySet());
 		     
 		   
-		      listData = new Vector();
+		      listData = new Vector<String>();
 		      panel = new JPanel();
 		      
-		        GroupLayout groupLayout = new GroupLayout(getContentPane());
-		         groupLayout.setHorizontalGroup(
-		        	groupLayout.createParallelGroup(Alignment.LEADING)
-		        		.addGroup(groupLayout.createSequentialGroup()
-		        			.addContainerGap()
-		        			.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
-		        				.addComponent(panel, GroupLayout.PREFERRED_SIZE, 375, Short.MAX_VALUE)
-		        				.addGroup(groupLayout.createSequentialGroup()
-		        					.addComponent(tableau, GroupLayout.DEFAULT_SIZE, 365, Short.MAX_VALUE)
-		        					.addContainerGap())))
-		        );
-		        groupLayout.setVerticalGroup(
-		        	groupLayout.createParallelGroup(Alignment.LEADING)
-		        		.addGroup(groupLayout.createSequentialGroup()
-		        			.addContainerGap()
-		        			.addComponent(tableau, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-		        			.addPreferredGap(ComponentPlacement.UNRELATED)
-		        			.addComponent(panel, GroupLayout.DEFAULT_SIZE, 289, Short.MAX_VALUE))
-		        );
+
 		        
 		        JLabel lblChoisissezUneEvidence = new JLabel("Noeud observé  :");
 		        
@@ -316,33 +313,37 @@ class Fenetre extends JFrame implements ListSelectionListener,ActionListener{
 		        
 		        JLabel lblNewLabel = new JLabel("Évidence :");
 		        
-		         comboBox_1 = new JComboBox();
-		         comboBox_2 = new JComboBox();
-		         JLabel lblNewLabel_1 = new JLabel("vraisemblance :");
+		         comboBox_1 = new JComboBox<String>();
+		         comboBox_2 = new JComboBox<String>();
+		         JLabel lblNewLabel_1 = new JLabel("Vraisemblance :");
 		        for(String set : donnéesDist.keySet()){ 
 		        	comboBox_1.addItem(set);}
 		        for(String set : donnéesDist.keySet()){ 
 		        	comboBox_2.addItem(set);}
-		        
+		      
 		        btnAjouterListe = new JButton("Ajouter");
+		        btnAjouterListe.setMnemonic(KeyEvent.VK_A);
 		        btnAjouterListe.addActionListener(this);
 		        
-		        rdbtnNewRadioButton = new JRadioButton("vraie",true);
-		        rdbtnNewRadioButton.setActionCommand("vraie");
+		        rdbtnNewRadioButton = new JRadioButton("Vraie",true);
+		        rdbtnNewRadioButton.setActionCommand("Vraie");
 		        scrollPane_1 = new JScrollPane();
 		        
 		        btnSupprimer = new JButton("Supprimer");
+		        btnSupprimer.setMnemonic(KeyEvent.VK_S);
 		        btnSupprimer.addActionListener(this);
 		        btnNewButton_1 = new JButton("Générer le scripte");
+		        btnNewButton_1.setMnemonic(KeyEvent.VK_G);
 		        btnNewButton_1.setEnabled(false);
 		        btnNewButton_1.addActionListener(this);
 		        JScrollPane scrollPane = new JScrollPane();
 		        
 		        Calculer = new JButton("Calculer");
+		        Calculer.setMnemonic(KeyEvent.VK_G);
 		        Calculer.setEnabled(false);
 		        Calculer.addActionListener(this);
-		        rdbtnNewRadioButton_1 = new JRadioButton("faux");
-		        rdbtnNewRadioButton_1.setActionCommand("faux");
+		        rdbtnNewRadioButton_1 = new JRadioButton("Faux");
+		        rdbtnNewRadioButton_1.setActionCommand("Faux");
 		        ButtonGroup group = new ButtonGroup();
 		        group.add(rdbtnNewRadioButton);
 		        group.add(rdbtnNewRadioButton_1);
@@ -350,7 +351,7 @@ class Fenetre extends JFrame implements ListSelectionListener,ActionListener{
 		        rdbtnNewRadioButton_1.addActionListener(this);
 		        
 		        JRadioButton Prod = new JRadioButton("Prod",true);
-		        JRadioButton RdMIN = new JRadioButton("Min");
+		        RdMIN = new JRadioButton("Min");
 		        ButtonGroup groupProdMin = new ButtonGroup();
 		        groupProdMin.add(Prod);
 		        groupProdMin.add(RdMIN);
@@ -360,105 +361,147 @@ class Fenetre extends JFrame implements ListSelectionListener,ActionListener{
 			            btn.setEnabled(false);
 			        }
 		        }
-		        if(modifRow!=0){
-		        	this.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
-		        addWindowListener(new WindowAdapter() {
+		         System.out.println("le Row est de: "+modifRow);
+			        if(modifRow!=0){
+			        	this.setDefaultCloseOperation(JDialog.DO_NOTHING_ON_CLOSE);
+			        }
+		        btnModifier = new JButton("Modifier");
+		        btnModifier.setMnemonic(KeyEvent.VK_M);
+		        
+		        this.setMinimumSize(new Dimension(400, 550));
+		        btnModifier.addActionListener(this);
+		        btnModifier.setEnabled(false);
+		        GroupLayout groupLayout = new GroupLayout(getContentPane());
+		        groupLayout.setHorizontalGroup(
+		        	groupLayout.createParallelGroup(GroupLayout.Alignment.CENTER)
+		        		.addGroup(groupLayout.createSequentialGroup()
+		        			.addGap(6)
+		        			.addComponent(btnModifier))
+		        		.addGroup(groupLayout.createSequentialGroup()
+		        			.addGap(10)
+		        			.addComponent(lblChoisissezUneEvidence)
+		        			.addGap(6)
+		        			.addComponent(comboBox, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+		        			.addGap(10)
+		        			.addComponent(lblNewLabel_1)
+		        			.addGap(4)
+		        			.addComponent(comboBox_2, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+		        		.addGroup(groupLayout.createSequentialGroup()
+		        			.addGap(10)
+		        			.addComponent(lblNewLabel)
+		        			.addGap(4)
+		        			.addComponent(comboBox_1, GroupLayout.PREFERRED_SIZE,GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+		        			.addGap(21)
+		        			.addComponent(rdbtnNewRadioButton)
+		        			.addGap(2)
+		        			.addComponent(rdbtnNewRadioButton_1)
+		        			.addGap(39)
+		        			.addComponent(btnAjouterListe))
+		        		.addGroup(groupLayout.createSequentialGroup()
+		        			.addGap(10)
+		        			.addComponent(btnSupprimer))
+		        		.addGroup(groupLayout.createSequentialGroup()
+		        			.addGap(10)
+		        			.addComponent(btnNewButton_1)
+		        			.addGap(27)
+		        			.addComponent(Prod)
+		        			.addGap(2)
+		        			.addComponent(RdMIN))
+		        		.addGroup(groupLayout.createSequentialGroup()
+		        			.addGap(10)
+		        			.addComponent(Calculer))
+		        		.addGroup(groupLayout.createParallelGroup(GroupLayout.Alignment.CENTER)
+		        			.addGroup(GroupLayout.Alignment.CENTER, groupLayout.createSequentialGroup()
+		        				.addGap(8)
+		        				.addComponent(tableau, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+		        			.addGroup(GroupLayout.Alignment.CENTER, groupLayout.createSequentialGroup()
+		        				.addContainerGap()
+		        				.addGroup(groupLayout.createParallelGroup(GroupLayout.Alignment.CENTER)
+		        					.addComponent(scrollPane_1, GroupLayout.Alignment.CENTER)
+		        					.addComponent(scrollPane, GroupLayout.Alignment.CENTER, GroupLayout.DEFAULT_SIZE, 399, Short.MAX_VALUE))))
+		        );
+		        groupLayout.setVerticalGroup(
+		        	groupLayout.createParallelGroup(GroupLayout.Alignment.CENTER)
+		        		.addGroup(groupLayout.createSequentialGroup()
+		        			.addContainerGap()
+		        			.addComponent(tableau, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+		        			.addGap(9)
+		        			.addComponent(btnModifier)
+		        			.addGap(6)
+		        			.addGroup(groupLayout.createParallelGroup(GroupLayout.Alignment.CENTER)
+		        				.addGroup(groupLayout.createSequentialGroup()
+		        					.addGap(3)
+		        					.addComponent(lblChoisissezUneEvidence))
+		        				.addComponent(comboBox, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+		        				.addGroup(groupLayout.createSequentialGroup()
+		        					.addGap(3)
+		        					.addComponent(lblNewLabel_1))
+		        				.addComponent(comboBox_2, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+		        			.addGap(12)
+		        			.addGroup(groupLayout.createParallelGroup(GroupLayout.Alignment.CENTER)
+		        				.addGroup(groupLayout.createSequentialGroup()
+		        					.addGap(4)
+		        					.addComponent(lblNewLabel))
+		        				.addGroup(groupLayout.createSequentialGroup()
+		        					.addGap(1)
+		        					.addComponent(comboBox_1, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+		        				.addComponent(rdbtnNewRadioButton)
+		        				.addComponent(rdbtnNewRadioButton_1)
+		        				.addComponent(btnAjouterListe))
+		        			.addPreferredGap(ComponentPlacement.RELATED)
+		        			.addComponent(scrollPane_1, GroupLayout.PREFERRED_SIZE, 41, GroupLayout.PREFERRED_SIZE)
+		        			.addPreferredGap(ComponentPlacement.RELATED)
+		        			.addComponent(btnSupprimer)
+		        			.addGap(6)
+		        			.addGroup(groupLayout.createParallelGroup(GroupLayout.Alignment.CENTER)
+		        				.addComponent(btnNewButton_1)
+		        				.addComponent(Prod)
+		        				.addComponent(RdMIN))
+		        			.addGap(11)
+		        			.addComponent(scrollPane, GroupLayout.DEFAULT_SIZE, 199, Short.MAX_VALUE)
+		        			.addPreferredGap(ComponentPlacement.RELATED)
+		        			.addComponent(Calculer))
+		        );
+		        tableau.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
+				  
+				    public void valueChanged(ListSelectionEvent event) {
+				        if (tableau.getSelectedRow() > -1) {
+				            // print first column value from selected row
+				        	btnModifier.setEnabled(true);
+				            System.out.println(tableau.getValueAt(tableau.getSelectedRow(), 0).toString());
+				        }
+				    }
+				});
+		        getContentPane().setLayout(groupLayout);
+		         textPane = new JTextPane();
+		         textPane.setEditable(false);
+		        scrollPane.setViewportView(textPane);
+		        
+		        list = new JList<String>(listData );
+		        list.addListSelectionListener( this );
+		        scrollPane_1.setViewportView(list);
+		        tableau.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		        getContentPane().setLayout(groupLayout);
+		        System.out.println("le Row est de: "+modifRow);
+		        this.setDefaultCloseOperation(JDialog.DO_NOTHING_ON_CLOSE);
+		        pack();
+		        this.addWindowListener(new WindowAdapter() {
 		        	public void windowClosing(WindowEvent we)
-		        	  { 
+		        	  { if(modifRow!=0){
 		        	    String ObjButtons[] = {"Continuer","Rester"};
 		        	    int PromptResult = JOptionPane.showOptionDialog(null, 
 		        	        "Etes vous sur de vouloir quitter ? \nsi vous sortez tous les information saisie seront perdus !", "confirmation de sortie", 
 		        	        JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE, null, 
 		        	        ObjButtons,ObjButtons[1]);
 		        	    if(PromptResult==0)
-		        	    {
+		        	    { 
 		        	    	dispose();         
 		        	    }
+		        	  }else{dispose(); }
 		        	  }
 		        	});
-		        }
-		        GroupLayout gl_panel = new GroupLayout(panel);
-		        gl_panel.setHorizontalGroup(
-		            	gl_panel.createParallelGroup(Alignment.LEADING)
-		            		.addGroup(gl_panel.createSequentialGroup()
-		            			.addGroup(gl_panel.createParallelGroup(Alignment.LEADING)
-		            				.addComponent(btnSupprimer)
-		            				.addGroup(gl_panel.createSequentialGroup()
-			            				.addComponent(btnNewButton_1)
-			            				.addGap(33)
-			            				.addComponent(Prod)
-			            				.addPreferredGap(ComponentPlacement.UNRELATED)
-			            				.addComponent(RdMIN))
-		            				.addComponent(scrollPane, GroupLayout.DEFAULT_SIZE, 371, Short.MAX_VALUE)
-		            				.addComponent(scrollPane_1, GroupLayout.DEFAULT_SIZE, 371, Short.MAX_VALUE)
-		            				.addGroup(gl_panel.createSequentialGroup()
-		            					.addContainerGap()
-		            					.addGroup(gl_panel.createParallelGroup(Alignment.LEADING)
-		            						.addComponent(lblChoisissezUneEvidence)
-		            						.addComponent(lblNewLabel))
-		            					.addPreferredGap(ComponentPlacement.UNRELATED)
-		            					.addGroup(gl_panel.createParallelGroup(Alignment.LEADING)
-		            						.addGroup(gl_panel.createSequentialGroup()
-		            							.addComponent(comboBox_1, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-		            							.addGap(18)
-		            							.addComponent(rdbtnNewRadioButton)
-		            							.addPreferredGap(ComponentPlacement.RELATED)
-		            							.addComponent(rdbtnNewRadioButton_1)
-		            							.addGap(18)
-		            							.addComponent(btnAjouterListe))
-		            						.addGroup(gl_panel.createSequentialGroup()
-		            							.addComponent(comboBox, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-		            							.addGap(18)
-		            							.addComponent(lblNewLabel_1)
-		            							.addGap(41)
-		            							.addComponent(comboBox_2, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)))))
-		            			.addGap(4))
-		            		.addGroup(gl_panel.createSequentialGroup()
-		            			.addComponent(Calculer)
-		            			.addContainerGap())
-		            );
-		            gl_panel.setVerticalGroup(
-		            	gl_panel.createParallelGroup(Alignment.LEADING)
-		            		.addGroup(gl_panel.createSequentialGroup()
-		            			.addGroup(gl_panel.createParallelGroup(Alignment.BASELINE)
-		            				.addComponent(comboBox, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-		            				.addComponent(comboBox_2, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-		            				.addComponent(lblNewLabel_1)
-		            				.addComponent(lblChoisissezUneEvidence))
-		            			.addGap(5)
-		            			.addGroup(gl_panel.createParallelGroup(Alignment.BASELINE)
-		            				.addComponent(comboBox_1, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-		            				.addComponent(rdbtnNewRadioButton_1)
-		            				.addComponent(btnAjouterListe)
-		            				.addComponent(rdbtnNewRadioButton)
-		            				.addComponent(lblNewLabel))
-		            			.addGap(5)
-		            			.addComponent(scrollPane_1, GroupLayout.PREFERRED_SIZE, 41, GroupLayout.PREFERRED_SIZE)
-		            			.addPreferredGap(ComponentPlacement.RELATED)
-		            			.addComponent(btnSupprimer)
-		            			.addGap(5)
-		            			.addGroup(gl_panel.createParallelGroup(Alignment.BASELINE)
-		            			.addComponent(btnNewButton_1)
-		            			.addComponent(Prod)
-		            			.addComponent(RdMIN))
-		            			.addGap(7)
-		            			.addComponent(scrollPane, GroupLayout.DEFAULT_SIZE, 95, Short.MAX_VALUE)
-		            			.addPreferredGap(ComponentPlacement.RELATED)
-		            			.addComponent(Calculer)
-		            			.addGap(7))
-		        );
-		         textPane = new JTextPane();
-		         textPane.setEditable(false);
-		        scrollPane.setViewportView(textPane);
-		        
-		        list = new JList(listData );
-		        list.addListSelectionListener( this );
-		        scrollPane_1.setViewportView(list);
-		        panel.setLayout(gl_panel);
-		        getContentPane().setLayout(groupLayout);
-		 
-		        pack();
 		   }
+		   
 		   void enableComponents(Container container, boolean enable) {
 		        Component[] components = container.getComponents();
 		        for (Component component : components) {
@@ -468,6 +511,7 @@ class Fenetre extends JFrame implements ListSelectionListener,ActionListener{
 		            }
 		        }
 		    }
+		   
 		   void printTruthTable(int n) {
 		        int rows = (int) Math.pow(2,n);
 		        int row=0;
@@ -487,7 +531,7 @@ class Fenetre extends JFrame implements ListSelectionListener,ActionListener{
 		      //Données de notre tableau
 		      //Object[][] data = {};
 		 
-		      String  title[] = {"Noued ", "Distribution de probabilités ","modification"};
+		      String  title[] = {"Noued ", "Distribution de probabilités "};
 		      
 		       
 		      //Notre modèle d'affichage spécifique destiné à pallier
@@ -497,7 +541,7 @@ class Fenetre extends JFrame implements ListSelectionListener,ActionListener{
 		      tableau = new JTable(zModel);
 		      tableau.setRowHeight(30);
 
-		      tableau.getColumn("modification").setCellEditor(new ModifButtonEditor(new JCheckBox()));
+		     // tableau.getColumn("modification").setCellEditor(new ModifButtonEditor(new JCheckBox()));
 		       
 		      //On ajoute le tableau
 		     add(new JScrollPane(tableau), BorderLayout.CENTER);
@@ -535,6 +579,7 @@ class Fenetre extends JFrame implements ListSelectionListener,ActionListener{
 		   
 		    //Méthode permettant de retirer une ligne du tableau
 		   public void modifRow(int position){
+			   System.out.println("modifRow Function");
 			   Object o = this.getValueAt(position, 0);
 			   	String vertex=o.toString();
 			   	donnéesDist.get(vertex);
@@ -562,9 +607,10 @@ class Fenetre extends JFrame implements ListSelectionListener,ActionListener{
 						pereVertex++;}}
 				columnsSaisie=tempStr;
 				printTruthTable(colimnNonEditable);
-				ParametreProb fen = new ParametreProb();
-				fen.setLocationRelativeTo(null);
-			    fen.setVisible(true);
+				ParametreProb fen1 = new ParametreProb();
+				System.out.println("haha !!!");
+				fen1.setLocationRelativeTo(null);/////////
+			    fen1.setVisible(true);
 			  
 			    
 		      //Cette méthode permet d'avertir le tableau que les données
@@ -576,50 +622,6 @@ class Fenetre extends JFrame implements ListSelectionListener,ActionListener{
 		     if(col==2) return true;
 		     return false;
 		   }
-		}
-
-	class ModifButtonEditor extends DefaultCellEditor {
-	   private static final long serialVersionUID = 1L;
-		protected JButton button;
-		   private ModifButtonListener bListener = new ModifButtonListener();
-		     public ModifButtonEditor(JCheckBox checkBox) {
-		      //Par défaut, ce type d'objet travaille avec un JCheckBox
-		      super(checkBox);
-		       //On crée à nouveau notre bouton
-		      button = new JButton();
-		       button.setOpaque(true);
-		       //On lui attribue un listener
-		       button.addActionListener(bListener);
-		   }
-		 //affichege du botton
-		   public Component getTableCellEditorComponent(JTable table, Object value, boolean isSelected, int row, int column) {
-		      //On définit le numéro de ligne à notre listener
-		      bListener.setRow(row);
-		      //On passe aussi en paramètre le tableau pour des actions potentielles
-		      bListener.setTable(table);
-		      //On réaffecte le libellé au bouton
-		      button.setText( (value ==null) ? "" : value.toString() );
-		      //On renvoie le bouton
-		       return button;
-		   }
-		    
-		   class ModifButtonListener implements ActionListener {
-		         
-		        private int row;
-		        private JTable table;
-		         
-		        public void setRow(int row){this.row = row;}
-		        public void setTable(JTable table){this.table = table;}
-		         
-		        public void actionPerformed(ActionEvent event) {
-		            
-		            //On affiche un message mais vous pourriez faire ce que vous voulez
-		            System.out.println("coucou du bouton : "+ ((JButton)event.getSource()).getText() );
-		            //On affecte un nouveau libellé à une celulle de la ligne
-		            ((ZModel)table.getModel()).modifRow(this.row);
-		        }
-		        
-		   }        
 		}
 
 	@Override
@@ -642,6 +644,7 @@ class Fenetre extends JFrame implements ListSelectionListener,ActionListener{
 	      document.insertString(document.getLength(), str, null);
 	                                                     // ^ or your style attribute  
 	  }
+
 	public void actionPerformed(ActionEvent event) {
 		String textRadioBtn=null;
 		String strPane = "";
@@ -649,11 +652,9 @@ class Fenetre extends JFrame implements ListSelectionListener,ActionListener{
 			else{textRadioBtn="Faux";}
 		
 		switch(event.getActionCommand()){
-		
-			
-			
-			
-				
+		case "Modifier":
+			((ZModel)tableau.getModel()).modifRow(tableau.getSelectedRow());
+			break;		
 		case "Ajouter":
 				{
 					String stringValue = (String) comboBox_1.getSelectedItem();
@@ -717,6 +718,16 @@ class Fenetre extends JFrame implements ListSelectionListener,ActionListener{
 						 	
 						 Calculer.setEnabled(true);
 						 textPane.setEditable(true);
+						 String Min="directed=0;\nif acyclic(pnet.dag,directed)==0 \n engine = jtree_inf_engine(pnet);\n else \n engine = pearl_inf_engine(pnet);\nend \n ";
+						 String Prod="directed=0;\nif acyclic(pnet.dag,directed)==0 \n engine = prod_jtree_inf_engine(pnet);\n else \n engine=prod_pearl_inf_engine(pnet);\nend  \n";
+						 String BNTengine="engine=jtree_inf_engine(bnet);\n\n";
+						 String PNTengine="[engine] = global_propagation(engine, evidence);\n";
+						 String BNTengineAfter="[engine, loglik]=enter_evidence(engine,evidence);\n";
+						 String PNTadd="instance_interest=2;\nBEL_Cdt_classique=marg.T(instance_interest);\n";
+						 String net;
+						 if (rdbtnBnt.isSelected()){
+							 net="bnet";
+						 }else{net="pnet";}
 						 	strPane+=strPane+="N = "+donnéesDist.size()+";\n";
 						      System.out.println("the string "+strPane);
 						      strPane+="dag = zeros(N,N);\n";
@@ -730,7 +741,7 @@ class Fenetre extends JFrame implements ListSelectionListener,ActionListener{
 						      {  strPane+="dag("+edgeVec.get(i).get(0).replaceAll(" ", "_")+","+edgeVec.get(i).get(1).replaceAll(" ", "_")+") = 1;\n";  }
 						      strPane+="discrete_nodes = 1:N;\n";
 						      strPane+="node_sizes = 2*ones(1,N);\n";
-						      strPane+="bnet = mk_bnet(dag, node_sizes);\n";
+						      strPane+=net+" = mk_bnet(dag, node_sizes);\n";
 						      String stringValue = (String) comboBox.getSelectedItem();
 						      if(stringValue.equals("Par défaut")){
 						    	  strPane+="onodes = [];\n";  
@@ -738,9 +749,12 @@ class Fenetre extends JFrame implements ListSelectionListener,ActionListener{
 						    	  strPane+="onodes = ["+stringValue.replaceAll(" ", "_")+"];\n";
 						    	  }
 						      for(String set :donnéesDist.keySet()){
-						    	  strPane+="bnet.CPD{"+set.replaceAll(" ", "_")+"}=tabular_CPD(bnet, "+set.replaceAll(" ", "_")+","+donnéesDist.get(set).toString().replaceAll(",","")+");\n";
+						    	  strPane+=net+".CPD{"+set.replaceAll(" ", "_")+"}=tabular_CPD("+net+", "+set.replaceAll(" ", "_")+","+donnéesDist.get(set).toString().replaceAll(",","")+");\n";
 						      }
-						      strPane+="engine=jtree_inf_engine(bnet);\n";
+						      if(rdbtnBnt.isSelected()){strPane+=BNTengine;}
+						      else{if (RdMIN.isSelected()){strPane+=Min;
+						    	}else{strPane+=Prod;}
+						      }
 						      strPane+="evidence=cell(1,N);\n";
 						      for (int i = 0; i < list.getModel().getSize(); i++) {
 						            Object item = list.getModel().getElementAt(i);
@@ -751,8 +765,9 @@ class Fenetre extends JFrame implements ListSelectionListener,ActionListener{
 						            	strPane+="evidence{"+item.toString().substring(0, item.toString().lastIndexOf("(Faux)")).replaceAll(" ", "_")+"} = 1;\n";
 						            }
 						        }
-						      strPane+="[engine, loglik]=enter_evidence(engine,evidence);\n";
+						      if(rdbtnBnt.isSelected()){strPane+=BNTengineAfter;}else{strPane+=PNTengine;}
 						      strPane+="marg=marginal_nodes(engine,"+stringValue3.replaceAll(" ", "_")+"); \n";
+						      if(!rdbtnBnt.isSelected()){strPane+=PNTadd;}
 						      strPane+="marg.T";
 						      textPane.setText(strPane);
 						      System.out.println("the string "+textPane.getText());
@@ -762,10 +777,12 @@ class Fenetre extends JFrame implements ListSelectionListener,ActionListener{
 				}
 		}break;
 		case "Calculer":
-		{
+		{  	
+			File file = new File(new File(System.getProperty("user.dir"), new File(new File(new File("src","Plugins"),"Incertain"),"Pnt").toString()),"calcul.m");
 			PrintWriter writer = null;
 			try {
-				writer = new PrintWriter("calcul.m", "UTF-8");
+				if(rdbtnBnt.isSelected()){writer = new PrintWriter("calcul.m", "UTF-8");}
+				else{writer = new PrintWriter(file.toString(), "UTF-8");}
 			} catch (FileNotFoundException | UnsupportedEncodingException e) {
 				JOptionPane.showMessageDialog(new JFrame(),
 					    "Erreur d'execution du scripte \nScripte non trouvée!",
@@ -777,8 +794,16 @@ class Fenetre extends JFrame implements ListSelectionListener,ActionListener{
 			writer.close();
 			Process p = null;
 			try {
-				//Runtime.getRuntime().exec("matlab -nodesktop -nodisplay -minimize -noFigureWindows -nosplash -logfile -wait output -r calcul;quit;");
-				p=Runtime.getRuntime().exec("matlab -nodesktop -nodisplay -minimize -noFigureWindows -nosplash -logfile -wait output -r \"cd "+System.getProperty("user.dir")+";calcul;quit;\"");
+				if (rdbtnBnt.isSelected()){
+					System.out.println("path :"+System.getProperty("user.dir"));
+					p=Runtime.getRuntime().exec("matlab -nodesktop -nodisplay -minimize -noFigureWindows -nosplash -logfile -wait output -r \"cd "+System.getProperty("user.dir")+";calcul;quit;\"");
+				}else{
+					
+					File file1 = new File(System.getProperty("user.dir"), new File(new File(new File("src","Plugins"),"Incertain"),"Pnt").toString());
+					String AddToPath= "p=genpath('"+file1.toString()+"');addpath(p);";
+					p=Runtime.getRuntime().exec("matlab -nodesktop -nodisplay -minimize -noFigureWindows -nosplash -logfile -wait output -r \""+AddToPath+" cd "+file1.toString()+";calcul;quit;\"");
+				}
+				
 			} catch (IOException e) {
 				JOptionPane.showMessageDialog(new JFrame(),
 					    "Erreur d'execution du scripte \nVerifier si Matlab est correctement installée!",
@@ -1157,6 +1182,7 @@ class Fenetre extends JFrame implements ListSelectionListener,ActionListener{
 		            btn.setEnabled(true);
 		        }
 	        }
+	        
 			btnPrametres.setEnabled(true);
 			graph.setCellsEditable(false);
 		    graph.setAllowDanglingEdges(false);
@@ -1171,7 +1197,7 @@ class Fenetre extends JFrame implements ListSelectionListener,ActionListener{
 		    graphComponent.setConnectable(false);
 			break;
 		case "Modifier":
-			
+			donnéesDist.clear();
 			btnValiderEtAttribuer.setEnabled(true);
 			Noeuxbtn.setEnabled(true);
 			btnPrametres.setEnabled(false);
@@ -1211,7 +1237,8 @@ class Fenetre extends JFrame implements ListSelectionListener,ActionListener{
 			    	}
 			    }
 		    data2=new Object[vertex.size()][3];
-		    for(int i=0;i<vertex.size();i++){data2[i][0]=vertex.get(i);}
+		    System.out.println("i= "+vertex.size());
+		    for(int i=0;i<vertex.size();i++){data2[i][0]=vertex.get(i);System.out.println("added to data2 :"+vertex.get(i));}
 		    
 		    for (Object c : cells) { 
 		    mxCell cell = (mxCell) c; 
