@@ -29,12 +29,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Vector;
 
-import javax.swing.Action;
 import javax.swing.ButtonGroup;
 import javax.swing.DefaultCellEditor;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
-import javax.swing.AbstractAction;
 import javax.swing.InputMap;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -248,14 +246,10 @@ public class Incertain extends JPanel implements ActionListener{
 					 String temp;
 					 System.out.println("i= "+donnéesDist.size());
 					 for(int i=0;i<donnéesDist.size();i++){
-						 
-						 
 						 temp=data2[i][0].toString();
 						 if(VertexCourant.trim().equals(temp))
 						 {data2[i][1]=donnéesDist.get(VertexCourant).toString();
 //						 System.out.println("data2 "+data2[i][0].toString()+" VertexCourant "+VertexCourant+" i "+i );
-						 
-
 						 }
 						 
 						 
@@ -462,6 +456,7 @@ class Fenetre extends JDialog implements ListSelectionListener,ActionListener{
 		        			.addPreferredGap(ComponentPlacement.RELATED)
 		        			.addComponent(Calculer))
 		        );
+		        
 		        tableau.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
 				  
 				    public void valueChanged(ListSelectionEvent event) {
@@ -545,7 +540,7 @@ class Fenetre extends JDialog implements ListSelectionListener,ActionListener{
 		       
 		      //On ajoute le tableau
 		     add(new JScrollPane(tableau), BorderLayout.CENTER);
-		       
+		    
 		       
 		   }     
 		   
@@ -577,7 +572,7 @@ class Fenetre extends JDialog implements ListSelectionListener,ActionListener{
 		      return this.data[row][col];
 		   }
 		   
-		    //Méthode permettant de retirer une ligne du tableau
+		    //Methode permettant de retirer une ligne du tableau
 		   public void modifRow(int position){
 			   System.out.println("modifRow Function");
 			   Object o = this.getValueAt(position, 0);
@@ -607,10 +602,10 @@ class Fenetre extends JDialog implements ListSelectionListener,ActionListener{
 						pereVertex++;}}
 				columnsSaisie=tempStr;
 				printTruthTable(colimnNonEditable);
+				System.out.println("avant de creer la Fenentre!! ");
 				ParametreProb fen1 = new ParametreProb();
 				System.out.println("haha !!!");
-				fen1.setLocationRelativeTo(null);/////////
-			    fen1.setVisible(true);
+				
 			  
 			    
 		      //Cette méthode permet d'avertir le tableau que les données
@@ -624,7 +619,6 @@ class Fenetre extends JDialog implements ListSelectionListener,ActionListener{
 		   }
 		}
 
-	@Override
 	public void valueChanged(ListSelectionEvent event) {
 
 		if( event.getSource() == list
@@ -796,7 +790,7 @@ class Fenetre extends JDialog implements ListSelectionListener,ActionListener{
 			try {
 				if (rdbtnBnt.isSelected()){
 					System.out.println("path :"+System.getProperty("user.dir"));
-					p=Runtime.getRuntime().exec("matlab -nodesktop -nodisplay -minimize -noFigureWindows -nosplash -logfile -wait output -r \"cd "+System.getProperty("user.dir")+";calcul;quit;\"");
+					p=Runtime.getRuntime().exec("matlab -nodesktop -nodisplay -minimize -noFigureWindows -nosplash -logfile -wait output -r \"cd "+System.getProperty("user.dir")+";addpath(genpathKPM(pwd));calcul;quit;\"");
 				}else{
 					
 					File file1 = new File(System.getProperty("user.dir"), new File(new File(new File("src","Plugins"),"Incertain"),"Pnt").toString());
@@ -975,11 +969,9 @@ class Fenetre extends JDialog implements ListSelectionListener,ActionListener{
 																																	gbc_btnClaculer.gridx = 0;
 																																	gbc_btnClaculer.gridy = 2;
 																																	ScripteBNT.add(btnClaculer, gbc_btnClaculer);
-																																	BNTScripteBuild = new JPanel();
-																																	
-																																	
+																																																																
+																																			BNTScripteBuild = new JPanel();
 																																			tabs.addTab("BNT/PNT Scripte build", BNTScripteBuild);
-																																			
 																																			Noeuxbtn = new JButton("Ajouter noeud");
 																																			Noeuxbtn.addActionListener(this);
 																																			
@@ -1000,7 +992,6 @@ class Fenetre extends JDialog implements ListSelectionListener,ActionListener{
 																																								btnPrametres.setEnabled(false);
 																																								
 																																								rdbtnBnt = new JRadioButton("BNT",true);
-																																								
 																																								rdbtnPnt = new JRadioButton("PNT");
 																																								group.add(rdbtnPnt);
 																																								group.add(rdbtnBnt);
@@ -1016,48 +1007,51 @@ class Fenetre extends JDialog implements ListSelectionListener,ActionListener{
 																																								
 																																								
 																																								Suppbutton.setVerticalAlignment(SwingConstants.TOP);
+		Suppbutton.addActionListener(this);
+																																								
+																																								
+																																								
+																																								Suppbutton.setVerticalAlignment(SwingConstants.TOP);
 																																								GroupLayout gl_BNTScripteBuild = new GroupLayout(BNTScripteBuild);
 																																								gl_BNTScripteBuild.setHorizontalGroup(
 																																									gl_BNTScripteBuild.createParallelGroup(Alignment.LEADING)
 																																										.addGroup(gl_BNTScripteBuild.createSequentialGroup()
 																																											.addGap(5)
-																																											.addGroup(gl_BNTScripteBuild.createParallelGroup(Alignment.LEADING)
-																																												.addComponent(Noeuxbtn)
-																																												.addComponent(Suppbutton, GroupLayout.PREFERRED_SIZE, 101, GroupLayout.PREFERRED_SIZE)
-																																												.addComponent(btnValiderEtAttribuer, GroupLayout.PREFERRED_SIZE, 101, GroupLayout.PREFERRED_SIZE)
-																																												.addComponent(btnModifer, GroupLayout.PREFERRED_SIZE, 101, GroupLayout.PREFERRED_SIZE)
+																																											.addGroup(gl_BNTScripteBuild.createParallelGroup(Alignment.LEADING, false)
+																																												.addComponent(Noeuxbtn, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+																																												.addComponent(Suppbutton, GroupLayout.DEFAULT_SIZE, 101, Short.MAX_VALUE)
+																																												.addComponent(btnValiderEtAttribuer, GroupLayout.DEFAULT_SIZE, 101, Short.MAX_VALUE)
 																																												.addGroup(gl_BNTScripteBuild.createSequentialGroup()
 																																													.addGap(1)
 																																													.addComponent(rdbtnBnt)
 																																													.addComponent(rdbtnPnt))
 																																												.addGroup(gl_BNTScripteBuild.createSequentialGroup()
 																																													.addGap(1)
-																																													.addComponent(btnPrametres, GroupLayout.PREFERRED_SIZE, 100, GroupLayout.PREFERRED_SIZE)))
-																																											.addPreferredGap(ComponentPlacement.RELATED)
-																																											.addComponent(graphComponent, GroupLayout.DEFAULT_SIZE, 358, Short.MAX_VALUE)
-																																											.addGap(0))
+																																													.addComponent(btnPrametres, GroupLayout.PREFERRED_SIZE, 100, GroupLayout.PREFERRED_SIZE))
+																																												.addComponent(btnModifer, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+																																											.addGap(6)
+																																											.addComponent(graphComponent, GroupLayout.DEFAULT_SIZE, 332, Short.MAX_VALUE))
 																																								);
 																																								gl_BNTScripteBuild.setVerticalGroup(
 																																									gl_BNTScripteBuild.createParallelGroup(Alignment.LEADING)
 																																										.addGroup(gl_BNTScripteBuild.createSequentialGroup()
 																																											.addGap(5)
 																																											.addGroup(gl_BNTScripteBuild.createParallelGroup(Alignment.LEADING)
-																																												.addComponent(graphComponent, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
 																																												.addGroup(gl_BNTScripteBuild.createSequentialGroup()
 																																													.addComponent(Noeuxbtn)
 																																													.addGap(6)
 																																													.addComponent(Suppbutton)
 																																													.addGap(6)
 																																													.addComponent(btnValiderEtAttribuer)
-																																													.addGap(6)
+																																													.addPreferredGap(ComponentPlacement.RELATED)
 																																													.addComponent(btnModifer)
-																																													.addGap(2)
+																																													.addPreferredGap(ComponentPlacement.RELATED)
 																																													.addGroup(gl_BNTScripteBuild.createParallelGroup(Alignment.LEADING)
 																																														.addComponent(rdbtnBnt)
 																																														.addComponent(rdbtnPnt))
 																																													.addGap(7)
-																																													.addComponent(btnPrametres)
-																																													.addGap(111))))
+																																													.addComponent(btnPrametres))
+																																												.addComponent(graphComponent, GroupLayout.DEFAULT_SIZE, 276, Short.MAX_VALUE)))
 																																								);
 																																								BNTScripteBuild.setLayout(gl_BNTScripteBuild);
 																																								tabs.setEnabledAt(1, true);
