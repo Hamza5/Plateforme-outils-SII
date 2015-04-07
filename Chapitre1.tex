@@ -92,7 +92,7 @@ Où $|A-B|$ est la différence des cardinalités entre les deux ensembles.
 \subsubsection{Exemple}
 Continuant de l'exemple précédent, on calcule la croyance de chaque hypothèse :
 
-\begin{table}[h]
+\begin{table}[ht]
 \begin{center}
 \begin{tabular}{|l|l|}
 \hline
@@ -151,7 +151,7 @@ alors la probabilité de $A$ est unique et $P(A) = Bel(A) = Pl(A)$.
 \subsubsection{Exemple}
 On calcule les plausibilités pour le même exemple:
 
-\begin{table}[h]
+\begin{table}[ht]
 \begin{center}
 \begin{tabular}{|l|l|}
 \hline
@@ -273,3 +273,29 @@ Dubois et Prade est définie comme suit :
 m(A) = \sum_{B \cap C = A \neq \varnothing} m_1(B) m_2(C) +
 \sum_{\substack{B \cup C = A \neq \varnothing \\ B \cap C = \varnothing}} m_1(B) m_2(C)
 \end{equation}
+
+\section{Décision}
+
+Prendre une décision veut dire choisir une hypothèse élémentaire parmi les autres
+par la maximisation d'un critère. La sélection est établit en observant
+la croyance et la plausibilité de chaque hypothèse résultante. Il existe trois règles
+de décision : le \emph{Maximum de croyance}, le \emph{Maximum de plausibilité} et le
+\emph{Maximum de probabilité pignistique}
+
+\subsection{Maximum de croyance}
+
+Dans cette règle on s'intéresse à trouver l'élément $d_i$ qui a la croyance maximale.
+C'est à dire, $d_i$ est choisie si il satisfait cette équation :
+\begin{equation}
+Bel(d_i) = \max_{1 \leq j \leq n} Bel(d_j)
+\end{equation}
+Cette méthode est connue par son caractère très pessimiste.
+
+\subsection{Maximum de plausibilité}
+
+En opposition à la règle précédente, l'élément $d_i$ est sélectionné par le maximum
+de plausibilité. En d'autres termes, on choisie le $d_i$ qui résoud cette équation :
+\begin{equation}
+Pl(d_i) = \max_{1 \leq j \leq n} Pl(d_j)
+\end{equation}
+Ainsi, cette méthode a un caractère très optimiste.
