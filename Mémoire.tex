@@ -7,11 +7,19 @@
 \usepackage{amsmath} % Pour des fonctions mathématiques
 \usepackage{amssymb} % Pour les symbols mathématiques
 \usepackage{hyperref} % Pour utiliser la commande \phantomsection
+\usepackage{fancyhdr} % Pour le style de la page
+\usepackage[textfont=it]{caption} % Rendre le titre des tableaux italique
 \renewcommand \thechapter{\Roman{chapter}} % Utiliser la numéros romans pour les chapitre
-% Title Page
+% Pour la 1ère page
 \title{Le mémoire}
 \author{Hamza Abbad \and Ahmed Zebouchi}
-
+\date{}
+% Style de l'entête et le pied de la page 
+\setlength{\headheight}{16pt}
+\pagestyle{fancyplain}
+\lhead{} % Enlever la section
+\cfoot{} % Déplacer le numéro de la page
+\rfoot{\fancyplain{\thepage}{\thepage}} % à droite de la page
 
 \begin{document}
 \maketitle
