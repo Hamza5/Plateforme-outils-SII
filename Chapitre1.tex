@@ -284,10 +284,11 @@ de décision : le \emph{Maximum de croyance}, le \emph{Maximum de plausibilité}
 
 \subsection{Maximum de croyance}
 
-Dans cette règle on s'intéresse à trouver l'élément $d_i$ qui a la croyance maximale.
-C'est à dire, $d_i$ est choisie si il satisfait cette équation :
+Dans cette règle on s'intéresse à trouver l'hypothèse élémentaire $\omega_i$ qui
+a la croyance maximale. C'est à dire, $\omega_i$ est choisie si il satisfait cette
+équation :
 \begin{equation}
-Bel(d_i) = \max_{1 \leq j \leq n} Bel(d_j)
+Bel(\omega_i) = \max_{1 \leq j \leq n} Bel(\omega_j)
 \end{equation}
 Cette méthode est connue par son caractère très pessimiste.
 
@@ -296,6 +297,20 @@ Cette méthode est connue par son caractère très pessimiste.
 En opposition à la règle précédente, l'élément $d_i$ est sélectionné par le maximum
 de plausibilité. En d'autres termes, on choisie le $d_i$ qui résoud cette équation :
 \begin{equation}
-Pl(d_i) = \max_{1 \leq j \leq n} Pl(d_j)
+Pl(\omega_i) = \max_{1 \leq j \leq n} Pl(\omega_j)
 \end{equation}
 Ainsi, cette méthode a un caractère très optimiste.
+
+\subsection{Maximum de probabilité pignistique}
+
+Cette règle est proposée par Smets et Kennes. Elle consiste à transformer la fonction
+de masse $m(A)$ en une fonction de probabilité $BetP(\omega)$. Cette transformation
+est appelé la \emph{transformation pignistique} et définie par cette équation :
+\begin{equation}
+BetP(\omega) = \sum_{\substack{A \subseteq \Omega \\
+\omega \in A}} \frac{1}{|A|}  \frac{m(A)}{1-m(\varnothing)}
+\end{equation}
+Dans cette transformation la masse de croyance $m(A)$ est distribuée uniformément
+sur l’ensemble des éléments de $A$. Le critère est de prendre l'élément qui a le
+maximum de probabilité pignistique. On peut voir cette méthode comme un compromis
+entre les deux précédentes.
