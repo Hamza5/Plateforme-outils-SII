@@ -43,7 +43,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.untitled = "Sans titre"
         self.title = self.untitled
         self.description = ""
-        self.agentsModelHeaderLabels = ["Agent/Hypothèse", "Fiabilité/Masse", "Activé/Affaiblissement"]
+        self.agentsModelHeaderLabels = ["Agent/Hypothèse", "Fiabilité/Masse", "Activé"]
         self.setUnmodified()
         self.executable = 'Main'  # Command of the engine executable
         self.input = 'input.dsti.xml'  # Input file for calculation
@@ -190,7 +190,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                              'disabled': str(agent_item.item.disabled).lower()
                              })
             for hmw in agent_item.item:
-                agent.append(Element('Knowledge', {'id': hmw[0].id(), 'mass': str(hmw[1]), 'weaking': str(hmw[2])}))
+                agent.append(Element('Knowledge', {'id': hmw[0].id(), 'mass': str(hmw[1])}))
             agents.append(agent)
         root.append(agents)
         try:  # Using xml.etree.ElementTree
@@ -308,9 +308,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                     for hypothèse_item in self.hypothesesModel:
                         if hypothèse_element.attrib['id'] == hypothèse_item.item.id():
                             mass = float(hypothèse_element.attrib['mass'])
-                            weaking = float(hypothèse_element.attrib['weaking'])
                             if hypothèse_item.item not in agent:  # Check if the hypothesis isn't doubled
-                                agent.add_hypothese(hypothèse_item.item, mass, weaking)
+                                agent.add_hypothese(hypothèse_item.item, mass)
                             else:
                                 raise ValueError
                             mass_sum += mass
@@ -322,7 +321,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                     raise ValueError
                 agent_item = ObjectItem(agent)
                 for hmw in agent:
-                    agent_item.appendRow([ObjectItem(hmw[0]), ObjectItem(hmw[1]), ObjectItem(hmw[2])])
+                    agent_item.appendRow([ObjectItem(hmw[0]), ObjectItem(hmw[1])])
                 if agent_item not in self.agentsModel:
                     self.agentsModel.appendRow([agent_item, ObjectItem(agent.reliability),
                                                 ObjectItem('Désactivé' if agent.disabled else 'Activé')])
@@ -492,10 +491,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                 for i in range(agent_dialog.model.rowCount()):
                     hypothèse_item = agent_dialog.model.item(i, 0)
                     masse_item = agent_dialog.model.item(i, 1)
-                    affaiblissement_item = agent_dialog.model.item(i, 2)
-                    agent.add_hypothese(hypothèse_item.item, masse_item.item, affaiblissement_item.item)
-                    agent_item.appendRow([ObjectItem(hypothèse_item.item), ObjectItem(masse_item.item),
-                                          ObjectItem(affaiblissement_item.item)])
+                    agent.add_hypothese(hypothèse_item.item, masse_item.item)
+                    agent_item.appendRow([ObjectItem(hypothèse_item.item), ObjectItem(masse_item.item)])
             else:
                 msg = QMessageBox(self)
                 msg.setWindowTitle('Erreur')
@@ -688,7 +685,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         agent_dialog.fiabiliteSpinBox.setValue(agent.reliability)
         agent_dialog.activeCheckBox.setChecked(not agent.disabled)
         for hmw in agent:
-            agent_dialog.model.appendRow([ObjectItem(hmw[0]), ObjectItem(hmw[1]), ObjectItem(hmw[2])])
+            agent_dialog.model.appendRow([ObjectItem(hmw[0]), ObjectItem(hmw[1])])
         # Show the dialog
         if agent_dialog.exec_() == QDialog.Accepted:
             # Edit the object
@@ -709,10 +706,9 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             for i in range(agent_dialog.model.rowCount()):  # Insert the new ones
                 hypothèse_item = agent_dialog.model.item(i, 0)
                 masse_item = agent_dialog.model.item(i, 1)
-                affaiblissement_item = agent_dialog.model.item(i, 2)
-                agent.add_hypothese(hypothèse_item.item, masse_item.item, affaiblissement_item.item)
+                agent.add_hypothese(hypothèse_item.item, masse_item.item)
             for hmw in agent:
-                self.agentsModel[selectedIndex.row()].appendRow([ObjectItem(hmw[0]), ObjectItem(hmw[1]), ObjectItem(hmw[2])])
+                self.agentsModel[selectedIndex.row()].appendRow([ObjectItem(hmw[0]), ObjectItem(hmw[1])])
             return True
         else:
             return False
@@ -798,13 +794,8 @@ class AgentDialog(QDialog, Ui_agentDialog):
         self.connect(self.ajouterMasseButton, SIGNAL("clicked()"), self.ajouterHypothese)
         self.connect(self.supprimerMasseButton, SIGNAL("clicked()"), self.supprimerHypothese)
         # Set the table
-        self.model.setHorizontalHeaderLabels(["Hypothèse", "Masse", "Affaiblissement"])
+        self.model.setHorizontalHeaderLabels(["Hypothèse", "Masse"])
         self.hypothesesTableView.horizontalHeader().setResizeMode(QHeaderView.ResizeToContents)
-        # Disable the agent reliability if the used method is Dempster-Shafer
-        if parent.action_group.checkedAction().data() == 'Dempster-Shafer':
-            self.fiabiliteLabel.setEnabled(False)
-            self.fiabiliteSlider.setEnabled(False)
-            self.fiabiliteSpinBox.setEnabled(False)
 
     def accept(self):  # Reimplementing the dialog accept method
         if self.nomLineEdit.text() == '':
@@ -845,17 +836,15 @@ class AgentDialog(QDialog, Ui_agentDialog):
         if masse_dialog.exec_() == QDialog.Accepted:
             hypothèse_index = masse_dialog.hypotheseComboBox.currentIndex()
             masse = masse_dialog.masseSpinBox.value()
-            affaiblissement = masse_dialog.affaiblissementSpinBox.value()
             hypothèse = self.parent().hypothesesModel[hypothèse_index].item
             hypothèse_item = ObjectItem(hypothèse)
             if hypothèse_item not in self.model:
-                self.model.appendRow([hypothèse_item, ObjectItem(masse), ObjectItem(affaiblissement)])
+                self.model.appendRow([hypothèse_item, ObjectItem(masse)])
                 self.hypothesesTableView.resizeColumnsToContents()
             else:
                 for i in range(len(self.model)):
                     if self.model[i].named(str(hypothèse)):
                         self.model.setItem(i, 1, ObjectItem(masse))
-                        self.model.setItem(i, 2, ObjectItem(affaiblissement))
                         break
 
     def supprimerHypothese(self):
@@ -882,20 +871,15 @@ class MasseDialog(QDialog, Ui_masseDialog):
         # Set the model
         self.model = parent.parent().hypothesesModel  # The model of the hypotheses from the main window
         self.hypotheseComboBox.setModel(self.model)
-        # Link the mass and the weaking sliders and the spin boxes
+        # Link the mass slider wuth the spin box
         # Mass
         self.connect(self.masseSlider, SIGNAL("valueChanged(int)"),
                      lambda value: self.masseSpinBox.setValue(value / 100))
         self.connect(self.masseSpinBox, SIGNAL("valueChanged(double)"),
                      lambda value: self.masseSlider.setValue(value * 100))
         self.connect(self.masseSpinBox, SIGNAL("valueChanged(double)"), self.remaining_mass)
-        # Weaking
-        self.connect(self.affaiblissementSlider, SIGNAL("valueChanged(int)"),
-                     lambda value: self.affaiblissementSpinBox.setValue(value / 100))
-        self.connect(self.affaiblissementSpinBox, SIGNAL("valueChanged(double)"),
-                     lambda value: self.affaiblissementSlider.setValue(value * 100))
         # Link the hypotheses combo box
-        self.connect(self.hypotheseComboBox, SIGNAL('currentIndexChanged(const QString&)'), self.mass_weaking_change)
+        self.connect(self.hypotheseComboBox, SIGNAL('currentIndexChanged(const QString&)'), self.mass_change)
         if len(self.parent().model) == 0:
             return
         # Set the right values for the selected option for the first time
@@ -904,22 +888,19 @@ class MasseDialog(QDialog, Ui_masseDialog):
             model_index = selection_model.selectedRows()[0]
             self.hypotheseComboBox.setCurrentIndex(self.hypothese_index(model_index.row()))
             # Required when the first hypothesis in the table is the first hypothesis in the combo box
-            self.mass_weaking_change(self.hypotheseComboBox.currentText())
+            self.mass_change(self.hypotheseComboBox.currentText())
         else:
             self.hypotheseComboBox.setCurrentIndex(self.hypothese_index(0))
             # Required when the first hypothesis in the table is the first hypothesis in the combo box
-            self.mass_weaking_change(self.hypotheseComboBox.currentText())
+            self.mass_change(self.hypotheseComboBox.currentText())
 
-    def mass_weaking_change(self, current_text: str):
+    def mass_change(self, current_text: str):
         for i in range(self.parent().model.rowCount()):
             if self.parent().model[i].named(current_text):
                 mass = self.parent().model.item(i, 1).item
-                weaking = self.parent().model.item(i, 2).item
                 self.masseSpinBox.setValue(mass)
-                self.affaiblissementSpinBox.setValue(weaking)
                 return
         self.masseSpinBox.setValue(0)  # For non affected hypotheses
-        self.affaiblissementSpinBox.setValue(0)
 
     def hypothese_index(self, agent_hypothese_index: int):
         agent_hypotheses_model = self.parent().model

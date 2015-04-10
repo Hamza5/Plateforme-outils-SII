@@ -66,7 +66,6 @@
 							<xs:complexType>
 								<xs:attribute name="id" use="required" type="customID"/>
 								<xs:attribute name="mass" default="0" type="massType"/>
-								<xs:attribute name="weaking" type="massType" default="0"/>
 							</xs:complexType>
 						</xs:element>
 					</xs:sequence>

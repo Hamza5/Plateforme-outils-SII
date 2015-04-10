@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'MasseDialog.ui'
 #
-# Created: Tue Mar 10 09:20:41 2015
+# Created: Fri Apr 10 09:38:18 2015
 #      by: PyQt4 UI code generator 4.10.4
 #
 # WARNING! All changes made in this file will be lost!
@@ -66,31 +66,12 @@ class Ui_masseDialog(object):
         self.masseSlider.setMaximum(100)
         self.masseSlider.setObjectName(_fromUtf8("masseSlider"))
         self.horizontalLayout_2.addWidget(self.masseSlider)
-        spacerItem = QtGui.QSpacerItem(200, 20, QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Minimum)
+        spacerItem = QtGui.QSpacerItem(40, 20, QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Minimum)
         self.horizontalLayout_2.addItem(spacerItem)
-        self.verticalLayout_3 = QtGui.QVBoxLayout()
-        self.verticalLayout_3.setObjectName(_fromUtf8("verticalLayout_3"))
-        self.affaiblissementLabel = QtGui.QLabel(masseDialog)
-        self.affaiblissementLabel.setObjectName(_fromUtf8("affaiblissementLabel"))
-        self.verticalLayout_3.addWidget(self.affaiblissementLabel)
-        self.affaiblissementSpinBox = QtGui.QDoubleSpinBox(masseDialog)
-        self.affaiblissementSpinBox.setMaximum(1.0)
-        self.affaiblissementSpinBox.setSingleStep(0.01)
-        self.affaiblissementSpinBox.setProperty("value", 0.0)
-        self.affaiblissementSpinBox.setObjectName(_fromUtf8("affaiblissementSpinBox"))
-        self.verticalLayout_3.addWidget(self.affaiblissementSpinBox)
-        self.horizontalLayout_2.addLayout(self.verticalLayout_3)
-        self.affaiblissementSlider = QtGui.QDial(masseDialog)
-        self.affaiblissementSlider.setMaximum(100)
-        self.affaiblissementSlider.setObjectName(_fromUtf8("affaiblissementSlider"))
-        self.horizontalLayout_2.addWidget(self.affaiblissementSlider)
-        self.verticalLayout.addLayout(self.horizontalLayout_2)
-        self.horizontalLayout_3 = QtGui.QHBoxLayout()
-        self.horizontalLayout_3.setObjectName(_fromUtf8("horizontalLayout_3"))
         self.remainingMassLabel = QtGui.QLabel(masseDialog)
         self.remainingMassLabel.setObjectName(_fromUtf8("remainingMassLabel"))
-        self.horizontalLayout_3.addWidget(self.remainingMassLabel)
-        self.verticalLayout.addLayout(self.horizontalLayout_3)
+        self.horizontalLayout_2.addWidget(self.remainingMassLabel)
+        self.verticalLayout.addLayout(self.horizontalLayout_2)
         self.buttonBox = QtGui.QDialogButtonBox(masseDialog)
         self.buttonBox.setOrientation(QtCore.Qt.Horizontal)
         self.buttonBox.setStandardButtons(QtGui.QDialogButtonBox.Cancel|QtGui.QDialogButtonBox.Ok)
@@ -98,7 +79,6 @@ class Ui_masseDialog(object):
         self.verticalLayout.addWidget(self.buttonBox)
         self.hypotheseLabel.setBuddy(self.hypotheseComboBox)
         self.masseLabel.setBuddy(self.masseSpinBox)
-        self.affaiblissementLabel.setBuddy(self.affaiblissementSpinBox)
 
         self.retranslateUi(masseDialog)
         QtCore.QObject.connect(self.buttonBox, QtCore.SIGNAL(_fromUtf8("accepted()")), masseDialog.accept)
@@ -109,6 +89,5 @@ class Ui_masseDialog(object):
         masseDialog.setWindowTitle(_translate("masseDialog", "Affecter une hypothèse", None))
         self.hypotheseLabel.setText(_translate("masseDialog", "&Hypothèse", None))
         self.masseLabel.setText(_translate("masseDialog", "&Masse", None))
-        self.affaiblissementLabel.setText(_translate("masseDialog", "&Affaiblissement", None))
         self.remainingMassLabel.setText(_translate("masseDialog", "Masse restante", None))
 
