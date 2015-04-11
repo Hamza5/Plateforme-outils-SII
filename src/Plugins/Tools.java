@@ -298,7 +298,7 @@ public class Tools extends JPanel {
                     writer.print(content);
                     writer.close();
                     URL toolsURL = ClassLoader.getSystemClassLoader().getResource("Plugins/tools/ubcsat");
-                    if (toolsURL == null) throw new FileNotFoundException("Plugins package not found");
+                    if (toolsURL == null) throw new FileNotFoundException("UBCSAT folder not found");
                     String toolsPath = new File(toolsURL.toURI()).getAbsolutePath();
                     String cmd = Paths.get(toolsPath, "ubcsat").toString() + ' ' + (tabs.getSelectedIndex() == 1 ? "-w" : "")
                                 + " -alg gsat -i " + tempFile.getAbsolutePath() + " -solve -r out null -r stats null";

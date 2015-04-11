@@ -21,6 +21,8 @@ lib/
 *.toc
 *.dvi
 *.pdf
+# Text
+*.txt
 # Backup files
 *.bak
 *~
