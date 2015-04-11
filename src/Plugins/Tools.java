@@ -1,8 +1,7 @@
 package Plugins;
 
 import javax.swing.*;
-import javax.swing.border.EmptyBorder;
-import javax.swing.border.TitledBorder;
+import javax.swing.border.*;
 import javax.swing.event.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
@@ -46,6 +45,9 @@ public class Tools extends JPanel {
     private static final String modèleListName = "list";
     private static final String modèleTableName = "table";
     private static final int spacing = 5;
+    private static final String defaultInfo = "<html><body style='text-align:center; font-size:x-small'>Cette " +
+                                                "interface utilise le programme UBCSAT développé par Dave Tompkins" +
+                                                " à l'université de British Columbia</body></html>";
     class WeightedMaxSATDialog extends JDialog {
         private final JLabel clauseLabel;
         private final JTextField clauseField;
@@ -316,7 +318,7 @@ public class Tools extends JPanel {
                     }
                     if (!errors.isEmpty()) JOptionPane.showMessageDialog(tools, errors.replaceAll("#.*\\n", "").substring(1), "Erreur", JOptionPane.ERROR_MESSAGE);
                     else {
-                        results = results.replaceAll("^(?:.*\\n){3}", "").substring(1);
+                        results = results.split("\n",4)[3]; // Remove unnecessary output
                         for (int i=0; i<clauses.size(); i++)
                             results = results.replaceAll(indices.elementAt(i).toString(), clauses.elementAt(i));
                         ResultsDialog resultsDialog = new ResultsDialog();
@@ -457,6 +459,11 @@ public class Tools extends JPanel {
         bottomBox.setBorder(ubcsatPage.getBorder());
         bottomBox.add(calculerButton);
         add(bottomBox);
+        JLabel infosLabel = new JLabel(defaultInfo);
+        infosLabel.setBorder(new EtchedBorder(EtchedBorder.RAISED));
+        Box infoBox = Box.createHorizontalBox();
+        infoBox.add(infosLabel);
+        add(infoBox);
     }
     private static boolean formuleIsValid(String formule){
         if (!formule.isEmpty())
