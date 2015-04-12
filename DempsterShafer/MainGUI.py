@@ -1,12 +1,13 @@
 #!/usr/bin/env python3
 import sys
+import traceback
 import re
 import subprocess
 from os.path import join, splitext, dirname, realpath
 
 try:
     from PyQt4.QtGui import QApplication, QMainWindow, QActionGroup, QDialog, QStandardItem, QStandardItemModel, \
-        QInputDialog, QHeaderView, QLineEdit, QMessageBox, QFileDialog, QCloseEvent, QTableWidgetItem, QMovie
+        QInputDialog, QHeaderView, QLineEdit, QMessageBox, QFileDialog, QCloseEvent, QTableWidgetItem, QMovie, QLabel
     from PyQt4.QtCore import SIGNAL, QModelIndex, Qt, QThread, QMimeData
 except ImportError as e:
     print('Can not use PyQt4 !', e.msg, file=sys.stderr, sep='\n')
@@ -32,8 +33,9 @@ import HelperClasses.Etat
 import HelperClasses.Agent
 
 
-__author__ = 'hamza'
+__author__ = 'Hamza Abbad'
 app_name = 'Calculateur de Dempster-Shafer'
+devloppers = 'Hamza Abbad & Ahmed Zebouchi'
 
 
 class MainWindow(QMainWindow, Ui_MainWindow):
@@ -93,6 +95,9 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.etatsListView.setContextMenuPolicy(Qt.ActionsContextMenu)
         self.hypothesesListView.setContextMenuPolicy(Qt.ActionsContextMenu)
         self.agentsTreeView.setContextMenuPolicy(Qt.ActionsContextMenu)
+
+        # Add the default status message
+        self.statusbar.addWidget(QLabel(app_name+' - '+devloppers))
 
         # Connecting Signals to slots :
         self.connect(self.actionAjouterEtat, SIGNAL("triggered(bool)"), self.ajouterEtat)
@@ -1052,7 +1057,18 @@ class ItemModel(QStandardItemModel):
             l.append(str(x))
         return l
 
+
+def exception_handler(type, value, tb):  # Show the error to the user instead of printing it in the STDERR
+    msg = QMessageBox()
+    msg.setWindowTitle('Erreur fatale')
+    msg.setText('<b>Une erreur inconnue est survenue</b>')
+    msg.setInformativeText('Veuillez contacter le développeur')
+    msg.setDetailedText(str(value)+'\n'+'\n'.join(traceback.format_tb(tb)))
+    msg.setIcon(QMessageBox.Critical)
+    msg.exec_()
+
 if __name__ == '__main__':
+    sys.excepthook = exception_handler  # Change the default exception handler
     app = QApplication(sys.argv)
     window = MainWindow()
     window.show()

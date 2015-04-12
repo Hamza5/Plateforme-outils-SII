@@ -30,6 +30,9 @@
        <enum>Qt::Vertical</enum>
       </property>
       <widget class="QGroupBox" name="etatsGroupBox">
+       <property name="toolTip">
+        <string>Les hypothèses singletons</string>
+       </property>
        <property name="title">
         <string>Etats du monde</string>
        </property>
@@ -44,6 +47,9 @@
        </layout>
       </widget>
       <widget class="QGroupBox" name="hypothesesGroupBox">
+       <property name="toolTip">
+        <string>Les combinaisons des états du monde</string>
+       </property>
        <property name="title">
         <string>Hypothèses</string>
        </property>
@@ -58,6 +64,9 @@
        </layout>
       </widget>
       <widget class="QGroupBox" name="AgentsGroupBox">
+       <property name="toolTip">
+        <string>Les sources</string>
+       </property>
        <property name="title">
         <string>Agents</string>
        </property>
@@ -105,17 +114,6 @@
      <addaction name="actionAjouterHypothese"/>
      <addaction name="actionSupprimerHypothese"/>
     </widget>
-    <widget class="QMenu" name="menuAgents">
-     <property name="locale">
-      <locale language="French" country="France"/>
-     </property>
-     <property name="title">
-      <string>&amp;Agents</string>
-     </property>
-     <addaction name="actionAjouterAgent"/>
-     <addaction name="actionSupprimerAgent"/>
-     <addaction name="actionModifierAgent"/>
-    </widget>
     <widget class="QMenu" name="menuEtats_du_monde">
      <property name="locale">
       <locale language="French" country="France"/>
@@ -127,24 +125,41 @@
      <addaction name="actionSupprimerEtat"/>
     </widget>
     <widget class="QMenu" name="menuM_thode_de_d_cision">
+     <property name="statusTip">
+      <string>Choisir la méthode utilisée pour la décision</string>
+     </property>
      <property name="title">
-      <string>Méthode de décision</string>
+      <string>&amp;Méthode de décision</string>
      </property>
      <addaction name="actionOptimiste"/>
      <addaction name="actionPessimiste"/>
      <addaction name="actionPignistique"/>
     </widget>
     <widget class="QMenu" name="menuM_thode_de_calcule">
+     <property name="statusTip">
+      <string>Choisir la méthode utilisée pour la combinaison des informations</string>
+     </property>
      <property name="locale">
       <locale language="French" country="France"/>
      </property>
      <property name="title">
-      <string>&amp;Méthode de fusion</string>
+      <string>Méthode de &amp;fusion</string>
      </property>
      <addaction name="actionDempster_Shafer"/>
      <addaction name="actionDubois_Prade"/>
      <addaction name="actionSmets"/>
      <addaction name="actionYager"/>
+    </widget>
+    <widget class="QMenu" name="menuAgents">
+     <property name="locale">
+      <locale language="French" country="France"/>
+     </property>
+     <property name="title">
+      <string>&amp;Agents</string>
+     </property>
+     <addaction name="actionAjouterAgent"/>
+     <addaction name="actionSupprimerAgent"/>
+     <addaction name="actionModifierAgent"/>
     </widget>
     <addaction name="actionTitre"/>
     <addaction name="actionDescription"/>
@@ -174,6 +189,9 @@
    <property name="iconText">
     <string>&amp;Titre</string>
    </property>
+   <property name="statusTip">
+    <string>Donner un titre au projet</string>
+   </property>
    <property name="shortcut">
     <string>Ctrl+T</string>
    </property>
@@ -189,6 +207,9 @@
    </property>
    <property name="iconText">
     <string>&amp;Description</string>
+   </property>
+   <property name="statusTip">
+    <string>Donner une description au projet</string>
    </property>
    <property name="shortcut">
     <string>Ctrl+D</string>
@@ -206,6 +227,9 @@
    <property name="iconText">
     <string>&amp;Ouvrir</string>
    </property>
+   <property name="statusTip">
+    <string>Ouvrir un projet à partir d'un fichier</string>
+   </property>
    <property name="shortcut">
     <string>Ctrl+O</string>
    </property>
@@ -221,6 +245,9 @@
    </property>
    <property name="iconText">
     <string>&amp;Enregistrer</string>
+   </property>
+   <property name="statusTip">
+    <string>Enregistrer tout dans un fichier</string>
    </property>
    <property name="shortcut">
     <string>Ctrl+S</string>
@@ -238,6 +265,9 @@
    <property name="iconText">
     <string>&amp;Quitter</string>
    </property>
+   <property name="statusTip">
+    <string>Fermer l'application</string>
+   </property>
    <property name="shortcut">
     <string>Ctrl+Q</string>
    </property>
@@ -254,6 +284,9 @@
    </property>
    <property name="text">
     <string>Dempster-Shafer</string>
+   </property>
+   <property name="statusTip">
+    <string/>
    </property>
   </action>
   <action name="actionDubois_Prade">
@@ -273,6 +306,9 @@
    <property name="text">
     <string>Ajouter</string>
    </property>
+   <property name="statusTip">
+    <string>Ajouter une hypothèse élémentaire</string>
+   </property>
    <property name="shortcut">
     <string>Ctrl+E</string>
    </property>
@@ -285,6 +321,9 @@
    </property>
    <property name="text">
     <string>Supprimer</string>
+   </property>
+   <property name="statusTip">
+    <string>Supprimer une hypothèse élémentaire</string>
    </property>
    <property name="shortcut">
     <string>Ctrl+Shift+E</string>
@@ -299,6 +338,9 @@
    <property name="text">
     <string>Ajouter</string>
    </property>
+   <property name="statusTip">
+    <string>Ajouter une hypothèse</string>
+   </property>
    <property name="shortcut">
     <string>Ctrl+H</string>
    </property>
@@ -311,6 +353,9 @@
    </property>
    <property name="text">
     <string>Supprimer</string>
+   </property>
+   <property name="statusTip">
+    <string>Supprimer une hypothèse</string>
    </property>
    <property name="shortcut">
     <string>Ctrl+Shift+H</string>
@@ -325,6 +370,9 @@
    <property name="text">
     <string>Ajouter</string>
    </property>
+   <property name="statusTip">
+    <string>Ajouter un expert</string>
+   </property>
    <property name="shortcut">
     <string>Ctrl+G</string>
    </property>
@@ -338,6 +386,9 @@
    <property name="text">
     <string>Supprimer</string>
    </property>
+   <property name="statusTip">
+    <string>Supprimer un expert</string>
+   </property>
    <property name="shortcut">
     <string>Ctrl+Shift+G</string>
    </property>
@@ -350,6 +401,9 @@
    </property>
    <property name="text">
     <string>Modifier</string>
+   </property>
+   <property name="statusTip">
+    <string>Modifier les paramètres d'un expert</string>
    </property>
    <property name="shortcut">
     <string>Alt+G</string>
@@ -375,6 +429,9 @@
    <property name="iconText">
     <string>&amp;Nouveau</string>
    </property>
+   <property name="statusTip">
+    <string>Effacer tout et commencer un nouveau projet</string>
+   </property>
    <property name="shortcut">
     <string>Ctrl+N</string>
    </property>
@@ -387,6 +444,9 @@
    </property>
    <property name="text">
     <string>&amp;Calculer</string>
+   </property>
+   <property name="statusTip">
+    <string>Lancer le programme de calcul et afficher les résultats</string>
    </property>
    <property name="shortcut">
     <string>Ctrl+K</string>
@@ -408,6 +468,12 @@
    </property>
    <property name="text">
     <string>Ouvrir des &amp;résultats</string>
+   </property>
+   <property name="statusTip">
+    <string>Ouvrir les résultats d'un calcul</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+R</string>
    </property>
   </action>
   <action name="actionOptimiste">

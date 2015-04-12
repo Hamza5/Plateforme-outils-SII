@@ -121,6 +121,9 @@
          <verstretch>0</verstretch>
         </sizepolicy>
        </property>
+       <property name="toolTip">
+        <string>Sélectionner les les hypothèses recherchées</string>
+       </property>
        <property name="placeholderText">
         <string>Rechercher</string>
        </property>

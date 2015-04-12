@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'ResultatsDialog.ui'
 #
-# Created: Sun Mar 15 10:57:00 2015
+# Created: Sun Apr 12 19:05:27 2015
 #      by: PyQt4 UI code generator 4.10.4
 #
 # WARNING! All changes made in this file will be lost!
@@ -113,6 +113,7 @@ class Ui_resultsDialog(object):
         item = self.resultsTableWidget.horizontalHeaderItem(3)
         item.setText(_translate("resultsDialog", "Plausibilité", None))
         self.decisionMethodLabel.setText(_translate("resultsDialog", "Méthode de décision", None))
+        self.rechercheLineEdit.setToolTip(_translate("resultsDialog", "Sélectionner les les hypothèses recherchées", None))
         self.rechercheLineEdit.setPlaceholderText(_translate("resultsDialog", "Rechercher", None))
         self.decisionLabel.setText(_translate("resultsDialog", "Décision", None))
         self.agentButton.setText(_translate("resultsDialog", "&Créer un nouveau agent à partir de ces résultats", None))
