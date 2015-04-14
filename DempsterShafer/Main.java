@@ -509,12 +509,14 @@ public class Main{
 		NodeList hyposs = données.getElementsByTagName("Etats");
 		for(int i=0; i<hyposs.getLength(); i++) Etats.add((Element)hyposs.item(i));
 		int omegaDetecter =0;
+		int omegaLength =0;
 		for(Element b : Etats){
 			NodeList Etat =  b.getElementsByTagName("Etat");
 			for(int i=0; i<Etat.getLength(); i++){
 				Element e1 = (Element)(Etat.item(i));
 				omegaDetecter++;
 				HopoGen.add(e1.getAttribute("id")); 
+				omegaLength+=e1.getAttribute("id").length();
 				//System.out.printf("Hypothèse %s masse = %s%n", e.getAttribute("id"), e.getAttribute("mass"));
 //				if(!A.knowleges.containsKey(e1.getAttribute("id"))){
 //					A.knowleges.put(e1.getAttribute("id"),(double) 0);//Ajouter pour chaque agent l'Hypothese non ewistante avec mass=0 
@@ -535,15 +537,19 @@ public class Main{
 			A.name=new String(a.getAttribute("name"));
 			NodeList hyp =  a.getElementsByTagName("Knowledge");
 			double massVerifier=0;
-			
+			double reliability= Double.parseDouble(a.getAttribute("reliability"));
 			double omegaToAdd=0;
 			for(int i=0; i<hyp.getLength(); i++){
 				Element e = (Element)(hyp.item(i));
 				//System.out.printf("Hypothèse %s masse = %s%n", e.getAttribute("id"), e.getAttribute("mass"));
+				
 				massVerifier+=Double.parseDouble(e.getAttribute("mass"));
-				omegaToAdd+=Double.parseDouble(e.getAttribute("mass"))*Double.parseDouble(e.getAttribute("weaking"));
-				A.knowleges.put(e.getAttribute("id"),Double.parseDouble(e.getAttribute("mass"))*(1-Double.parseDouble(e.getAttribute("weaking"))));//String to double
-			}
+				//omegaToAdd+=Double.parseDouble(e.getAttribute("mass"))*Double.parseDouble(e.getAttribute("weaking"));///*/commentée apres changement de fiabilitée
+				if(e.getAttribute("id").length()!=(omegaLength+omegaDetecter-1)){
+				A.knowleges.put(e.getAttribute("id"),Double.parseDouble(e.getAttribute("mass"))*reliability);//String to double
+				//A.knowleges.put(e.getAttribute("id"),Double.parseDouble(e.getAttribute("mass"))*(1-Double.parseDouble(e.getAttribute("weaking"))));//String to double///*/commentée apres changement de fiabilitée
+				}
+				}
 			//System.out.println("omaga to Add "+omegaToAdd);
 			//Ajouter a Omega les Alpha d'affaiblissement des sous ensembles de Omega
 //			for(int i=0; i<hyp.getLength(); i++){
@@ -565,7 +571,7 @@ public class Main{
 			  for (Set <String> elm : setTest){
 				  Set<String> set =  new HashSet<String>();
 				  String[] splitString = ((elm.toString().substring(1,elm.toString().length()-1).replaceAll(", ", "-").split("-")));
-			         for(int i1=0;i1<splitString.length;i1++){set.add(splitString[i1]);} 
+			         for(int i1=0;i1<splitString.length;i1++){set.add(splitString[i1]);}
 			         Agent AgentTempTest=new Agent();
 			         AgentTempTest.knowleges=A.knowleges;
 			         AgentTrans AgentTransTempTest =new AgentTrans();
@@ -584,7 +590,8 @@ public class Main{
 					  if(omegaDetecter==elm.size()){
 						  
 						 //System.out.println("ensemble "+elm.toString().substring(1,elm.toString().length()-1).replaceAll(", ", "-")+" Avant "+ A.knowleges.get(elm.toString().substring(1,elm.toString().length()-1).replaceAll(", ", "-")));
-						 A.knowleges.put(elm.toString().substring(1,elm.toString().length()-1).replaceAll(", ", "-"),omegaToAdd);
+						 A.knowleges.put(elm.toString().substring(1,elm.toString().length()-1).replaceAll(", ", "-"),1-reliability*(1-omegaToAdd));
+						
 						 //System.out.println("length "+length+" omegaDetecter+omegaDetecter-1 "+(omegaDetecter*2+omegaDetecter-1)+" omega "+elm+"="+A.knowleges.get(elm.toString().substring(1,elm.toString().length()-1).replaceAll(", ", "-")));
 						 
 					  }
@@ -600,11 +607,12 @@ public class Main{
 //						  System.out.println("length "+length+" omegaDetecter*2+omegaDetecter-1 "+(omegaDetecter*2+omegaDetecter-1));
 						  
 						  for(String elm2 : A.knowleges.keySet()){if(elm2.length()==length){omegaString=new String(elm2);}}
-//						  System.out.println("omegaString "+omegaString);
+			//			  System.out.println("omegaString "+omegaString);
 						 //for(int i=0;i>A.knowleges.keySet().size();i++){if()}
 						 //System.out.println("Omega mass "+A.knowleges+"omegaToAdd"+omegaToAdd);
 			             
-						 A.knowleges.put(omegaString,A.knowleges.get(omegaString)+omegaToAdd);
+						  A.knowleges.put(omegaString,1-reliability*(1-A.knowleges.get(omegaString)+omegaToAdd));
+						 // System.out.println("omega poids: "+(1-A.knowleges.get(omegaString)+omegaToAdd));
 			            //A.knowleges.put(elm.toString().substring(1,elm.toString().length()-1).replaceAll(", ", "-"),(double) 0);
 					  }
 				 }
