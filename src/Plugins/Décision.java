@@ -1,6 +1,7 @@
 package Plugins;
 
 import javax.swing.*;
+import javax.swing.border.EmptyBorder;
 import javax.swing.border.TitledBorder;
 import java.awt.event.ActionEvent;
 import java.io.File;
@@ -11,6 +12,8 @@ import java.net.URL;
 
 public class Décision extends JPanel {
     private static final String DecPosButtonText = "Lancer DecPos";
+    private static final String DecPosDescription = "Programme pour calculer les décisions. Développé par Nougui";
+    private static final int spacing = 5;
     public Décision(){
         super();
         final Décision décision = this;
@@ -52,9 +55,16 @@ public class Décision extends JPanel {
             }
         });
         DecPosButton.setMnemonic('P');
-        Box boxButton = new Box(BoxLayout.LINE_AXIS);
-        boxButton.setBorder(new TitledBorder("DecPos"));
-        boxButton.add(DecPosButton);
-        add(boxButton);
+        Box DecPosBox = new Box(BoxLayout.PAGE_AXIS);
+        DecPosBox.setBorder(new TitledBorder("DecPos"));
+        Box descriptionBox =  Box.createHorizontalBox();
+        descriptionBox.add(new JLabel(DecPosDescription));
+        descriptionBox.setBorder(new EmptyBorder(spacing, spacing, spacing, spacing));
+        DecPosBox.add(descriptionBox);
+        Box buttonBox = Box.createHorizontalBox();
+        buttonBox.setBorder(descriptionBox.getBorder());
+        buttonBox.add(DecPosButton);
+        DecPosBox.add(buttonBox);
+        add(DecPosBox);
     }
 }

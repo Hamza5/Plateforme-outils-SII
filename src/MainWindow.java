@@ -5,6 +5,7 @@ import java.io.FileNotFoundException;
 import java.io.FilenameFilter;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.util.Arrays;
 
 public class MainWindow extends JFrame {
     private JTabbedPane tabs; // The main tabs
@@ -47,6 +48,7 @@ public class MainWindow extends JFrame {
         }
     }
     public static void main(String[] args){ // Show the GUI
+        // Thread.setDefaultUncaughtExceptionHandler(new ExceptionHandler());
         try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
         } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException e) {
@@ -62,5 +64,17 @@ public class MainWindow extends JFrame {
                 mainWindow.setVisible(true);
             }
         });
+    }
+}
+class ExceptionHandler implements Thread.UncaughtExceptionHandler{
+    @Override
+    public void uncaughtException(Thread thread, Throwable throwable) {
+        String Erreur = "Erreur";
+        if(throwable instanceof Error){
+            Erreur += " fatale";
+            JOptionPane.showMessageDialog(null, Arrays.deepToString(throwable.getStackTrace()).replace(", ", "\n"), Erreur, JOptionPane.ERROR_MESSAGE);
+            System.exit(1);
+        }
+        JOptionPane.showMessageDialog(null, Arrays.deepToString(throwable.getStackTrace()).replace(", ", ",\n"), Erreur, JOptionPane.ERROR_MESSAGE);
     }
 }
