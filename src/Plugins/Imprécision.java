@@ -45,7 +45,7 @@ public class Imprécision extends JPanel {
         Box DecPosBox = new Box(BoxLayout.PAGE_AXIS);
         DecPosBox.setBorder(new TitledBorder("Fuzzy Logic"));
         Box descriptionBox =  Box.createHorizontalBox();
-        descriptionBox.add(new JLabel(FuzzyDescription));
+        descriptionBox.add(new JLabel(FuzzyDescription,SwingConstants.CENTER));
         descriptionBox.setBorder(new EmptyBorder(spacing, spacing, spacing, spacing));
         DecPosBox.add(descriptionBox);
         Box buttonBox = Box.createHorizontalBox();
