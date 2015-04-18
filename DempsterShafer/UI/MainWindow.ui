@@ -96,6 +96,7 @@
     <addaction name="actionNouveau"/>
     <addaction name="actionOuvrir"/>
     <addaction name="actionOuvrir_des_resultats"/>
+    <addaction name="actionEnregistrer_1"/>
     <addaction name="actionEnregistrer"/>
     <addaction name="separator"/>
     <addaction name="actionQuitter"/>
@@ -236,12 +237,12 @@
   </action>
   <action name="actionEnregistrer">
    <property name="icon">
-    <iconset theme="document-save">
+    <iconset theme="document-save-as">
      <normaloff/>
     </iconset>
    </property>
    <property name="text">
-    <string>&amp;Enregistrer</string>
+    <string>&amp;Enregistrer sous</string>
    </property>
    <property name="iconText">
     <string>&amp;Enregistrer</string>
@@ -250,7 +251,7 @@
     <string>Enregistrer tout dans un fichier</string>
    </property>
    <property name="shortcut">
-    <string>Ctrl+S</string>
+    <string>Ctrl+Shift+S</string>
    </property>
   </action>
   <action name="actionQuitter">
@@ -501,6 +502,19 @@
    </property>
    <property name="text">
     <string>Pignistique</string>
+   </property>
+  </action>
+  <action name="actionEnregistrer_1">
+   <property name="icon">
+    <iconset theme="document-save">
+     <normaloff/>
+    </iconset>
+   </property>
+   <property name="text">
+    <string>Enregistrer</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+S</string>
    </property>
   </action>
  </widget>
