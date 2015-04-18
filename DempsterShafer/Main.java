@@ -13,6 +13,8 @@ import javax.xml.XMLConstants;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.parsers.SAXParser;
+import javax.xml.parsers.SAXParserFactory;
 import javax.xml.transform.OutputKeys;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerConfigurationException;
@@ -25,7 +27,10 @@ import javax.xml.validation.SchemaFactory;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
+import org.xml.sax.ErrorHandler;
 import org.xml.sax.SAXException;
+import org.xml.sax.SAXParseException;
+import org.xml.sax.XMLReader;
 
  class Agent{
 	HashMap <String, Double>knowleges = new HashMap<String, Double>();
@@ -428,7 +433,7 @@ public class Main{
 	         	    transformer.setOutputProperty(OutputKeys.ENCODING, "UTF-8");
 	         	    transformer.setOutputProperty(OutputKeys.STANDALONE, "yes");
 	         	    		
-	         	    //formatage
+	         	 //formatage
 	         	    transformer.setOutputProperty(OutputKeys.INDENT, "yes");
 	         	    transformer.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "2");
 
@@ -476,6 +481,7 @@ public class Main{
 
 		        return all;
 		    }
+		    
 	
 	public static void main(String[] args) {
       
@@ -485,20 +491,49 @@ public class Main{
 		DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
 		
 		Document données=null; 
+		      
+
+	     
 		try {
 		dbf.setSchema(xsdf.newSchema(new File("validation.xsd")));
 		DocumentBuilder db = dbf.newDocumentBuilder();
+		
+		
+		db.setErrorHandler(new ErrorHandler() {
+		    @Override
+		    public void error(SAXParseException arg0) throws SAXException {
+		    	 System.err.println("Erreur d'analyse du fichier XML (SAXException)");
+		        	Runtime.getRuntime().exit(5);
+		        throw arg0;
+		    }
+		 
+		    @Override
+		    public void fatalError(SAXParseException arg0) throws SAXException {
+		    	 System.err.println("Erreur d'analyse du fichier XML (SAXException)");
+		        	Runtime.getRuntime().exit(5);
+		        throw arg0;                 
+		    }
+		 
+		    @Override
+		    public void warning(SAXParseException arg0) throws SAXException {
+		    	 System.err.println("Erreur d'analyse du fichier XML (SAXException)");
+		        	Runtime.getRuntime().exit(5);
+		        throw arg0;                 
+		    }
+		});
 		données = db.parse(args[0]);
+	 
 		 }catch (ParserConfigurationException e) {
+			 System.err.println("Erreur d'analyse du fichier XML (ParserConfigurationException)");
 	            Runtime.getRuntime().exit(6);
-	            System.err.println("Erreur d'analyse du fichier XML (ParserConfigurationException)");
-	        } catch (SAXException e) {
+	         } catch (SAXException e) {
+	        	 System.err.println("Erreur d'analysedu fichier XML (SAXException)");
 	        	Runtime.getRuntime().exit(5);
-	        	System.err.println("Erreur d'analysedu fichier XML (SAXException)");
 	        } catch (IOException e) {
 	        	System.err.println("Général E/S exception: " + e.getMessage());
 	        	Runtime.getRuntime().exit(4);
 	         }
+	
 		HashSet<Element> agents = new HashSet<>();
 		NodeList agt = données.getElementsByTagName("Agent");
 		for(int i=0; i<agt.getLength(); i++) agents.add((Element)agt.item(i));
