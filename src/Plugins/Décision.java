@@ -58,7 +58,9 @@ public class Décision extends JPanel {
         Box DecPosBox = new Box(BoxLayout.PAGE_AXIS);
         DecPosBox.setBorder(new TitledBorder("DecPos"));
         Box descriptionBox =  Box.createHorizontalBox();
+        descriptionBox.add(Box.createHorizontalGlue());
         descriptionBox.add(new JLabel(DecPosDescription));
+        descriptionBox.add(Box.createHorizontalGlue());
         descriptionBox.setBorder(new EmptyBorder(spacing, spacing, spacing, spacing));
         DecPosBox.add(descriptionBox);
         Box buttonBox = Box.createHorizontalBox();
