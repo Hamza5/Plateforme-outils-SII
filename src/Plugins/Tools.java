@@ -459,7 +459,7 @@ public class Tools extends JPanel {
         bottomBox.setBorder(ubcsatPage.getBorder());
         bottomBox.add(calculerButton);
         add(bottomBox);
-        JLabel infosLabel = new JLabel(defaultInfo);
+        JLabel infosLabel = new JLabel(defaultInfo, SwingConstants.CENTER);
         infosLabel.setBorder(new EtchedBorder(EtchedBorder.RAISED));
         Box infoBox = Box.createHorizontalBox();
         infoBox.add(infosLabel);

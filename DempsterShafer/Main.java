@@ -484,8 +484,19 @@ public class Main{
 		    
 	
 	public static void main(String[] args) {
-      
-		if(args.length!=2){Runtime.getRuntime().exit(1);}
+		// Show the usage to then user
+		switch(args.length) {
+			case 2:
+				File in = new File(args[0]);
+				if(!in.isFile())
+					System.err.println("Le fichier "+in.getAbsolutePath()+" est introuvable");
+				else if(!in.canRead())
+					System.err.println("Impossible de lire le fichier "+in.getAbsolutePath());
+				System.exit(1);
+			default:
+				System.err.println("Usage : Main <file>.dsti.xml <file>.dsto.xml");
+				System.exit(1);
+		}
 		HashSet<Agent> hashSet = new HashSet<Agent>();
 		SchemaFactory xsdf = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
 		DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
