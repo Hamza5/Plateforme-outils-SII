@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'MainWindow.ui'
 #
-# Created: Sun Apr 12 18:55:51 2015
+# Created: Sat Apr 18 20:25:25 2015
 #      by: PyQt4 UI code generator 4.10.4
 #
 # WARNING! All changes made in this file will be lost!
@@ -103,7 +103,7 @@ class Ui_MainWindow(object):
         self.actionOuvrir.setIcon(icon)
         self.actionOuvrir.setObjectName(_fromUtf8("actionOuvrir"))
         self.actionEnregistrer = QtGui.QAction(MainWindow)
-        icon = QtGui.QIcon.fromTheme(_fromUtf8("document-save"))
+        icon = QtGui.QIcon.fromTheme(_fromUtf8("document-save-as"))
         self.actionEnregistrer.setIcon(icon)
         self.actionEnregistrer.setObjectName(_fromUtf8("actionEnregistrer"))
         self.actionQuitter = QtGui.QAction(MainWindow)
@@ -175,9 +175,14 @@ class Ui_MainWindow(object):
         self.actionPignistique = QtGui.QAction(MainWindow)
         self.actionPignistique.setCheckable(True)
         self.actionPignistique.setObjectName(_fromUtf8("actionPignistique"))
+        self.actionEnregistrer_1 = QtGui.QAction(MainWindow)
+        icon = QtGui.QIcon.fromTheme(_fromUtf8("document-save"))
+        self.actionEnregistrer_1.setIcon(icon)
+        self.actionEnregistrer_1.setObjectName(_fromUtf8("actionEnregistrer_1"))
         self.menuFichier.addAction(self.actionNouveau)
         self.menuFichier.addAction(self.actionOuvrir)
         self.menuFichier.addAction(self.actionOuvrir_des_resultats)
+        self.menuFichier.addAction(self.actionEnregistrer_1)
         self.menuFichier.addAction(self.actionEnregistrer)
         self.menuFichier.addSeparator()
         self.menuFichier.addAction(self.actionQuitter)
@@ -241,10 +246,10 @@ class Ui_MainWindow(object):
         self.actionOuvrir.setIconText(_translate("MainWindow", "&Ouvrir", None))
         self.actionOuvrir.setStatusTip(_translate("MainWindow", "Ouvrir un projet à partir d\'un fichier", None))
         self.actionOuvrir.setShortcut(_translate("MainWindow", "Ctrl+O", None))
-        self.actionEnregistrer.setText(_translate("MainWindow", "&Enregistrer", None))
+        self.actionEnregistrer.setText(_translate("MainWindow", "&Enregistrer sous", None))
         self.actionEnregistrer.setIconText(_translate("MainWindow", "&Enregistrer", None))
         self.actionEnregistrer.setStatusTip(_translate("MainWindow", "Enregistrer tout dans un fichier", None))
-        self.actionEnregistrer.setShortcut(_translate("MainWindow", "Ctrl+S", None))
+        self.actionEnregistrer.setShortcut(_translate("MainWindow", "Ctrl+Shift+S", None))
         self.actionQuitter.setText(_translate("MainWindow", "&Quitter", None))
         self.actionQuitter.setIconText(_translate("MainWindow", "&Quitter", None))
         self.actionQuitter.setStatusTip(_translate("MainWindow", "Fermer l\'application", None))
@@ -287,4 +292,6 @@ class Ui_MainWindow(object):
         self.actionOptimiste.setText(_translate("MainWindow", "Optimiste", None))
         self.actionPessimiste.setText(_translate("MainWindow", "Pessimiste", None))
         self.actionPignistique.setText(_translate("MainWindow", "Pignistique", None))
+        self.actionEnregistrer_1.setText(_translate("MainWindow", "Enregistrer", None))
+        self.actionEnregistrer_1.setShortcut(_translate("MainWindow", "Ctrl+S", None))
 

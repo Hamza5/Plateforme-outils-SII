@@ -48,8 +48,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.agentsModelHeaderLabels = ["Agent/Hypothèse", "Fiabilité/Masse", "Activé"]
         self.setUnmodified()
         self.executable = 'Main'  # Command of the engine executable
-        self.input = 'input.dsti.xml'  # Input file for calculation
-        self.output = 'output.dsto.xml'  # Output file of calculation
+        self.input = ''  # Input file for calculation
+        self.output = ''  # Output file of calculation
         self.round_digits = 3
         self.last_path = ""
 
@@ -109,7 +109,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.connect(self.actionTitre, SIGNAL("triggered(bool)"), self.attribuer_titre)
         self.connect(self.actionDescription, SIGNAL("triggered(bool)"), self.attribuer_description)
         self.connect(self.actionQuitter, SIGNAL("triggered(bool)"), self.close)
-        self.connect(self.actionEnregistrer, SIGNAL("triggered(bool)"), self.enregistrer)
+        self.connect(self.actionEnregistrer_1, SIGNAL("triggered(bool)"), self.enregistrer)
+        self.connect(self.actionEnregistrer, SIGNAL("triggered(bool)"), self.enregistrer_sous)
         self.connect(self.actionModifierAgent, SIGNAL("triggered(bool)"), self.modifierAgent)
         self.connect(self.actionOuvrir, SIGNAL("triggered(bool)"), self.ouvrir)
         self.connect(self.actionNouveau, SIGNAL("triggered(bool)"), self.nouveau)
@@ -154,13 +155,24 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.agentsModel.clear()
         self.agentsModel.setHorizontalHeaderLabels(self.agentsModelHeaderLabels)
         self.setUnmodified()
+        self.input = ''
+        self.output = ''
         return True
 
-    def enregistrer(self, path=''):
+    def enregistrer(self):
+        if self.input:
+            return self.enregistrer_sous(self.input)
+        else:
+            file_path = QFileDialog.getSaveFileName(self, 'Enregistrer', self.last_path, 'Données (*.dsti.xml)')
+            if not file_path:
+                return False
+            return self.enregistrer_sous(file_path)
+
+    def enregistrer_sous(self, path=''):
         if isinstance(path, str) and path != '':
             file_path = path
         else:
-            file_path = QFileDialog.getSaveFileName(self, 'Enregistrer', self.last_path, 'Données (*.dsti.xml)')
+            file_path = QFileDialog.getSaveFileName(self, 'Enregistrer sous', self.last_path, 'Données (*.dsti.xml)')
         if not file_path:
             return False
         try:  # Using xml.etree.ElementTree
@@ -584,13 +596,14 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             msg = QMessageBox(self)
             msg.setWindowTitle('Changements non sauvegardés')
             msg.setText('<b>Vous n\'avez pas sauvegardé vos changements</b>')
-            msg.setInformativeText('Vos changements seront automatiquement sauvegardés.\nVoulez vous continuer ?')
+            msg.setInformativeText('Voulez vous sauvegarder vos changements maintenant ?')
             msg.setIcon(QMessageBox.Warning)
             msg.setStandardButtons(QMessageBox.Yes | QMessageBox.No)
             ok = msg.exec_()
             if ok == QMessageBox.No:
                 return
-            self.enregistrer(self.input)
+            if not self.enregistrer():
+                return
         try:
             args = ['java', '-cp',  dirname(realpath(__file__)), self.executable, self.input, self.output]
             wait_dialog = WaitDialog(self)
