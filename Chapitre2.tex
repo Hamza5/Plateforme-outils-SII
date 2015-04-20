@@ -1,0 +1,322 @@
+\chapter{Les autres théorie de l'incertain}
+
+\phantomsection
+\addcontentsline{toc}{section}{Introduction}
+\section*{Introduction}
+
+\section{Concepts de base}
+
+\subsection{Quelques notations}
+
+Nous allons présenter ici les conventions de notation utilisées dans la suite de ce mémoire.
+
+Soit $\Omega$ un univers constitué d'un ensemble fini qui contient toutes les propositions
+auxquelles on s'intéresse, appelé également cadre de discernement. On note $\varnothing$
+l’ensemble qui ne contient aucun élément de $\Omega$. $\mathcal{P}(\Omega)$ représente
+l’ensemble contenant toutes les parties (les sous-ensembles) de $\Omega$. On note aussi
+les opérations binaires sur les ensembles $\subset$, $\cup$ et $\cap$, qui sont l’inclusion,
+l’union et l’intersection, respectivement. On appelle hypothèse un élément de $\mathcal{P}(\Omega)$.
+
+La théorie de Dempster-Shafer est caractérisée par trois fonctions principales :
+\textbf{l’assignement de probabilité de base} (\emph{basic probability assignement bpa}),
+\textbf{la croyance} (\emph{belief}) et \textbf{la plausibilité} (\emph{plausibility}).
+
+\subsection{L’assignement de probabilité de base}
+
+Appelé aussi la fonction de masse, noté $m$, c'est une fonction qui affecte le degré d’évidence
+disponible à un élément $A$, et seulement à $A$, de $\mathcal{P}(\Omega)$ dans l’intervalle
+$[0,1]$, tel que les $m(A)$ s’additionnent à $1$.
+
+$m(\varnothing)$ --qui représente l’absence
+de solution-- est toujours égale à $0$ car $\Omega$ doit être exhaustive, et la somme de $m(A)$
+vaut $1$. Chaque élément A tel que $m(A) > 0$ est appelé élément focal.
+
+Généralement, le bpa n’est pas un équivalent de la fonction de probabilités classique. En effet,
+la valeur exacte de la probabilité (dans le sens classique) appartient à un intervalle borné par
+deux valeurs qui sont \emph{la croyance} et \emph{la plausibilité}.
+
+Formellement, on peut représenter cela par :
+\begin{equation}
+m : \mathcal{P}(\Omega) \mapsto [0,1]
+\end{equation}
+\begin{equation}
+m(\varnothing) = 0
+\end{equation}
+\begin{equation} \label{somme_masses}
+\sum_{A \in \mathcal{P}(\Omega)} m(A) = 1
+\end{equation}
+
+\subsubsection{Exemple}
+Dans une enquête sur un incident de vol, trois personnes \textit{P1}, \textit{P2}, \textit{P3}
+sont accusées. L’enquêteur pense à 30\% que P1 est le voleur, à 50\% que l’un des deux autres
+personnes P2 ou P3, est le voleur, et à 10\% que P1 ou P3 le soit.\\
+Le cadre de discernement s'écrit ainsi : $$\Omega = \{P1, P2, P3\}.$$
+L'ensemble de parties de $\Omega$ est : $$\mathcal{P}(\Omega) = \{\varnothing, \{P1\}, \{P2\},
+\{P3\}, \{P1, P2\}, \{P1, P3\}, \{P2, P3\}, \Omega\}$$
+La distribution des masses s'exprime ainsi : $$m(\{P1\}) = 0.3, m(\{P2, P3\})  = 0.5,
+m(\{P1, P3\}) = 0.1$$ et $$m(\Omega) = 1 - (0.3+0.5+0.1) = 0.1$$ à partir de l’équation \ref{somme_masses}.\\
+Les masses des hypothèses restantes sont toutes égalles à $0$.
+
+\subsection{La croyance}
+
+La croyance est la quantité de confiance qui supporte une hypothèse $A$ de
+$\mathcal{P}(\Omega)$, toutes parties comprises.\\
+On la note $Cr(A$) ou plus souvent $Bel(A)$. Il est clair que $Bel(\varnothing)$
+est nulle, et $Bel(\Omega)$ est toujours 1. Il faut noter que la croyance est une
+mesure non additive, c’est-à-dire que $Bel(A) + Bel(\Omega - A) \neq 1$.
+
+Formellement :
+\begin{equation}
+Bel(\varnothing)=0
+\end{equation}
+\begin{equation}
+Bel(\Omega)=1
+\end{equation}
+\begin{equation}
+Bel(A) = \sum_{B \slash B \subseteq A} m(B)
+\end{equation}
+\begin{equation}
+\forall p,q \in \mathcal{P}(\Omega) \medskip Bel(p \cup q) \geq Bel(p) + Bel(q) - Bel(p \cap q).
+\end{equation}
+On peut aussi obtenir le bpa avec la fonction inverse suivante :
+\begin{equation}
+m(A) = \sum_{B \slash B \subseteq A} (-1)^{|A-B|} Bel(B),
+\end{equation}
+où $|A-B|$ est la différence des cardinalités entre les deux ensembles.
+
+\subsubsection{Exemple}
+En continuité de l'exemple précédent, on calcule la croyance de chaque hypothèse :
+
+\begin{table}[h!]
+\centering
+\begin{tabular}{|l|l|}
+\hline
+Hypothèse $A$ & Croyance $Bel(A)$\\
+\hline
+$\varnothing$ & $0$ \\
+\hline
+$\{P1\}$ & $0.3$ \\
+\hline
+$\{P2\}$ & $0$ \\
+\hline
+$\{P3\}$ & $0$ \\
+\hline
+$\{P1, P2\}$ & $0.3 + 0 + 0 = 0.3$ \\
+\hline
+$\{P1, P3\}$ & $0.3 + 0 + 0.1 = 0.4$ \\
+\hline
+$\{P2, P3\}$ & $0 + 0 + 0.1 = 0.1$ \\
+\hline
+$\Omega$ & $1$ \\
+\hline
+\end{tabular}
+\caption{Les croyances calculées à partir de la distribution de masses}
+\end{table}
+
+\subsection{La plausibilité}
+
+La plausibilité représente la croyance qu’il est possible
+d’affecté à une hypothèse $A$ de $\mathcal{P}(\Omega)$; autrement dit,
+c’est la croyance affectée à A et aux hypothèses dont l'intersection
+avec $A$ n’est pas vide. On la note $Pl(A)$. La valeur de la plausibilité est
+toujours supérieure ou égale à celle de la croyance. Identiquement à la
+croyance, $Pl(\varnothing)$ est nulle, et $Pl(\Omega)$ vaut $1$.
+
+Formellement :
+\begin{equation}
+Pl(\varnothing) = 0
+\end{equation}
+\begin{equation}
+Pl(\Omega) = 1
+\end{equation}
+\begin{equation}
+Pl(A) = \sum_{B \slash B \cap A \neq \varnothing} m(B)
+\end{equation}
+La plausibilité peut aussi être dérivée à partir de la croyance:
+\begin{equation}
+Pl(A) = 1 - Bel(\bar{A}),
+\end{equation}
+où $A$ est le complément de $A$ dans $\Omega$.
+
+La probabilité classique d’un événement $A$, $P(A)$ est représentée par
+l’intervalle qui a comme bornes inférieure et supérieure $Bel(A)$ et $Pl(A)$,
+respectivement, c’est-à-dire $$Pl(A) \leq P(A) \leq Bel(A).$$
+Si $$Bel(A) = Pl(A),$$ alors la probabilité de $A$ est unique et $$P(A) = Bel(A) = Pl(A)$$
+
+\subsubsection{Exemple}
+On calcule les plausibilités pour le même exemple.
+
+\begin{table}[h!]
+\centering
+\begin{tabular}{|l|l|}
+\hline
+Hypothèse $A$ & Plausibilité $Pl(A)$\\
+\hline
+$\varnothing$ & $0$ \\
+\hline
+$\{P1\}$ & $0.3 + 0.1 + 0.1 = 0.5$ \\
+\hline
+$\{P2\}$ & $0.5 + 0.1 = 0.6$ \\
+\hline
+$\{P3\}$ & $0.5 + 0.1 + 0.1 = 0.6$ \\
+\hline
+$\{P1, P2\}$ & $0.3 + 0.5 + 0.1 + 0.1 = 1$ \\
+\hline
+$\{P1, P3\}$ & $0.3 + 0.5 + 0.1 + 0.1 = 1$ \\
+\hline
+$\{P2, P3\}$ & $0.5 + 0.1 + 0.1 = 0.7$ \\
+\hline
+$\Omega$ & $1$ \\
+\hline
+\end{tabular}
+\caption{Les plausibilités calculées à partir de la distribution de masses}
+\end{table}
+\section{Règles de combinaison}
+
+Souvent, on obtient l’information à partir de sources distinctes et indépendantes,
+et généralement ces sources ne sont pas parfaites, c’est pourquoi on a besoin de
+fusionner les évidences fournies par ces sources en utilisant des règles de
+combinaison. Il existe trois types de combinaison : \emph{conjonctive},
+\emph{disjonctive}, et \emph{mixte}.
+
+\subsection{Combinaison conjonctive}
+
+Dempster a introduit une règle connue sous le nom de règle de combinaison
+de Dempster (\emph{Dempster's Combination Rule}) pour fusionner deux pièces
+d’évidence qui peuvent être représentées par deux fonctions de croyance.Cette
+règle respecte les quatre propriétés algébriques suivantes : l’associativité,
+la commutativité, l’idempotence et la continuité.
+
+Soient deux fonctions de masse $m_1(A)$ et $m_2(A)$ associées à deux fonctions
+de croyance $Bel_1(A)$ et $Bel_2(A)$ respectivement. $(Bel_1 \oplus Bel_2)(A)$
+est définie à travers la masse $m_{1 \oplus 2}(A)$ :
+\begin{equation}
+m_{1 \oplus 2}(A) = \sum_{B \cap C = A} m_1(B) m_2(C).
+\end{equation}
+
+Néanmoins, cette règle a été critiquée par de nombreux chercheurs, parce qu’elle
+n’est pas normalisée. En d’autre termes, elle permet d’affecter des masses à
+des ensembles vides. Ce problème est dû au fait que l’intersection de deux
+éléments focaux peut générer $\varnothing$, ce qui dénote un conflit entre les croyances.
+
+Pour corriger ce problème, Shafer a proposé d’ignorer carrément les conflits
+et d'étendre la distribution des masses. Le facteur de conflit est une valeur
+$K < 1$ et définie par :
+\begin{equation}
+K = \sum_{B \cap C = \varnothing} m_1(B) m_2(C).
+\end{equation}
+
+Afin de normaliser la distribution de masse, la règle de Dempster doit être
+multipliée par la quantité $(1 - K)^{-1}$. Donc la règle de Dempster-Shafer
+est représentée par les équations suivantes :
+\begin{equation}
+m(\varnothing) = 0
+\end{equation}
+\begin{equation}
+m(A) = \frac{1}{1-K} \sum_{B \cap C = A \neq \varnothing} m_1(B) m_2(C)
+\end{equation}
+
+Cependant, la règle de Shafer n’est pas toujours satisfaisante à cause de la
+normalisation qui considère que le conflit vient de l’imperfection des sources.
+
+D’autres chercheurs ont proposé des règles différents, comme Smets qui a introduit
+une forme non normalisée pour prendre en compte les univers ouverts. Il suppose
+que le conflit vient du fait que l’ensemble $\Omega$ n’est pas exhaustif. Pour
+cette raison, la règle de Smets affecte une masse $K$ à $\varnothing$ qui représente
+une hypothèse manquante. Elle est définie par ces équations :
+\begin{equation}
+K = m(\varnothing) = \sum_{B \cap C = \varnothing} m_1(B) m_2(C)
+\end{equation}
+\begin{equation}
+m(A) = \sum_{B \cap C = A \neq \varnothing} m_1(B) m_2(C)
+\end{equation}
+
+Par contre, Yager propose un modèle d’un univers fermé ($\Omega$ est exhaustif).
+La mesure de conflit est ajoutée à la mesure du cadre de discernement $\Omega$.
+Donc le conflit sera transformé en ignorance. On obtient ces équations :
+\begin{equation}
+m(\varnothing) = \sum_{B \cap C = \varnothing} m_1(B) m_2(C)
+\end{equation}
+\begin{equation}
+m(\Omega) = \left(1 - \sum_{A \in \mathcal{P}(\Omega)}
+\sum_{B \cap C = A \neq \varnothing} m_1(B) m_2(C)\right) +
+\sum_{B \cap C = \varnothing} m_1(B) m_2(C)
+\end{equation}
+
+\subsection{Combinaison disjonctive}
+
+Dans la combinaison disjonctive on considère l’utilisation de l’union à la place
+de l’intersection. Les éléments focaux sont obtenus à partir de la table d’union.
+La fonction de masse de la règle de combinaison disjonctive est formalisée par l'équation :
+\begin{equation}
+m(A) = \sum_{B \cup C = A \neq \varnothing} m_1(B) m_2(C).
+\end{equation}
+
+Comme l’union de deux éléments focaux ne peut être jamais vide, on est sûr
+que $m(\varnothing)=0$. Cela veut dire qu’il est impossible d’obtenir un conflit
+lors de la combinaison. En contrepartie, l'union peut causer une perte de spécificité
+vu que les masses sont élargies. Cette approche apparaît plus intéressante en
+l’absence des informations nécessaires sur la fiabilité des sources.
+
+\subsection{Combinaison mixte}
+
+Dubois et Prade ont proposé une combinaison mixte comme un compromis entre la
+combinaison conjonctive et la combinaison disjonctive et comme un essai de conserver
+les avantages des deux. De même que la combinaison de Yager, le modèle de Dubois
+et Prade suppose que le conflit est dû à la non fiabilité des sources. La règle de
+Dubois et Prade est définie comme suit :
+\begin{equation}
+m(A) = \sum_{B \cap C = A \neq \varnothing} m_1(B) m_2(C) +
+\sum_{\substack{B \cup C = A \neq \varnothing \\ B \cap C = \varnothing}} m_1(B) m_2(C)
+\end{equation}
+
+\section{Décision}
+
+Prendre une décision veut dire choisir une hypothèse élémentaire parmi les autres
+par la maximisation d'un critère. La sélection est établie en observant
+la croyance et la plausibilité de chaque hypothèse résultante. Il existe trois règles
+de décision : le \emph{maximum de croyance}, le \emph{maximum de plausibilité} et le
+\emph{maximum de probabilité pignistique}
+
+\subsection{Maximum de croyance}
+
+Dans cette règle on s'intéresse à trouver l'hypothèse élémentaire $\omega_i$ qui
+a la croyance maximale. C'est-à-dire que $\omega_i$ est choisie si elle satisfait cette
+équation :
+\begin{equation}
+Bel(\omega_i) = \max_{1 \leq j \leq n} Bel(\omega_j)
+\end{equation}
+Cette méthode est connue par son caractère très pessimiste.
+
+\subsection{Maximum de plausibilité}
+
+En opposition à la règle précédente, l'élément $d_i$ est sélectionné par le maximum
+de plausibilité. En d'autres termes, on choisit le $d_i$ qui résoud cette équation :
+\begin{equation}
+Pl(\omega_i) = \max_{1 \leq j \leq n} Pl(\omega_j).
+\end{equation}
+Ainsi, cette méthode a un caractère très optimiste.
+
+\subsection{Maximum de probabilité pignistique}
+
+Cette règle est proposée par Smets et Kennes. Elle consiste à transformer la fonction
+de masse $m(A)$ en une fonction de probabilité $BetP(\omega)$. Cette transformation
+est appelée \emph{transformation pignistique} et définie par cette équation :
+\begin{equation}
+BetP(\omega) = \sum_{\substack{A \subseteq \Omega \\
+\omega \in A}} \frac{1}{|A|}  \frac{m(A)}{1-m(\varnothing)}.
+\end{equation}
+
+Dans cette transformation, la masse de croyance $m(A)$ est distribuée uniformément
+sur l’ensemble des éléments de $A$. Le critère est de prendre l'élément qui a le
+maximum de probabilité pignistique. On peut voir cette méthode comme un compromis
+entre les deux précédentes.
+
+\phantomsection
+\addcontentsline{toc}{section}{Conclusion}
+\section*{Conclusion}
+
+Après cette présentation de la théorie des fonctions de
+croyances, des règles de combinaisons qui peuvent si appliquer,
+et des règles de décisions compatibles, nous allons maintenant pouvoir introduire
+des notions sur les théories de l'incertain.
