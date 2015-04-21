@@ -488,11 +488,15 @@ public class Main{
 		switch(args.length) {
 			case 2:
 				File in = new File(args[0]);
-				if(!in.isFile())
+				if(!in.isFile()){
 					System.err.println("Le fichier "+in.getAbsolutePath()+" est introuvable");
-				else if(!in.canRead())
+					System.exit(1);
+				}
+				else if(!in.canRead()){
 					System.err.println("Impossible de lire le fichier "+in.getAbsolutePath());
-				System.exit(1);
+					System.exit(1);
+				}
+				break;
 			default:
 				System.err.println("Usage : Main <file>.dsti.xml <file>.dsto.xml");
 				System.exit(1);
