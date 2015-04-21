@@ -12,7 +12,7 @@
 \usepackage{microtype}
 \usepackage{graphicx} % Pour les images
 \usepackage{subcaption} % Pour mettre plusieurs images sur la même ligne
-%\usepackage[section]{placeins} % Pour empêcher le déplacement des tableaux et des figures.
+\usepackage{float} % Pour empêcher le déplacement des tableaux et des figures.
 \graphicspath{ {pictures/} } % Spécifier le répertoire contenant les images  
 \DisableLigatures[f]{encoding=*}
 \renewcommand \thechapter{\Roman{chapter}} % Utiliser la numéros romans pour les chapitre
@@ -40,5 +40,6 @@
 \tableofcontents
 \include{Chapitre1}
 \include{Chapitre2}
+%\include{Chapitre3}
 \include{Chapitre4}
 \end{document}          

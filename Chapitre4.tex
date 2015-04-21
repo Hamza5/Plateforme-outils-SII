@@ -32,7 +32,7 @@ pour enregister, ouvrir, réinitialiser le projet et fermer l'application dans l
 \textbf{Fichier}. Dans le menu \textbf{Projet}, on trouve les actions liés à la manipulation
 du projet courant. On peut y changer le titre et donner une description au projet. 
 
-\begin{figure}[h!]
+\begin{figure}[H]
 \begin{subfigure}{0.49\textwidth}
 \includegraphics[width=\textwidth]{Inetrface_principale_menu_fichier}
 \caption{Le menu \textbf{Fichier}}
@@ -50,9 +50,9 @@ de ce menu ou par un clique droit dans leurs champs. \`A partir de ce menu, on p
 méthode de fusion et la méthode de décision.
 
 On commence par ajouter tout les états du monde. Ensuite, à chaque fois on sélectionne certains
-états et on établit une hypothèse à partir ces états.
+états et on établit une hypothèse à partir de ces états.
 
-\begin{figure}[h!]
+\begin{figure}[H]
 \begin{subfigure}{0.49\textwidth}
 \includegraphics[width=\textwidth]{ajouter_etat}
 \caption{Ajouter les états du monde}
@@ -63,4 +63,37 @@ On commence par ajouter tout les états du monde. Ensuite, à chaque fois on sé
 \caption{Ajouter une hypothèse à partir des états}
 \end{subfigure}
 \caption{L'ajout des états du monde et les hypothèse}
+\end{figure}
+
+Par la suite, on doit procéder à ajouter les agents. Chaque agent doit avoir un nom, un niveau de
+fiabilité et des hypothèses tels que à chaque hypothèse est affectée à une masse.
+
+\begin{figure}[H]
+\begin{subfigure}{0.49\textwidth}
+\includegraphics[width=\textwidth]{ajouter_agent}
+\caption{Dialogue de l'ajout d'un agent}
+\end{subfigure}
+\hfill
+\begin{subfigure}{0.49\textwidth}
+\includegraphics[width=\textwidth]{affecter_masse}
+\caption{Dialogue de l'affectation d'une hypothèse}
+\end{subfigure}
+\caption{L'ajout d'un agent et l'affectation de ses hypothèses}
+\end{figure}
+
+Enfin, on peut lancer le calcul. Cette étape risque de prendre un temps impotant si le nombre des états
+du mondes et/ou des agents est grand. Pour cela, un dialogue d'attente est affiché pendant l'exécution
+du noyau en arrière-plan. Quand le calcul se termine, un dialogue contenant tout les résultats sera affiché.
+
+\begin{figure}[H]
+\begin{subfigure}{0.39\textwidth}
+\includegraphics[width=\textwidth]{Dialogue_attente}
+\caption{Dialogue d'attente}
+\end{subfigure}
+\hfill
+\begin{subfigure}{0.59\textwidth}
+\includegraphics[width=\textwidth]{Dialogue_resultats}
+\caption{Dialogue des résultats}
+\end{subfigure}
+\caption{Le calcul et l'affichage des résultats}
 \end{figure}
