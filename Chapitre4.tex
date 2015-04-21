@@ -62,7 +62,7 @@ On commence par ajouter tout les états du monde. Ensuite, à chaque fois on sé
 \includegraphics[width=\textwidth]{ajouter_hypothese}
 \caption{Ajouter une hypothèse à partir des états}
 \end{subfigure}
-\caption{L'ajout des états du monde et les hypothèse}
+\caption{L'ajout des états du monde et les hypothèses}
 \end{figure}
 
 Par la suite, on doit procéder à ajouter les agents. Chaque agent doit avoir un nom, un niveau de
@@ -81,9 +81,23 @@ fiabilité et des hypothèses tels que à chaque hypothèse est affectée à une
 \caption{L'ajout d'un agent et l'affectation de ses hypothèses}
 \end{figure}
 
+Avant de passer au calcul, on doit enregistrer ces données dans un fichier. On doit choisir son nom
+et son emplacement. Il aura par défaut l'extention \texttt{.dsti.xml}. Si on ignore cette étape le programme
+demandera de la faire avant qu'on puisse continuer.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.8\textwidth]{Enregistrer}
+\caption{Enregistrer les données}
+\end{figure}
+
 Enfin, on peut lancer le calcul. Cette étape risque de prendre un temps impotant si le nombre des états
-du mondes et/ou des agents est grand. Pour cela, un dialogue d'attente est affiché pendant l'exécution
-du noyau en arrière-plan. Quand le calcul se termine, un dialogue contenant tout les résultats sera affiché.
+du mondes et/ou des agents est assez grand. Pour cela, un dialogue d'attente est affiché pendant l'exécution
+du noyau en arrière-plan. L'utilisateur peut annuler cette opération à tout moment.
+
+Quand le calcul se termine, un dialogue contenant tout les résultats sera affiché. Les résultats sont obtenus
+par la lecture du fichier généré par le noyau qui a le même chemin que le fichier sauvegardé sauf qu'il porte
+l'extention \texttt{.dsto.xml}.
 
 \begin{figure}[H]
 \begin{subfigure}{0.39\textwidth}
