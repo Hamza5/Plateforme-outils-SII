@@ -1,36 +1,40 @@
-\chapter{Réalisation de la toolbox}
+\chapter{La réalisation}
+\phantomsection
+\addcontentsline{toc}{section}{Introduction}
+\section*{Introduction}
 
-\section{Introduction}
+Dans ce chapitre, nous introduisons l'implémentation de notre projet. D'abord, nous
+citons les différents langages programmation et les bibliothèques que nous avons manipulé.
+Ensuite, nous présentons le \appname en détaillant ses fonctionnalités. Enfin, nous passons
+à décrir la grande boîte à outils qui regroupe plusieurs programmes reliés aux théories de
+l'incertain. Nous allons aussi expliquer comment cet boîte intéragit avec ces programmes.
 
-Dans ce chapitre, nous introduisons l'implémentation de notre projet. D'abord, nous 
-décrirons les différents outils utilisés pour la réalisation de la toolbox. Ensuite,
-nous possèderons à démontrer notre toolbox de Dempster-Shafer en détaillant ses
-fonctionnalitées. Enfin, nous présentons la grande toolbox qui regroupe plusieurs
-logiciels reliée aux théories de l'incertain.
+\section{Les langages de programmation et les bibliothèques utilisées}
 
-\section{Les languages de programmations et les bibliothèques utilisés}
-
-Nous avons programmé l'interface de la toolbox de Dempster-Shafer en \textbf{Python 3}
+Nous avons programmé l'interface du \appname en \textbf{Python 3}
 en utilisant la bibliothèque \textbf{PyQt4}. Nous avons également réalisé la grande
-interface avec \textbf{Java Swing}.
+interface avec \textbf{Java Swing}. En plus, il y a plusieurs scriptes utilisés par cette
+interface sont écrits en \textbf{MATLAB}. D'autres outils sont programmés en language
+\textbf{C} et compilés sous une forme exécutable. Il y a aussi quelques programmes
+qui nécessite la présence de l'environement \textbf{Cygwin}.
 
-\section{La toolbox de Dempster-Shafer}
+\section{\appName}
 
 Ce logiciel est constitué à partir de deux parties, le noyau et l'interface graphique.
-Il peut fonctionner sur tout les systèmes d'exploitations majeurs comme \textbf{Windows},
-\textbf{Mac~OS~X}, \textbf{GNU/Linux} et \textbf{BSD}.
+Il peut fonctionner sur tous les systèmes d'exploitation majeurs comme \textbf{Windows},
+\textbf{\mbox{Mac OS X}}, \textbf{\mbox{GNU/Linux}} et \textbf{BSD}.
 
 Le noyau est responsable d'effectuer les calculs après la lecture d'un fichier XML
 contenant les données nécessaires pour l'application de la théorie de Dempster-Shafer.
 Les résultats seront écrits dans un autre fichier XML. L'utilisateur n'a pas besoin
-de comprendre la structure de ces fichiers, il suffit juste d'utiliser l'interface
+de comprendre la structure de ces fichiers, il lui suffit d'utiliser l'interface
 graphique.
 
-L'interface graphique est composée d'une barre de menu et de trois parties, les états
+Cette interface est composée d'une barre de menu et de trois parties, les états
 du monde, les hypothèses, et les agents. La barre contient les fonctionnalités principales
 pour enregister, ouvrir, réinitialiser le projet et fermer l'application dans le menu
-\textbf{Fichier}. Dans le menu \textbf{Projet}, on trouve les actions liés à la manipulation
-du projet courant. On peut y changer le titre et donner une description au projet. 
+\textbf{Fichier}. Dans le menu \textbf{Projet}, on trouve les actions liées à la manipulation
+du projet courant. On peut y changer le titre et donner une description au projet.\\[1em]
 
 \begin{figure}[H]
 \begin{subfigure}{0.49\textwidth}
@@ -42,15 +46,15 @@ du projet courant. On peut y changer le titre et donner une description au proje
 \includegraphics[width=\textwidth]{Inetrface_principale_menu_projet}
 \caption{Le menu \textbf{Projet}}
 \end{subfigure}
-\caption{L'interface principale de la toolbox de Dempster-Shafer}
+\caption{L'interface principale du \appname}
 \end{figure}
 
 Les états du monde, les hypothèses et les agents doivent s'ajouter dans cet ordre à partir
-de ce menu ou par un clique droit dans leurs champs. \`A partir de ce menu, on peut choisir la
+de ce menu ou par un clic droit dans leurs champs. \`A partir de ce menu, on peut choisir la
 méthode de fusion et la méthode de décision.
 
-On commence par ajouter tout les états du monde. Ensuite, à chaque fois on sélectionne certains
-états et on établit une hypothèse à partir de ces états.
+On commence par ajouter tous les états du monde. Ensuite, chaque fois qu'on sélectionne certains
+états, on établit une hypothèse à partir de ces états.
 
 \begin{figure}[H]
 \begin{subfigure}{0.49\textwidth}
@@ -81,8 +85,8 @@ fiabilité et des hypothèses tels que à chaque hypothèse est affectée à une
 \caption{L'ajout d'un agent et l'affectation de ses hypothèses}
 \end{figure}
 
-Avant de passer au calcul, on doit enregistrer ces données dans un fichier. On doit choisir son nom
-et son emplacement. Il aura par défaut l'extention \texttt{.dsti.xml}. Si on ignore cette étape le programme
+Avant de passer au calcul, on doit enregistrer ces données dans un fichier. Il faut aussi choisir un nom
+et un emplacement pour le fichier. Il aura par défaut l'extention \texttt{.dsti.xml}. Si on ignore cette étape le programme
 demandera de la faire avant qu'on puisse continuer.
 
 \begin{figure}[H]
@@ -91,12 +95,12 @@ demandera de la faire avant qu'on puisse continuer.
 \caption{Enregistrer les données}
 \end{figure}
 
-Enfin, on peut lancer le calcul. Cette étape risque de prendre un temps impotant si le nombre des états
+Enfin, on peut lancer le calcul. Cette étape risque de prendre un temps important si le nombre des états
 du mondes et/ou des agents est assez grand. Pour cela, un dialogue d'attente est affiché pendant l'exécution
 du noyau en arrière-plan. L'utilisateur peut annuler cette opération à tout moment.
 
 Quand le calcul se termine, un dialogue contenant tout les résultats sera affiché. Les résultats sont obtenus
-par la lecture du fichier généré par le noyau qui a le même chemin que le fichier sauvegardé sauf qu'il porte
+par la lecture du fichier généré par le noyau qui a le même chemin que le fichier sauvegardé, sauf qu'il porte
 l'extention \texttt{.dsto.xml}.
 
 \begin{figure}[H]
@@ -110,4 +114,20 @@ l'extention \texttt{.dsto.xml}.
 \caption{Dialogue des résultats}
 \end{subfigure}
 \caption{Le calcul et l'affichage des résultats}
+\end{figure}
+
+Plus tard, on peut ouvrir les fichiers de données en utilisant l'action \textbf{Ouvrir} à partir du menu fichier. Comme
+on peut afficher les résultats en ouvrant le fichier correspondant en utilisant l'action \textbf{Ouvrir des résultats}.
+
+\begin{figure}[H]
+\begin{subfigure}{0.49\textwidth}
+\includegraphics[width=\textwidth]{Ouvrir}
+\caption{Dialogue d'ouverture d'un fichier de données}
+\end{subfigure}
+\hfill
+\begin{subfigure}{0.49\textwidth}
+\includegraphics[width=\textwidth]{Ouvrir_resultats}
+\caption{Dialogue d'ouverture de résultats}
+\end{subfigure}
+\caption{Les dialogues de l'ouverture d'un fichier}
 \end{figure}
