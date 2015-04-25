@@ -1,4 +1,4 @@
-\chapter{La réalisation}
+\chapter{La réalisation du \appname et de la \platformename}
 \phantomsection
 \addcontentsline{toc}{section}{Introduction}
 \section*{Introduction}
@@ -6,15 +6,15 @@
 Dans ce chapitre, nous introduisons l'implémentation de notre projet. D'abord, nous
 citons les différents langages programmation et les bibliothèques que nous avons manipulé.
 Ensuite, nous présentons le \appname en détaillant ses fonctionnalités. Enfin, nous passons
-à décrir la grande boîte à outils qui regroupe plusieurs programmes reliés aux théories de
-l'incertain. Nous allons aussi expliquer comment cet boîte intéragit avec ces programmes.
+à décrir la grande \platformename qui regroupe plusieurs programmes reliés aux théories de
+l'incertain. Nous allons aussi expliquer comment cette platforme intéragit avec ces programmes.
 
 \section{Les langages de programmation et les bibliothèques utilisées}
 
 Nous avons programmé l'interface du \appname en \textbf{Python 3}
-en utilisant la bibliothèque \textbf{PyQt4}. Nous avons également réalisé la grande
-interface avec \textbf{Java Swing}. En plus, il y a plusieurs scriptes utilisés par cette
-interface sont écrits en \textbf{MATLAB}. D'autres outils sont programmés en language
+en utilisant la bibliothèque \textbf{PyQt4}. Nous avons également réalisé la \platformename
+avec \textbf{Java Swing}. En plus, il y a plusieurs scriptes utilisés par cette
+platforme sont écrits en \textbf{MATLAB}. D'autres outils sont programmés en language
 \textbf{C} et compilés sous une forme exécutable. Il y a aussi quelques programmes
 qui nécessite la présence de l'environement \textbf{Cygwin}.
 
@@ -86,8 +86,8 @@ fiabilité et des hypothèses tels que à chaque hypothèse est affectée à une
 \end{figure}
 
 Avant de passer au calcul, on doit enregistrer ces données dans un fichier. Il faut aussi choisir un nom
-et un emplacement pour le fichier. Il aura par défaut l'extention \texttt{.dsti.xml}. Si on ignore cette étape le programme
-demandera de la faire avant qu'on puisse continuer.
+et un emplacement pour le fichier. Il aura par défaut l'extention \texttt{.dsti.xml}. Si on ignore cette
+étape le programme demandera de la faire avant qu'on puisse continuer.
 
 \begin{figure}[H]
 \centering
@@ -131,3 +131,10 @@ on peut afficher les résultats en ouvrant le fichier correspondant en utilisant
 \end{subfigure}
 \caption{Les dialogues de l'ouverture d'un fichier}
 \end{figure}
+
+\section{\platformeName}
+Ce programme est une interface composée de plusieurs panneaux dans lequel chaque panneau est accessible
+à partir de son titre dans la barre des onglets. Un panneau comporte une ou plusieurs interfaces pour
+un ou plus d'un programme externe.  La \platformename est facilement extensible; pour ajouter un nouveau
+paneau dans cette interface il suffit de créer une classe personnalisée qui dérive de la classe
+\mbox{\texttt{javax.swing.JPanel}} dans le paquet \texttt{Plugins}.
