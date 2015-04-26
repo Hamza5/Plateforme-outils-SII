@@ -4,6 +4,7 @@ package Plugins;
 import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Container;
+import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -22,6 +23,7 @@ import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -29,6 +31,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Vector;
 
+import javax.swing.AbstractAction;
+import javax.swing.Box;
+import javax.swing.BoxLayout;
 import javax.swing.ButtonGroup;
 import javax.swing.DefaultCellEditor;
 import javax.swing.GroupLayout;
@@ -48,14 +53,18 @@ import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
 import javax.swing.JTable;
+import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.JTextPane;
 import javax.swing.KeyStroke;
 import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.ListSelectionModel;
 import javax.swing.SwingConstants;
+import javax.swing.border.EmptyBorder;
+import javax.swing.border.TitledBorder;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
+import javax.swing.event.DocumentEvent;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.filechooser.FileNameExtensionFilter;
@@ -63,6 +72,8 @@ import javax.swing.table.AbstractTableModel;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.StyledDocument;
+
+import Plugins.Tools.ResultsDialog;
 
 import com.mxgraph.layout.hierarchical.mxHierarchicalLayout;
 import com.mxgraph.model.mxCell;
@@ -89,6 +100,8 @@ public class Incertain extends JPanel implements ActionListener{
 		 Object parent;
 		 JPanel BNTScripteBuild;
 		 JPanel PNTScripteBuild;
+		 JPanel DempsterShafer;
+		 JPanel logiquePossibiliste;
 		 private JButton Noeuxbtn;
 		 private JButton Suppbutton;
 		 private JButton btnModifer;
@@ -108,8 +121,10 @@ public class Incertain extends JPanel implements ActionListener{
 		 Vector<String> vertex;
 		 JButton btnNewButton_1;
 		   JButton btnModifier;
+		   int countertwo=0; 
  class ParametreProb extends JDialog implements ActionListener{
 	 JTable table;
+	 
 		 public ParametreProb()
 		    {			
 				   	   super();
@@ -790,7 +805,6 @@ class Fenetre extends JDialog implements ListSelectionListener,ActionListener{
 			}
 			writer.print(textPane.getText());
 			writer.close();
-			//////////////////////////////////
 			class ExecutorTask implements Runnable{
 
 			    @Override
@@ -815,7 +829,7 @@ class Fenetre extends JDialog implements ListSelectionListener,ActionListener{
 							   "Erreur",
 							   JOptionPane.ERROR_MESSAGE);
 				}
-				System.out.println("haha "+LireSousFormeString("output"));
+				
 				try {
 					process.waitFor();
 				} catch (InterruptedException e) {
@@ -850,7 +864,7 @@ class Fenetre extends JDialog implements ListSelectionListener,ActionListener{
 		
 	}
 
-	private static final long serialVersionUID = -8123406571694511514L;
+	
 	
 	private static String LireSousFormeString(String filePath) {
 		 byte[] buffer = new byte[(int) new File(filePath).length()];
@@ -895,6 +909,49 @@ class Fenetre extends JDialog implements ListSelectionListener,ActionListener{
 	private JButton button_2;
 	private JButton button_3;
 	private JButton button_4;
+	private JTextField textField;
+	private JTextField textField_1;
+	  class ResultsDialog extends JDialog {
+	        private final JTextArea resultsTextArea;
+	        private final AbstractAction closeAction;
+	        private final JLabel label;
+	        ResultsDialog() {
+	            super();
+	            BorderLayout layout = new BorderLayout();
+	            setLayout(layout);
+	            setPreferredSize(new Dimension(300, 200));
+	            setModal(true);
+	            final ResultsDialog dialog = this;
+	            closeAction = new AbstractAction("OK") {
+	                @Override
+	                public void actionPerformed(ActionEvent actionEvent) {
+	                    dialog.setVisible(false);
+	                }
+	            };
+	            label = new JLabel("Resultats");
+	            label.setBorder(new EmptyBorder(5, 5, 5, 5));
+	            resultsTextArea = new JTextArea();
+	            resultsTextArea.setFont(new Font("Monospaced", Font.BOLD, 14));
+	            resultsTextArea.setEditable(false);
+	            JButton okButton = new JButton(closeAction);
+	            Box textAreaBox = Box.createHorizontalBox();
+	            textAreaBox.setBorder(new EmptyBorder(0, 5, 0, 5));
+	            textAreaBox.add(new JScrollPane(resultsTextArea));
+	            Box buttonsBox = Box.createHorizontalBox();
+	            buttonsBox.setBorder(label.getBorder());
+	            buttonsBox.add(Box.createHorizontalGlue());
+	            buttonsBox.add(okButton);
+	            buttonsBox.add(Box.createHorizontalGlue());
+	            add(label, BorderLayout.PAGE_START);
+	            add(textAreaBox, BorderLayout.CENTER);
+	            add(buttonsBox, BorderLayout.PAGE_END);
+	            getRootPane().setDefaultButton(okButton);
+	        }
+	        void setText(String text){
+	            resultsTextArea.setText(text);
+	        }
+	    }
+	
 	public Incertain() throws IOException, URISyntaxException {
 		super();
         setName("Incertain"); // Will be the title of the tab
@@ -936,7 +993,7 @@ class Fenetre extends JDialog implements ListSelectionListener,ActionListener{
 		graph = new mxGraph();
 		PNTgraph = new mxGraph();
 		parent = graph.getDefaultParent();
-																																	 ButtonGroup group = new ButtonGroup();
+																																	
 //																																      
 																																	tabs = new JTabbedPane();
 																																	ScripteBNT = new JPanel();
@@ -1051,13 +1108,13 @@ class Fenetre extends JDialog implements ListSelectionListener,ActionListener{
 																																									BNTScripteBuild.setLayout(gl_BNTScripteBuild);
 																																	PNTScripteBuild= new JPanel();
 																																	tabs.addTab("PNT Scripte build", PNTScripteBuild);
-																																	 mxGraphComponent PNTgraphComponent = new mxGraphComponent(PNTgraph);
+																																	mxGraphComponent PNTgraphComponent = new mxGraphComponent(PNTgraph);
 																																	new mxKeyboardHandler( PNTgraphComponent);
 																																	PNTScripteBuild.add(PNTgraphComponent);
 																																	
 																																	button = new JButton("Ajouter noeud");
 																																	button.addActionListener(this);
-																																	
+																																	final JRadioButton rbt_1;
 																																	button_1 = new JButton("Supprimer");
 																																	button_1.addActionListener(this);
 																																	button_1.setVerticalAlignment(SwingConstants.TOP);
@@ -1129,7 +1186,279 @@ class Fenetre extends JDialog implements ListSelectionListener,ActionListener{
 																																								        
 																																								      }
 																																								    };		
+																																								    DempsterShafer = new JPanel();
+																																								
+																																									tabs.addTab("Dempster Shafer", DempsterShafer);
+																																									 String DSButtonText = "Lancer le Moteur Dempster Shafer";
+																																									 String DSDescription = "<html><div style=\"text-align: center;\">Description du logiciel ...</html>";
+																																								     int spacing = 5;
+																																								      BoxLayout mainLayout = new BoxLayout(this, BoxLayout.PAGE_AXIS);
+																																								        setLayout(mainLayout);
+																																								       
+																																								        JButton DecPosButton = new JButton(new AbstractAction(DSButtonText) {
+																																								          public void actionPerformed(ActionEvent actionEvent) {
+																																								           
+																																								                    
+																																								                    Runnable externalProgramLauncher = new Runnable() {
+																																								                    
+																																								                        public void run() {
+																																								                            try {
+																																								                            	final URL decPosURL = ClassLoader.getSystemClassLoader().getResource("Plugins/DempsterShafer");
+																																								                            	 //if (decPosURL == null) throw new FileNotFoundException("DecPos folder not found");
+																																								                            //	System.out.println("path = "+decPosURL);
+																																								                            	 //Process child = Runtime.getRuntime().exec();
+																																								                            	 final File decPosFolderPath = new File(decPosURL.toURI());
+//																																								                            	 System.out.println("path = "+decPosFolderPath.getAbsolutePath());
+//																																								                            	 Process child2=Runtime.getRuntime().exec("cd", null,decPosFolderPath);
+																																								                            	 ProcessBuilder decPosPB = new ProcessBuilder("python","MainGUI.py");
+																																								                                 decPosPB.directory(decPosFolderPath);
+																																								                                 decPosPB.redirectError(ProcessBuilder.Redirect.INHERIT); // Show DecPos errors
+																																								                                 decPosPB.start();
+																																								                            } catch (IOException e) {
+																																								                            	
+																																								                            	JOptionPane.showMessageDialog(DempsterShafer, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+																																								                            } catch (URISyntaxException e) {
+																																								                            	JOptionPane.showMessageDialog(DempsterShafer, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+																																															}
+																																								                        }
+																																								                    };
+																																								                    Thread t = new Thread(externalProgramLauncher);
+																																								                    t.start();
+																																								               
+																																								            }
+																																								        });
+																																								        
+																																								        DecPosButton.setMnemonic('P');
+																																								        Box DSBox = new Box(BoxLayout.PAGE_AXIS);
+																																								        DSBox.setBorder(new TitledBorder("Dempset Shafer"));
+																																								        Box descriptionBox =  Box.createHorizontalBox();
+																																								        descriptionBox.add(new JLabel(DSDescription,SwingConstants.CENTER));
+																																								        descriptionBox.setBorder(new EmptyBorder(spacing, spacing, spacing, spacing));
+																																								        DSBox.add(descriptionBox);
+																																								        Box buttonBox = Box.createHorizontalBox();
+																																								        buttonBox.setBorder(descriptionBox.getBorder());
+																																								        buttonBox.add(DecPosButton);
+																																								        DSBox.add(buttonBox);
+																																								        GroupLayout gl_DempsterShafer = new GroupLayout(DempsterShafer);
+																																								        gl_DempsterShafer.setHorizontalGroup(
+																																								        	gl_DempsterShafer.createParallelGroup(Alignment.LEADING)
+																																								        		.addGroup(gl_DempsterShafer.createSequentialGroup()
+																																								        			.addComponent(DSBox, GroupLayout.DEFAULT_SIZE, 832, Short.MAX_VALUE)
+																																								        			.addGap(0))
+																																								        );
+																																								        gl_DempsterShafer.setVerticalGroup(
+																																								        	gl_DempsterShafer.createParallelGroup(Alignment.LEADING)
+																																								        		.addGroup(gl_DempsterShafer.createSequentialGroup()
+																																								        			.addGap(5)
+																																								        			.addComponent(DSBox, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+																																								        			.addContainerGap(192, Short.MAX_VALUE))
+																																								        );
+																																								        DempsterShafer.setLayout(gl_DempsterShafer);
+																																								        
+																																								        logiquePossibiliste = new JPanel();
+																																								       
+																																										tabs.addTab("Logique Possibiliste", logiquePossibiliste);
+																																										
+																																										 
+																																									      BoxLayout NPmainLayout = new BoxLayout(this, BoxLayout.PAGE_AXIS);
+																																									        setLayout(NPmainLayout);
+																																									        GridBagLayout gbl_logiquePossibiliste = new GridBagLayout();
+																																									        gbl_logiquePossibiliste.columnWidths = new int[]{46, 173, 12, 61, 161, 0};
+																																									        gbl_logiquePossibiliste.rowHeights = new int[]{38, 20, 20, 23, 23, 131, 0};
+																																									        gbl_logiquePossibiliste.columnWeights = new double[]{0.0, 0.0, 0.0, 1.0, 0.0, Double.MIN_VALUE};
+																																									        gbl_logiquePossibiliste.rowWeights = new double[]{1.0, 0.0, 0.0, 0.0, 0.0, 1.0, Double.MIN_VALUE};
+																																									        logiquePossibiliste.setLayout(gbl_logiquePossibiliste);
+																																									        
+																																									        JLabel label = new JLabel("Nombre de noeuds");
+																																									        GridBagConstraints gbc_label = new GridBagConstraints();
+																																									        gbc_label.anchor = GridBagConstraints.WEST;
+																																									        gbc_label.insets = new Insets(0, 0, 5, 5);
+																																									        gbc_label.gridx = 1;
+																																									        gbc_label.gridy = 1;
+																																									        logiquePossibiliste.add(label, gbc_label);
+																																									        
+																																									        textField = new JTextField();
+																																									        textField.addActionListener(new ActionListener() {
+																																									            public void actionPerformed(ActionEvent e) {}
+																																									       public void insertUpdate(DocumentEvent e) {
+																																									    	   countertwo=0; 
+																																							                }
+																																							                public void removeUpdate(DocumentEvent e) {
+																																							                	 countertwo=0; 
+																																							                }
+																																							                public void changedUpdate(DocumentEvent e) {
+																																							                	countertwo=0; 
+																																							                }
+																																									        });
+																																									        textField.setColumns(10);
+																																									       
+																																									        GridBagConstraints gbc_textField = new GridBagConstraints();
+																																									        gbc_textField.fill = GridBagConstraints.HORIZONTAL;
+																																									        gbc_textField.gridwidth = 2;
+																																									        gbc_textField.anchor = GridBagConstraints.NORTH;
+																																									        gbc_textField.insets = new Insets(0, 0, 5, 5);
+																																									        gbc_textField.gridx = 2;
+																																									        gbc_textField.gridy = 1;
+																																									        logiquePossibiliste.add(textField, gbc_textField);
+																																									        
+																																									        JLabel label_1 = new JLabel("Nombre de parents maximal ");												;
+																																									        GridBagConstraints gbc_label_1 = new GridBagConstraints();
+																																									        gbc_label_1.anchor = GridBagConstraints.WEST;
+																																									        gbc_label_1.insets = new Insets(0, 0, 5, 5);
+																																									        gbc_label_1.gridx = 1;
+																																									        gbc_label_1.gridy = 2;
+																																									        logiquePossibiliste.add(label_1, gbc_label_1);
+																																									        
+																																									        textField_1 = new JTextField();
+																																									        
+																																									        textField_1.setColumns(10);
+																																									        GridBagConstraints gbc_textField_1 = new GridBagConstraints();
+																																									        gbc_textField_1.fill = GridBagConstraints.HORIZONTAL;
+																																									        gbc_textField_1.gridwidth = 2;
+																																									        gbc_textField_1.anchor = GridBagConstraints.NORTH;
+																																									        gbc_textField_1.insets = new Insets(0, 0, 5, 5);
+																																									        gbc_textField_1.gridx = 2;
+																																									        gbc_textField_1.gridy = 2;
+																																									        logiquePossibiliste.add(textField_1, gbc_textField_1);
+																																									        JLabel label_2 = new JLabel("Nombre de propositions");
+																																									        GridBagConstraints gbc_label_2 = new GridBagConstraints();
+																																									        gbc_label_2.anchor = GridBagConstraints.WEST;
+																																									        gbc_label_2.insets = new Insets(0, 0, 5, 5);
+																																									        gbc_label_2.gridx = 1;
+																																									        gbc_label_2.gridy = 3;
+																																									        logiquePossibiliste.add(label_2, gbc_label_2);
+																																									        ButtonGroup group = new ButtonGroup();
+																																									        
+																																									         rbt_1 = new JRadioButton("1",true);
+																																									        GridBagConstraints gbc_rdbtnNewRadioButton_2 = new GridBagConstraints();
+																																									        gbc_rdbtnNewRadioButton_2.fill = GridBagConstraints.HORIZONTAL;
+																																									        gbc_rdbtnNewRadioButton_2.anchor = GridBagConstraints.NORTH;
+																																									        gbc_rdbtnNewRadioButton_2.insets = new Insets(0, 0, 5, 5);
+																																									        gbc_rdbtnNewRadioButton_2.gridx = 2;
+																																									        gbc_rdbtnNewRadioButton_2.gridy = 3;
+																																									        logiquePossibiliste.add(rbt_1, gbc_rdbtnNewRadioButton_2);
+																																									        group.add(rbt_1);
+																																									        
+																																									        JRadioButton radioButton = new JRadioButton("2");
+																																									        GridBagConstraints gbc_radioButton = new GridBagConstraints();
+																																									        gbc_radioButton.gridwidth = 2;
+																																									        gbc_radioButton.fill = GridBagConstraints.HORIZONTAL;
+																																									        gbc_radioButton.anchor = GridBagConstraints.NORTH;
+																																									        gbc_radioButton.insets = new Insets(0, 0, 5, 5);
+																																									        gbc_radioButton.gridx = 3;
+																																									        gbc_radioButton.gridy = 3;
+																																									        logiquePossibiliste.add(radioButton, gbc_radioButton);
+																																									        group.add(radioButton);
+																																									        JButton btnCaculer = new JButton("Calculer");
+																																									        btnCaculer.addActionListener(new ActionListener() {
+																																									        	 int nbrNod=0;
+																																									        	 int parMax=0;
+																																									        	 
+																																									          public void actionPerformed(ActionEvent e)
+																																									            {
+																																									            	 try{ nbrNod=Integer.parseInt(textField.getText().toString());
+																																									            	 	parMax=Integer.parseInt(textField_1.getText().toString());
+																																									            	 	countertwo=0;  
+																																									            	 	
+																																									            	 }
+																																												  catch(NullPointerException  e1){
+																																													  
+																																													  JOptionPane.showMessageDialog(null,
+																																														    "Format de nombres erroné",
+																																														    "Erreur",
+																																														    JOptionPane.ERROR_MESSAGE);countertwo++;}
+																																												  catch(NumberFormatException e1){
+																																											
+																																													  JOptionPane.showMessageDialog(null,
+																																															    "Format de nombres erroné",
+																																															    "Erreur",
+																																															    JOptionPane.ERROR_MESSAGE); 
+																																													  countertwo++;
+																																												  }
+																																									            	 if(countertwo==0){
+																																									            	 
+																																									            	 
+																																												  if(parMax<1 && nbrNod<1 ){
+																																													  
+																																													 JOptionPane.showMessageDialog(null,
+																																														    "Les nombres doivent être supérieures ou égales à 1 !",
+																																														    "Erreur",
+																																														    JOptionPane.ERROR_MESSAGE);
+																																												 }else{
+																																												  
+																																									            	 
+																																												 
+																																									            	  Path path = null;	
+																																									            	 if(rbt_1.isSelected()){
+																																									            	     path = Paths.get("C:","cygwin","home","licence","prop1evid.m");	
+																																									            	     }
+																																									            	 else{
+																																									            		 path = Paths.get("C:","cygwin","home","licence","prop2evid.m");
+																																									            	 }
+																																									       
+																																									            	    String s=LireSousFormeString(path.toAbsolutePath().toString());													
+																																									            	
+																																									            	   s=s.replaceAll("nb_nodes_JAVA",new Integer(nbrNod).toString());
+																																									            
+																																									            	   s=s.replaceAll("nb_parent_max_JAVA",new Integer(parMax).toString());
+																																									            	    System.out.println("s "+s);
+																																									            	    PrintWriter out = null;
+																																														try {
+																																															out = new PrintWriter("calcule.m");
+																																														} catch (FileNotFoundException e1) {
+																																															// TODO Auto-generated catch block
+																																															e1.printStackTrace();
+																																														}
+																																									            	    out.println(s);
+																																									            	    out.close();
+																																									            	    path = Paths.get(System.getProperty("user.dir"),"src","Plugins","incertain","Pnt");	
+																																									            	   
+																																									            	    final String cmd="matlab -nodesktop -nodisplay -minimize -noFigureWindows -nosplash -logfile -wait output -r \"addpath(genpath(\'"+path.toAbsolutePath().toString()+"'));cd "+System.getProperty("user.dir")+"; calcule;\";quit;";
+																																									                    Runnable externalProgramLauncher = new Runnable() {
+																																									                    	Process process = null;
+																																									                        public void run() {
+																																					                            try {
+																																					                            	process=Runtime.getRuntime().exec(cmd);
+																																					                            } catch (IOException e) {
+																																					                                JOptionPane.showMessageDialog(logiquePossibiliste, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+																																					                            }
+																																					                            try {
+																																													process.waitFor();
+																																												} catch (InterruptedException e) {
+																																													JOptionPane.showMessageDialog(new JFrame(),
+																																					            						    "Erreur d'execution du scripte \nScripte non trouvée!",
+																																					            							   "Erreur",
+																																					            							   JOptionPane.ERROR_MESSAGE);
+																																												
+																																												}
+//																																					                            
+																																					                            Path path2 = Paths.get("C:","cygwin","home","licence","resultats.txt");
+																																					                            ResultsDialog resultsDialog = new ResultsDialog();
+																																					                            System.out.print(LireSousFormeString(path2.toAbsolutePath().toString()));
+																																					                            resultsDialog.setText(LireSousFormeString(path2.toAbsolutePath().toString()));
+																																					                            resultsDialog.pack();
+																																					                            resultsDialog.setLocationRelativeTo(logiquePossibiliste);
+																																					                            resultsDialog.setVisible(true);          }
+																																									                    };
+																																									                    Thread t = new Thread(externalProgramLauncher);
+																																									                    t.start();
+																																												 }
+																																									            }
+																																									        }
+																																									      
+																																									          
+																																									        
+																																									          });
+																																									       
+																																									        GridBagConstraints gbc_btnCaculer = new GridBagConstraints();
+																																									        gbc_btnCaculer.insets = new Insets(0, 0, 5, 0);
+																																									        gbc_btnCaculer.anchor = GridBagConstraints.NORTH;
+																																									        gbc_btnCaculer.gridwidth = 5;
+																																									        gbc_btnCaculer.gridx = 0;
+																																									        gbc_btnCaculer.gridy = 4;
+																																									        logiquePossibiliste.add(btnCaculer, gbc_btnCaculer);
 																																								    tabs.addChangeListener(changeListener);
+																																									 
 	}
 
 	
@@ -1250,22 +1579,14 @@ class Fenetre extends JDialog implements ListSelectionListener,ActionListener{
 			}
 		}
 		
-//		case "Ajouter":
-//			System.out.println("AJOUTER  !!");
-//			break;
+
 		else if(e.getSource() == btnValiderEtAttribuer)
 		{ System.out.println("btnValiderEtAttribuer");
 			btnModifer.setEnabled(true);
 			Noeuxbtn.setEnabled(false);
 			Suppbutton.setEnabled(false);
 			btnValiderEtAttribuer.setEnabled(false);
-//			JRadioButton[] buttons = new JRadioButton[]{rdbtnBnt,rdbtnPnt};
-//	         if(rdbtnBnt.isSelected()){
-//	        	for (JRadioButton btn : buttons) {
-//		            btn.setEnabled(true);
-//		        }
-//	        }
-	        
+
 			btnPrametres.setEnabled(true);
 			graph.setCellsEditable(false);
 		    graph.setAllowDanglingEdges(false);
@@ -1285,12 +1606,6 @@ class Fenetre extends JDialog implements ListSelectionListener,ActionListener{
 			button.setEnabled(false);
 			button_1.setEnabled(false);
 			button_2.setEnabled(false);
-//			JRadioButton[] buttons = new JRadioButton[]{rdbtnBnt,rdbtnPnt};
-//	         if(rdbtnBnt.isSelected()){
-//	        	for (JRadioButton btn : buttons) {
-//		            btn.setEnabled(true);
-//		        }
-//	        }
 	        
 			button_4.setEnabled(true);
 			graph.setCellsEditable(false);
@@ -1325,11 +1640,7 @@ class Fenetre extends JDialog implements ListSelectionListener,ActionListener{
 		    graph.setCellsLocked(false);
 		    graphComponent.setExportEnabled(true);
 		    graphComponent.setConnectable(true);
-//		    buttons = new JRadioButton[]{rdbtnBnt,rdbtnPnt};
-//	         if(rdbtnBnt.isSelected()){
-//	        	for (JRadioButton btn : buttons) {
-//		            btn.setEnabled(false);
-//		        }}
+
 		}
 		else if(e.getSource() ==button_3){
 			System.out.println("boutont");
@@ -1351,11 +1662,6 @@ class Fenetre extends JDialog implements ListSelectionListener,ActionListener{
 		    PNTgraph.setCellsLocked(false);
 		    graphComponent.setExportEnabled(true);
 		    graphComponent.setConnectable(true);
-//		    buttons = new JRadioButton[]{rdbtnBnt,rdbtnPnt};
-//	         if(rdbtnBnt.isSelected()){
-//	        	for (JRadioButton btn : buttons) {
-//		            btn.setEnabled(false);
-//		        }}
 		}
 		else if(e.getSource() == btnPrametres){
 	
@@ -1431,11 +1737,9 @@ class Fenetre extends JDialog implements ListSelectionListener,ActionListener{
 					data2[i][2]="modifier";
 				}
 		    	cell.getSource().getValue().toString();
-		    // System.out.println(cell.getValue().toString());
 		    	cell.getSource();
 		    }else{ 
-		      cell.getChildCount(); //Returns the number of child cells. (edges)
-		     // cell.getChildAt(0); //Returns the child at the specified index. (target)
+		      cell.getChildCount();
 		    }
 		    }
 
@@ -1518,11 +1822,9 @@ class Fenetre extends JDialog implements ListSelectionListener,ActionListener{
 					data2[i][2]="modifier";
 				}
 		    	cell.getSource().getValue().toString();
-		    // System.out.println(cell.getValue().toString());
 		    	cell.getSource();
 		    }else{ 
-		      cell.getChildCount(); //Returns the number of child cells. (edges)
-		     // cell.getChildAt(0); //Returns the child at the specified index. (target)
+		      cell.getChildCount();
 		    }
 		    }
 
@@ -1557,7 +1859,6 @@ class Fenetre extends JDialog implements ListSelectionListener,ActionListener{
 		new mxKeyboardHandler(graphComponent);
 		graph.setAutoOrigin(true);
 	    graph.setAutoSizeCells(true);
-	   // graph.setCellsLocked(false);
 	    graph.setCellsCloneable(false);
 	    graphComponent.setAutoExtend(true);
 	    graphComponent.setExportEnabled(true);

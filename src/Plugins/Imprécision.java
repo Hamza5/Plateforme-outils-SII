@@ -41,7 +41,7 @@ public class Imprécision extends JPanel {
         	public void actionPerformed(ActionEvent arg0) {
         	}
         });
-        DecPosButton.setMnemonic('P');
+        DecPosButton.setMnemonic('F');
         Box DecPosBox = new Box(BoxLayout.PAGE_AXIS);
         DecPosBox.setBorder(new TitledBorder("Fuzzy Logic"));
         Box descriptionBox =  Box.createHorizontalBox();

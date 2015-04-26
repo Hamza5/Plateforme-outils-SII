@@ -1,322 +1,106 @@
-\chapter{Les autres théorie de l'incertain}
+\parskip=0.6em
+\chapter{Les théories de l'incertain}
 
 \phantomsection
 \addcontentsline{toc}{section}{Introduction}
 \section*{Introduction}
 
-\section{Concepts de base}
 
-\subsection{Quelques notations}
 
-Nous allons présenter ici les conventions de notation utilisées dans la suite de ce mémoire.
+\section{L’incertain}
 
-Soit $\Omega$ un univers constitué d'un ensemble fini qui contient toutes les propositions
-auxquelles on s'intéresse, appelé également cadre de discernement. On note $\varnothing$
-l’ensemble qui ne contient aucun élément de $\Omega$. $\mathcal{P}(\Omega)$ représente
-l’ensemble contenant toutes les parties (les sous-ensembles) de $\Omega$. On note aussi
-les opérations binaires sur les ensembles $\subset$, $\cup$ et $\cap$, qui sont l’inclusion,
-l’union et l’intersection, respectivement. On appelle hypothèse un élément de $\mathcal{P}(\Omega)$.
+Les approches logiques de l’incertain permettent d’utiliser un langage formel pour la description des connaissances et le raisonnement automatique. Elles constituent une référence aux autres formalismes surtout pour le raisonnement, néanmoins les connaissances ne  sont pas structurées.
 
-La théorie de Dempster-Shafer est caractérisée par trois fonctions principales :
-\textbf{l’assignement de probabilité de base} (\emph{basic probability assignement bpa}),
-\textbf{la croyance} (\emph{belief}) et \textbf{la plausibilité} (\emph{plausibility}).
+les principales représentations des connaissances incertaines sont le mode logique et le mode graphique.
+Sur le plan de la représentation le mode graphique est le plus explicite en soumettant les relations de dépendances qui existe entre les différentes variables .sur le plan de résonnement, le mode logique offre une machinerie d’inférence efficace.
 
-\subsection{L’assignement de probabilité de base}
+Plusieurs chercheurs ont permis l’émergence d’un certain nombre de modèles graphiques offrant un cadre de représentation plus structuré.
 
-Appelé aussi la fonction de masse, noté $m$, c'est une fonction qui affecte le degré d’évidence
-disponible à un élément $A$, et seulement à $A$, de $\mathcal{P}(\Omega)$ dans l’intervalle
-$[0,1]$, tel que les $m(A)$ s’additionnent à $1$.
+La théorie des possibilités est une théorie de l’incertain ayant pour vocation de manipuler des connaissances incomplètes. Elle diffère de la théorie de probabilité  vu quelle manipule deux mesures duales : possibilité et nécessité. Cette théorie a été développée dans deux directions : qualitative et quantitative ceci permet en fait de définir deux types de réseaux causaux possibilistes : les réseaux causaux possibilistes basé sur le minimum (qualitatif) et une autre base sur le produit (quantitative).
 
-$m(\varnothing)$ --qui représente l’absence
-de solution-- est toujours égale à $0$ car $\Omega$ doit être exhaustive, et la somme de $m(A)$
-vaut $1$. Chaque élément A tel que $m(A) > 0$ est appelé élément focal.
 
-Généralement, le bpa n’est pas un équivalent de la fonction de probabilités classique. En effet,
-la valeur exacte de la probabilité (dans le sens classique) appartient à un intervalle borné par
-deux valeurs qui sont \emph{la croyance} et \emph{la plausibilité}.
 
-Formellement, on peut représenter cela par :
-\begin{equation}
-m : \mathcal{P}(\Omega) \mapsto [0,1]
-\end{equation}
-\begin{equation}
-m(\varnothing) = 0
-\end{equation}
-\begin{equation} \label{somme_masses}
-\sum_{A \in \mathcal{P}(\Omega)} m(A) = 1
-\end{equation}
+\subsection{Théorie de probabilité(BNT)}
 
-\subsubsection{Exemple}
-Dans une enquête sur un incident de vol, trois personnes \textit{P1}, \textit{P2}, \textit{P3}
-sont accusées. L’enquêteur pense à 30\% que P1 est le voleur, à 50\% que l’un des deux autres
-personnes P2 ou P3, est le voleur, et à 10\% que P1 ou P3 le soit.\\
-Le cadre de discernement s'écrit ainsi : $$\Omega = \{P1, P2, P3\}.$$
-L'ensemble de parties de $\Omega$ est : $$\mathcal{P}(\Omega) = \{\varnothing, \{P1\}, \{P2\},
-\{P3\}, \{P1, P2\}, \{P1, P3\}, \{P2, P3\}, \Omega\}$$
-La distribution des masses s'exprime ainsi : $$m(\{P1\}) = 0.3, m(\{P2, P3\})  = 0.5,
-m(\{P1, P3\}) = 0.1$$ et $$m(\Omega) = 1 - (0.3+0.5+0.1) = 0.1$$ à partir de l’équation \ref{somme_masses}.\\
-Les masses des hypothèses restantes sont toutes égalles à $0$.
+La théorie des réseaux bayésien peut être considérée comme une fusion de diagrammes d'incidence et le théorème de Bayes. La probabilité qu'un événement se produise étant donné que un autre événement a déjà eu lieu est appelé une probabilité conditionnelle. 
 
-\subsection{La croyance}
+Un réseau bayésien une représentation probabiliste des relations incertaines, qui se est avéré être utile pour la modélisation de problèmes du monde réel .Le modèle probabiliste est décrit qualitativement par un graphe acyclique orienté, ou DAG (Directed Acyclic Graph). Les sommets du graph représentent des variables, les arcs représentent la dépendance entre les variables. Le réseau comprennent aussi un ensemble de tables de probabilités, en indiquant les probabilités pour les vrais / fausses valeurs des variables.
 
-La croyance est la quantité de confiance qui supporte une hypothèse $A$ de
-$\mathcal{P}(\Omega)$, toutes parties comprises.\\
-On la note $Cr(A$) ou plus souvent $Bel(A)$. Il est clair que $Bel(\varnothing)$
-est nulle, et $Bel(\Omega)$ est toujours 1. Il faut noter que la croyance est une
-mesure non additive, c’est-à-dire que $Bel(A) + Bel(\Omega - A) \neq 1$.
+Les avantages du  modèle graphique est qu’un réseau bayésien peut être utilisé pour apprendre les relations causales, et peut donc être utilisé pour obtenir la compréhension d'un domaine de problème et de prévoir les conséquences de l'intervention.
 
-Formellement :
-\begin{equation}
-Bel(\varnothing)=0
-\end{equation}
-\begin{equation}
-Bel(\Omega)=1
-\end{equation}
-\begin{equation}
-Bel(A) = \sum_{B \slash B \subseteq A} m(B)
-\end{equation}
-\begin{equation}
-\forall p,q \in \mathcal{P}(\Omega) \medskip Bel(p \cup q) \geq Bel(p) + Bel(q) - Bel(p \cap q).
-\end{equation}
-On peut aussi obtenir le bpa avec la fonction inverse suivante :
-\begin{equation}
-m(A) = \sum_{B \slash B \subseteq A} (-1)^{|A-B|} Bel(B),
-\end{equation}
-où $|A-B|$ est la différence des cardinalités entre les deux ensembles.
+Ce que le champ a manqué est un logiciel à usage général correspondant. C’est pour cela la tentative de construire un tel paquet, appelé le Bayes Net Boîte à outils (BNT).
 
-\subsubsection{Exemple}
-En continuité de l'exemple précédent, on calcule la croyance de chaque hypothèse :
+Une des plus grandes forces de BNT est qu'il offre une variété d'algorithmes d'inférence, chacun fait différents métiers entre la précision, de la généralité, la simplicité, la vitesse, etc.
 
-\begin{table}[h!]
-\centering
-\begin{tabular}{|l|l|}
-\hline
-Hypothèse $A$ & Croyance $Bel(A)$\\
-\hline
-$\varnothing$ & $0$ \\
-\hline
-$\{P1\}$ & $0.3$ \\
-\hline
-$\{P2\}$ & $0$ \\
-\hline
-$\{P3\}$ & $0$ \\
-\hline
-$\{P1, P2\}$ & $0.3 + 0 + 0 = 0.3$ \\
-\hline
-$\{P1, P3\}$ & $0.3 + 0 + 0.1 = 0.4$ \\
-\hline
-$\{P2, P3\}$ & $0 + 0 + 0.1 = 0.1$ \\
-\hline
-$\Omega$ & $1$ \\
-\hline
-\end{tabular}
-\caption{Les croyances calculées à partir de la distribution de masses}
-\end{table}
 
-\subsection{La plausibilité}
+\subsection{Théorie de possibilité quantitative}
 
-La plausibilité représente la croyance qu’il est possible
-d’affecté à une hypothèse $A$ de $\mathcal{P}(\Omega)$; autrement dit,
-c’est la croyance affectée à A et aux hypothèses dont l'intersection
-avec $A$ n’est pas vide. On la note $Pl(A)$. La valeur de la plausibilité est
-toujours supérieure ou égale à celle de la croyance. Identiquement à la
-croyance, $Pl(\varnothing)$ est nulle, et $Pl(\Omega)$ vaut $1$.
+\subsubsection{Graphique}
 
-Formellement :
-\begin{equation}
-Pl(\varnothing) = 0
-\end{equation}
-\begin{equation}
-Pl(\Omega) = 1
-\end{equation}
-\begin{equation}
-Pl(A) = \sum_{B \slash B \cap A \neq \varnothing} m(B)
-\end{equation}
-La plausibilité peut aussi être dérivée à partir de la croyance:
-\begin{equation}
-Pl(A) = 1 - Bel(\bar{A}),
-\end{equation}
-où $A$ est le complément de $A$ dans $\Omega$.
+Un graphe possibiliste basé sur le produit (quantitatif), noté par GP P, est un graphe possibiliste ou les possibilités conditionnelles sont obtenues par le conditionnement de type produit. La distribution de possibilité des réseaux possibilistes bases sur le produit, notée par Pi P, est obtenue par la règle de chaınage 
+pi P (V1, .., VN) = PRODi=1..N pi (Vi/PARVi).
+ 	
+Ou PROD est l’opérateur produit.
+La Boîte à outils PNT possède de différents algorithmes pour les réseaux causaux possibilistes basée sur le produit à connexions multiples et pour les polyarbres. 
+\subsubsection{Logique}
 
-La probabilité classique d’un événement $A$, $P(A)$ est représentée par
-l’intervalle qui a comme bornes inférieure et supérieure $Bel(A)$ et $Pl(A)$,
-respectivement, c’est-à-dire $$Pl(A) \leq P(A) \leq Bel(A).$$
-Si $$Bel(A) = Pl(A),$$ alors la probabilité de $A$ est unique et $$P(A) = Bel(A) = Pl(A)$$
+La logique possibiliste offre un cadre générale pour représenter les connaissances incertaines, en terme de formules logiques classique auxquelles sont associé des pondérations appartenant à une échèle linaire [0,1].
+\subsection{Théorie de possibilité qualitative}
+\subsubsection{Graphique}
 
-\subsubsection{Exemple}
-On calcule les plausibilités pour le même exemple.
+Un graphe possibiliste basé sur le minimum, noté par GPM, est un graphe possibiliste ou les possibilités conditionnelles sont obtenues par le conditionnement minimum. La distribution de possibilité des réseaux possibilistes basée sur le minimum, notée par pi M, est obtenue par la règle de chainage :
+ pi M (A1, .., AN) = MINi=1..N pi (Ai/teta Ai) 
+Ou MIN est  l’opérateur minimum.
 
-\begin{table}[h!]
-\centering
-\begin{tabular}{|l|l|}
-\hline
-Hypothèse $A$ & Plausibilité $Pl(A)$\\
-\hline
-$\varnothing$ & $0$ \\
-\hline
-$\{P1\}$ & $0.3 + 0.1 + 0.1 = 0.5$ \\
-\hline
-$\{P2\}$ & $0.5 + 0.1 = 0.6$ \\
-\hline
-$\{P3\}$ & $0.5 + 0.1 + 0.1 = 0.6$ \\
-\hline
-$\{P1, P2\}$ & $0.3 + 0.5 + 0.1 + 0.1 = 1$ \\
-\hline
-$\{P1, P3\}$ & $0.3 + 0.5 + 0.1 + 0.1 = 1$ \\
-\hline
-$\{P2, P3\}$ & $0.5 + 0.1 + 0.1 = 0.7$ \\
-\hline
-$\Omega$ & $1$ \\
-\hline
-\end{tabular}
-\caption{Les plausibilités calculées à partir de la distribution de masses}
-\end{table}
-\section{Règles de combinaison}
+La Boite à outils PNT possède aussi de différents algorithmes pour les réseaux causaux possibilistes basée sur le minimum à connexions multiples et pour les polyarbres. 
+\subsubsection{Logique}
 
-Souvent, on obtient l’information à partir de sources distinctes et indépendantes,
-et généralement ces sources ne sont pas parfaites, c’est pourquoi on a besoin de
-fusionner les évidences fournies par ces sources en utilisant des règles de
-combinaison. Il existe trois types de combinaison : \emph{conjonctive},
-\emph{disjonctive}, et \emph{mixte}.
 
-\subsection{Combinaison conjonctive}
 
-Dempster a introduit une règle connue sous le nom de règle de combinaison
-de Dempster (\emph{Dempster's Combination Rule}) pour fusionner deux pièces
-d’évidence qui peuvent être représentées par deux fonctions de croyance.Cette
-règle respecte les quatre propriétés algébriques suivantes : l’associativité,
-la commutativité, l’idempotence et la continuité.
+\subsection{Décision dans l’incertain}
+\subsubsection{Graphique}
 
-Soient deux fonctions de masse $m_1(A)$ et $m_2(A)$ associées à deux fonctions
-de croyance $Bel_1(A)$ et $Bel_2(A)$ respectivement. $(Bel_1 \oplus Bel_2)(A)$
-est définie à travers la masse $m_{1 \oplus 2}(A)$ :
-\begin{equation}
-m_{1 \oplus 2}(A) = \sum_{B \cap C = A} m_1(B) m_2(C).
-\end{equation}
+\subsubsection{Logique}
+La logique possibiliste qualitative est une logique de l'incertain conçue pour raisonner avec des connaissances incomplètes et partiellement inconsistantes [18].
 
-Néanmoins, cette règle a été critiquée par de nombreux chercheurs, parce qu’elle
-n’est pas normalisée. En d’autre termes, elle permet d’affecter des masses à
-des ensembles vides. Ce problème est dû au fait que l’intersection de deux
-éléments focaux peut générer $\varnothing$, ce qui dénote un conflit entre les croyances.
+NB : La théorie de Dempster and Shafer  est une théorie de l’incertain nous l’avant louper parce qu’elle expliquée théoriquement en détail dans le chapitre I, et dans le chapitre suivant on va parler sur les algorithmes implémentés sur cette théorie.
+\section{L’imprécision}
 
-Pour corriger ce problème, Shafer a proposé d’ignorer carrément les conflits
-et d'étendre la distribution des masses. Le facteur de conflit est une valeur
-$K < 1$ et définie par :
-\begin{equation}
-K = \sum_{B \cap C = \varnothing} m_1(B) m_2(C).
-\end{equation}
+La logique floue permet de solutionner tous les problèmes où on dispose de connaissances imprécises, soumises à des incertitudes de nature non probabiliste.
 
-Afin de normaliser la distribution de masse, la règle de Dempster doit être
-multipliée par la quantité $(1 - K)^{-1}$. Donc la règle de Dempster-Shafer
-est représentée par les équations suivantes :
-\begin{equation}
-m(\varnothing) = 0
-\end{equation}
-\begin{equation}
-m(A) = \frac{1}{1-K} \sum_{B \cap C = A \neq \varnothing} m_1(B) m_2(C)
-\end{equation}
+cette dernière est une forme de logique polyvalente qui traite l’approximation, plutôt que le raisonnement fixe et exacte. Par rapport à la logique binaire traditionnelle (où les variables peuvent prendre des valeurs vraies ou fausses), les variables de logique floue peuvent avoir une valeur de vérité qui varie en degré entre 0 et 1. La logique floue a été étendue pour gérer le concept de vérité partielle, où la valeur de vérité peut varier entre complètement vrai et complètement faux. 
+\subsection{Fuzzy logic}
 
-Cependant, la règle de Shafer n’est pas toujours satisfaisante à cause de la
-normalisation qui considère que le conflit vient de l’imperfection des sources.
+a Boîte à outils  Fuzzy est une collection de fonctions intégrées sur le MATLAB elle fournit des outils pour permettre de créer et d'éditer systèmes d'inférence floue. Et un bloc Simulink pour l'analyse, la conception et la simulation des systèmes basés sur la logique floue.
+La boîte à outils vous permet de modéliser les comportements de systèmes complexes en utilisant des règles logiques simples, puis de mettre en œuvre ces règles dans un système d'inférence floue.
 
-D’autres chercheurs ont proposé des règles différents, comme Smets qui a introduit
-une forme non normalisée pour prendre en compte les univers ouverts. Il suppose
-que le conflit vient du fait que l’ensemble $\Omega$ n’est pas exhaustif. Pour
-cette raison, la règle de Smets affecte une masse $K$ à $\varnothing$ qui représente
-une hypothèse manquante. Elle est définie par ces équations :
-\begin{equation}
-K = m(\varnothing) = \sum_{B \cap C = \varnothing} m_1(B) m_2(C)
-\end{equation}
-\begin{equation}
-m(A) = \sum_{B \cap C = A \neq \varnothing} m_1(B) m_2(C)
-\end{equation}
+\section{Outils}
 
-Par contre, Yager propose un modèle d’un univers fermé ($\Omega$ est exhaustif).
-La mesure de conflit est ajoutée à la mesure du cadre de discernement $\Omega$.
-Donc le conflit sera transformé en ignorance. On obtient ces équations :
-\begin{equation}
-m(\varnothing) = \sum_{B \cap C = \varnothing} m_1(B) m_2(C)
-\end{equation}
-\begin{equation}
-m(\Omega) = \left(1 - \sum_{A \in \mathcal{P}(\Omega)}
-\sum_{B \cap C = A \neq \varnothing} m_1(B) m_2(C)\right) +
-\sum_{B \cap C = \varnothing} m_1(B) m_2(C)
-\end{equation}
+Avant de définir l’UBCSAT, nous allons d’abord définir la notion de satisfiabilité en logique (SAT). 
+\subsection{SAT}
+Soit F une formule propositionnelle sous la forme normale conjonctive (CNF). Le problème SAT est un problème de décision NP-complet qui consiste à déterminer si F admet ou non un modèle [46].
 
-\subsection{Combinaison disjonctive}
+Le problème de satisfiabilité propositionnelle (SAT) est un sujet d'étude important dans de nombreux domaines de l'informatique, SAT est définie par les ces composantes :   
+	Soit X={x1, x2,…, xn} un ensemble de n variable booléennes.
+    Soit C= {c1, c2,…, cm} un ensemble de m clauses ou :
+ 	chaque clause est une disjonction de littéraux,
+ 	chaque littéral est une variable ou sa négation.
+    Soit D, la donnée SAT	, composé une conjonction de littéraux.
+Le problème SAT consiste à déterminer s’il existe une assignation des variables xi de X telle que la donnée D soit satisfaisante. S’il existe une assignation de variables qui satisfait toutes les clauses le SAT admet une réponse ‘Oui’ ou ‘Non’ sinon. 
 
-Dans la combinaison disjonctive on considère l’utilisation de l’union à la place
-de l’intersection. Les éléments focaux sont obtenus à partir de la table d’union.
-La fonction de masse de la règle de combinaison disjonctive est formalisée par l'équation :
-\begin{equation}
-m(A) = \sum_{B \cup C = A \neq \varnothing} m_1(B) m_2(C).
-\end{equation}
+UBCSAT (University of British Columbia SAT)
 
-Comme l’union de deux éléments focaux ne peut être jamais vide, on est sûr
-que $m(\varnothing)=0$. Cela veut dire qu’il est impossible d’obtenir un conflit
-lors de la combinaison. En contrepartie, l'union peut causer une perte de spécificité
-vu que les masses sont élargies. Cette approche apparaît plus intéressante en
-l’absence des informations nécessaires sur la fiabilité des sources.
+Pour faire preuve de satisfiabilité, il est nécessaire d’utiliser un logiciel.
 
-\subsection{Combinaison mixte}
+L'un des défis de l'élaboration du projet UBCSAT était de construire un environnement flexible, riche en fonctionnalités sans compromettre l'efficacité algorithmique. ce programme est performant sur les instances SAT issues de problèmes réels. Il offre la gestion des contraintes pseudo booléennes, et décline un grand nombre de problèmes de décision ou d’optimisation en terme de problème SAT ou pseudo booléen.    
+\subsection{WMAXSAT}
 
-Dubois et Prade ont proposé une combinaison mixte comme un compromis entre la
-combinaison conjonctive et la combinaison disjonctive et comme un essai de conserver
-les avantages des deux. De même que la combinaison de Yager, le modèle de Dubois
-et Prade suppose que le conflit est dû à la non fiabilité des sources. La règle de
-Dubois et Prade est définie comme suit :
-\begin{equation}
-m(A) = \sum_{B \cap C = A \neq \varnothing} m_1(B) m_2(C) +
-\sum_{\substack{B \cup C = A \neq \varnothing \\ B \cap C = \varnothing}} m_1(B) m_2(C)
-\end{equation}
+toutefois, dans le cas de réponse négative du SAT, pour trouver toutes le nombre maximale de clauses pouvant être satisfaites à la fois. Pour cela le problème du ‘Maximum Satisfiabilité’ ou MAXSAT a été définie. Max-SAT est la version optimale de la SAT dont le but est de satisfaire le nombre maximal de clauses.
 
-\section{Décision}
+Le problème avec le MAXSAT c’est qu’elle associe à toutes les clauses le même poids, d’où la définition du problème du MAXSAT pondéré ou WMAXSAT qui permet à attribuer des poids aux différentes clauses pour spécifier les clauses simultanément satisfaites par augmenter la somme de leurs poids et l’affaiblir pour les clauses insatisfaites.
 
-Prendre une décision veut dire choisir une hypothèse élémentaire parmi les autres
-par la maximisation d'un critère. La sélection est établie en observant
-la croyance et la plausibilité de chaque hypothèse résultante. Il existe trois règles
-de décision : le \emph{maximum de croyance}, le \emph{maximum de plausibilité} et le
-\emph{maximum de probabilité pignistique}
+Actuellement, UBCSAT comprend des implémentations de deux algorithmes conçu pour supporter les versions MAX-SAT, ainsi que pondéré MAX-SAT.
 
-\subsection{Maximum de croyance}
-
-Dans cette règle on s'intéresse à trouver l'hypothèse élémentaire $\omega_i$ qui
-a la croyance maximale. C'est-à-dire que $\omega_i$ est choisie si elle satisfait cette
-équation :
-\begin{equation}
-Bel(\omega_i) = \max_{1 \leq j \leq n} Bel(\omega_j)
-\end{equation}
-Cette méthode est connue par son caractère très pessimiste.
-
-\subsection{Maximum de plausibilité}
-
-En opposition à la règle précédente, l'élément $d_i$ est sélectionné par le maximum
-de plausibilité. En d'autres termes, on choisit le $d_i$ qui résoud cette équation :
-\begin{equation}
-Pl(\omega_i) = \max_{1 \leq j \leq n} Pl(\omega_j).
-\end{equation}
-Ainsi, cette méthode a un caractère très optimiste.
-
-\subsection{Maximum de probabilité pignistique}
-
-Cette règle est proposée par Smets et Kennes. Elle consiste à transformer la fonction
-de masse $m(A)$ en une fonction de probabilité $BetP(\omega)$. Cette transformation
-est appelée \emph{transformation pignistique} et définie par cette équation :
-\begin{equation}
-BetP(\omega) = \sum_{\substack{A \subseteq \Omega \\
-\omega \in A}} \frac{1}{|A|}  \frac{m(A)}{1-m(\varnothing)}.
-\end{equation}
-
-Dans cette transformation, la masse de croyance $m(A)$ est distribuée uniformément
-sur l’ensemble des éléments de $A$. Le critère est de prendre l'élément qui a le
-maximum de probabilité pignistique. On peut voir cette méthode comme un compromis
-entre les deux précédentes.
-
-\phantomsection
-\addcontentsline{toc}{section}{Conclusion}
+%\phantomsection
+%\addcontentsline{toc}{section}{Conclusion}
 \section*{Conclusion}
-
-Après cette présentation de la théorie des fonctions de
-croyances, des règles de combinaisons qui peuvent si appliquer,
-et des règles de décisions compatibles, nous allons maintenant pouvoir introduire
-des notions sur les théories de l'incertain.
