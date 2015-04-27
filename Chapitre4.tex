@@ -133,8 +133,31 @@ on peut afficher les résultats en ouvrant le fichier correspondant en utilisant
 \end{figure}
 
 \section{\platformeName}
+
 Ce programme est une interface composée de plusieurs panneaux dans lequel chaque panneau est accessible
 à partir de son titre dans la barre des onglets. Un panneau comporte une ou plusieurs interfaces pour
 un ou plus d'un programme externe.  La \platformename est facilement extensible; pour ajouter un nouveau
 paneau dans cette interface il suffit de créer une classe personnalisée qui dérive de la classe
 \mbox{\texttt{javax.swing.JPanel}} dans le paquet \texttt{Plugins}.
+
+La \platformename contient quatre onglets : \textit{Imprécision}, \textit{Décision}, \textit{Incertain}
+et \textit{Tools}. Dans le panneau \textit{Imprécision} il y a un bouton pour la \textbf{Fuzzy Logique Toolbox}
+qui est une bibliothèque de \textit{MATLAB} avec une interface graphique intégrée facilitant l'exploitation
+directe de la bibliothèque. Le panneau \textit{Décision} contient un bouton pour lancer l'application \textbf{DecPos}.
+
+\begin{figure}[H]
+\begin{subfigure}{0.49\textwidth}
+\includegraphics[width=\textwidth]{Imprecision}
+\caption{Le panneau de \textbf{Imprécision}}
+\end{subfigure}
+\hfill
+\begin{subfigure}{0.49\textwidth}
+\includegraphics[width=\textwidth]{Decision}
+\caption{Le panneau de \textbf{Décision}}
+\end{subfigure}
+\caption{Les panneaux \textbf{Imprécision} et \textbf{Décision}}
+\end{figure}
+
+Dans le panneau \textit{Imprécision}, on trouve les interfaces nécessaires pour déssiner un graphe orienté acyclique
+de type BNT ou PNT et puis modifier ses paramètres après la validation.
+% que nous avons développer pour appliquer la théorie des croyances.
