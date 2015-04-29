@@ -167,7 +167,7 @@ public class Tools extends JPanel {
             super();
             BorderLayout layout = new BorderLayout();
             setLayout(layout);
-//            setPreferredSize(new Dimension(300, 200));
+
             setModal(true);
             final ResultsDialog dialog = this;
             closeAction = new AbstractAction("OK") {

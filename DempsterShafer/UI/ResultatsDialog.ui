@@ -143,7 +143,7 @@
      <item>
       <widget class="QPushButton" name="agentButton">
        <property name="text">
-        <string>&amp;Créer un nouveau agent à partir de ces résultats</string>
+        <string>&amp;Créer un nouvel agent à partir de ces résultats</string>
        </property>
       </widget>
      </item>

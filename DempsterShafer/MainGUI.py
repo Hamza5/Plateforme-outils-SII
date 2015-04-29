@@ -34,7 +34,7 @@ import HelperClasses.Agent
 
 
 __author__ = 'Hamza Abbad'
-app_name = 'Calculateur de Dempster-Shafer'
+app_name = 'Combinateur d\'évidences'
 devloppers = 'Hamza Abbad & Ahmed Zebouchi'
 
 
