@@ -1230,7 +1230,13 @@ public static String readInput(String filePath) {
 																																								                            	 final File decPosFolderPath = new File(decPosURL.toURI());
 //																																								                            	 System.out.println("path = "+decPosFolderPath.getAbsolutePath());
 //																																								                            	 Process child2=Runtime.getRuntime().exec("cd", null,decPosFolderPath);
-																																								                            	 ProcessBuilder decPosPB = new ProcessBuilder("python","MainGUI.py");
+																																								                            	 ProcessBuilder decPosPB;
+																																								                            	 if (System.getProperty("os.name").startsWith("Windows")) {
+																																								                            		  decPosPB = new ProcessBuilder("python","MainGUI.py");
+																																								                            	    } else {
+																																								                            	    	 decPosPB = new ProcessBuilder("python3","MainGUI.py");
+																																								                            	    } 
+																																								                            	
 																																								                                 decPosPB.directory(decPosFolderPath);
 																																								                                 decPosPB.redirectError(ProcessBuilder.Redirect.INHERIT); // Show DecPos errors
 																																								                                 decPosPB.start();
