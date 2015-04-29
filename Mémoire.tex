@@ -13,6 +13,7 @@
 \usepackage{graphicx} % Pour les images
 \usepackage{subcaption} % Pour mettre plusieurs images sur la même ligne
 \usepackage{float} % Pour empêcher le déplacement des tableaux et des figures.
+\usepackage[french,longend,boxruled,algoruled,linesnumbered,algochapter]{algorithm2e}%pour les algorithmes
 \graphicspath{ {pictures/} } % Spécifier le répertoire contenant les images  
 \DisableLigatures[f]{encoding=*}
 \renewcommand \thechapter{\Roman{chapter}} % Utiliser la numéros romans pour les chapitre
@@ -31,6 +32,7 @@
 \rhead{\fancyplain{}{\footnotesize \itshape{\nouppercase{\leftmark}}}} % Titre du chapitre en miniscule
 \cfoot{} % Déplacer le numéro de la page
 \rfoot{\fancyplain{\thepage}{\thepage}} % à droite de la page
+
 % Afficher les chapitres et les sections seulement
 \setcounter{tocdepth}{1}
 % Espace entre les lignes
@@ -46,6 +48,6 @@
 \tableofcontents
 \include{Chapitre1}
 \include{Chapitre2}
-%\include{Chapitre3}
-\include{Chapitre4}
+\include{Chapitre3}
+%\include{Chapitre4}
 \end{document}          

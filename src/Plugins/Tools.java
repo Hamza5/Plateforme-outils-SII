@@ -159,7 +159,7 @@ public class Tools extends JPanel {
             setResizable(false);
         }
     }
-    class ResultsDialog extends JDialog {
+    static class ResultsDialog extends JDialog {
         private final JTextArea resultsTextArea;
         private final AbstractAction closeAction;
         private final JLabel label;
@@ -167,7 +167,7 @@ public class Tools extends JPanel {
             super();
             BorderLayout layout = new BorderLayout();
             setLayout(layout);
-            setPreferredSize(new Dimension(300, 200));
+//            setPreferredSize(new Dimension(300, 200));
             setModal(true);
             final ResultsDialog dialog = this;
             closeAction = new AbstractAction("OK") {
@@ -459,7 +459,7 @@ public class Tools extends JPanel {
         bottomBox.setBorder(ubcsatPage.getBorder());
         bottomBox.add(calculerButton);
         add(bottomBox);
-        JLabel infosLabel = new JLabel(defaultInfo, SwingConstants.CENTER);
+        JLabel infosLabel = new JLabel(defaultInfo);
         infosLabel.setBorder(new EtchedBorder(EtchedBorder.RAISED));
         Box infoBox = Box.createHorizontalBox();
         infoBox.add(infosLabel);

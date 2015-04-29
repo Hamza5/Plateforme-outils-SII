@@ -1,0 +1,157 @@
+\parskip=0.6em
+\chapter{Conception d'algorithmes}
+
+
+\section*{Introduction}
+
+Dans ce chapitre, nous allons détailler les différentes procédures et méthodes implémentée dans \textbf sur la théorie de Dempster-Shafer,décrite dans le premier chapitre.
+
+les algorithmes qui suit, se déroule en un enchainement Précis,premièrement la procédure de préparation des masses qui fait des manipulations sur les masses sera expliquée dans la section de cette procédure, en suite la procédure d'appel de fusion et de croyance qui nécessite les donnée résultant de la procédure précédente qui fait appel a chaque procédure de fusion de croyance ,et à partir des données de la fusion les deux dernières procédures de calcule de croyance et de décision qui présente le résultat final de tous les algorithmes précédents .
+\phantomsection
+\addcontentsline{toc}{section}{Introduction}
+\SetKwInput{KwIn}{Entrée}
+\SetKwInput{KwOut}{Sortie}
+\SetKw{KwTo}{à}
+\SetKw{Begin}{Début}
+\SetKw{End}{Fin}
+\SetKw{KwRet}{retourne}
+\SetKw{Retourner}{retourner}
+\SetKwBlock{Début}{début}{Fin}
+\SetKwComment{tcc}{/*}{*/}
+\SetKwComment{tcp}{//}{}
+\SetKwIF{Si}{SinonSi}{Sinon}{si}{alors}{sinon si}{sinon}{finsi}
+\SetKwFor{Pour}{pour}{faire}{fin}
+\SetKwFor{Tantque}{tantque}{faire}{fin}
+\DontPrintSemicolon
+\section{Preparation des masses}
+
+\begin{algorithm}[H]
+\caption{Preparation des masses}
+\BlankLine
+\KwIn{
+%\textit{$AGENTS$} = $\lbrace Agent_1, Agent_2\dots Agent_N \rbrace$,  \textit{$ETATSDUMONDE$} = $\lbrace Etat_1, Etat__2 \dots Etat__M \rbrace$}
+\textit{$AGENTS$} = $\lbrace Agent_{1}, Agent_{2}\dots Agent_{M} \rbrace$,\\ \quad \quad \enspace \qquad \textit{$ETATSDUMONDE$} = $\lbrace Etat_{1}, Etat_{2}\dots Etat_{M} \rbrace$}
+\KwOut{
+ $\lbrace Agent_1, Agent_2\dots Agent_K \rbrace$}
+\BlankLine 
+\Begin
+~~\\
+$Ensemble \enspace Etats \gets ETATSDUMONDE$ ~~\\
+$Ensemble \enspace SousEnsembles \gets SousEnsebles(Etats)$ ~~\\
+$Agents \enspace AgentsPreparés$
+\\\Pour{$i \gets 0$ \KwTo $N$}{
+$massSom \gets 0;$
+\\\Si{$Agent(i).désactivé $}{
+$ignorer$ \;
+}
+\Pour{$Chaque \enspace hypothèse \enspace de \enspace Agent$}{
+\Si{$hypothèse \enspace \ne \enspace \Omega$}{
+$Agent.Ajouter(hypothèse.id,hypothèse.masse \times Fiabilité) ;$
+$ massSom \gets massSom + hypothèse.masse ;$ 
+}
+}
+
+\Pour {$Chaque \enspace ensemble \enspace de \enspace SousEnsembles$}{
+\Si{$ensemble \ne \varnothing \enspace \&\& \enspace Agent.hypothèse.Existe(ensemble)$}{
+\Si{$ensemble = \Omega$}{
+$Agent.Ajouter(ensemble.id,(1-massSom )\times Fiabilité) ;$
+}
+$Agent.Ajouter(ensemble.id,0);$
+}
+
+\Si{$ensemble$ $==$ $\Omega$}{
+$Agent.Ajouter(\Omega.id,1-Fiabilité \times (\Omega.masse+ massSom);$ 
+}
+}
+}
+$AgentsPreparés.Ajouter(Agent);$
+\\\Retourner{$AgentsPreparés$}
+
+\End
+\end{algorithm}
+
+
+\section{appel de procédures de fusion et de croyance}
+\begin{algorithm}[H]
+\caption{appel de procédures de fusion et de croyance}
+\BlankLine
+\KwIn{
+$AGENT = \lbrace {}_{1}, Agent_{2}\dots Agent_{N} \rbrace $}
+\KwOut{$AGENTS$}
+\BlankLine 
+\Begin
+\\
+\Si{$N < 1 $}{
+$Agent AgentTemporaire \gets AGENTS(1);$
+\\
+\Pour{$i \gets 2$ \KwTo $N$}{
+  $cas (Methode) de $
+  $Dempster-Shafer : AgentTemporaire \gets MultiAgentDempsterShafer(AgentTemporaire,AGENTS(i));$
+  $Dubois-Prade : AgentTemporaire \gets MultiAgentDuboisPrade(AgentTemporaire,AGENTS(i));$
+  $Smets : AgentTemporaire \gets MultiAgentSmets(AgentTemporaire,AGENTS(i));$
+  $Yager: AgentTemporaire \gets MultiAgentYager(AgentTemporaire,AGENTS(i));$
+}
+\vspace{1em}
+\Si{$N =< 1 $}{
+$CalculeCroyancePlausibilité(Agent);$
+}
+}
+\Retourner{$AgentsPreparés$}
+\end{algorithm}
+\section{procédure de fusion de d'information}
+\begin{algorithm}[H]
+\caption{Calcule Croyance Plausibilité}
+\BlankLine
+\KwIn{
+$AGENT1 = \lbrace \lbrace hypothèse_{1},masse_{1} \rbrace \lbrace hypothèse_{2},masse_{2} \rbrace \dots \lbrace hypothèse_{n},masse_{n} \rbrace \rbrace $,\\ \quad \quad \enspace \qquad $AGENT2 = \lbrace \lbrace hypothèse_{1},masse_{1} \rbrace \lbrace hypothèse_{2},masse_{2} \rbrace \dots \lbrace hypothèse_{m},masse_{m} \rbrace \rbrace $}
+\KwOut{$AGENTRes = \lbrace \lbrace hypothèse_{1},masse_{1} \rbrace \lbrace hypothèse_{2},masse_{2}  \rbrace \dots$ \\$ \lbrace hypothèse_{n},masse_{n} \rbrace \rbrace $}
+\BlankLine 
+\Begin
+\\
+\Pour{$i \gets 1$ \KwTo $N$}{
+\Pour{$j \gets 1$ \KwTo $M$}{
+\Si{$hypothèse_{i} \cap hypothèse_{j} = \varnothing $}{
+$K \gets K + AGENT1.masse(i) \times AGENT2.masse(j);$
+}
+}
+
+\vspace{1em}
+
+
+
+}
+\Retourner{$AGENTRes$}
+\end{algorithm}
+\section{procédure de calcul de croyance}
+\begin{algorithm}[H]
+\caption{Calcule Croyance Plausibilité}
+\BlankLine
+\KwIn{
+$AGENTS = \lbrace \lbrace hypothèse_{1},masse_{1} \rbrace \lbrace hypothèse_{2},masse_{2} \rbrace \dots \lbrace hypothèse_{n},masse_{n} \rbrace \rbrace $}
+\KwOut{$AGENTS = \lbrace \lbrace hypothèse_{1},masse_{1},CR_{1},PL_{1} \rbrace \lbrace hypothèse_{2},masse_{2},CR_{2},PL_{2}  \rbrace \dots$ \\$ \lbrace hypothèse_{n},masse_{n},CR_{n},PL_{n}  \rbrace \rbrace $}
+\BlankLine 
+\Begin
+\\
+\Pour{$i \gets 1$ \KwTo $N$}{
+$BL \gets 0;$
+$PL \gets 0;$
+\Pour{$j \gets 1$ \KwTo $N$}{
+\Si{$hypothèse_{j} \subset hypothèse_{i} $}{
+$BL \gets BL + ,masse_{i};$
+}
+}
+\Pour{$j \gets 1$ \KwTo $N$}{
+\Si{$hypothèse_{i} \cap hypothèse_{j} = \varnothing $}{
+$PL \gets PL + ,masse_{j};$
+}
+}
+\vspace{1em}
+
+$AGENT(i).Ajouter(BL,PL)$
+
+}
+\Retourner{$AGENT$}
+\end{algorithm}
+%\phantomsection
+%\addcontentsline{toc}{section}{Conclusion}
+\section*{Conclusion}

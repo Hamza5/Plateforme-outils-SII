@@ -4,7 +4,6 @@ package Plugins;
 import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Container;
-import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -15,11 +14,14 @@ import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.BufferedInputStream;
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.PrintWriter;
+import java.io.Reader;
 import java.io.UnsupportedEncodingException;
 import java.net.URISyntaxException;
 import java.net.URL;
@@ -44,6 +46,7 @@ import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JDialog;
 import javax.swing.JFileChooser;
+import javax.swing.JFormattedTextField;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JList;
@@ -51,20 +54,20 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
+import javax.swing.JSpinner;
 import javax.swing.JTabbedPane;
 import javax.swing.JTable;
-import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.JTextPane;
 import javax.swing.KeyStroke;
 import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.ListSelectionModel;
+import javax.swing.SpinnerNumberModel;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.TitledBorder;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
-import javax.swing.event.DocumentEvent;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.filechooser.FileNameExtensionFilter;
@@ -121,7 +124,7 @@ public class Incertain extends JPanel implements ActionListener{
 		 Vector<String> vertex;
 		 JButton btnNewButton_1;
 		   JButton btnModifier;
-		   int countertwo=0; 
+
  class ParametreProb extends JDialog implements ActionListener{
 	 JTable table;
 	 
@@ -847,7 +850,7 @@ class Fenetre extends JDialog implements ListSelectionListener,ActionListener{
 	        executorThread.start();
 	        synchronized(executorThread){
 	            try{
-	                System.out.println("Waiting for b to complete...");
+	                System.out.println("Waiting for eb to complete...");
 	                executorThread.wait();
 	            }catch(InterruptedException e){
 	                e.printStackTrace();
@@ -865,7 +868,24 @@ class Fenetre extends JDialog implements ListSelectionListener,ActionListener{
 	}
 
 	
-	
+public static String readInput(String filePath) {
+    StringBuffer buffer = new StringBuffer();
+    try {
+        FileInputStream fis = new FileInputStream(filePath);
+        InputStreamReader isr = new InputStreamReader(fis, "Cp1252");
+        Reader in = new BufferedReader(isr);
+        int ch;
+        while ((ch = in.read()) > -1) {
+            buffer.append((char)ch);
+        }
+        in.close();
+        return buffer.toString();
+    } 
+    catch (IOException e) {
+        e.printStackTrace();
+        return null;
+    }
+}
 	private static String LireSousFormeString(String filePath) {
 		 byte[] buffer = new byte[(int) new File(filePath).length()];
 		 BufferedInputStream f = null;
@@ -909,48 +929,48 @@ class Fenetre extends JDialog implements ListSelectionListener,ActionListener{
 	private JButton button_2;
 	private JButton button_3;
 	private JButton button_4;
-	private JTextField textField;
-	private JTextField textField_1;
-	  class ResultsDialog extends JDialog {
-	        private final JTextArea resultsTextArea;
-	        private final AbstractAction closeAction;
-	        private final JLabel label;
-	        ResultsDialog() {
-	            super();
-	            BorderLayout layout = new BorderLayout();
-	            setLayout(layout);
-	            setPreferredSize(new Dimension(300, 200));
-	            setModal(true);
-	            final ResultsDialog dialog = this;
-	            closeAction = new AbstractAction("OK") {
-	                @Override
-	                public void actionPerformed(ActionEvent actionEvent) {
-	                    dialog.setVisible(false);
-	                }
-	            };
-	            label = new JLabel("Resultats");
-	            label.setBorder(new EmptyBorder(5, 5, 5, 5));
-	            resultsTextArea = new JTextArea();
-	            resultsTextArea.setFont(new Font("Monospaced", Font.BOLD, 14));
-	            resultsTextArea.setEditable(false);
-	            JButton okButton = new JButton(closeAction);
-	            Box textAreaBox = Box.createHorizontalBox();
-	            textAreaBox.setBorder(new EmptyBorder(0, 5, 0, 5));
-	            textAreaBox.add(new JScrollPane(resultsTextArea));
-	            Box buttonsBox = Box.createHorizontalBox();
-	            buttonsBox.setBorder(label.getBorder());
-	            buttonsBox.add(Box.createHorizontalGlue());
-	            buttonsBox.add(okButton);
-	            buttonsBox.add(Box.createHorizontalGlue());
-	            add(label, BorderLayout.PAGE_START);
-	            add(textAreaBox, BorderLayout.CENTER);
-	            add(buttonsBox, BorderLayout.PAGE_END);
-	            getRootPane().setDefaultButton(okButton);
-	        }
-	        void setText(String text){
-	            resultsTextArea.setText(text);
-	        }
-	    }
+	private JSpinner spinner;
+	private JSpinner spinner_1;
+//	  class ResultsDialog extends JDialog {
+//	        private final JTextArea resultsTextArea;
+//	        private final AbstractAction closeAction;
+//	        private final JLabel label;
+//	        ResultsDialog() {
+//	            super();
+//	            BorderLayout layout = new BorderLayout();
+//	            setLayout(layout);
+//	            setPreferredSize(new Dimension(300, 200));
+//	            setModal(true);
+//	            final ResultsDialog dialog = this;
+//	            closeAction = new AbstractAction("OK") {
+//	                @Override
+//	                public void actionPerformed(ActionEvent actionEvent) {
+//	                    dialog.setVisible(false);
+//	                }
+//	            };
+//	            label = new JLabel("Resultats");
+//	            label.setBorder(new EmptyBorder(5, 5, 5, 5));
+//	            resultsTextArea = new JTextArea();
+//	            resultsTextArea.setFont(new Font("Monospaced", Font.BOLD, 14));
+//	            resultsTextArea.setEditable(false);
+//	            JButton okButton = new JButton(closeAction);
+//	            Box textAreaBox = Box.createHorizontalBox();
+//	            textAreaBox.setBorder(new EmptyBorder(0, 5, 0, 5));
+//	            textAreaBox.add(new JScrollPane(resultsTextArea));
+//	            Box buttonsBox = Box.createHorizontalBox();
+//	            buttonsBox.setBorder(label.getBorder());
+//	            buttonsBox.add(Box.createHorizontalGlue());
+//	            buttonsBox.add(okButton);
+//	            buttonsBox.add(Box.createHorizontalGlue());
+//	            add(label, BorderLayout.PAGE_START);
+//	            add(textAreaBox, BorderLayout.CENTER);
+//	            add(buttonsBox, BorderLayout.PAGE_END);
+//	            getRootPane().setDefaultButton(okButton);
+//	        }
+//	        void setText(String text){
+//	            resultsTextArea.setText(text);
+//	        }
+//	    }
 	
 	public Incertain() throws IOException, URISyntaxException {
 		super();
@@ -1265,7 +1285,7 @@ class Fenetre extends JDialog implements ListSelectionListener,ActionListener{
 																																									        GridBagLayout gbl_logiquePossibiliste = new GridBagLayout();
 																																									        gbl_logiquePossibiliste.columnWidths = new int[]{46, 173, 12, 61, 161, 0};
 																																									        gbl_logiquePossibiliste.rowHeights = new int[]{38, 20, 20, 23, 23, 131, 0};
-																																									        gbl_logiquePossibiliste.columnWeights = new double[]{0.0, 0.0, 0.0, 1.0, 0.0, Double.MIN_VALUE};
+																																									        gbl_logiquePossibiliste.columnWeights = new double[]{0.0, 0.0, 1.0, 1.0, 0.0, Double.MIN_VALUE};
 																																									        gbl_logiquePossibiliste.rowWeights = new double[]{1.0, 0.0, 0.0, 0.0, 0.0, 1.0, Double.MIN_VALUE};
 																																									        logiquePossibiliste.setLayout(gbl_logiquePossibiliste);
 																																									        
@@ -1277,49 +1297,36 @@ class Fenetre extends JDialog implements ListSelectionListener,ActionListener{
 																																									        gbc_label.gridy = 1;
 																																									        logiquePossibiliste.add(label, gbc_label);
 																																									        
-																																									        textField = new JTextField();
-																																									        textField.addActionListener(new ActionListener() {
-																																									            public void actionPerformed(ActionEvent e) {}
-																																									       public void insertUpdate(DocumentEvent e) {
-																																									    	   countertwo=0; 
-																																							                }
-																																							                public void removeUpdate(DocumentEvent e) {
-																																							                	 countertwo=0; 
-																																							                }
-																																							                public void changedUpdate(DocumentEvent e) {
-																																							                	countertwo=0; 
-																																							                }
-																																									        });
-																																									        textField.setColumns(10);
-																																									       
-																																									        GridBagConstraints gbc_textField = new GridBagConstraints();
-																																									        gbc_textField.fill = GridBagConstraints.HORIZONTAL;
-																																									        gbc_textField.gridwidth = 2;
-																																									        gbc_textField.anchor = GridBagConstraints.NORTH;
-																																									        gbc_textField.insets = new Insets(0, 0, 5, 5);
-																																									        gbc_textField.gridx = 2;
-																																									        gbc_textField.gridy = 1;
-																																									        logiquePossibiliste.add(textField, gbc_textField);
-																																									        
 																																									        JLabel label_1 = new JLabel("Nombre de parents maximal ");												;
+																																									  
+																																									        
+																																									        spinner = new JSpinner( 
+																																									        		new SpinnerNumberModel(1, 1, 1000, 1));
+																																									        JFormattedTextField txt = ((JSpinner.NumberEditor) spinner.getEditor()).getTextField();
+																																									        GridBagConstraints gbc_spinner = new GridBagConstraints();
+																																									        gbc_spinner.gridwidth = 2;
+																																									        gbc_spinner.fill = GridBagConstraints.HORIZONTAL;
+																																									        gbc_spinner.insets = new Insets(0, 0, 5, 5);
+																																									        gbc_spinner.gridx = 2;
+																																									        gbc_spinner.gridy = 1;
+																																									        logiquePossibiliste.add(spinner, gbc_spinner);
 																																									        GridBagConstraints gbc_label_1 = new GridBagConstraints();
 																																									        gbc_label_1.anchor = GridBagConstraints.WEST;
 																																									        gbc_label_1.insets = new Insets(0, 0, 5, 5);
 																																									        gbc_label_1.gridx = 1;
 																																									        gbc_label_1.gridy = 2;
 																																									        logiquePossibiliste.add(label_1, gbc_label_1);
+																																									       
 																																									        
-																																									        textField_1 = new JTextField();
-																																									        
-																																									        textField_1.setColumns(10);
-																																									        GridBagConstraints gbc_textField_1 = new GridBagConstraints();
-																																									        gbc_textField_1.fill = GridBagConstraints.HORIZONTAL;
-																																									        gbc_textField_1.gridwidth = 2;
-																																									        gbc_textField_1.anchor = GridBagConstraints.NORTH;
-																																									        gbc_textField_1.insets = new Insets(0, 0, 5, 5);
-																																									        gbc_textField_1.gridx = 2;
-																																									        gbc_textField_1.gridy = 2;
-																																									        logiquePossibiliste.add(textField_1, gbc_textField_1);
+																																									        spinner_1 = new JSpinner(new SpinnerNumberModel(1, 1, 1000, 1));
+																																									        JFormattedTextField txt1 = ((JSpinner.NumberEditor) spinner_1.getEditor()).getTextField();
+																																									        GridBagConstraints gbc_spinner_1 = new GridBagConstraints();
+																																									        gbc_spinner_1.gridwidth = 2;
+																																									        gbc_spinner_1.fill = GridBagConstraints.HORIZONTAL;
+																																									        gbc_spinner_1.insets = new Insets(0, 0, 5, 5);
+																																									        gbc_spinner_1.gridx = 2;
+																																									        gbc_spinner_1.gridy = 2;
+																																									        logiquePossibiliste.add(spinner_1, gbc_spinner_1);
 																																									        JLabel label_2 = new JLabel("Nombre de propositions");
 																																									        GridBagConstraints gbc_label_2 = new GridBagConstraints();
 																																									        gbc_label_2.anchor = GridBagConstraints.WEST;
@@ -1344,50 +1351,22 @@ class Fenetre extends JDialog implements ListSelectionListener,ActionListener{
 																																									        gbc_radioButton.gridwidth = 2;
 																																									        gbc_radioButton.fill = GridBagConstraints.HORIZONTAL;
 																																									        gbc_radioButton.anchor = GridBagConstraints.NORTH;
-																																									        gbc_radioButton.insets = new Insets(0, 0, 5, 5);
+																																									        gbc_radioButton.insets = new Insets(0, 0, 5, 0);
 																																									        gbc_radioButton.gridx = 3;
 																																									        gbc_radioButton.gridy = 3;
 																																									        logiquePossibiliste.add(radioButton, gbc_radioButton);
 																																									        group.add(radioButton);
 																																									        JButton btnCaculer = new JButton("Calculer");
+																																									        btnCaculer.setMnemonic(KeyEvent.VK_C);
 																																									        btnCaculer.addActionListener(new ActionListener() {
 																																									        	 int nbrNod=0;
 																																									        	 int parMax=0;
 																																									        	 
 																																									          public void actionPerformed(ActionEvent e)
 																																									            {
-																																									            	 try{ nbrNod=Integer.parseInt(textField.getText().toString());
-																																									            	 	parMax=Integer.parseInt(textField_1.getText().toString());
-																																									            	 	countertwo=0;  
-																																									            	 	
-																																									            	 }
-																																												  catch(NullPointerException  e1){
-																																													  
-																																													  JOptionPane.showMessageDialog(null,
-																																														    "Format de nombres erroné",
-																																														    "Erreur",
-																																														    JOptionPane.ERROR_MESSAGE);countertwo++;}
-																																												  catch(NumberFormatException e1){
-																																											
-																																													  JOptionPane.showMessageDialog(null,
-																																															    "Format de nombres erroné",
-																																															    "Erreur",
-																																															    JOptionPane.ERROR_MESSAGE); 
-																																													  countertwo++;
-																																												  }
-																																									            	 if(countertwo==0){
-																																									            	 
-																																									            	 
-																																												  if(parMax<1 && nbrNod<1 ){
-																																													  
-																																													 JOptionPane.showMessageDialog(null,
-																																														    "Les nombres doivent être supérieures ou égales à 1 !",
-																																														    "Erreur",
-																																														    JOptionPane.ERROR_MESSAGE);
-																																												 }else{
-																																												  
-																																									            	 
-																																												 
+																																									        	    nbrNod= (Integer)spinner.getValue();
+																																									            	parMax=(Integer)spinner_1.getValue();
+																																									            	
 																																									            	  Path path = null;	
 																																									            	 if(rbt_1.isSelected()){
 																																									            	     path = Paths.get("C:","cygwin","home","licence","prop1evid.m");	
@@ -1406,7 +1385,7 @@ class Fenetre extends JDialog implements ListSelectionListener,ActionListener{
 																																														try {
 																																															out = new PrintWriter("calcule.m");
 																																														} catch (FileNotFoundException e1) {
-																																															// TODO Auto-generated catch block
+																																														
 																																															e1.printStackTrace();
 																																														}
 																																									            	    out.println(s);
@@ -1432,23 +1411,36 @@ class Fenetre extends JDialog implements ListSelectionListener,ActionListener{
 																																												
 																																												}
 //																																					                            
-																																					                            Path path2 = Paths.get("C:","cygwin","home","licence","resultats.txt");
+																																					                            Path path2 = Paths.get("C:","cygwin","home","licence","resultats");
 																																					                            ResultsDialog resultsDialog = new ResultsDialog();
 																																					                            System.out.print(LireSousFormeString(path2.toAbsolutePath().toString()));
-																																					                            resultsDialog.setText(LireSousFormeString(path2.toAbsolutePath().toString()));
+																																					                            BufferedReader reader = null;
+																																					                           
+																																					                            String Filecontent = null;
+																																					                           
+																																													
+																																													Filecontent=readInput(path2.toAbsolutePath().toString());
+																																					                           
+																																					                            
+																																					                          
+																																					                              //Filecontent=LireSousFormeString(path2.toAbsolutePath().toString());
+																																					                           Path path3=Paths.get("C:","cygwin","home","licence","Cygwin.bat");
+																																					                           System.out.println("path cyg "+path3.toAbsolutePath().toString() );
+																																					                            try {
+																																													Runtime.getRuntime().exec(path3.toAbsolutePath().toString());
+																																												} catch (IOException e) {
+																																													// TODO Auto-generated catch block
+																																													e.printStackTrace();
+																																												}
+																																					                            resultsDialog.setText(Filecontent);
 																																					                            resultsDialog.pack();
 																																					                            resultsDialog.setLocationRelativeTo(logiquePossibiliste);
 																																					                            resultsDialog.setVisible(true);          }
 																																									                    };
 																																									                    Thread t = new Thread(externalProgramLauncher);
 																																									                    t.start();
-																																												 }
-																																									            }
-																																									        }
-																																									      
-																																									          
-																																									        
-																																									          });
+																																											  }
+																																									       });
 																																									       
 																																									        GridBagConstraints gbc_btnCaculer = new GridBagConstraints();
 																																									        gbc_btnCaculer.insets = new Insets(0, 0, 5, 0);
