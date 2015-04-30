@@ -1207,9 +1207,9 @@ public static String readInput(String filePath) {
 																																								    };		
 																																								    DempsterShafer = new JPanel();
 																																								
-																																									tabs.addTab("Dempster Shafer", DempsterShafer);
-																																									 String DSButtonText = "Lancer le Moteur Dempster Shafer";
-																																									 String DSDescription = "<html><div style=\"text-align: center;\">Description du logiciel ...</html>";
+																																									tabs.addTab("Dempster-Shafer", DempsterShafer);
+																																									 String DSButtonText = "Lancer le Combinateur d'évidences";
+																																									 String DSDescription = "<html><body style=\"text-align: center;\">Ce logiciel permet d'appliquer la théorie de Dempster-Shafer sur un problème d'incertain dans un système multi-sources.</body></html>";
 																																								     int spacing = 5;
 																																								      BoxLayout mainLayout = new BoxLayout(this, BoxLayout.PAGE_AXIS);
 																																								        setLayout(mainLayout);
@@ -1253,9 +1253,9 @@ public static String readInput(String filePath) {
 																																								            }
 																																								        });
 																																								        
-																																								        DecPosButton.setMnemonic('P');
+																																								        DecPosButton.setMnemonic('C');
 																																								        Box DSBox = new Box(BoxLayout.PAGE_AXIS);
-																																								        DSBox.setBorder(new TitledBorder("Dempset Shafer"));
+																																								        DSBox.setBorder(new TitledBorder("Combinateur d'évidences"));
 																																								        Box descriptionBox =  Box.createHorizontalBox();
 																																								        descriptionBox.add(new JLabel(DSDescription,SwingConstants.CENTER));
 																																								        descriptionBox.setBorder(new EmptyBorder(spacing, spacing, spacing, spacing));
