@@ -167,6 +167,7 @@ public class Tools extends JPanel {
             super();
             BorderLayout layout = new BorderLayout();
             setLayout(layout);
+
             setModal(true);
             final ResultsDialog dialog = this;
             closeAction = new AbstractAction("OK") {
@@ -458,7 +459,7 @@ public class Tools extends JPanel {
         bottomBox.setBorder(ubcsatPage.getBorder());
         bottomBox.add(calculerButton);
         add(bottomBox);
-        JLabel infosLabel = new JLabel(defaultInfo, SwingConstants.CENTER);
+        JLabel infosLabel = new JLabel(defaultInfo);
         infosLabel.setBorder(new EtchedBorder(EtchedBorder.RAISED));
         Box infoBox = Box.createHorizontalBox();
         infoBox.add(infosLabel);
