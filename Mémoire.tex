@@ -1,19 +1,21 @@
 \documentclass[a4paper,french,12pt]{report}
 \usepackage[utf8]{inputenc} % Encodage du fichier
 \usepackage[T1]{fontenc} % Encodage des fonts nécessaire pour le Latin
-\usepackage[frenchb]{babel} % Pour changer la langue des mots générés et choisir la bonne mise en page
+\usepackage[english,frenchb]{babel} % Pour changer la langue des mots générés et choisir la bonne mise en page
 \usepackage{lmodern} % Le latin modèrne
 \usepackage[top=2cm, bottom=2cm, left=3cm, right=2cm]{geometry} % Définir les marges de la page
 \usepackage{amsmath} % Pour des fonctions mathématiques
 \usepackage{amssymb} % Pour les symbols mathématiques
 \usepackage[hidelinks]{hyperref} % Pour les liens
 \usepackage{fancyhdr} % Pour le style de la page
-\usepackage[font=it]{caption} % Rendre le titre des tableaux italique
+\usepackage[font=it]{caption} % Rendre les titres des tableaux italiques
 \usepackage{microtype}
 \usepackage{graphicx} % Pour les images
 \usepackage{subcaption} % Pour mettre plusieurs images sur la même ligne
 \usepackage{float} % Pour empêcher le déplacement des tableaux et des figures.
 \usepackage[french,longend,boxruled,algoruled,linesnumbered,algochapter]{algorithm2e}%pour les algorithmes
+\usepackage{babelbib} % Pour changer la langue dans la bibliographie
+
 \graphicspath{ {pictures/} } % Spécifier le répertoire contenant les images  
 \DisableLigatures[f]{encoding=*}
 \renewcommand \thechapter{\Roman{chapter}} % Utiliser la numéros romans pour les chapitre
@@ -21,6 +23,7 @@
   \renewcommand\tablename{\itshape Tableau}
   \renewcommand{\figurename}{\itshape Figure}
 }
+
 % Pour la 1ère page
 \title{Le mémoire}
 \author{Hamza Abbad \and Ahmed Zebouchi}
@@ -43,6 +46,7 @@
 % Nom de la grande interface
 \newcommand{\platformename}{\textbf{plateforme d'outils} }
 \newcommand{\platformeName}{Plateforme d'outils }
+
 \begin{document}
 \maketitle
 \tableofcontents
@@ -50,4 +54,8 @@
 \include{Chapitre2}
 \include{Chapitre3}
 \include{Chapitre4}
+\bibliographystyle{babplain}
+\phantomsection
+\addcontentsline{toc}{chapter}{Bibliographie}
+\bibliography{bibliographie}
 \end{document}          

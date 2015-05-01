@@ -19,8 +19,12 @@ lib/
 *.log
 *.out
 *.toc
+*.bbl
+*.bcf
+*.blg
 *.dvi
 *.pdf
+*.synctex.gz
 # Text
 *.txt
 # Backup files
