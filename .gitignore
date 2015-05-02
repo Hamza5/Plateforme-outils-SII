@@ -25,6 +25,7 @@ lib/
 *.dvi
 *.pdf
 *.synctex.gz
+*.gz(busy)
 # Text
 *.txt
 # Backup files

@@ -31,7 +31,7 @@ public class Décision extends JPanel {
                                     "lib/org.sat4j.core.jar"};
                     final StringBuilder sb = new StringBuilder();
                     for (String s : libs) {
-                        sb.append(File.pathSeparator);
+                        sb.append(':');
                         sb.append(s);
                     }
                     Runnable externalProgramLauncher = new Runnable() {
