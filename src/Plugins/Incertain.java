@@ -224,7 +224,7 @@ public class Incertain extends JPanel implements ActionListener{
 					  rowData[i]=x;
 					  rowData[i+(table.getRowCount())]=y;
 					  
-					  if((x+y)!=1&&SelectedTAb.equals("BNT Scripte build")){
+					  if((x+y)!=1&&SelectedTAb.equals("BNT script build")){
 						  table.setRowSelectionInterval(i, i);
 						 JOptionPane.showMessageDialog(null,
 							    "La somme de chaque ligne doit être égale à 1 !",
@@ -240,7 +240,7 @@ public class Incertain extends JPanel implements ActionListener{
 							    JOptionPane.ERROR_MESSAGE);
 					  break swicth;}
 					  
-					  if((x!=1&&y!=1)&&SelectedTAb.equals("PNT Scripte build")){ 
+					  if((x!=1&&y!=1)&&SelectedTAb.equals("PNT script build")){ 
 						 table.setRowSelectionInterval(i, i);
 						  JOptionPane.showMessageDialog(null,
 							    "Dans chaque ligne une Cellule doit être égale à 1 !",
@@ -305,9 +305,9 @@ class Fenetre extends JDialog implements ListSelectionListener,ActionListener{
 			  super();
 			  setModal(true);
 		      this.setLocationRelativeTo(null);
-		      if (SelectedTAb.equals("BNT Scripte build")){
+		      if (SelectedTAb.equals("BNT script build")){
 		    	  this.setTitle("BNT");
-		      }else if  (SelectedTAb.equals("PNT Scripte build")){
+		      }else if  (SelectedTAb.equals("PNT script build")){
 		    	  this.setTitle("PNT");}
 					
 		      
@@ -341,7 +341,7 @@ class Fenetre extends JDialog implements ListSelectionListener,ActionListener{
 		        btnSupprimer = new JButton("Supprimer");
 		        btnSupprimer.setMnemonic(KeyEvent.VK_S);
 		        btnSupprimer.addActionListener(this);
-		        btnNewButton_1 = new JButton("Générer le scripte");
+		        btnNewButton_1 = new JButton("Générer le script");
 		        btnNewButton_1.setMnemonic(KeyEvent.VK_G);
 		        btnNewButton_1.setEnabled(false);
 		        btnNewButton_1.addActionListener(this);
@@ -364,7 +364,7 @@ class Fenetre extends JDialog implements ListSelectionListener,ActionListener{
 		        groupProdMin.add(Prod);
 		        groupProdMin.add(RdMIN);
 		        JRadioButton[] buttons = new JRadioButton[]{Prod,RdMIN};
-		        if (SelectedTAb.equals("BNT Scripte build")){
+		        if (SelectedTAb.equals("BNT script build")){
 			     for (JRadioButton btn : buttons) {
 				            btn.setEnabled(false);
 				        }
@@ -695,7 +695,7 @@ class Fenetre extends JDialog implements ListSelectionListener,ActionListener{
 				list.setSelectedIndex( selection );
 			}
 		}break;
-		case "Générer le scripte":
+		case "Générer le script":
 		{
 	
 			String stringValue2 = (String) comboBox.getSelectedItem();
@@ -728,13 +728,13 @@ class Fenetre extends JDialog implements ListSelectionListener,ActionListener{
 						 String BNTengine="engine=jtree_inf_engine(bnet);\n\n";
 						 String PNTengine="[engine] = global_propagation(engine, evidence);\n";
 						 String BNTengineAfter="[engine, loglik]=enter_evidence(engine,evidence);\n";
-						 String PNTadd="instance_interest=2;\nBEL_Cdt_classique=marg.T(instance_interest);\n";
+//						 String PNTadd="instance_interest=2;\nBEL_Cdt_classique=marg.T(instance_interest);\n";
 						 String net = null;
 						 
 						 //if (rdbtnBnt.isSelected()){
-						 if (SelectedTAb.equals("BNT Scripte build")){
+						 if (SelectedTAb.equals("BNT script build")){
 							 net="bnet";
-						 }else if (SelectedTAb.equals("PNT Scripte build")){net="pnet";}
+						 }else if (SelectedTAb.equals("PNT script build")){net="pnet";}
 						 	strPane+=strPane+="N = "+donnéesDist.size()+";\n";
 						      System.out.println("the string "+strPane);
 						      strPane+="dag = zeros(N,N);\n";
@@ -759,9 +759,9 @@ class Fenetre extends JDialog implements ListSelectionListener,ActionListener{
 						    	  strPane+=net+".CPD{"+set.replaceAll(" ", "_")+"}=tabular_CPD("+net+", "+set.replaceAll(" ", "_")+","+donnéesDist.get(set).toString().replaceAll(",","")+");\n";
 						      }
 						     // if(rdbtnBnt.isSelected())
-						      if (SelectedTAb.equals("BNT Scripte build"))
+						      if (SelectedTAb.equals("BNT script build"))
 						      {strPane+=BNTengine;}
-						      else if (SelectedTAb.equals("PNT Scripte build")){if (RdMIN.isSelected()){strPane+=Min;
+						      else if (SelectedTAb.equals("PNT script build")){if (RdMIN.isSelected()){strPane+=Min;
 						    	}else{strPane+=Prod;}
 						      }
 						      strPane+="evidence=cell(1,N);\n";
@@ -775,12 +775,12 @@ class Fenetre extends JDialog implements ListSelectionListener,ActionListener{
 						            }
 						        }
 //						      if(rdbtnBnt.isSelected())
-						      if (SelectedTAb.equals("BNT Scripte build"))
+						      if (SelectedTAb.equals("BNT script build"))
 						      {strPane+=BNTengineAfter;}else{strPane+=PNTengine;}
 						      strPane+="marg=marginal_nodes(engine,"+stringValue3.replaceAll(" ", "_")+"); \n";
 						      //if(!rdbtnBnt.isSelected())
-						    if (SelectedTAb.equals("PNT Scripte build"))
-						      {strPane+=PNTadd;}
+//						    if (SelectedTAb.equals("PNT script build"))
+//						      {strPane+=PNTadd;}
 						      strPane+="marg.T";
 						      textPane.setText(strPane);
 						      System.out.println("the string "+textPane.getText());
@@ -791,17 +791,18 @@ class Fenetre extends JDialog implements ListSelectionListener,ActionListener{
 		}break;
 		case "Calculer":
 		{  	
+		
 			File file = new File(new File(System.getProperty("user.dir"), new File(new File(new File("src","Plugins"),"Incertain"),"Pnt").toString()),"calcul.m");
 			PrintWriter writer = null;
 			try {
 //				if(rdbtnBnt.isSelected())
-				if (SelectedTAb.equals("BNT Scripte build"))
+				if (SelectedTAb.equals("BNT script build"))
 				{writer = new PrintWriter("calcul.m", "UTF-8");}
-				else if (SelectedTAb.equals("PNT Scripte build"))
+				else if (SelectedTAb.equals("PNT script build"))
 				{writer = new PrintWriter(file.toString(), "UTF-8");}
 			} catch (FileNotFoundException | UnsupportedEncodingException e) {
 				JOptionPane.showMessageDialog(new JFrame(),
-					    "Erreur d'execution du scripte \nScripte non trouvée!",
+					    "Erreur d'execution du script \nScripte non trouvée!",
 						   "Erreur",
 						   JOptionPane.ERROR_MESSAGE);
 			
@@ -810,17 +811,17 @@ class Fenetre extends JDialog implements ListSelectionListener,ActionListener{
 			writer.close();
 			class ExecutorTask implements Runnable{
 
-			    @Override
+				
 			    public void run() {
-
+			    	
+			    	boolean verifexec=true;
 			        Process process = null;
 					try {
-//					if (rdbtnBnt.isSelected())
-					if (SelectedTAb.equals("BNT Scripte build"))
+					if (SelectedTAb.equals("BNT script build"))
 					{
 						System.out.println("path :"+System.getProperty("user.dir"));
 						process=Runtime.getRuntime().exec("matlab -nodesktop -nodisplay -minimize -noFigureWindows -nosplash -logfile -wait  output -r \"cd "+System.getProperty("user.dir")+";addpath(genpathKPM(pwd));calcul;quit;\"");
-					}else if (SelectedTAb.equals("PNT Scripte build")){
+					}else if (SelectedTAb.equals("PNT script build")){
 						File file1 = new File(System.getProperty("user.dir"), new File(new File(new File("src","Plugins"),"Incertain"),"Pnt").toString());
 						String AddToPath= "p=genpath('"+file1.toString()+"');addpath(p);";
 						process=Runtime.getRuntime().exec("matlab -nodesktop -nodisplay -minimize -noFigureWindows -nosplash -logfile -wait output -r \""+AddToPath+" cd "+file1.toString()+";calcul;quit;\"");
@@ -828,37 +829,56 @@ class Fenetre extends JDialog implements ListSelectionListener,ActionListener{
 					
 				} catch (IOException e) {
 					JOptionPane.showMessageDialog(new JFrame(),
-						    "Erreur d'execution du scripte \nVerifier si Matlab est correctement installée!",
+						    "Erreur d'execution du script \nVerifier si Matlab est correctement installée!",
 							   "Erreur",
 							   JOptionPane.ERROR_MESSAGE);
+					verifexec=false;
+					
 				}
-				
+				if(verifexec){
 				try {
+			
 					process.waitFor();
 				} catch (InterruptedException e) {
 					JOptionPane.showMessageDialog(new JFrame(),
-						    "Erreur d'execution du scripte \nl'exécution du scripte a été interrompu !",
+						    "Erreur d'execution du script \nl'exécution du script a été interrompu !",
 							   "Erreur",
 							   JOptionPane.ERROR_MESSAGE);
 				}
-				
+				}
 				
 			    }
 			}
 			ExecutorTask task = new ExecutorTask();
 	        Thread executorThread = new Thread(task);
 	        executorThread.start();
+	      
 	        synchronized(executorThread){
-	            try{
-	                System.out.println("Waiting for eb to complete...");
-	                executorThread.wait();
-	            }catch(InterruptedException e){
-	                e.printStackTrace();
-	            }
-	            JOptionPane.showMessageDialog(null,
-					    LireSousFormeString("output").substring(LireSousFormeString("output").lastIndexOf("ans =")),
+	        	boolean bool =true;
+	            try {
+					executorThread.wait();
+				} catch (InterruptedException e) {
+					 JOptionPane.showMessageDialog(null,
+		 	            		"Erreur d'execution du script ",
+		 							    "Erreur",
+		 							    JOptionPane.PLAIN_MESSAGE);
+					 bool=false;
+				}
+	            
+	            String Fichier;
+	             Fichier= LireSousFormeString("output");
+	             if(bool&&!Fichier.contains("ans =")){
+	            	 
+	            	 JOptionPane.showMessageDialog(null,
+	 	            		"Erreur d'execution du script ",
+	 							    "Erreur",
+	 							    JOptionPane.PLAIN_MESSAGE); 
+	             }else{
+	             JOptionPane.showMessageDialog(null,
+	            		Fichier.substring(LireSousFormeString("output").lastIndexOf("ans =")),
 							    "Resultat",
-							    JOptionPane.PLAIN_MESSAGE);
+							    JOptionPane.PLAIN_MESSAGE);}
+	            
 	        }
 		}
 		
@@ -1017,7 +1037,7 @@ public static String readInput(String filePath) {
 //																																      
 																																	tabs = new JTabbedPane();
 																																	ScripteBNT = new JPanel();
-																																	tabs.addTab("Scripte BNT ",ScripteBNT);
+																																	tabs.addTab("script BNT ",ScripteBNT);
 																																	GridBagLayout gbl_ubcsatPage = new GridBagLayout();
 																																	gbl_ubcsatPage.columnWidths = new int[]{333, 115, 0};
 																																	gbl_ubcsatPage.rowHeights = new int[]{23, 226, 23, 0};
@@ -1031,7 +1051,7 @@ public static String readInput(String filePath) {
 																																	
 																																	txtCheminVersLe = new JTextField();
 																																	txtCheminVersLe.setEditable(false);
-																																	txtCheminVersLe.setText("Chemin vers le scripte");
+																																	txtCheminVersLe.setText("Chemin vers le script");
 																																	txtCheminVersLe.setToolTipText("");
 																																	txtCheminVersLe.setColumns(10);
 																																	//setFocusTraversalPolicy(new FocusTraversalOnArray(new Component[]{tabs, BNTScripteBuild, ScripteBNT, txtCheminVersLe, btnNewButton, textPane, btnClaculer}));
@@ -1070,7 +1090,7 @@ public static String readInput(String filePath) {
 																																	ScripteBNT.add(btnClaculer, gbc_btnClaculer);
 																																	
 																																			BNTScripteBuild = new JPanel();
-																																			tabs.addTab("BNT Scripte build", BNTScripteBuild);
+																																			tabs.addTab("BNT script build", BNTScripteBuild);
 																																			tabs.setEnabledAt(1, true);
 																																			
 																																			Noeuxbtn = new JButton("Ajouter noeud");
@@ -1126,7 +1146,7 @@ public static String readInput(String filePath) {
 																																									);
 																																									BNTScripteBuild.setLayout(gl_BNTScripteBuild);
 																																	PNTScripteBuild= new JPanel();
-																																	tabs.addTab("PNT Scripte build", PNTScripteBuild);
+																																	tabs.addTab("PNT script build", PNTScripteBuild);
 																																	mxGraphComponent PNTgraphComponent = new mxGraphComponent(PNTgraph);
 																																	new mxKeyboardHandler( PNTgraphComponent);
 																																	PNTScripteBuild.add(PNTgraphComponent);
@@ -1207,9 +1227,9 @@ public static String readInput(String filePath) {
 																																								    };		
 																																								    DempsterShafer = new JPanel();
 																																								
-																																									tabs.addTab("Dempster-Shafer", DempsterShafer);
-																																									 String DSButtonText = "Lancer le Combinateur d'évidences";
-																																									 String DSDescription = "<html><body style=\"text-align: center;\">Ce logiciel permet d'appliquer la théorie de Dempster-Shafer sur un problème d'incertain dans un système multi-sources.</body></html>";
+																																									tabs.addTab("Dempster Shafer", DempsterShafer);
+																																									 String DSButtonText = "Lancer le Moteur Dempster Shafer";
+																																									 String DSDescription = "<html><div style=\"text-align: center;\">Description du logiciel ...</html>";
 																																								     int spacing = 5;
 																																								      BoxLayout mainLayout = new BoxLayout(this, BoxLayout.PAGE_AXIS);
 																																								        setLayout(mainLayout);
@@ -1253,9 +1273,9 @@ public static String readInput(String filePath) {
 																																								            }
 																																								        });
 																																								        
-																																								        DecPosButton.setMnemonic('C');
+																																								        DecPosButton.setMnemonic('P');
 																																								        Box DSBox = new Box(BoxLayout.PAGE_AXIS);
-																																								        DSBox.setBorder(new TitledBorder("Combinateur d'évidences"));
+																																								        DSBox.setBorder(new TitledBorder("Dempset Shafer"));
 																																								        Box descriptionBox =  Box.createHorizontalBox();
 																																								        descriptionBox.add(new JLabel(DSDescription,SwingConstants.CENTER));
 																																								        descriptionBox.setBorder(new EmptyBorder(spacing, spacing, spacing, spacing));
@@ -1410,7 +1430,7 @@ public static String readInput(String filePath) {
 																																													process.waitFor();
 																																												} catch (InterruptedException e) {
 																																													JOptionPane.showMessageDialog(new JFrame(),
-																																					            						    "Erreur d'execution du scripte \nScripte non trouvée!",
+																																					            						    "Erreur d'execution du script \nScripte non trouvée!",
 																																					            							   "Erreur",
 																																					            							   JOptionPane.ERROR_MESSAGE);
 																																												
@@ -1469,7 +1489,7 @@ public static String readInput(String filePath) {
 			FileNameExtensionFilter matlabFilter = new FileNameExtensionFilter("Matlab", "m");
 		    chooser = new JFileChooser(); 
 		    chooser.setCurrentDirectory(new java.io.File("."));
-		    chooser.setDialogTitle("choisir le scripte a executer");
+		    chooser.setDialogTitle("choisir le script a executer");
 		    chooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
 		    chooser.addChoosableFileFilter(matlabFilter);
 		    chooser.setFileFilter(matlabFilter);
@@ -1495,7 +1515,7 @@ public static String readInput(String filePath) {
 			try {
 				f = new File(chooser.getSelectedFile().toString());
 				if(!f.exists() || f.isDirectory()) {JOptionPane.showMessageDialog(new JFrame(),
-					    "Scripte introuvable",
+					    "script introuvable",
 					   "Erreur",
 					   JOptionPane.ERROR_MESSAGE);break;
 				  }
@@ -1514,13 +1534,13 @@ public static String readInput(String filePath) {
 					p.waitFor();
 				} catch (InterruptedException e1) {
 					JOptionPane.showMessageDialog(new JFrame(),
-						    "Erreur d'execution du scripte \nScripte non trouvée!",
+						    "Erreur d'execution du script \nScripte non trouvée!",
 							   "Erreur",
 							   JOptionPane.ERROR_MESSAGE);
 				}
 			} catch (IOException e1) {
 				JOptionPane.showMessageDialog(new JFrame(),
-					    "Erreur d'execution du scripte \nVerifier si Matlab est correctement installée!",
+					    "Erreur d'execution du script \nVerifier si Matlab est correctement installée!",
 						   "Erreur",
 						   JOptionPane.ERROR_MESSAGE);
 			}
@@ -1662,24 +1682,31 @@ public static String readInput(String filePath) {
 		}
 		else if(e.getSource() == btnPrametres){
 	
-		
+			
 			modifRow=0;
 			 vertex = new Vector<>();
 		    edgeVec = new ArrayList<List<String>>();
 		    graph.clearSelection(); 
 		    graph.selectAll();
 		     Object[] cells = graph.getSelectionCells();
+		     int nbreCell = 0;
               for (Object c : cells) { 
 			    mxCell cell = (mxCell) c; 
 			    if (cell.isVertex()) {
 			    	System.out.println(cell.getValue().toString()+" cell.getSource(): ");
 			    	vertex.add(cell.getValue().toString());
+			    	nbreCell++;
 			    	}
 			    }
+              if(nbreCell<=1){ JOptionPane.showMessageDialog(null,
+  				    "Il faut au moins deux noeuds",
+  				    "Erreur",
+  				    JOptionPane.ERROR_MESSAGE);}
+              else{
 		    data2=new Object[vertex.size()][3];
 		    System.out.println("i= "+vertex.size());
 		    for(int i=0;i<vertex.size();i++){data2[i][0]=vertex.get(i);System.out.println("added to data2 :"+vertex.get(i));}
-		    
+		    boolean bool =true;
 		    for (Object c : cells) { 
 		    mxCell cell = (mxCell) c; 
 		    if (cell.isEdge()) { 
@@ -1729,21 +1756,70 @@ public static String readInput(String filePath) {
 					int pow =(int) Math.pow(2.0, num);
 					for(int i1=0;i1<pow;i1++){tempAffich.add((float) 0);}
 					donnéesDist.put(vertex.get(i), tempAffich);
+					if(num<1){ bool=false;}
 					 System.out.print(tempAffich+" size "+tempAffich.size());
 					data2[i][1]=tempAffich.toString();
 					data2[i][2]="modifier";
 				}
 		    	cell.getSource().getValue().toString();
 		    	cell.getSource();
-		    }else{ 
+		    }else{
 		      cell.getChildCount();
 		    }
 		    }
-
+		    System.out.println("edgeVec.size() "+edgeVec.size()+"vertex.size()"+vertex.size());
+		    if(bool){if(vertex.size()-1>edgeVec.size()) bool=false;}
+		    if(bool){
+		    for(int i =0;i<edgeVec.size();i++){
+		    	for(int j =0;j<edgeVec.size();j++){
+		    		if( edgeVec.get(i).get(0).replaceAll(" ", "_").equals( edgeVec.get(j).get(1).replaceAll(" ", "_"))){
+		    			if( edgeVec.get(j).get(0).replaceAll(" ", "_").equals( edgeVec.get(i).get(1).replaceAll(" ", "_"))){
+		    				bool=false;
+		    			}
+		    		}
+		    	}
+		   }
+		    }
+		    boolean verif=true;
+		    Vector <Integer> vetc =new Vector <Integer> ();
+		    Vector <Integer> vetcVErtex =new Vector <Integer> ();
+		    vetc.clear();
+		    int j;
+		    int i;
+		    
+		    if(bool){
+		    for(i =0;i<vertex.size();i++){
+		    	if(vetcVErtex.contains(i)){continue;}
+		    	verif=true;
+		    	for( j =0;j<edgeVec.size();j++){
+		    		if(vetc.contains(j)){continue;}
+		    		if( edgeVec.get(j).get(0).equals(vertex.get(i))){
+		    			verif=false;break;
+		    		}
+		    		System.out.println("verif"+vertex.get(i));
+		    	}
+		    	if(verif){
+		    		vetcVErtex.add(i);
+		    		for(int k =0;k<edgeVec.size();k++){
+		    			if(vertex.get(i).equals(edgeVec.get(k).get(1))){vetc.add(k);}}
+		    		  if((edgeVec.size())==vetc.size()){break;}else{i=0;}
+		    		}
+		    	
+		    }
+		    if((edgeVec.size())!=vetc.size()){bool=false;}
+		    }
+		    if(bool){if(vertex.size()-1>edgeVec.size()) bool=false;}
+		   if(bool){
 		    Fenetre fen = new Fenetre();
 		    fen.setLocationRelativeTo(null);
-		    fen.setVisible(true);
-			
+		    fen.setVisible(true);}
+		   else{
+         	  JOptionPane.showMessageDialog(null,
+     				    "Erreur dans la construction du graphe",
+     				    "Erreur",
+     				    JOptionPane.ERROR_MESSAGE);
+           }
+              }
 		}
 		else if(e.getSource() ==button_4){
 			System.out.println("boutont");
@@ -1753,6 +1829,7 @@ public static String readInput(String filePath) {
 		    edgeVec = new ArrayList<List<String>>();
 		    PNTgraph.clearSelection(); 
 		    PNTgraph.selectAll();
+		    boolean bool =true;
 		     Object[] cells = PNTgraph.getSelectionCells();
               for (Object c : cells) { 
 			    mxCell cell = (mxCell) c; 
@@ -1763,11 +1840,19 @@ public static String readInput(String filePath) {
 			    }
 		    data2=new Object[vertex.size()][3];
 		    System.out.println("i= "+vertex.size());
-		    for(int i=0;i<vertex.size();i++){data2[i][0]=vertex.get(i);System.out.println("added to data2 :"+vertex.get(i));}
-		    
-		    for (Object c : cells) { 
+		    int nbrCell=0;
+		    for(int i=0;i<vertex.size();i++){
+		    	nbrCell++;
+		    	data2[i][0]=vertex.get(i);System.out.println("added to data2 :"+vertex.get(i));}
+		    if(nbrCell<=1){ JOptionPane.showMessageDialog(null,
+				    "Il faut au moins deux noeuds",
+				    "Erreur",
+				    JOptionPane.ERROR_MESSAGE);}
+		    else{
+		    for (Object c : cells) {
 		    mxCell cell = (mxCell) c; 
 		    if (cell.isEdge()) { 
+		    	
 		    	System.out.println(cell.getValue().toString()+" cell.getSource(): ");
 		    	mxCell edge;
 		    	edge=cell;
@@ -1814,6 +1899,7 @@ public static String readInput(String filePath) {
 					int pow =(int) Math.pow(2.0, num);
 					for(int i1=0;i1<pow;i1++){tempAffich.add((float) 0);}
 					donnéesDist.put(vertex.get(i), tempAffich);
+					if(num<1){ bool=false;}
 					 System.out.print(tempAffich+" size "+tempAffich.size());
 					data2[i][1]=tempAffich.toString();
 					data2[i][2]="modifier";
@@ -1823,12 +1909,58 @@ public static String readInput(String filePath) {
 		    }else{ 
 		      cell.getChildCount();
 		    }
+		    
 		    }
-
+	
+		 
+		    for(int i =0;i<edgeVec.size();i++){
+		    	for(int j =0;j<edgeVec.size();j++){
+		    		if( edgeVec.get(i).get(0).replaceAll(" ", "_").equals( edgeVec.get(j).get(1).replaceAll(" ", "_"))){
+		    			if( edgeVec.get(j).get(0).replaceAll(" ", "_").equals( edgeVec.get(i).get(1).replaceAll(" ", "_"))){
+		    				bool=false;
+		    			}
+		    		}
+		    	}
+		   }
+		    boolean verif=true;
+		    Vector <Integer> vetc =new Vector <Integer> ();
+		    vetc.clear();
+		    int j;
+		    int i;
+		    
+		    if(bool){
+		    for(i =0;i<vertex.size();i++){
+		    	verif=true;
+		    	for( j =0;j<edgeVec.size();j++){
+		    		if(vetc.contains(j)){continue;}
+		    		if( edgeVec.get(j).get(0).equals(vertex.get(i))){
+		    			verif=false;break;
+		    		}
+		    		System.out.println("verif"+verif+vetc);
+		    	}
+		    	if(verif){
+		    		for(int k =0;k<edgeVec.size();k++){
+		    			
+		    		if(vertex.get(i).equals(edgeVec.get(k).get(1))){vetc.add(k);}}
+		    		  if((edgeVec.size())==vetc.size()){break;}else{i=0;}
+		    		}
+		    	
+		    }
+		    if((edgeVec.size())!=vetc.size()){bool=false;}
+		    }
+		    if(bool){
+		
 		    Fenetre fen = new Fenetre();
 		    fen.setLocationRelativeTo(null);
 		    fen.setVisible(true);
-			
+		  
+		    }else{
+	         	  JOptionPane.showMessageDialog(null,
+	     				    "Erreur dans la construction du graphe",
+	     				    "Erreur",
+	     				    JOptionPane.ERROR_MESSAGE);
+	           }
+		    }
 		}
 		PNTgraph.setMultigraph(true);
 		PNTgraph.setAllowDanglingEdges(false);
