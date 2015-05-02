@@ -31,3 +31,4 @@ lib/
 # Backup files
 *.bak
 *~
+Thumbs.db
