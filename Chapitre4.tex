@@ -181,10 +181,20 @@ un script \textit{MATLAB} et de l'exécuter.
 \end{figure}
 
 Dans le même panneau, il y a aussi un panneau interne qui porte le nom \textit{Dempster-Shafer} pour exécuter
-notre application \appname qui a été expliquée auparavant.
+notre application \appname qui a été expliquée auparavant. Le dernier panneau est ce de la \textit{Logique possibiliste}.
+Il représente une interface pour un ensemble des programmes qui seront exécutés en série. Il permet de spécifier le nombre
+de noeuds dans un graphe possibiliste et le nombre maximal de parents pour chaque noeud, ainsi que le nombre de propositions
+(1 ou 2). Le programme génère un graphe aléatoire par lancer un script \textit{MATLAB} suivi par deux programmes
+\texttt{passage} et \texttt{inference}. Enfin, il affiche les résultats pour l'utilisateur.
 
 \begin{figure}[H]
-\centering
-\includegraphics[width=0.7\textwidth]{Incertain_DS}
+\begin{subfigure}{0.49\textwidth}
+\includegraphics[width=\textwidth]{Incertain_DS}
 \caption{Le panneau interne \textbf{Dempster-Shafer}}
+\end{subfigure}
+\begin{subfigure}{0.49\textwidth}
+\hfill
+\includegraphics[width=\textwidth]{Incertain_LP}
+\caption{Le panneau interne \textbf{Logique possibiliste}}
+\end{subfigure}
 \end{figure}

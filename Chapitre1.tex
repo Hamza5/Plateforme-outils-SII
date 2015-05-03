@@ -40,11 +40,11 @@ $[0,1]$, tel que les $m(A)$ s’additionnent à $1$.
 
 $m(\varnothing)$ --qui représente l’absence
 de solution-- est toujours égale à $0$ car $\Omega$ doit être exhaustive, et la somme de $m(A)$
-vaut $1$. Chaque élément A tel que $m(A) > 0$ est appelé élément focal.\cite{dubois1988theorie115}
+vaut $1$. Chaque élément A tel que $m(A) > 0$ est appelé élément focal.\cite{dubois1988theorie}
 
 Généralement, le \emph{bpa} n’est pas un équivalent de la fonction de probabilités classique. En effet,
 la valeur exacte de la probabilité (dans le sens classique) appartient à un intervalle borné par
-deux valeurs qui sont \emph{la croyance} et \emph{la plausibilité}.\cite{sentz2002combination14}
+deux valeurs qui sont \emph{la croyance} et \emph{la plausibilité}.\cite{sentz2002combination}
 
 Formellement, on peut représenter cela par :
 \begin{equation}
@@ -196,7 +196,7 @@ Dempster a introduit une règle connue sous le nom de règle de combinaison
 de Dempster (\emph{Dempster's Combination Rule}) pour fusionner deux pièces
 d’évidence qui peuvent être représentées par deux fonctions de croyance.Cette
 règle respecte les quatre propriétés algébriques suivantes : l’associativité,
-la commutativité, l’idempotence et la continuité.\cite{sentz2002combination16}
+la commutativité, l’idempotence et la continuité.\cite{sentz2002combination}
 
 Soient deux fonctions de masse $m_1(A)$ et $m_2(A)$ associées à deux fonctions
 de croyance $Bel_1(A)$ et $Bel_2(A)$ respectivement. $(Bel_1 \oplus Bel_2)(A)$
@@ -224,7 +224,7 @@ est représentée par les équations suivantes :
 m(\varnothing) = 0
 \end{equation}
 \begin{equation}
-m(A) = \frac{1}{1-K} \sum_{B \cap C = A \neq \varnothing} m_1(B) m_2(C) \cite{shafer1976mathematical58}
+m(A) = \frac{1}{1-K} \sum_{B \cap C = A \neq \varnothing} m_1(B) m_2(C) \cite{shafer1976mathematical}
 \end{equation}
 
 Cependant, la règle de Shafer n’est pas toujours satisfaisante à cause de la
@@ -251,7 +251,7 @@ m(\varnothing) = \sum_{B \cap C = \varnothing} m_1(B) m_2(C)
 \begin{equation}
 m(\Omega) = \left(1 - \sum_{A \in \mathcal{P}(\Omega)}
 \sum_{B \cap C = A \neq \varnothing} m_1(B) m_2(C)\right) +
-\sum_{B \cap C = \varnothing} m_1(B) m_2(C) \cite{martin2005fusion49}
+\sum_{B \cap C = \varnothing} m_1(B) m_2(C) \cite{martin2005fusion}
 \end{equation}
 
 \subsection{Combinaison disjonctive}
@@ -278,7 +278,7 @@ et Prade suppose que le conflit est dû à la non fiabilité des sources. La rè
 Dubois et Prade est définie comme suit :
 \begin{equation}
 m(A) = \sum_{B \cap C = A \neq \varnothing} m_1(B) m_2(C) +
-\sum_{\substack{B \cup C = A \neq \varnothing \\ B \cap C = \varnothing}} m_1(B) m_2(C) \cite{martin2005fusion53}
+\sum_{\substack{B \cup C = A \neq \varnothing \\ B \cap C = \varnothing}} m_1(B) m_2(C) \cite{martin2005fusion}
 \end{equation}
 
 \section{Décision}
@@ -306,7 +306,7 @@ de plausibilité. En d'autres termes, on choisit le $d_i$ qui résoud cette équ
 \begin{equation}
 Pl(\omega_i) = \max_{1 \leq j \leq n} Pl(\omega_j).
 \end{equation}
-Ainsi, cette méthode a un caractère très optimiste.\cite{kZebouchiThesis36}
+Ainsi, cette méthode a un caractère très optimiste.\cite{kZebouchiThesis}
 
 \subsection{Maximum de probabilité pignistique}
 
@@ -315,7 +315,7 @@ de masse $m(A)$ en une fonction de probabilité $BetP(\omega)$. Cette transforma
 est appelée \emph{transformation pignistique} et définie par cette équation :
 \begin{equation}
 BetP(\omega) = \sum_{\substack{A \subseteq \Omega \\
-\omega \in A}} \frac{1}{|A|}  \frac{m(A)}{1-m(\varnothing)}. \cite{smets2005decision3}
+\omega \in A}} \frac{1}{|A|}  \frac{m(A)}{1-m(\varnothing)}. \cite{smets2005decision}
 \end{equation}
 
 Dans cette transformation, la masse de croyance $m(A)$ est distribuée uniformément
