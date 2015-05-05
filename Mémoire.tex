@@ -15,6 +15,7 @@
 \usepackage{float} % Pour empêcher le déplacement des tableaux et des figures.
 \usepackage[french,longend,boxruled,algoruled,linesnumbered,algochapter]{algorithm2e}%pour les algorithmes
 \usepackage{babelbib} % Pour changer la langue dans la bibliographie
+\usepackage{amsthm} % Pour les exemples
 
 \graphicspath{ {pictures/} } % Spécifier le répertoire contenant les images  
 \DisableLigatures[f]{encoding=*}
@@ -46,6 +47,10 @@
 % Nom de la grande interface
 \newcommand{\platformename}{\textbf{plateforme d'outils} }
 \newcommand{\platformeName}{Plateforme d'outils }
+
+% Gérer les exemples
+\theoremstyle{definition}
+\newtheorem{exemple}{Exemple}
 
 \begin{document}
 \maketitle
