@@ -1035,447 +1035,447 @@ public static String readInput(String filePath) {
 		parent = graph.getDefaultParent();
 																																	
 //																																      
-																																	tabs = new JTabbedPane();
-																																	ScripteBNT = new JPanel();
-																																	tabs.addTab("script BNT ",ScripteBNT);
-																																	GridBagLayout gbl_ubcsatPage = new GridBagLayout();
-																																	gbl_ubcsatPage.columnWidths = new int[]{333, 115, 0};
-																																	gbl_ubcsatPage.rowHeights = new int[]{23, 226, 23, 0};
-																																	gbl_ubcsatPage.columnWeights = new double[]{1.0, 0.0, Double.MIN_VALUE};
-																																	gbl_ubcsatPage.rowWeights = new double[]{0.0, 1.0, 0.0, Double.MIN_VALUE};
-																																	ScripteBNT.setLayout(gbl_ubcsatPage);
-																																	
-																																	
-																																	btnNewButton = new JButton("Choisir un script");
-																																	btnNewButton.addActionListener(this);
-																																	
-																																	txtCheminVersLe = new JTextField();
-																																	txtCheminVersLe.setEditable(false);
-																																	txtCheminVersLe.setText("Chemin vers le script");
-																																	txtCheminVersLe.setToolTipText("");
-																																	txtCheminVersLe.setColumns(10);
-																																	//setFocusTraversalPolicy(new FocusTraversalOnArray(new Component[]{tabs, BNTScripteBuild, ScripteBNT, txtCheminVersLe, btnNewButton, textPane, btnClaculer}));
-																																	GridBagConstraints gbc_txtCheminVersLe = new GridBagConstraints();
-																																	gbc_txtCheminVersLe.fill = GridBagConstraints.HORIZONTAL;
-																																	gbc_txtCheminVersLe.insets = new Insets(0, 0, 5, 5);
-																																	gbc_txtCheminVersLe.gridx = 0;
-																																	gbc_txtCheminVersLe.gridy = 0;
-																																	ScripteBNT.add(txtCheminVersLe, gbc_txtCheminVersLe);
-																																	btnNewButton.setActionCommand("choisir");
-																																	GridBagConstraints gbc_btnNewButton = new GridBagConstraints();
-																																	gbc_btnNewButton.anchor = GridBagConstraints.WEST;
-																																	gbc_btnNewButton.insets = new Insets(0, 0, 5, 0);
-																																	gbc_btnNewButton.gridx = 1;
-																																	gbc_btnNewButton.gridy = 0;
-																																	ScripteBNT.add(btnNewButton, gbc_btnNewButton);
-																																	
-																																	textPaneSrptbnt = new JTextPane();
-																																	textPaneSrptbnt.setEditable(false);
-																																	GridBagConstraints gbc_textPane = new GridBagConstraints();
-																																	gbc_textPane.fill = GridBagConstraints.BOTH;
-																																	gbc_textPane.insets = new Insets(0, 0, 5, 0);
-																																	gbc_textPane.gridwidth = 2;
-																																	gbc_textPane.gridx = 0;
-																																	gbc_textPane.gridy = 1;
-																																	ScripteBNT.add(textPaneSrptbnt, gbc_textPane);
-																																	btnClaculer = new JButton("Claculer");
-																																	btnClaculer.setActionCommand("Claculer");
-																																	btnClaculer.addActionListener(this);
-																																	btnClaculer.setEnabled(false);
-																																	GridBagConstraints gbc_btnClaculer = new GridBagConstraints();
-																																	gbc_btnClaculer.gridwidth = 2;
-																																	gbc_btnClaculer.insets = new Insets(0, 0, 0, 5);
-																																	gbc_btnClaculer.gridx = 0;
-																																	gbc_btnClaculer.gridy = 2;
-																																	ScripteBNT.add(btnClaculer, gbc_btnClaculer);
-																																	
-																																			BNTScripteBuild = new JPanel();
-																																			tabs.addTab("BNT script build", BNTScripteBuild);
-																																			tabs.setEnabledAt(1, true);
-																																			
-																																			Noeuxbtn = new JButton("Ajouter noeud");
-																																			Noeuxbtn.addActionListener(this);
-																																			
-																																								final mxGraphComponent graphComponent = new mxGraphComponent(graph);
-																																								new mxKeyboardHandler(graphComponent);
-																																								btnValiderEtAttribuer = new JButton("Valider");
-																																								btnValiderEtAttribuer.addActionListener(this);
-																																								btnPrametres = new JButton("Parametres");
-																																								btnPrametres.addActionListener(this);
-																																								btnModifer = new JButton("Modifier");
-																																								btnModifer.addActionListener(this);
+		tabs = new JTabbedPane();
+		ScripteBNT = new JPanel();
+		tabs.addTab("script BNT ",ScripteBNT);
+		GridBagLayout gbl_ubcsatPage = new GridBagLayout();
+		gbl_ubcsatPage.columnWidths = new int[]{333, 115, 0};
+		gbl_ubcsatPage.rowHeights = new int[]{23, 226, 23, 0};
+		gbl_ubcsatPage.columnWeights = new double[]{1.0, 0.0, Double.MIN_VALUE};
+		gbl_ubcsatPage.rowWeights = new double[]{0.0, 1.0, 0.0, Double.MIN_VALUE};
+		ScripteBNT.setLayout(gbl_ubcsatPage);
+		
+		
+		btnNewButton = new JButton("Choisir un script");
+		btnNewButton.addActionListener(this);
+		
+		txtCheminVersLe = new JTextField();
+		txtCheminVersLe.setEditable(false);
+		txtCheminVersLe.setText("Chemin vers le script");
+		txtCheminVersLe.setToolTipText("");
+		txtCheminVersLe.setColumns(10);
+		//setFocusTraversalPolicy(new FocusTraversalOnArray(new Component[]{tabs, BNTScripteBuild, ScripteBNT, txtCheminVersLe, btnNewButton, textPane, btnClaculer}));
+		GridBagConstraints gbc_txtCheminVersLe = new GridBagConstraints();
+		gbc_txtCheminVersLe.fill = GridBagConstraints.HORIZONTAL;
+		gbc_txtCheminVersLe.insets = new Insets(0, 0, 5, 5);
+		gbc_txtCheminVersLe.gridx = 0;
+		gbc_txtCheminVersLe.gridy = 0;
+		ScripteBNT.add(txtCheminVersLe, gbc_txtCheminVersLe);
+		btnNewButton.setActionCommand("choisir");
+		GridBagConstraints gbc_btnNewButton = new GridBagConstraints();
+		gbc_btnNewButton.anchor = GridBagConstraints.WEST;
+		gbc_btnNewButton.insets = new Insets(0, 0, 5, 0);
+		gbc_btnNewButton.gridx = 1;
+		gbc_btnNewButton.gridy = 0;
+		ScripteBNT.add(btnNewButton, gbc_btnNewButton);
+		
+		textPaneSrptbnt = new JTextPane();
+		textPaneSrptbnt.setEditable(false);
+		GridBagConstraints gbc_textPane = new GridBagConstraints();
+		gbc_textPane.fill = GridBagConstraints.BOTH;
+		gbc_textPane.insets = new Insets(0, 0, 5, 0);
+		gbc_textPane.gridwidth = 2;
+		gbc_textPane.gridx = 0;
+		gbc_textPane.gridy = 1;
+		ScripteBNT.add(textPaneSrptbnt, gbc_textPane);
+		btnClaculer = new JButton("Claculer");
+		btnClaculer.setActionCommand("Claculer");
+		btnClaculer.addActionListener(this);
+		btnClaculer.setEnabled(false);
+		GridBagConstraints gbc_btnClaculer = new GridBagConstraints();
+		gbc_btnClaculer.gridwidth = 2;
+		gbc_btnClaculer.insets = new Insets(0, 0, 0, 5);
+		gbc_btnClaculer.gridx = 0;
+		gbc_btnClaculer.gridy = 2;
+		ScripteBNT.add(btnClaculer, gbc_btnClaculer);
+		
+				BNTScripteBuild = new JPanel();
+				tabs.addTab("BNT script build", BNTScripteBuild);
+				tabs.setEnabledAt(1, true);
+				
+				Noeuxbtn = new JButton("Ajouter noeud");
+				Noeuxbtn.addActionListener(this);
+				
+									final mxGraphComponent graphComponent = new mxGraphComponent(graph);
+									new mxKeyboardHandler(graphComponent);
+									btnValiderEtAttribuer = new JButton("Valider");
+									btnValiderEtAttribuer.addActionListener(this);
+									btnPrametres = new JButton("Parametres");
+									btnPrametres.addActionListener(this);
+									btnModifer = new JButton("Modifier");
+									btnModifer.addActionListener(this);
 
-																																									btnModifer.setEnabled(false);
-																																									btnPrametres.setEnabled(false);
-																																									
-																																									Suppbutton = new JButton("Supprimer");
-																																									Suppbutton.addActionListener(this);
-																																									Suppbutton.setVerticalAlignment(SwingConstants.TOP);
-																																									Suppbutton.addActionListener(this);
-																																									Suppbutton.setVerticalAlignment(SwingConstants.TOP);
-																																									GroupLayout gl_BNTScripteBuild = new GroupLayout(BNTScripteBuild);
-																																									gl_BNTScripteBuild.setHorizontalGroup(
-																																										gl_BNTScripteBuild.createParallelGroup(Alignment.LEADING)
-																																											.addGroup(gl_BNTScripteBuild.createSequentialGroup()
-																																												.addGroup(gl_BNTScripteBuild.createParallelGroup(Alignment.LEADING)
-																																													.addComponent(Noeuxbtn, GroupLayout.PREFERRED_SIZE, 101, GroupLayout.PREFERRED_SIZE)
-																																													.addComponent(Suppbutton, GroupLayout.PREFERRED_SIZE, 101, GroupLayout.PREFERRED_SIZE)
-																																													.addComponent(btnValiderEtAttribuer, GroupLayout.PREFERRED_SIZE, 101, GroupLayout.PREFERRED_SIZE)
-																																													.addComponent(btnModifer, GroupLayout.PREFERRED_SIZE, 101, GroupLayout.PREFERRED_SIZE)
-																																													.addComponent(btnPrametres, GroupLayout.PREFERRED_SIZE, 100, GroupLayout.PREFERRED_SIZE))
-																																												.addPreferredGap(ComponentPlacement.RELATED)
-																																												.addComponent(graphComponent, GroupLayout.DEFAULT_SIZE, 338, Short.MAX_VALUE))
-																																									);
-																																									gl_BNTScripteBuild.setVerticalGroup(
-																																										gl_BNTScripteBuild.createParallelGroup(Alignment.LEADING)
-																																											.addGroup(gl_BNTScripteBuild.createSequentialGroup()
-																																												.addGap(6)
-																																												.addGroup(gl_BNTScripteBuild.createParallelGroup(Alignment.LEADING)
-																																													.addComponent(graphComponent, GroupLayout.DEFAULT_SIZE, 271, Short.MAX_VALUE)
-																																													.addGroup(gl_BNTScripteBuild.createSequentialGroup()
-																																														.addComponent(Noeuxbtn)
-																																														.addPreferredGap(ComponentPlacement.RELATED)
-																																														.addComponent(Suppbutton)
-																																														.addPreferredGap(ComponentPlacement.RELATED)
-																																														.addComponent(btnValiderEtAttribuer)
-																																														.addPreferredGap(ComponentPlacement.RELATED)
-																																														.addComponent(btnModifer)
-																																														.addPreferredGap(ComponentPlacement.RELATED)
-																																														.addComponent(btnPrametres)
-																																														.addContainerGap())))
-																																									);
-																																									BNTScripteBuild.setLayout(gl_BNTScripteBuild);
-																																	PNTScripteBuild= new JPanel();
-																																	tabs.addTab("PNT script build", PNTScripteBuild);
-																																	mxGraphComponent PNTgraphComponent = new mxGraphComponent(PNTgraph);
-																																	new mxKeyboardHandler( PNTgraphComponent);
-																																	PNTScripteBuild.add(PNTgraphComponent);
-																																	
-																																	button = new JButton("Ajouter noeud");
-																																	button.addActionListener(this);
-																																	final JRadioButton rbt_1;
-																																	button_1 = new JButton("Supprimer");
-																																	button_1.addActionListener(this);
-																																	button_1.setVerticalAlignment(SwingConstants.TOP);
-																																	
-																																	button_2 = new JButton("Valider");
-																																	button_2.addActionListener(this);
-																																	
-																																	button_3 = new JButton("Modifier");
-																																	button_3.setEnabled(false);
-																																	button_3.addActionListener(this);
-																																	
-																																	button_4 = new JButton("Parametres");
-																																	button_4.setEnabled(false);
-																																	button_4.addActionListener(this);
-																																	
-																																	GroupLayout gl_PNTScripteBuild = new GroupLayout(PNTScripteBuild);
-																																	gl_PNTScripteBuild.setHorizontalGroup(
-																																		gl_PNTScripteBuild.createParallelGroup(Alignment.LEADING)
-																																			.addGroup(gl_PNTScripteBuild.createSequentialGroup()
-																																				.addGroup(gl_PNTScripteBuild.createParallelGroup(Alignment.LEADING)
-																																					.addComponent(button_1, GroupLayout.PREFERRED_SIZE, 101, GroupLayout.PREFERRED_SIZE)
-																																					.addComponent(button_2, GroupLayout.PREFERRED_SIZE, 101, GroupLayout.PREFERRED_SIZE)
-																																					.addComponent(button_3, GroupLayout.PREFERRED_SIZE, 101, GroupLayout.PREFERRED_SIZE)
-																																					.addComponent(button, GroupLayout.PREFERRED_SIZE, 101, GroupLayout.PREFERRED_SIZE)
-																																					.addComponent(button_4, GroupLayout.PREFERRED_SIZE, 100, GroupLayout.PREFERRED_SIZE))
-																																				.addPreferredGap(ComponentPlacement.RELATED)
-																																				.addComponent(PNTgraphComponent, GroupLayout.DEFAULT_SIZE, 338, Short.MAX_VALUE))
-																																	);
-																																	gl_PNTScripteBuild.setVerticalGroup(
-																																		gl_PNTScripteBuild.createParallelGroup(Alignment.LEADING)
-																																			.addGroup(gl_PNTScripteBuild.createSequentialGroup()
-																																				.addGap(6)
-																																				.addGroup(gl_PNTScripteBuild.createParallelGroup(Alignment.LEADING)
-																																					.addComponent(PNTgraphComponent, GroupLayout.DEFAULT_SIZE, 271, Short.MAX_VALUE)
-																																					.addGroup(gl_PNTScripteBuild.createSequentialGroup()
-																																						.addComponent(button)
-																																						.addPreferredGap(ComponentPlacement.RELATED)
-																																						.addComponent(button_1)
-																																						.addPreferredGap(ComponentPlacement.RELATED)
-																																						.addComponent(button_2)
-																																						.addPreferredGap(ComponentPlacement.RELATED)
-																																						.addComponent(button_3)
-																																						.addPreferredGap(ComponentPlacement.RELATED)
-																																						.addComponent(button_4)
-																																						.addContainerGap())))
-																																	);
-																																	PNTScripteBuild.setLayout(gl_PNTScripteBuild);
+										btnModifer.setEnabled(false);
+										btnPrametres.setEnabled(false);
+										
+										Suppbutton = new JButton("Supprimer");
+										Suppbutton.addActionListener(this);
+										Suppbutton.setVerticalAlignment(SwingConstants.TOP);
+										Suppbutton.addActionListener(this);
+										Suppbutton.setVerticalAlignment(SwingConstants.TOP);
+										GroupLayout gl_BNTScripteBuild = new GroupLayout(BNTScripteBuild);
+										gl_BNTScripteBuild.setHorizontalGroup(
+											gl_BNTScripteBuild.createParallelGroup(Alignment.LEADING)
+												.addGroup(gl_BNTScripteBuild.createSequentialGroup()
+													.addGroup(gl_BNTScripteBuild.createParallelGroup(Alignment.LEADING)
+														.addComponent(Noeuxbtn, GroupLayout.PREFERRED_SIZE, 101, GroupLayout.PREFERRED_SIZE)
+														.addComponent(Suppbutton, GroupLayout.PREFERRED_SIZE, 101, GroupLayout.PREFERRED_SIZE)
+														.addComponent(btnValiderEtAttribuer, GroupLayout.PREFERRED_SIZE, 101, GroupLayout.PREFERRED_SIZE)
+														.addComponent(btnModifer, GroupLayout.PREFERRED_SIZE, 101, GroupLayout.PREFERRED_SIZE)
+														.addComponent(btnPrametres, GroupLayout.PREFERRED_SIZE, 100, GroupLayout.PREFERRED_SIZE))
+													.addPreferredGap(ComponentPlacement.RELATED)
+													.addComponent(graphComponent, GroupLayout.DEFAULT_SIZE, 338, Short.MAX_VALUE))
+										);
+										gl_BNTScripteBuild.setVerticalGroup(
+											gl_BNTScripteBuild.createParallelGroup(Alignment.LEADING)
+												.addGroup(gl_BNTScripteBuild.createSequentialGroup()
+													.addGap(6)
+													.addGroup(gl_BNTScripteBuild.createParallelGroup(Alignment.LEADING)
+														.addComponent(graphComponent, GroupLayout.DEFAULT_SIZE, 271, Short.MAX_VALUE)
+														.addGroup(gl_BNTScripteBuild.createSequentialGroup()
+															.addComponent(Noeuxbtn)
+															.addPreferredGap(ComponentPlacement.RELATED)
+															.addComponent(Suppbutton)
+															.addPreferredGap(ComponentPlacement.RELATED)
+															.addComponent(btnValiderEtAttribuer)
+															.addPreferredGap(ComponentPlacement.RELATED)
+															.addComponent(btnModifer)
+															.addPreferredGap(ComponentPlacement.RELATED)
+															.addComponent(btnPrametres)
+															.addContainerGap())))
+										);
+										BNTScripteBuild.setLayout(gl_BNTScripteBuild);
+		PNTScripteBuild= new JPanel();
+		tabs.addTab("PNT script build", PNTScripteBuild);
+		mxGraphComponent PNTgraphComponent = new mxGraphComponent(PNTgraph);
+		new mxKeyboardHandler( PNTgraphComponent);
+		PNTScripteBuild.add(PNTgraphComponent);
+		
+		button = new JButton("Ajouter noeud");
+		button.addActionListener(this);
+		final JRadioButton rbt_1;
+		button_1 = new JButton("Supprimer");
+		button_1.addActionListener(this);
+		button_1.setVerticalAlignment(SwingConstants.TOP);
+		
+		button_2 = new JButton("Valider");
+		button_2.addActionListener(this);
+		
+		button_3 = new JButton("Modifier");
+		button_3.setEnabled(false);
+		button_3.addActionListener(this);
+		
+		button_4 = new JButton("Parametres");
+		button_4.setEnabled(false);
+		button_4.addActionListener(this);
+		
+		GroupLayout gl_PNTScripteBuild = new GroupLayout(PNTScripteBuild);
+		gl_PNTScripteBuild.setHorizontalGroup(
+			gl_PNTScripteBuild.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_PNTScripteBuild.createSequentialGroup()
+					.addGroup(gl_PNTScripteBuild.createParallelGroup(Alignment.LEADING)
+						.addComponent(button_1, GroupLayout.PREFERRED_SIZE, 101, GroupLayout.PREFERRED_SIZE)
+						.addComponent(button_2, GroupLayout.PREFERRED_SIZE, 101, GroupLayout.PREFERRED_SIZE)
+						.addComponent(button_3, GroupLayout.PREFERRED_SIZE, 101, GroupLayout.PREFERRED_SIZE)
+						.addComponent(button, GroupLayout.PREFERRED_SIZE, 101, GroupLayout.PREFERRED_SIZE)
+						.addComponent(button_4, GroupLayout.PREFERRED_SIZE, 100, GroupLayout.PREFERRED_SIZE))
+					.addPreferredGap(ComponentPlacement.RELATED)
+					.addComponent(PNTgraphComponent, GroupLayout.DEFAULT_SIZE, 338, Short.MAX_VALUE))
+		);
+		gl_PNTScripteBuild.setVerticalGroup(
+			gl_PNTScripteBuild.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_PNTScripteBuild.createSequentialGroup()
+					.addGap(6)
+					.addGroup(gl_PNTScripteBuild.createParallelGroup(Alignment.LEADING)
+						.addComponent(PNTgraphComponent, GroupLayout.DEFAULT_SIZE, 271, Short.MAX_VALUE)
+						.addGroup(gl_PNTScripteBuild.createSequentialGroup()
+							.addComponent(button)
+							.addPreferredGap(ComponentPlacement.RELATED)
+							.addComponent(button_1)
+							.addPreferredGap(ComponentPlacement.RELATED)
+							.addComponent(button_2)
+							.addPreferredGap(ComponentPlacement.RELATED)
+							.addComponent(button_3)
+							.addPreferredGap(ComponentPlacement.RELATED)
+							.addComponent(button_4)
+							.addContainerGap())))
+		);
+		PNTScripteBuild.setLayout(gl_PNTScripteBuild);
 //																																								
-																																								final GroupLayout groupLayout = new GroupLayout(this);
-																																								groupLayout.setHorizontalGroup(
-																																									groupLayout.createParallelGroup(Alignment.LEADING)
-																																										.addGroup(groupLayout.createSequentialGroup()
-																																											.addComponent(tabs, GroupLayout.PREFERRED_SIZE, 449, Short.MAX_VALUE)
-																																											.addContainerGap())
-																																								);
-																																								groupLayout.setVerticalGroup(
-																																									groupLayout.createParallelGroup(Alignment.LEADING)
-																																										.addComponent(tabs, GroupLayout.DEFAULT_SIZE, 309, Short.MAX_VALUE)
-																																								);
-																																								setLayout(groupLayout);
-																																								 ChangeListener changeListener = new ChangeListener() {
-																																								      public void stateChanged(ChangeEvent changeEvent) {
-																																								    	  donnéesDist.clear();
-																																								        JTabbedPane sourceTabbedPane = (JTabbedPane) changeEvent.getSource();
-																																								        int index = sourceTabbedPane.getSelectedIndex();
-																																								        System.out.println("Tab changed to: " + sourceTabbedPane.getTitleAt(index));
-																																								        SelectedTAb=sourceTabbedPane.getTitleAt(index);
+					final GroupLayout groupLayout = new GroupLayout(this);
+					groupLayout.setHorizontalGroup(
+						groupLayout.createParallelGroup(Alignment.LEADING)
+							.addGroup(groupLayout.createSequentialGroup()
+								.addComponent(tabs, GroupLayout.PREFERRED_SIZE, 449, Short.MAX_VALUE)
+								.addContainerGap())
+					);
+					groupLayout.setVerticalGroup(
+						groupLayout.createParallelGroup(Alignment.LEADING)
+							.addComponent(tabs, GroupLayout.DEFAULT_SIZE, 309, Short.MAX_VALUE)
+					);
+					setLayout(groupLayout);
+					 ChangeListener changeListener = new ChangeListener() {
+					      public void stateChanged(ChangeEvent changeEvent) {
+					    	  donnéesDist.clear();
+					        JTabbedPane sourceTabbedPane = (JTabbedPane) changeEvent.getSource();
+					        int index = sourceTabbedPane.getSelectedIndex();
+					        System.out.println("Tab changed to: " + sourceTabbedPane.getTitleAt(index));
+					        SelectedTAb=sourceTabbedPane.getTitleAt(index);
 //																																								        
-																																								        
-																																								      }
-																																								    };		
-																																								    DempsterShafer = new JPanel();
-																																								
-																																									tabs.addTab("Dempster-Shafer", DempsterShafer);
-																																									 String DSButtonText = "Lancer le Combinateur d'évidences";
-																																									 String DSDescription = "<html><body style=\"text-align: center;\">Ce logigiel permet d'appliquer la théorie de Dempster-Shafer sur un problème d'incertain dans un système multi-sources</body></html>";
-																																								     int spacing = 5;
-																																								      BoxLayout mainLayout = new BoxLayout(this, BoxLayout.PAGE_AXIS);
-																																								        setLayout(mainLayout);
-																																								       
-																																								        JButton DecPosButton = new JButton(new AbstractAction(DSButtonText) {
-																																								          public void actionPerformed(ActionEvent actionEvent) {
-																																								           
-																																								                    
-																																								                    Runnable externalProgramLauncher = new Runnable() {
-																																								                    
-																																								                        public void run() {
-																																								                            try {
-																																								                            	final URL decPosURL = ClassLoader.getSystemClassLoader().getResource("Plugins/DempsterShafer");
-																																								                            	 //if (decPosURL == null) throw new FileNotFoundException("DecPos folder not found");
-																																								                            //	System.out.println("path = "+decPosURL);
-																																								                            	 //Process child = Runtime.getRuntime().exec();
-																																								                            	 final File decPosFolderPath = new File(decPosURL.toURI());
+					        
+					      }
+					    };		
+					    DempsterShafer = new JPanel();
+									
+			tabs.addTab("Dempster-Shafer", DempsterShafer);
+			 String DSButtonText = "Lancer le Combinateur d'évidences";
+			 String DSDescription = "<html><body style=\"text-align: center;\">Ce logigiel permet d'appliquer la théorie de Dempster-Shafer sur un problème d'incertain dans un système multi-sources</body></html>";
+		     int spacing = 5;
+		      BoxLayout mainLayout = new BoxLayout(this, BoxLayout.PAGE_AXIS);
+		        setLayout(mainLayout);
+		       
+		        JButton DecPosButton = new JButton(new AbstractAction(DSButtonText) {
+		          public void actionPerformed(ActionEvent actionEvent) {
+		           
+		                    
+		                    Runnable externalProgramLauncher = new Runnable() {
+		                    
+		                        public void run() {
+		                            try {
+		                            	final URL decPosURL = ClassLoader.getSystemClassLoader().getResource("Plugins/DempsterShafer");
+		                            	 //if (decPosURL == null) throw new FileNotFoundException("DecPos folder not found");
+		                            //	System.out.println("path = "+decPosURL);
+		                            	 //Process child = Runtime.getRuntime().exec();
+		                            	 final File decPosFolderPath = new File(decPosURL.toURI());
 //																																								                            	 System.out.println("path = "+decPosFolderPath.getAbsolutePath());
 //																																								                            	 Process child2=Runtime.getRuntime().exec("cd", null,decPosFolderPath);
-																																								                            	 ProcessBuilder decPosPB;
-																																								                            	 if (System.getProperty("os.name").startsWith("Windows")) {
-																																								                            		  decPosPB = new ProcessBuilder("python","MainGUI.py");
-																																								                            	    } else {
-																																								                            	    	 decPosPB = new ProcessBuilder("python3","MainGUI.py");
-																																								                            	    } 
-																																								                            	
-																																								                                 decPosPB.directory(decPosFolderPath);
-																																								                                 decPosPB.redirectError(ProcessBuilder.Redirect.INHERIT); // Show DecPos errors
-																																								                                 decPosPB.start();
-																																								                            } catch (IOException e) {
-																																								                            	
-																																								                            	JOptionPane.showMessageDialog(DempsterShafer, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-																																								                            } catch (URISyntaxException e) {
-																																								                            	JOptionPane.showMessageDialog(DempsterShafer, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-																																															}
-																																								                        }
-																																								                    };
-																																								                    Thread t = new Thread(externalProgramLauncher);
-																																								                    t.start();
-																																								               
-																																								            }
-																																								        });
-																																								        
-																																								        DecPosButton.setMnemonic('P');
-																																								        Box DSBox = new Box(BoxLayout.PAGE_AXIS);
-																																								        DSBox.setBorder(new TitledBorder("Combinateur d'évidences"));
-																																								        Box descriptionBox =  Box.createHorizontalBox();
-																																								        descriptionBox.add(new JLabel(DSDescription,SwingConstants.CENTER));
-																																								        descriptionBox.setBorder(new EmptyBorder(spacing, spacing, spacing, spacing));
-																																								        DSBox.add(descriptionBox);
-																																								        Box buttonBox = Box.createHorizontalBox();
-																																								        buttonBox.setBorder(descriptionBox.getBorder());
-																																								        buttonBox.add(DecPosButton);
-																																								        DSBox.add(buttonBox);
-																																								        GroupLayout gl_DempsterShafer = new GroupLayout(DempsterShafer);
-																																								        gl_DempsterShafer.setHorizontalGroup(
-																																								        	gl_DempsterShafer.createParallelGroup(Alignment.LEADING)
-																																								        		.addGroup(gl_DempsterShafer.createSequentialGroup()
-																																								        			.addComponent(DSBox, GroupLayout.DEFAULT_SIZE, 832, Short.MAX_VALUE)
-																																								        			.addGap(0))
-																																								        );
-																																								        gl_DempsterShafer.setVerticalGroup(
-																																								        	gl_DempsterShafer.createParallelGroup(Alignment.LEADING)
-																																								        		.addGroup(gl_DempsterShafer.createSequentialGroup()
-																																								        			.addGap(5)
-																																								        			.addComponent(DSBox, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-																																								        			.addContainerGap(192, Short.MAX_VALUE))
-																																								        );
-																																								        DempsterShafer.setLayout(gl_DempsterShafer);
-																																								        
-																																								        logiquePossibiliste = new JPanel();
-																																								       
-																																										tabs.addTab("Logique Possibiliste", logiquePossibiliste);
-																																										
-																																										 
-																																									      BoxLayout NPmainLayout = new BoxLayout(this, BoxLayout.PAGE_AXIS);
-																																									        setLayout(NPmainLayout);
-																																									        GridBagLayout gbl_logiquePossibiliste = new GridBagLayout();
-																																									        gbl_logiquePossibiliste.columnWidths = new int[]{46, 173, 12, 61, 161, 0};
-																																									        gbl_logiquePossibiliste.rowHeights = new int[]{38, 20, 20, 23, 23, 131, 0};
-																																									        gbl_logiquePossibiliste.columnWeights = new double[]{0.0, 0.0, 1.0, 1.0, 0.0, Double.MIN_VALUE};
-																																									        gbl_logiquePossibiliste.rowWeights = new double[]{1.0, 0.0, 0.0, 0.0, 0.0, 1.0, Double.MIN_VALUE};
-																																									        logiquePossibiliste.setLayout(gbl_logiquePossibiliste);
-																																									        
-																																									        JLabel label = new JLabel("Nombre de noeuds");
-																																									        GridBagConstraints gbc_label = new GridBagConstraints();
-																																									        gbc_label.anchor = GridBagConstraints.WEST;
-																																									        gbc_label.insets = new Insets(0, 0, 5, 5);
-																																									        gbc_label.gridx = 1;
-																																									        gbc_label.gridy = 1;
-																																									        logiquePossibiliste.add(label, gbc_label);
-																																									        
-																																									        JLabel label_1 = new JLabel("Nombre de parents maximal ");												;
-																																									  
-																																									        
-																																									        spinner = new JSpinner( 
-																																									        		new SpinnerNumberModel(1, 1, 1000, 1));
-																																									        JFormattedTextField txt = ((JSpinner.NumberEditor) spinner.getEditor()).getTextField();
-																																									        GridBagConstraints gbc_spinner = new GridBagConstraints();
-																																									        gbc_spinner.gridwidth = 2;
-																																									        gbc_spinner.fill = GridBagConstraints.HORIZONTAL;
-																																									        gbc_spinner.insets = new Insets(0, 0, 5, 5);
-																																									        gbc_spinner.gridx = 2;
-																																									        gbc_spinner.gridy = 1;
-																																									        logiquePossibiliste.add(spinner, gbc_spinner);
-																																									        GridBagConstraints gbc_label_1 = new GridBagConstraints();
-																																									        gbc_label_1.anchor = GridBagConstraints.WEST;
-																																									        gbc_label_1.insets = new Insets(0, 0, 5, 5);
-																																									        gbc_label_1.gridx = 1;
-																																									        gbc_label_1.gridy = 2;
-																																									        logiquePossibiliste.add(label_1, gbc_label_1);
-																																									       
-																																									        
-																																									        spinner_1 = new JSpinner(new SpinnerNumberModel(1, 1, 1000, 1));
-																																									        JFormattedTextField txt1 = ((JSpinner.NumberEditor) spinner_1.getEditor()).getTextField();
-																																									        GridBagConstraints gbc_spinner_1 = new GridBagConstraints();
-																																									        gbc_spinner_1.gridwidth = 2;
-																																									        gbc_spinner_1.fill = GridBagConstraints.HORIZONTAL;
-																																									        gbc_spinner_1.insets = new Insets(0, 0, 5, 5);
-																																									        gbc_spinner_1.gridx = 2;
-																																									        gbc_spinner_1.gridy = 2;
-																																									        logiquePossibiliste.add(spinner_1, gbc_spinner_1);
-																																									        JLabel label_2 = new JLabel("Nombre de propositions");
-																																									        GridBagConstraints gbc_label_2 = new GridBagConstraints();
-																																									        gbc_label_2.anchor = GridBagConstraints.WEST;
-																																									        gbc_label_2.insets = new Insets(0, 0, 5, 5);
-																																									        gbc_label_2.gridx = 1;
-																																									        gbc_label_2.gridy = 3;
-																																									        logiquePossibiliste.add(label_2, gbc_label_2);
-																																									        ButtonGroup group = new ButtonGroup();
-																																									        
-																																									         rbt_1 = new JRadioButton("1",true);
-																																									        GridBagConstraints gbc_rdbtnNewRadioButton_2 = new GridBagConstraints();
-																																									        gbc_rdbtnNewRadioButton_2.fill = GridBagConstraints.HORIZONTAL;
-																																									        gbc_rdbtnNewRadioButton_2.anchor = GridBagConstraints.NORTH;
-																																									        gbc_rdbtnNewRadioButton_2.insets = new Insets(0, 0, 5, 5);
-																																									        gbc_rdbtnNewRadioButton_2.gridx = 2;
-																																									        gbc_rdbtnNewRadioButton_2.gridy = 3;
-																																									        logiquePossibiliste.add(rbt_1, gbc_rdbtnNewRadioButton_2);
-																																									        group.add(rbt_1);
-																																									        
-																																									        JRadioButton radioButton = new JRadioButton("2");
-																																									        GridBagConstraints gbc_radioButton = new GridBagConstraints();
-																																									        gbc_radioButton.gridwidth = 2;
-																																									        gbc_radioButton.fill = GridBagConstraints.HORIZONTAL;
-																																									        gbc_radioButton.anchor = GridBagConstraints.NORTH;
-																																									        gbc_radioButton.insets = new Insets(0, 0, 5, 0);
-																																									        gbc_radioButton.gridx = 3;
-																																									        gbc_radioButton.gridy = 3;
-																																									        logiquePossibiliste.add(radioButton, gbc_radioButton);
-																																									        group.add(radioButton);
-																																									        JButton btnCaculer = new JButton("Calculer");
-																																									        btnCaculer.setMnemonic(KeyEvent.VK_C);
-																																									        btnCaculer.addActionListener(new ActionListener() {
-																																									        	 int nbrNod=0;
-																																									        	 int parMax=0;
-																																									        	 
-																																									          public void actionPerformed(ActionEvent e)
-																																									            {
-																																									        	    nbrNod= (Integer)spinner.getValue();
-																																									            	parMax=(Integer)spinner_1.getValue();
-																																									            	
-																																									            	  Path path = null;	
-																																									            	 if(rbt_1.isSelected()){
-																																									            	     path = Paths.get("C:","cygwin","home","licence","prop1evid.m");	
-																																									            	     }
-																																									            	 else{
-																																									            		 path = Paths.get("C:","cygwin","home","licence","prop2evid.m");
-																																									            	 }
-																																									       
-																																									            	    String s=LireSousFormeString(path.toAbsolutePath().toString());													
-																																									            	
-																																									            	   s=s.replaceAll("nb_nodes_JAVA",new Integer(nbrNod).toString());
-																																									            
-																																									            	   s=s.replaceAll("nb_parent_max_JAVA",new Integer(parMax).toString());
-																																									            	    System.out.println("s "+s);
-																																									            	    PrintWriter out = null;
-																																														try {
-																																															out = new PrintWriter("calcule.m");
-																																														} catch (FileNotFoundException e1) {
-																																														
-																																															e1.printStackTrace();
-																																														}
-																																									            	    out.println(s);
-																																									            	    out.close();
-																																									            	    path = Paths.get(System.getProperty("user.dir"),"src","Plugins","incertain","Pnt");	
-																																									            	   
-																																									            	    final String cmd="matlab -nodesktop -nodisplay -minimize -noFigureWindows -nosplash -logfile -wait output -r \"addpath(genpath(\'"+path.toAbsolutePath().toString()+"'));cd "+System.getProperty("user.dir")+"; calcule;\";quit;";
-																																									                    Runnable externalProgramLauncher = new Runnable() {
-																																									                    	Process process = null;
-																																									                        public void run() {
-																																					                            try {
-																																					                            	process=Runtime.getRuntime().exec(cmd);
-																																					                            } catch (IOException e) {
-																																					                                JOptionPane.showMessageDialog(logiquePossibiliste, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-																																					                            }
-																																					                            try {
-																																													process.waitFor();
-																																												} catch (InterruptedException e) {
-																																													JOptionPane.showMessageDialog(new JFrame(),
-																																					            						    "Erreur d'execution du script \nScripte non trouvée!",
-																																					            							   "Erreur",
-																																					            							   JOptionPane.ERROR_MESSAGE);
-																																												
-																																												}
+		                            	 ProcessBuilder decPosPB;
+		                            	 if (System.getProperty("os.name").startsWith("Windows")) {
+		                            		  decPosPB = new ProcessBuilder("python","MainGUI.py");
+		                            	    } else {
+		                            	    	 decPosPB = new ProcessBuilder("python3","MainGUI.py");
+		                            	    } 
+		                            	
+		                                 decPosPB.directory(decPosFolderPath);
+		                                 decPosPB.redirectError(ProcessBuilder.Redirect.INHERIT); // Show DecPos errors
+		                                 decPosPB.start();
+		                            } catch (IOException e) {
+		                            	
+		                            	JOptionPane.showMessageDialog(DempsterShafer, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+		                            } catch (URISyntaxException e) {
+		                            	JOptionPane.showMessageDialog(DempsterShafer, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+									}
+		                        }
+		                    };
+		                    Thread t = new Thread(externalProgramLauncher);
+		                    t.start();
+		               
+		            }
+		        });
+	        
+	        DecPosButton.setMnemonic('P');
+	        Box DSBox = new Box(BoxLayout.PAGE_AXIS);
+	        DSBox.setBorder(new TitledBorder("Combinateur d'évidences"));
+	        Box descriptionBox =  Box.createHorizontalBox();
+	        descriptionBox.add(new JLabel(DSDescription,SwingConstants.CENTER));
+	        descriptionBox.setBorder(new EmptyBorder(spacing, spacing, spacing, spacing));
+	        DSBox.add(descriptionBox);
+	        Box buttonBox = Box.createHorizontalBox();
+	        buttonBox.setBorder(descriptionBox.getBorder());
+	        buttonBox.add(DecPosButton);
+	        DSBox.add(buttonBox);
+	        GroupLayout gl_DempsterShafer = new GroupLayout(DempsterShafer);
+	        gl_DempsterShafer.setHorizontalGroup(
+	        	gl_DempsterShafer.createParallelGroup(Alignment.LEADING)
+	        		.addGroup(gl_DempsterShafer.createSequentialGroup()
+	        			.addComponent(DSBox, GroupLayout.DEFAULT_SIZE, 832, Short.MAX_VALUE)
+	        			.addGap(0))
+	        );
+	        gl_DempsterShafer.setVerticalGroup(
+	        	gl_DempsterShafer.createParallelGroup(Alignment.LEADING)
+	        		.addGroup(gl_DempsterShafer.createSequentialGroup()
+	        			.addGap(5)
+	        			.addComponent(DSBox, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+	        			.addContainerGap(192, Short.MAX_VALUE))
+	        );
+	        DempsterShafer.setLayout(gl_DempsterShafer);
+	        
+	        logiquePossibiliste = new JPanel();
+	       
+			tabs.addTab("Logique Possibiliste", logiquePossibiliste);
+			
+			 
+		      BoxLayout NPmainLayout = new BoxLayout(this, BoxLayout.PAGE_AXIS);
+		        setLayout(NPmainLayout);
+		        GridBagLayout gbl_logiquePossibiliste = new GridBagLayout();
+		        gbl_logiquePossibiliste.columnWidths = new int[]{46, 173, 12, 61, 161, 0};
+		        gbl_logiquePossibiliste.rowHeights = new int[]{38, 20, 20, 23, 23, 131, 0};
+		        gbl_logiquePossibiliste.columnWeights = new double[]{0.0, 0.0, 1.0, 1.0, 0.0, Double.MIN_VALUE};
+		        gbl_logiquePossibiliste.rowWeights = new double[]{1.0, 0.0, 0.0, 0.0, 0.0, 1.0, Double.MIN_VALUE};
+		        logiquePossibiliste.setLayout(gbl_logiquePossibiliste);
+		        
+		        JLabel label = new JLabel("Nombre de noeuds");
+		        GridBagConstraints gbc_label = new GridBagConstraints();
+		        gbc_label.anchor = GridBagConstraints.WEST;
+		        gbc_label.insets = new Insets(0, 0, 5, 5);
+		        gbc_label.gridx = 1;
+		        gbc_label.gridy = 1;
+		        logiquePossibiliste.add(label, gbc_label);
+		        
+		        JLabel label_1 = new JLabel("Nombre de parents maximal ");												;
+		  
+		        
+		        spinner = new JSpinner( 
+		        		new SpinnerNumberModel(1, 1, 1000, 1));
+		        JFormattedTextField txt = ((JSpinner.NumberEditor) spinner.getEditor()).getTextField();
+		        GridBagConstraints gbc_spinner = new GridBagConstraints();
+		        gbc_spinner.gridwidth = 2;
+		        gbc_spinner.fill = GridBagConstraints.HORIZONTAL;
+		        gbc_spinner.insets = new Insets(0, 0, 5, 5);
+		        gbc_spinner.gridx = 2;
+		        gbc_spinner.gridy = 1;
+		        logiquePossibiliste.add(spinner, gbc_spinner);
+		        GridBagConstraints gbc_label_1 = new GridBagConstraints();
+		        gbc_label_1.anchor = GridBagConstraints.WEST;
+		        gbc_label_1.insets = new Insets(0, 0, 5, 5);
+		        gbc_label_1.gridx = 1;
+		        gbc_label_1.gridy = 2;
+		        logiquePossibiliste.add(label_1, gbc_label_1);
+		       
+		        
+		        spinner_1 = new JSpinner(new SpinnerNumberModel(1, 1, 1000, 1));
+		        JFormattedTextField txt1 = ((JSpinner.NumberEditor) spinner_1.getEditor()).getTextField();
+		        GridBagConstraints gbc_spinner_1 = new GridBagConstraints();
+		        gbc_spinner_1.gridwidth = 2;
+		        gbc_spinner_1.fill = GridBagConstraints.HORIZONTAL;
+		        gbc_spinner_1.insets = new Insets(0, 0, 5, 5);
+		        gbc_spinner_1.gridx = 2;
+		        gbc_spinner_1.gridy = 2;
+		        logiquePossibiliste.add(spinner_1, gbc_spinner_1);
+		        JLabel label_2 = new JLabel("Nombre de propositions");
+		        GridBagConstraints gbc_label_2 = new GridBagConstraints();
+		        gbc_label_2.anchor = GridBagConstraints.WEST;
+		        gbc_label_2.insets = new Insets(0, 0, 5, 5);
+		        gbc_label_2.gridx = 1;
+		        gbc_label_2.gridy = 3;
+		        logiquePossibiliste.add(label_2, gbc_label_2);
+		        ButtonGroup group = new ButtonGroup();
+		        
+		         rbt_1 = new JRadioButton("1",true);
+		        GridBagConstraints gbc_rdbtnNewRadioButton_2 = new GridBagConstraints();
+		        gbc_rdbtnNewRadioButton_2.fill = GridBagConstraints.HORIZONTAL;
+		        gbc_rdbtnNewRadioButton_2.anchor = GridBagConstraints.NORTH;
+		        gbc_rdbtnNewRadioButton_2.insets = new Insets(0, 0, 5, 5);
+		        gbc_rdbtnNewRadioButton_2.gridx = 2;
+		        gbc_rdbtnNewRadioButton_2.gridy = 3;
+		        logiquePossibiliste.add(rbt_1, gbc_rdbtnNewRadioButton_2);
+		        group.add(rbt_1);
+		        
+		        JRadioButton radioButton = new JRadioButton("2");
+		        GridBagConstraints gbc_radioButton = new GridBagConstraints();
+		        gbc_radioButton.gridwidth = 2;
+		        gbc_radioButton.fill = GridBagConstraints.HORIZONTAL;
+		        gbc_radioButton.anchor = GridBagConstraints.NORTH;
+		        gbc_radioButton.insets = new Insets(0, 0, 5, 0);
+		        gbc_radioButton.gridx = 3;
+		        gbc_radioButton.gridy = 3;
+		        logiquePossibiliste.add(radioButton, gbc_radioButton);
+		        group.add(radioButton);
+		        JButton btnCaculer = new JButton("Calculer");
+		        btnCaculer.setMnemonic(KeyEvent.VK_C);
+		        btnCaculer.addActionListener(new ActionListener() {
+		        	 int nbrNod=0;
+		        	 int parMax=0;
+		        	 
+		          public void actionPerformed(ActionEvent e)
+		            {
+		        	    nbrNod= (Integer)spinner.getValue();
+		            	parMax=(Integer)spinner_1.getValue();
+		            	
+		            	  Path path = null;	
+		            	 if(rbt_1.isSelected()){
+		            	     path = Paths.get("C:","cygwin","home","licence","prop1evid.m");	
+		            	     }
+		            	 else{
+		            		 path = Paths.get("C:","cygwin","home","licence","prop2evid.m");
+		            	 }
+		       
+		            	    String s=LireSousFormeString(path.toAbsolutePath().toString());													
+		            	
+		            	   s=s.replaceAll("nb_nodes_JAVA",new Integer(nbrNod).toString());
+		            
+		            	   s=s.replaceAll("nb_parent_max_JAVA",new Integer(parMax).toString());
+		            	    System.out.println("s "+s);
+		            	    PrintWriter out = null;
+							try {
+								out = new PrintWriter("calcule.m");
+							} catch (FileNotFoundException e1) {
+							
+								e1.printStackTrace();
+							}
+		            	    out.println(s);
+		            	    out.close();
+		            	    path = Paths.get(System.getProperty("user.dir"),"src","Plugins","incertain","Pnt");	
+		            	   
+		            	    final String cmd="matlab -nodesktop -nodisplay -minimize -noFigureWindows -nosplash -logfile -wait output -r \"addpath(genpath(\'"+path.toAbsolutePath().toString()+"'));cd "+System.getProperty("user.dir")+"; calcule;\";quit;";
+		                    Runnable externalProgramLauncher = new Runnable() {
+		                    	Process process = null;
+		                        public void run() {
+                    try {
+                    	process=Runtime.getRuntime().exec(cmd);
+                    } catch (IOException e) {
+                        JOptionPane.showMessageDialog(logiquePossibiliste, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+                    }
+                    try {
+						process.waitFor();
+					} catch (InterruptedException e) {
+						JOptionPane.showMessageDialog(new JFrame(),
+    						    "Erreur d'execution du script \nScripte non trouvée!",
+    							   "Erreur",
+    							   JOptionPane.ERROR_MESSAGE);
+					
+					}
 //																																					                            
-																																					                            Path path2 = Paths.get("C:","cygwin","home","licence","resultats");
-																																					                            ResultsDialog resultsDialog = new ResultsDialog();
-																																					                            System.out.print(LireSousFormeString(path2.toAbsolutePath().toString()));
-																																					                            BufferedReader reader = null;
-																																					                           
-																																					                            String Filecontent = null;
-																																					                           
-																																													
-																																													Filecontent=readInput(path2.toAbsolutePath().toString());
-																																					                           
-																																					                            
-																																					                          
-																																					                              //Filecontent=LireSousFormeString(path2.toAbsolutePath().toString());
-																																					                           Path path3=Paths.get("C:","cygwin","home","licence","Cygwin.bat");
-																																					                           System.out.println("path cyg "+path3.toAbsolutePath().toString() );
-																																					                            try {
-																																													Runtime.getRuntime().exec(path3.toAbsolutePath().toString());
-																																												} catch (IOException e) {
-																																													// TODO Auto-generated catch block
-																																													e.printStackTrace();
-																																												}
-																																					                            resultsDialog.setText(Filecontent);
-																																					                            resultsDialog.pack();
-																																					                            resultsDialog.setLocationRelativeTo(logiquePossibiliste);
-																																					                            resultsDialog.setVisible(true);          }
-																																									                    };
-																																									                    Thread t = new Thread(externalProgramLauncher);
-																																									                    t.start();
-																																											  }
-																																									       });
-																																									       
-																																									        GridBagConstraints gbc_btnCaculer = new GridBagConstraints();
-																																									        gbc_btnCaculer.insets = new Insets(0, 0, 5, 0);
-																																									        gbc_btnCaculer.anchor = GridBagConstraints.NORTH;
-																																									        gbc_btnCaculer.gridwidth = 5;
-																																									        gbc_btnCaculer.gridx = 0;
-																																									        gbc_btnCaculer.gridy = 4;
-																																									        logiquePossibiliste.add(btnCaculer, gbc_btnCaculer);
-																																								    tabs.addChangeListener(changeListener);
-																																									 
+                    Path path2 = Paths.get("C:","cygwin","home","licence","resultats");
+                    ResultsDialog resultsDialog = new ResultsDialog();
+                    System.out.print(LireSousFormeString(path2.toAbsolutePath().toString()));
+                    BufferedReader reader = null;
+                   
+                    String Filecontent = null;
+                   
+						
+						Filecontent=readInput(path2.toAbsolutePath().toString());
+                   
+                    
+                  
+                      //Filecontent=LireSousFormeString(path2.toAbsolutePath().toString());
+                   Path path3=Paths.get("C:","cygwin","home","licence","Cygwin.bat");
+                   System.out.println("path cyg "+path3.toAbsolutePath().toString() );
+                    try {
+						Runtime.getRuntime().exec(path3.toAbsolutePath().toString());
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+                    resultsDialog.setText(Filecontent);
+                    resultsDialog.pack();
+                    resultsDialog.setLocationRelativeTo(logiquePossibiliste);
+                    resultsDialog.setVisible(true);          }
+		                    };
+		                    Thread t = new Thread(externalProgramLauncher);
+		                    t.start();
+				  }
+		       });
+		       
+		        GridBagConstraints gbc_btnCaculer = new GridBagConstraints();
+		        gbc_btnCaculer.insets = new Insets(0, 0, 5, 0);
+		        gbc_btnCaculer.anchor = GridBagConstraints.NORTH;
+		        gbc_btnCaculer.gridwidth = 5;
+		        gbc_btnCaculer.gridx = 0;
+		        gbc_btnCaculer.gridy = 4;
+		        logiquePossibiliste.add(btnCaculer, gbc_btnCaculer);
+	    tabs.addChangeListener(changeListener);
+																																							 
 	}
 
 	
@@ -1924,24 +1924,26 @@ public static String readInput(String filePath) {
 		   }
 		    boolean verif=true;
 		    Vector <Integer> vetc =new Vector <Integer> ();
+		    Vector <Integer> vetcVErtex =new Vector <Integer> ();
 		    vetc.clear();
 		    int j;
 		    int i;
 		    
 		    if(bool){
 		    for(i =0;i<vertex.size();i++){
+		    	if(vetcVErtex.contains(i)){continue;}
 		    	verif=true;
 		    	for( j =0;j<edgeVec.size();j++){
 		    		if(vetc.contains(j)){continue;}
 		    		if( edgeVec.get(j).get(0).equals(vertex.get(i))){
 		    			verif=false;break;
 		    		}
-		    		System.out.println("verif"+verif+vetc);
+		    		System.out.println("verif"+vertex.get(i));
 		    	}
 		    	if(verif){
+		    		vetcVErtex.add(i);
 		    		for(int k =0;k<edgeVec.size();k++){
-		    			
-		    		if(vertex.get(i).equals(edgeVec.get(k).get(1))){vetc.add(k);}}
+		    			if(vertex.get(i).equals(edgeVec.get(k).get(1))){vetc.add(k);}}
 		    		  if((edgeVec.size())==vetc.size()){break;}else{i=0;}
 		    		}
 		    	
