@@ -57,7 +57,7 @@ m(\varnothing) = 0
 \sum_{A \in \mathcal{P}(\Omega)} m(A) = 1
 \end{equation}
 
-\subsubsection{Exemple}
+\begin{exemple}
 Dans une enquête sur un incident de vol, trois personnes \textit{P1}, \textit{P2}, \textit{P3}
 sont accusées. L’enquêteur pense à 30\% que P1 est le voleur, à 50\% que l’un des deux autres
 personnes P2 ou P3, est le voleur, et à 10\% que P1 ou P3 le soit.\\
@@ -67,6 +67,7 @@ L'ensemble de parties de $\Omega$ est : $$\mathcal{P}(\Omega) = \{\varnothing, \
 La distribution des masses s'exprime ainsi : $$m(\{P1\}) = 0.3, m(\{P2, P3\})  = 0.5,
 m(\{P1, P3\}) = 0.1$$ et $$m(\Omega) = 1 - (0.3+0.5+0.1) = 0.1$$ à partir de l’équation \ref{somme_masses}.\\
 Les masses des hypothèses restantes sont toutes égalles à $0$.
+\end{exemple}
 
 \subsection{La croyance}
 
@@ -95,7 +96,7 @@ m(A) = \sum_{B \slash B \subseteq A} (-1)^{|A-B|} Bel(B),
 \end{equation}
 où $|A-B|$ est la différence des cardinalités entre les deux ensembles.
 
-\subsubsection{Exemple}
+\begin{exemple}
 En continuité de l'exemple précédent, on calcule la croyance de chaque hypothèse :
 
 \begin{table}[H]
@@ -123,6 +124,7 @@ $\Omega$ & $1$ \\
 \end{tabular}
 \caption{Les croyances calculées à partir de la distribution de masses}
 \end{table}
+\end{exemple}
 
 \subsection{La plausibilité}
 
@@ -154,7 +156,7 @@ l’intervalle qui a comme bornes inférieure et supérieure $Bel(A)$ et $Pl(A)$
 respectivement, c’est-à-dire $$Pl(A) \leq P(A) \leq Bel(A).$$
 Si $$Bel(A) = Pl(A),$$ alors la probabilité de $A$ est unique et $$P(A) = Bel(A) = Pl(A)$$
 
-\subsubsection{Exemple}
+\begin{exemple}
 On calcule les plausibilités pour le même exemple.
 
 \begin{table}[H]
@@ -182,6 +184,7 @@ $\Omega$ & $1$ \\
 \end{tabular}
 \caption{Les plausibilités calculées à partir de la distribution de masses}
 \end{table}
+\end{exemple}
 \section{Règles de combinaison}
 
 Souvent, on obtient l’information à partir de sources distinctes et indépendantes,
@@ -193,7 +196,7 @@ combinaison. Il existe trois types de combinaison : \emph{conjonctive},
 \subsection{Combinaison conjonctive}
 
 Dempster a introduit une règle connue sous le nom de règle de combinaison
-de Dempster (\emph{Dempster's Combination Rule}) pour fusionner deux pièces
+de Dempster\footnote{Dempster's Combination Rule} pour fusionner deux pièces
 d’évidence qui peuvent être représentées par deux fonctions de croyance.Cette
 règle respecte les quatre propriétés algébriques suivantes : l’associativité,
 la commutativité, l’idempotence et la continuité.\cite{sentz2002combination}
