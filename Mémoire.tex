@@ -16,6 +16,7 @@
 \usepackage[french,longend,boxruled,algoruled,linesnumbered,algochapter]{algorithm2e}%pour les algorithmes
 \usepackage{babelbib} % Pour changer la langue dans la bibliographie
 \usepackage{amsthm} % Pour les exemples
+\usepackage{xspace} % Les espaces après une commande
 
 \graphicspath{ {pictures/} } % Spécifier le répertoire contenant les images  
 \DisableLigatures[f]{encoding=*}
@@ -42,11 +43,11 @@
 % Espace entre les lignes
 \linespread{1.3}
 % Nom de notre application
-\newcommand{\appname}{\textbf{combinateur d'évidences} }
-\newcommand{\appName}{Combinateur d'évidences }
+\newcommand{\appname}{\textbf{combinateur d'évidences}\xspace}
+\newcommand{\appName}{Combinateur d'évidences\xspace}
 % Nom de la grande interface
-\newcommand{\platformename}{\textbf{plateforme d'outils} }
-\newcommand{\platformeName}{Plateforme d'outils }
+\newcommand{\platformename}{\textbf{plateforme d'outils}\xspace}
+\newcommand{\platformeName}{Plateforme d'outils\xspace}
 
 % Gérer les exemples
 \theoremstyle{definition}
