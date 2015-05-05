@@ -32,8 +32,9 @@ public class Tools extends JPanel {
     private static final String title = "Tools";
     private static final String dialogTitle = "Nouvelle formule";
     private static final String dialogEditTitle = "Modifier la formule";
-    private static final String dialogText = "La formule (Utiliser '-' pour la négation)";
-    private static final String ajouterFormuleText = "Ajouter une formule";
+    private static final String dialogText = "<html><body>Introduire la formule:<br>Utiliser '-' pour la négation<br>" +
+                                            "Un espace entre les formules atomiques signifie OU</body></html>";
+    private static final String ajouterFormuleText = "Ajouter une formule FND";
     private static final String supprimerText = "Supprimer";
     private static final String modifierText = "Modifier";
     private static final String formuleInvalideText = "La syntaxe de la formule est invalide !";
