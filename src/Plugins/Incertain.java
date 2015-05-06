@@ -73,8 +73,6 @@ import javax.swing.event.ListSelectionListener;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.table.AbstractTableModel;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.text.BadLocationException;
-import javax.swing.text.StyledDocument;
 
 import Plugins.Tools.ResultsDialog;
 
@@ -187,8 +185,7 @@ public class Incertain extends JPanel implements ActionListener{
 					super(data, columnNames);
 				}
 				 public boolean isCellEditable(int row, int col) {
-					 if(col<colimnNonEditable) return false;
-				   return true;
+					 return col >= colimnNonEditable;
 				 }
 }
 			  
@@ -208,19 +205,12 @@ public class Incertain extends JPanel implements ActionListener{
 					  try{ x=Float.parseFloat(table.getValueAt(i, colimnNonEditable).toString());
 					       y=Float.parseFloat(table.getValueAt(i,colimnNonEditable+1).toString());
 					  }
-					  catch(NullPointerException  e1){
+					  catch(NullPointerException | NumberFormatException e1){
 						  table.setRowSelectionInterval(i, i);
 						  JOptionPane.showMessageDialog(null,
 							    "Le format de nombre est erroné",
 							    "Erreur",
-							    JOptionPane.ERROR_MESSAGE);break swicth;} 
-					  catch(NumberFormatException e1){
-						  table.setRowSelectionInterval(i, i);
-						  JOptionPane.showMessageDialog(null,
-								    "Le format de nombre est erroné",
-								    "Erreur",
-								    JOptionPane.ERROR_MESSAGE); break swicth;
-					  }
+							    JOptionPane.ERROR_MESSAGE);break swicth;}
 					  rowData[i]=x;
 					  rowData[i+(table.getRowCount())]=y;
 					  
@@ -243,7 +233,7 @@ public class Incertain extends JPanel implements ActionListener{
 					  if((x!=1&&y!=1)&&SelectedTAb.equals("PNT script build")){ 
 						 table.setRowSelectionInterval(i, i);
 						  JOptionPane.showMessageDialog(null,
-							    "Dans chaque ligne une Cellule doit être égale à 1 !",
+							    "Dans chaque ligne une cellule doit être égale à 1 !",
 							    "Erreur",
 							    JOptionPane.ERROR_MESSAGE);
 					  break swicth;}
@@ -283,8 +273,7 @@ public class Incertain extends JPanel implements ActionListener{
 			}
 }
 class Fenetre extends JDialog implements ListSelectionListener,ActionListener{
-		
-		   private static final long serialVersionUID = 1L;
+
 		   JList<String> list;
 		   Vector <String>		listData;
 		   JScrollPane  scrollPane_1;
@@ -299,7 +288,6 @@ class Fenetre extends JDialog implements ListSelectionListener,ActionListener{
 		   JComboBox<String> comboBox;
 		   JTextPane textPane;
 		   JButton Calculer;
-		   int nbrRem=0;
 		
 		    public Fenetre(){
 			  super();
@@ -625,9 +613,8 @@ class Fenetre extends JDialog implements ListSelectionListener,ActionListener{
 		      
 		   }
 		    public boolean isCellEditable(int row, int col){
-		     if(col==2) return true;
-		     return false;
-		   }
+				return col == 2;
+			}
 		}
 
 	public void valueChanged(ListSelectionEvent event) {
@@ -637,18 +624,11 @@ class Fenetre extends JDialog implements ListSelectionListener,ActionListener{
 {
 	// Get the current selection and place it in the
 	// edit field
-	String stringValue = (String)list.getSelectedValue();
+	String stringValue = list.getSelectedValue();
 	if( stringValue != null )
 		comboBox_1.setSelectedItem( stringValue );
 }
 	}
-	
-	public void appendString(String str) throws BadLocationException
-	 {
-	      StyledDocument document = (StyledDocument) textPaneSrptbnt.getDocument();
-	      document.insertString(document.getLength(), str, null);
-	                                                     // ^ or your style attribute  
-	  }
 
 	public void actionPerformed(ActionEvent event) {
 		String textRadioBtn=null;
@@ -666,10 +646,10 @@ class Fenetre extends JDialog implements ListSelectionListener,ActionListener{
 					if( stringValue != null )
 						{ if(listData.contains(stringValue+"(Vraie)")||listData.contains(stringValue+"(Faux)"))
 							{
-							JOptionPane.showMessageDialog(new JFrame(),
-								    "Element existe déjà !",
+							JOptionPane.showMessageDialog(null,
+								    "L'élément existe déjà !",
 									   "Erreur",
-									   JOptionPane.ERROR_MESSAGE);}
+									   JOptionPane.WARNING_MESSAGE);}
 							else{
 							listData.addElement( stringValue+"("+textRadioBtn+")" );
 							list.setListData( listData );
@@ -701,22 +681,22 @@ class Fenetre extends JDialog implements ListSelectionListener,ActionListener{
 			String stringValue2 = (String) comboBox.getSelectedItem();
 			String stringValue3 = (String) comboBox_2.getSelectedItem();
 			if( stringValue2 != null )
-				{if(listData.isEmpty()){ JOptionPane.showMessageDialog(new JFrame(),
+				{if(listData.isEmpty()){ JOptionPane.showMessageDialog(null,
 					    "Il faut avoir au moin une evidence !",
 						   "Erreur",
-						   JOptionPane.ERROR_MESSAGE);break;}
+						   JOptionPane.WARNING_MESSAGE);break;}
 				if((listData.contains(stringValue3)))
 				{
-				 JOptionPane.showMessageDialog(new JFrame(),
-					    "En element ne peut pas etre vraisemblance et une evidence !",
+				 JOptionPane.showMessageDialog(null,
+					    "Un élément ne peut pas être une évidence et une vraisemblance en même temps!",
 						   "Erreur",
-						   JOptionPane.ERROR_MESSAGE);break;}
+						   JOptionPane.WARNING_MESSAGE);break;}
 				if((listData.contains(stringValue2+"(Vraie)")||listData.contains(stringValue2+"(Faux)"))&&!stringValue2.equals("Par défaut"))
 					{
-					 JOptionPane.showMessageDialog(new JFrame(),
-						    "En element ne peut pas etre observé et une evidence !",
+					 JOptionPane.showMessageDialog(null,
+						    "Un élément ne peut pas être une évidence et observé en même temps!",
 							   "Erreur",
-							   JOptionPane.ERROR_MESSAGE);break;}
+							   JOptionPane.WARNING_MESSAGE);break;}
 						
 					else{
 						 System.out.println("coucou du bouton : ");
@@ -730,8 +710,7 @@ class Fenetre extends JDialog implements ListSelectionListener,ActionListener{
 						 String BNTengineAfter="[engine, loglik]=enter_evidence(engine,evidence);\n";
 //						 String PNTadd="instance_interest=2;\nBEL_Cdt_classique=marg.T(instance_interest);\n";
 						 String net = null;
-						 
-						 //if (rdbtnBnt.isSelected()){
+
 						 if (SelectedTAb.equals("BNT script build")){
 							 net="bnet";
 						 }else if (SelectedTAb.equals("PNT script build")){net="pnet";}
@@ -802,7 +781,7 @@ class Fenetre extends JDialog implements ListSelectionListener,ActionListener{
 				{writer = new PrintWriter(file.toString(), "UTF-8");}
 			} catch (FileNotFoundException | UnsupportedEncodingException e) {
 				JOptionPane.showMessageDialog(new JFrame(),
-					    "Erreur d'execution du script \nScripte non trouvée!",
+					    "Erreur d'exécution du script \nScript non trouvée!",
 						   "Erreur",
 						   JOptionPane.ERROR_MESSAGE);
 			
@@ -828,8 +807,8 @@ class Fenetre extends JDialog implements ListSelectionListener,ActionListener{
 					}
 					
 				} catch (IOException e) {
-					JOptionPane.showMessageDialog(new JFrame(),
-						    "Erreur d'execution du script \nVerifier si Matlab est correctement installée!",
+					JOptionPane.showMessageDialog(null,
+						    "Erreur d'exécution du script \nVerifier si Matlab est correctement installée!",
 							   "Erreur",
 							   JOptionPane.ERROR_MESSAGE);
 					verifexec=false;
@@ -840,8 +819,8 @@ class Fenetre extends JDialog implements ListSelectionListener,ActionListener{
 			
 					process.waitFor();
 				} catch (InterruptedException e) {
-					JOptionPane.showMessageDialog(new JFrame(),
-						    "Erreur d'execution du script \nl'exécution du script a été interrompu !",
+					JOptionPane.showMessageDialog(null,
+						    "Erreur d'exécution du script \nl'exécution du script a été interrompu !",
 							   "Erreur",
 							   JOptionPane.ERROR_MESSAGE);
 				}
@@ -859,9 +838,9 @@ class Fenetre extends JDialog implements ListSelectionListener,ActionListener{
 					executorThread.wait();
 				} catch (InterruptedException e) {
 					 JOptionPane.showMessageDialog(null,
-		 	            		"Erreur d'execution du script ",
+		 	            		"Erreur d'exécution du script ",
 		 							    "Erreur",
-		 							    JOptionPane.PLAIN_MESSAGE);
+		 							    JOptionPane.ERROR_MESSAGE);
 					 bool=false;
 				}
 	            
@@ -870,9 +849,9 @@ class Fenetre extends JDialog implements ListSelectionListener,ActionListener{
 	             if(bool&&!Fichier.contains("ans =")){
 	            	 
 	            	 JOptionPane.showMessageDialog(null,
-	 	            		"Erreur d'execution du script ",
+	 	            		"Erreur d'exécution du script ",
 	 							    "Erreur",
-	 							    JOptionPane.PLAIN_MESSAGE); 
+	 							    JOptionPane.ERROR_MESSAGE);
 	             }else{
 	             JOptionPane.showMessageDialog(null,
 	            		Fichier.substring(LireSousFormeString("output").lastIndexOf("ans =")),
@@ -951,46 +930,6 @@ public static String readInput(String filePath) {
 	private JButton button_4;
 	private JSpinner spinner;
 	private JSpinner spinner_1;
-//	  class ResultsDialog extends JDialog {
-//	        private final JTextArea resultsTextArea;
-//	        private final AbstractAction closeAction;
-//	        private final JLabel label;
-//	        ResultsDialog() {
-//	            super();
-//	            BorderLayout layout = new BorderLayout();
-//	            setLayout(layout);
-//	            setPreferredSize(new Dimension(300, 200));
-//	            setModal(true);
-//	            final ResultsDialog dialog = this;
-//	            closeAction = new AbstractAction("OK") {
-//	                @Override
-//	                public void actionPerformed(ActionEvent actionEvent) {
-//	                    dialog.setVisible(false);
-//	                }
-//	            };
-//	            label = new JLabel("Resultats");
-//	            label.setBorder(new EmptyBorder(5, 5, 5, 5));
-//	            resultsTextArea = new JTextArea();
-//	            resultsTextArea.setFont(new Font("Monospaced", Font.BOLD, 14));
-//	            resultsTextArea.setEditable(false);
-//	            JButton okButton = new JButton(closeAction);
-//	            Box textAreaBox = Box.createHorizontalBox();
-//	            textAreaBox.setBorder(new EmptyBorder(0, 5, 0, 5));
-//	            textAreaBox.add(new JScrollPane(resultsTextArea));
-//	            Box buttonsBox = Box.createHorizontalBox();
-//	            buttonsBox.setBorder(label.getBorder());
-//	            buttonsBox.add(Box.createHorizontalGlue());
-//	            buttonsBox.add(okButton);
-//	            buttonsBox.add(Box.createHorizontalGlue());
-//	            add(label, BorderLayout.PAGE_START);
-//	            add(textAreaBox, BorderLayout.CENTER);
-//	            add(buttonsBox, BorderLayout.PAGE_END);
-//	            getRootPane().setDefaultButton(okButton);
-//	        }
-//	        void setText(String text){
-//	            resultsTextArea.setText(text);
-//	        }
-//	    }
 	
 	public Incertain() throws IOException, URISyntaxException {
 		super();
@@ -1037,7 +976,7 @@ public static String readInput(String filePath) {
 //																																      
 		tabs = new JTabbedPane();
 		ScripteBNT = new JPanel();
-		tabs.addTab("script BNT ",ScripteBNT);
+		tabs.addTab("Script BNT ",ScripteBNT);
 		GridBagLayout gbl_ubcsatPage = new GridBagLayout();
 		gbl_ubcsatPage.columnWidths = new int[]{333, 115, 0};
 		gbl_ubcsatPage.rowHeights = new int[]{23, 226, 23, 0};
@@ -1078,8 +1017,8 @@ public static String readInput(String filePath) {
 		gbc_textPane.gridx = 0;
 		gbc_textPane.gridy = 1;
 		ScripteBNT.add(textPaneSrptbnt, gbc_textPane);
-		btnClaculer = new JButton("Claculer");
-		btnClaculer.setActionCommand("Claculer");
+		btnClaculer = new JButton("Calculer");
+		btnClaculer.setActionCommand("Calculer");
 		btnClaculer.addActionListener(this);
 		btnClaculer.setEnabled(false);
 		GridBagConstraints gbc_btnClaculer = new GridBagConstraints();
@@ -1100,7 +1039,7 @@ public static String readInput(String filePath) {
 									new mxKeyboardHandler(graphComponent);
 									btnValiderEtAttribuer = new JButton("Valider");
 									btnValiderEtAttribuer.addActionListener(this);
-									btnPrametres = new JButton("Parametres");
+									btnPrametres = new JButton("Paramètres");
 									btnPrametres.addActionListener(this);
 									btnModifer = new JButton("Modifier");
 									btnModifer.addActionListener(this);
@@ -1165,7 +1104,7 @@ public static String readInput(String filePath) {
 		button_3.setEnabled(false);
 		button_3.addActionListener(this);
 		
-		button_4 = new JButton("Parametres");
+		button_4 = new JButton("Paramètres");
 		button_4.setEnabled(false);
 		button_4.addActionListener(this);
 		
@@ -1221,7 +1160,6 @@ public static String readInput(String filePath) {
 					        int index = sourceTabbedPane.getSelectedIndex();
 					        System.out.println("Tab changed to: " + sourceTabbedPane.getTitleAt(index));
 					        SelectedTAb=sourceTabbedPane.getTitleAt(index);
-//																																								        
 					        
 					      }
 					    };		
@@ -1234,7 +1172,7 @@ public static String readInput(String filePath) {
 		      BoxLayout mainLayout = new BoxLayout(this, BoxLayout.PAGE_AXIS);
 		        setLayout(mainLayout);
 		       
-		        JButton DecPosButton = new JButton(new AbstractAction(DSButtonText) {
+		        JButton DSButton = new JButton(new AbstractAction(DSButtonText) {
 		          public void actionPerformed(ActionEvent actionEvent) {
 		           
 		                    
@@ -1242,30 +1180,24 @@ public static String readInput(String filePath) {
 		                    
 		                        public void run() {
 		                            try {
-		                            	final URL decPosURL = ClassLoader.getSystemClassLoader().getResource("Plugins/DempsterShafer");
-		                            	 //if (decPosURL == null) throw new FileNotFoundException("DecPos folder not found");
-		                            //	System.out.println("path = "+decPosURL);
-		                            	 //Process child = Runtime.getRuntime().exec();
-		                            	 final File decPosFolderPath = new File(decPosURL.toURI());
-//																																								                            	 System.out.println("path = "+decPosFolderPath.getAbsolutePath());
-//																																								                            	 Process child2=Runtime.getRuntime().exec("cd", null,decPosFolderPath);
-		                            	 ProcessBuilder decPosPB;
+		                            	final URL DSURL = ClassLoader.getSystemClassLoader().getResource("Plugins/DempsterShafer");
+		                            	 if (DSURL == null) throw new FileNotFoundException("DempsterShafer folder not found");
+		                            	 final File DSFolderPath = new File(DSURL.toURI());
+		                            	 ProcessBuilder DSPB;
 		                            	 if (System.getProperty("os.name").startsWith("Windows")) {
-		                            		  decPosPB = new ProcessBuilder("python","MainGUI.py");
+		                            		  DSPB = new ProcessBuilder("python","MainGUI.py");
 		                            	    } else {
-		                            	    	 decPosPB = new ProcessBuilder("python3","MainGUI.py");
+		                            	    	 DSPB = new ProcessBuilder("python3","MainGUI.py");
 		                            	    } 
 		                            	
-		                                 decPosPB.directory(decPosFolderPath);
-		                                 decPosPB.redirectError(ProcessBuilder.Redirect.INHERIT); // Show DecPos errors
-		                                 decPosPB.start();
-		                            } catch (IOException e) {
+		                                 DSPB.directory(DSFolderPath);
+		                                 DSPB.redirectError(ProcessBuilder.Redirect.INHERIT);
+		                                 DSPB.start();
+		                            } catch (IOException | URISyntaxException e) {
 		                            	
 		                            	JOptionPane.showMessageDialog(DempsterShafer, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-		                            } catch (URISyntaxException e) {
-		                            	JOptionPane.showMessageDialog(DempsterShafer, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-									}
-		                        }
+		                            }
+								}
 		                    };
 		                    Thread t = new Thread(externalProgramLauncher);
 		                    t.start();
@@ -1273,7 +1205,7 @@ public static String readInput(String filePath) {
 		            }
 		        });
 	        
-	        DecPosButton.setMnemonic('P');
+			DSButton.setMnemonic('C');
 	        Box DSBox = new Box(BoxLayout.PAGE_AXIS);
 	        DSBox.setBorder(new TitledBorder("Combinateur d'évidences"));
 	        Box descriptionBox =  Box.createHorizontalBox();
@@ -1282,7 +1214,7 @@ public static String readInput(String filePath) {
 	        DSBox.add(descriptionBox);
 	        Box buttonBox = Box.createHorizontalBox();
 	        buttonBox.setBorder(descriptionBox.getBorder());
-	        buttonBox.add(DecPosButton);
+	        buttonBox.add(DSButton);
 	        DSBox.add(buttonBox);
 	        GroupLayout gl_DempsterShafer = new GroupLayout(DempsterShafer);
 	        gl_DempsterShafer.setHorizontalGroup(
@@ -1430,7 +1362,7 @@ public static String readInput(String filePath) {
 						process.waitFor();
 					} catch (InterruptedException e) {
 						JOptionPane.showMessageDialog(new JFrame(),
-    						    "Erreur d'execution du script \nScripte non trouvée!",
+    						    "Erreur d'exécution du script \nScripte non trouvée!",
     							   "Erreur",
     							   JOptionPane.ERROR_MESSAGE);
 					
@@ -1439,7 +1371,6 @@ public static String readInput(String filePath) {
                     Path path2 = Paths.get("C:","cygwin","home","licence","resultats");
                     ResultsDialog resultsDialog = new ResultsDialog();
                     System.out.print(LireSousFormeString(path2.toAbsolutePath().toString()));
-                    BufferedReader reader = null;
                    
                     String Filecontent = null;
                    
@@ -1489,7 +1420,7 @@ public static String readInput(String filePath) {
 			FileNameExtensionFilter matlabFilter = new FileNameExtensionFilter("Matlab", "m");
 		    chooser = new JFileChooser(); 
 		    chooser.setCurrentDirectory(new java.io.File("."));
-		    chooser.setDialogTitle("choisir le script a executer");
+		    chooser.setDialogTitle("Choisir le script a exécuter");
 		    chooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
 		    chooser.addChoosableFileFilter(matlabFilter);
 		    chooser.setFileFilter(matlabFilter);
@@ -1510,17 +1441,17 @@ public static String readInput(String filePath) {
 		      }
 		    File f = new File(Paths.get(chooser.getCurrentDirectory().toString(),"output").toString());
 		    break;
-		case "Claculer":  
+		case "Calculer":
         
 			try {
 				f = new File(chooser.getSelectedFile().toString());
-				if(!f.exists() || f.isDirectory()) {JOptionPane.showMessageDialog(new JFrame(),
-					    "script introuvable",
+				if(!f.exists() || f.isDirectory()) {JOptionPane.showMessageDialog(null,
+					    "Script introuvable",
 					   "Erreur",
 					   JOptionPane.ERROR_MESSAGE);break;
 				  }
-				if (!f.canRead()||f.isHidden()){JOptionPane.showMessageDialog(new JFrame(),
-					    "Erreur dans l'ouverture du fichier",
+				if (!f.canRead()||f.isHidden()){JOptionPane.showMessageDialog(null,
+					    "Erreur d'ouverture du fichier",
 					   "Erreur",
 					   JOptionPane.ERROR_MESSAGE);break;}
 				
@@ -1533,14 +1464,14 @@ public static String readInput(String filePath) {
 				try {
 					p.waitFor();
 				} catch (InterruptedException e1) {
-					JOptionPane.showMessageDialog(new JFrame(),
-						    "Erreur d'execution du script \nScripte non trouvée!",
+					JOptionPane.showMessageDialog(null,
+						    "Erreur d'exécution du script \nScripte non trouvée!",
 							   "Erreur",
 							   JOptionPane.ERROR_MESSAGE);
 				}
 			} catch (IOException e1) {
-				JOptionPane.showMessageDialog(new JFrame(),
-					    "Erreur d'execution du script \nVerifier si Matlab est correctement installée!",
+				JOptionPane.showMessageDialog(null,
+					    "Erreur d'exécution du script \nVerifier si Matlab est correctement installée!",
 						   "Erreur",
 						   JOptionPane.ERROR_MESSAGE);
 			}
@@ -1550,10 +1481,6 @@ public static String readInput(String filePath) {
 		}
 		if (e.getSource() == Noeuxbtn) {
 			System.out.println("makeGraph");
-//			JOptionPane jop = new JOptionPane();
-//		    String nom = jop.showInputDialog(null, "Donner le nom du noeud !", "Nouvaux noued !", JOptionPane.QUESTION_MESSAGE);
-//			if(!nom.equals("")){
-//		    }
 			makeGraph(graph,"Sans Nom_"+nom++);
 		}
 		else if (e.getSource() ==button) {
@@ -1847,7 +1774,7 @@ public static String readInput(String filePath) {
 		    if(nbrCell<=1){ JOptionPane.showMessageDialog(null,
 				    "Il faut au moins deux noeuds",
 				    "Erreur",
-				    JOptionPane.ERROR_MESSAGE);}
+				    JOptionPane.WARNING_MESSAGE);}
 		    else{
 		    for (Object c : cells) {
 		    mxCell cell = (mxCell) c; 
