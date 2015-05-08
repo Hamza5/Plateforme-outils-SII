@@ -43,7 +43,7 @@ public class Décision extends JPanel {
 
  
     public Décision(){
-
+    	  
     	 super();
     	 JTabbedPane tabs;
     	 
@@ -53,7 +53,7 @@ public class Décision extends JPanel {
  		 JPanel khoula = new JPanel();
   		tabs.addTab("Graphique",khoula);
         
-        final Décision decision = this;
+        final Décision Décision = this;
         setName("Décision");
         BoxLayout mainLayout = new BoxLayout(this, BoxLayout.PAGE_AXIS);
         setLayout(mainLayout);
@@ -61,7 +61,7 @@ public class Décision extends JPanel {
         JButton DecPosButton = new JButton(new AbstractAction(DecPosButtonText) {
              public void actionPerformed(ActionEvent actionEvent) {
                 try {
-                    final URL decPosURL = ClassLoader.getSystemClassLoader().getResource("Plugins/décision/DecPos");
+                    final URL decPosURL = ClassLoader.getSystemClassLoader().getResource("Plugins/Décision/DecPos");
                     if (decPosURL == null) throw new FileNotFoundException("DecPos folder not found");
                     final File decPosFolderPath = new File(decPosURL.toURI());
                     String[] libs = {"lib/orbital-core.jar", "lib/orbital-ext.jar", "lib/org.sat4j.core-src.jar",
@@ -80,14 +80,14 @@ public class Décision extends JPanel {
                                 decPosPB.redirectError(ProcessBuilder.Redirect.INHERIT); // Show DecPos errors
                                 decPosPB.start();
                             } catch (IOException e) {
-                                JOptionPane.showMessageDialog(decision, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+                                JOptionPane.showMessageDialog(Décision, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
                             }
                         }
                     };
                     Thread t = new Thread(externalProgramLauncher);
                     t.start();
                 } catch (IOException | URISyntaxException e) {
-                    JOptionPane.showMessageDialog(decision, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(Décision, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
                 }
             }
         });
@@ -95,19 +95,34 @@ public class Décision extends JPanel {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
            
-                    
-                    Runnable externalProgramLauncher = new Runnable() {
-                    	Process process = null;
-                    	Path path = Paths.get(System.getProperty("user.dir"),"src","Plugins","Décision","Pnt");
-                    	final String cmd="matlab -nodesktop -nodisplay -minimize  -nosplash -wait  -r \"cd "+path.toAbsolutePath().toString()+"; addpath(genpathKPM(pwd)); GUI;";
-                        public void run() {
-                            try {System.out.println("path "+path.toAbsolutePath().toString());
-                            	process=Runtime.getRuntime().exec(cmd);
-                            } catch (IOException e) {
-                                JOptionPane.showMessageDialog(decision, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-                            }
-                        }
-                    };
+            	final URL PNTURL = ClassLoader.getSystemClassLoader().getResource("Plugins/Décision/Pnt");
+            	
+				
+                    Runnable externalProgramLauncher = null;
+					
+						externalProgramLauncher = new Runnable() {
+							Process process = null;
+							 
+							//Path path = Paths.get(System.getProperty("user.dir"),"src","Plugins","Décision","Pnt");	
+							
+							public void run() {
+						        try {
+						        	final String cmd="matlab -nodesktop -nodisplay -minimize  -nosplash -wait  -r \"cd "+PNTURL.toURI().getPath().toString().substring(1)+"; addpath(genpathKPM(pwd)); GUI;";
+						        	if (PNTURL == null) throw new FileNotFoundException("PNT folder not found");
+						        	System.out.println("cmd "+cmd);
+						        	process=Runtime.getRuntime().exec(cmd);
+						        } catch (IOException e) {
+						            JOptionPane.showMessageDialog(Décision, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+						        } catch (URISyntaxException e) {
+						        	JOptionPane.showMessageDialog(null,
+			    						    "Erreur d'exécution du script \nScripte non trouvée!",
+			    							   "Erreur",
+			    							   JOptionPane.ERROR_MESSAGE);
+								}
+						    }
+					
+						};
+					
                     Thread t = new Thread(externalProgramLauncher);
                     t.start();
                
