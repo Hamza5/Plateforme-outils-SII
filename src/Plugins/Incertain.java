@@ -327,6 +327,7 @@ class Fenetre extends JDialog implements ListSelectionListener,ActionListener{
 		        rdbtnNewRadioButton.setActionCommand("Vraie");
 		        scrollPane_1 = new JScrollPane();
 		        btnSupprimer = new JButton("Supprimer");
+		        btnSupprimer.setEnabled(false);
 		        btnSupprimer.setMnemonic(KeyEvent.VK_S);
 		        btnSupprimer.addActionListener(this);
 		        btnNewButton_1 = new JButton("Générer le script");
@@ -338,8 +339,8 @@ class Fenetre extends JDialog implements ListSelectionListener,ActionListener{
 		        Calculer.setMnemonic(KeyEvent.VK_G);
 		        Calculer.setEnabled(false);
 		        Calculer.addActionListener(this);
-		        rdbtnNewRadioButton_1 = new JRadioButton("Faux");
-		        rdbtnNewRadioButton_1.setActionCommand("Faux");
+		        rdbtnNewRadioButton_1 = new JRadioButton("Fausse");
+		        rdbtnNewRadioButton_1.setActionCommand("Fausse");
 		        ButtonGroup group = new ButtonGroup();
 		        group.add(rdbtnNewRadioButton);
 		        group.add(rdbtnNewRadioButton_1);
@@ -353,8 +354,9 @@ class Fenetre extends JDialog implements ListSelectionListener,ActionListener{
 		        groupProdMin.add(RdMIN);
 		        JRadioButton[] buttons = new JRadioButton[]{Prod,RdMIN};
 		        if (SelectedTAb.equals("BNT script build")){
+		        	
 			     for (JRadioButton btn : buttons) {
-				            btn.setEnabled(false);
+				            btn.setVisible(false);
 				        }
 			       }
 
@@ -465,7 +467,7 @@ class Fenetre extends JDialog implements ListSelectionListener,ActionListener{
 				            // print first column value from selected row
 				        	btnModifier.setEnabled(true);
 				            System.out.println(tableau.getValueAt(tableau.getSelectedRow(), 0).toString());
-				        }
+				        }else{btnModifier.setEnabled(false);}
 				    }
 				});
 		        getContentPane().setLayout(groupLayout);
@@ -476,6 +478,13 @@ class Fenetre extends JDialog implements ListSelectionListener,ActionListener{
 		        list = new JList<String>(listData );
 		        list.addListSelectionListener( this );
 		        scrollPane_1.setViewportView(list);
+		        list.addListSelectionListener(new ListSelectionListener() {
+		            @Override
+		            public void valueChanged(ListSelectionEvent listSelectionEvent) {
+		                boolean somethingSelected = list.getSelectedIndices().length > 0;
+		                btnSupprimer.setEnabled(somethingSelected);
+		            }
+		        });
 		        tableau.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		        getContentPane().setLayout(groupLayout);
 		        System.out.println("le Row est de: "+modifRow);
@@ -634,7 +643,7 @@ class Fenetre extends JDialog implements ListSelectionListener,ActionListener{
 		String textRadioBtn=null;
 		String strPane = "";
 		if(rdbtnNewRadioButton.isSelected()){textRadioBtn="Vraie";}
-			else{textRadioBtn="Faux";}
+			else{textRadioBtn="Fausse";}
 		
 		switch(event.getActionCommand()){
 		case "Modifier":
@@ -644,7 +653,7 @@ class Fenetre extends JDialog implements ListSelectionListener,ActionListener{
 				{
 					String stringValue = (String) comboBox_1.getSelectedItem();
 					if( stringValue != null )
-						{ if(listData.contains(stringValue+"(Vraie)")||listData.contains(stringValue+"(Faux)"))
+						{ if(listData.contains(stringValue+"(Vraie)")||listData.contains(stringValue+"(Fausse)"))
 							{
 							JOptionPane.showMessageDialog(null,
 								    "L'élément existe déjà !",
@@ -691,7 +700,7 @@ class Fenetre extends JDialog implements ListSelectionListener,ActionListener{
 					    "Un élément ne peut pas être une évidence et une vraisemblance en même temps!",
 						   "Erreur",
 						   JOptionPane.WARNING_MESSAGE);break;}
-				if((listData.contains(stringValue2+"(Vraie)")||listData.contains(stringValue2+"(Faux)"))&&!stringValue2.equals("Par défaut"))
+				if((listData.contains(stringValue2+"(Vraie)")||listData.contains(stringValue2+"(Fausse)"))&&!stringValue2.equals("Par défaut"))
 					{
 					 JOptionPane.showMessageDialog(null,
 						    "Un élément ne peut pas être une évidence et observé en même temps!",
@@ -727,7 +736,7 @@ class Fenetre extends JDialog implements ListSelectionListener,ActionListener{
 						      {  strPane+="dag("+edgeVec.get(i).get(0).replaceAll(" ", "_")+","+edgeVec.get(i).get(1).replaceAll(" ", "_")+") = 1;\n";  }
 						      strPane+="discrete_nodes = 1:N;\n";
 						      strPane+="node_sizes = 2*ones(1,N);\n";
-						      strPane+=net+" = mk_bnet(dag, node_sizes);\n";
+						      strPane+=net+" = mk_bnet(dag, node_sizes, discrete_nodes);\n";
 						      String stringValue = (String) comboBox.getSelectedItem();
 						      if(stringValue.equals("Par défaut")){
 						    	  strPane+="onodes = [];\n";  
@@ -750,7 +759,7 @@ class Fenetre extends JDialog implements ListSelectionListener,ActionListener{
 						            if(item.toString().endsWith("(Vraie)")){
 						            	strPane+="evidence{"+item.toString().substring(0, item.toString().lastIndexOf("(Vraie)")).replaceAll(" ", "_")+"} = 2;\n";
 						            }else{
-						            	strPane+="evidence{"+item.toString().substring(0, item.toString().lastIndexOf("(Faux)")).replaceAll(" ", "_")+"} = 1;\n";
+						            	strPane+="evidence{"+item.toString().substring(0, item.toString().lastIndexOf("(Fausse)")).replaceAll(" ", "_")+"} = 1;\n";
 						            }
 						        }
 //						      if(rdbtnBnt.isSelected())
@@ -769,25 +778,38 @@ class Fenetre extends JDialog implements ListSelectionListener,ActionListener{
 				}
 		}break;
 		case "Calculer":
-		{  	
+		{
 		
-			File file = new File(new File(System.getProperty("user.dir"), new File(new File(new File("src","Plugins"),"Incertain"),"Pnt").toString()),"calcul.m");
+			//File file = new File(new File(System.getProperty("user.dir"), new File(new File(new File("src","Plugins"),"Incertain"),"Pnt").toString()),"calcul.m");
+			
 			PrintWriter writer = null;
 			try {
-//				if(rdbtnBnt.isSelected())
+				final URL BNTURL = ClassLoader.getSystemClassLoader().getResource("Plugins/incertain/FullBNT-1.0.4");
+	            if (BNTURL == null) throw new FileNotFoundException("BNT folder not found");
+				Path path = Paths.get(BNTURL.toURI().getPath().toString().substring(1),"calcul.m");	
+				
+				final URL PNTURL = ClassLoader.getSystemClassLoader().getResource("Plugins/incertain/pnt");
+	            if (PNTURL == null) throw new FileNotFoundException("BNT folder not found");
+				Path pathPNT = Paths.get(PNTURL.toURI().getPath().toString().substring(1),"calcul.m");	
+				
+				
+				System.out.println("path la variable :"+path.toString());
+				
 				if (SelectedTAb.equals("BNT script build"))
-				{writer = new PrintWriter("calcul.m", "UTF-8");}
+				{writer = new PrintWriter(path.toString(), "UTF-8");}
 				else if (SelectedTAb.equals("PNT script build"))
-				{writer = new PrintWriter(file.toString(), "UTF-8");}
-			} catch (FileNotFoundException | UnsupportedEncodingException e) {
-				JOptionPane.showMessageDialog(new JFrame(),
+				{writer = new PrintWriter(pathPNT.toString(), "UTF-8");}
+				writer.print(textPane.getText());
+				writer.close();
+			}
+			catch (FileNotFoundException | UnsupportedEncodingException | URISyntaxException e) {
+				JOptionPane.showMessageDialog(null,
 					    "Erreur d'exécution du script \nScript non trouvée!",
 						   "Erreur",
 						   JOptionPane.ERROR_MESSAGE);
 			
 			}
-			writer.print(textPane.getText());
-			writer.close();
+			
 			class ExecutorTask implements Runnable{
 
 				
@@ -797,13 +819,16 @@ class Fenetre extends JDialog implements ListSelectionListener,ActionListener{
 			        Process process = null;
 					try {
 					if (SelectedTAb.equals("BNT script build"))
-					{
-						System.out.println("path :"+System.getProperty("user.dir"));
-						process=Runtime.getRuntime().exec("matlab -nodesktop -nodisplay -minimize -noFigureWindows -nosplash -logfile -wait  output -r \"cd "+System.getProperty("user.dir")+";addpath(genpathKPM(pwd));calcul;quit;\"");
+					{   final URL BNTURL = ClassLoader.getSystemClassLoader().getResource("Plugins/incertain/FullBNT-1.0.4");
+		            if (BNTURL == null) throw new FileNotFoundException("BNT folder not found");
+						System.out.println("path :"+BNTURL.toURI().getPath().toString().substring(1));
+						process=Runtime.getRuntime().exec("matlab -nodesktop -nodisplay -minimize -noFigureWindows -nosplash -logfile -wait  output -r \"cd "+BNTURL.toURI().getPath().toString().substring(1)+";addpath(genpathKPM(pwd));calcul;quit;\"");
 					}else if (SelectedTAb.equals("PNT script build")){
-						File file1 = new File(System.getProperty("user.dir"), new File(new File(new File("src","Plugins"),"Incertain"),"Pnt").toString());
-						String AddToPath= "p=genpath('"+file1.toString()+"');addpath(p);";
-						process=Runtime.getRuntime().exec("matlab -nodesktop -nodisplay -minimize -noFigureWindows -nosplash -logfile -wait output -r \""+AddToPath+" cd "+file1.toString()+";calcul;quit;\"");
+						 final URL PNTURL = ClassLoader.getSystemClassLoader().getResource("Plugins/incertain/pnt");
+				           if (PNTURL == null) throw new FileNotFoundException("BNT folder not found");
+						//File file1 = new File(System.getProperty("user.dir"), new File(new File(new File("src","Plugins"),"Incertain"),"Pnt").toString());
+						String AddToPath= "p=genpath('"+PNTURL.toURI().getPath().toString().substring(1)+"');addpath(p);";
+						process=Runtime.getRuntime().exec("matlab -nodesktop -nodisplay -minimize -noFigureWindows -nosplash -logfile -wait output -r \""+AddToPath+" cd "+PNTURL.toURI().getPath().toString().substring(1)+";calcul;quit;\"");
 					}
 					
 				} catch (IOException e) {
@@ -813,11 +838,14 @@ class Fenetre extends JDialog implements ListSelectionListener,ActionListener{
 							   JOptionPane.ERROR_MESSAGE);
 					verifexec=false;
 					
+				} catch (URISyntaxException e) {
+					JOptionPane.showMessageDialog(null,
+						    "Erreur d'exécution du script \nVerifier si Matlab est correctement installée!",
+							   "Erreur",
+							   JOptionPane.ERROR_MESSAGE);
 				}
 				if(verifexec){
-				try {
-			
-					process.waitFor();
+				try {process.waitFor();
 				} catch (InterruptedException e) {
 					JOptionPane.showMessageDialog(null,
 						    "Erreur d'exécution du script \nl'exécution du script a été interrompu !",
@@ -881,30 +909,36 @@ public static String readInput(String filePath) {
         return buffer.toString();
     } 
     catch (IOException e) {
-        e.printStackTrace();
+    	JOptionPane.showMessageDialog(null,
+         		"Erreur d'ouverture du fichier "+filePath,
+						    "Erreur",
+						    JOptionPane.ERROR_MESSAGE);
         return null;
     }
 }
-	private static String LireSousFormeString(String filePath) {
-		 byte[] buffer = new byte[(int) new File(filePath).length()];
-		 BufferedInputStream f = null;
-		 try {
-		 try {
-			f = new BufferedInputStream(new FileInputStream(filePath));
-		} catch (FileNotFoundException e) {
-			
-		}
-		 try {
-			f.read(buffer);
-		} catch (IOException e) {
-			
-			e.printStackTrace();
-		}
-		 } finally {
-		 if (f != null) try { f.close(); } catch (IOException ignored) { }
-		 }
-		 return new String(buffer);
-		 }
+private static String LireSousFormeString(String filePath) {
+	 byte[] buffer = new byte[(int) new File(filePath).length()];
+	 BufferedInputStream f = null;
+	 try {
+		f = new BufferedInputStream(new FileInputStream(filePath));
+		f.read(buffer);
+	}catch(IOException e){
+		JOptionPane.showMessageDialog(null,
+    		"Erreur d'ouverture du fichier "+filePath,
+					    "Erreur",
+					    JOptionPane.ERROR_MESSAGE);
+}
+finally {
+	 if (f != null) try { f.close(); } 
+	 catch (IOException ignored) {
+		 JOptionPane.showMessageDialog(null,
+    		"Erreur de fermeture  du fichier "+filePath,
+					    "Erreur",
+					    JOptionPane.ERROR_MESSAGE);
+	 }
+	 }
+	 return new String(buffer);
+}
 	public void makeGraph(mxGraph graphe,String str) {
 	 
 	    graphe.getModel().beginUpdate();
@@ -931,7 +965,7 @@ public static String readInput(String filePath) {
 	private JSpinner spinner;
 	private JSpinner spinner_1;
 	
-	public Incertain() throws IOException, URISyntaxException {
+	public Incertain() {
 		super();
         setName("Incertain"); // Will be the title of the tab
         
@@ -939,11 +973,7 @@ public static String readInput(String filePath) {
         tabbedPane.addTab("Tab 1", null, null,
                 "Does nothing");
         tabbedPane.setMnemonicAt(0, KeyEvent.VK_1);
-		ClassLoader loader =ClassLoader.getSystemClassLoader();
-		URL url=loader.getResource("Plugins");
-		
- 
-    System.out.println("path : "+Paths.get(new File(url.toURI()).getAbsolutePath(),"FullBNT-1.0.4").toFile());
+	
 		GridBagConstraints gbc_txtCheminVersLe_1 = new GridBagConstraints();
 		gbc_txtCheminVersLe_1.anchor = GridBagConstraints.WEST;
 		gbc_txtCheminVersLe_1.fill = GridBagConstraints.BOTH;
@@ -1254,7 +1284,7 @@ public static String readInput(String filePath) {
 		        gbc_label.gridy = 1;
 		        logiquePossibiliste.add(label, gbc_label);
 		        
-		        JLabel label_1 = new JLabel("Nombre de parents maximal ");												;
+		        JLabel label_1 = new JLabel("Nombre de parents maximal ");												
 		  
 		        
 		        spinner = new JSpinner( 
@@ -1338,63 +1368,92 @@ public static String readInput(String filePath) {
 		            
 		            	   s=s.replaceAll("nb_parent_max_JAVA",new Integer(parMax).toString());
 		            	    System.out.println("s "+s);
+		           
 		            	    PrintWriter out = null;
 							try {
-								out = new PrintWriter("calcule.m");
-							} catch (FileNotFoundException e1) {
-							
-								e1.printStackTrace();
-							}
-		            	    out.println(s);
-		            	    out.close();
-		            	    path = Paths.get(System.getProperty("user.dir"),"src","Plugins","incertain","Pnt");	
+								final URL PNTURLP = ClassLoader.getSystemClassLoader().getResource("Plugins/incertain/pnt");
+					            if (PNTURLP == null) throw new FileNotFoundException("PNT folder not found");
+								Path pathPNT = Paths.get(PNTURLP.toURI().getPath().toString().substring(1),"calcule.m");	
+								out = new PrintWriter(pathPNT.toString());
+								out.println(s);
+			            	    out.close();
+							} catch (FileNotFoundException | URISyntaxException e1) {
+								JOptionPane.showMessageDialog(null,
+						         		"Erreur de fermeture  du fichier temporaire calcule.m",
+												    "Erreur",
+												    JOptionPane.ERROR_MESSAGE);
+							} 
+		            	    
+		            	   // path = Paths.get(System.getProperty("user.dir"),"src","Plugins","incertain","Pnt");	
 		            	   
-		            	    final String cmd="matlab -nodesktop -nodisplay -minimize -noFigureWindows -nosplash -logfile -wait output -r \"addpath(genpath(\'"+path.toAbsolutePath().toString()+"'));cd "+System.getProperty("user.dir")+"; calcule;\";quit;";
-		                    Runnable externalProgramLauncher = new Runnable() {
+		            	    
+		            	    Runnable externalProgramLauncher = new Runnable() {
 		                    	Process process = null;
+		                    	
 		                        public void run() {
-                    try {
-                    	process=Runtime.getRuntime().exec(cmd);
-                    } catch (IOException e) {
-                        JOptionPane.showMessageDialog(logiquePossibiliste, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-                    }
-                    try {
-						process.waitFor();
-					} catch (InterruptedException e) {
-						JOptionPane.showMessageDialog(new JFrame(),
-    						    "Erreur d'exécution du script \nScripte non trouvée!",
-    							   "Erreur",
-    							   JOptionPane.ERROR_MESSAGE);
-					
-					}
-//																																					                            
-                    Path path2 = Paths.get("C:","cygwin","home","licence","resultats");
-                    ResultsDialog resultsDialog = new ResultsDialog();
-                    System.out.print(LireSousFormeString(path2.toAbsolutePath().toString()));
-                   
-                    String Filecontent = null;
-                   
-						
-						Filecontent=readInput(path2.toAbsolutePath().toString());
-                   
-                    
-                  
-                      //Filecontent=LireSousFormeString(path2.toAbsolutePath().toString());
-                   Path path3=Paths.get("C:","cygwin","home","licence","Cygwin.bat");
-                   System.out.println("path cyg "+path3.toAbsolutePath().toString() );
-                    try {
-						Runtime.getRuntime().exec(path3.toAbsolutePath().toString());
-					} catch (IOException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-                    resultsDialog.setText(Filecontent);
-                    resultsDialog.pack();
-                    resultsDialog.setLocationRelativeTo(logiquePossibiliste);
-                    resultsDialog.setVisible(true);          }
+		                        	
+					                    try {
+					                    	 final URL PNTURL = ClassLoader.getSystemClassLoader().getResource("Plugins/incertain/Pnt");
+							    	            if (PNTURL == null) throw new FileNotFoundException("PNT folder not found");
+							            	    final String cmd="matlab -nodesktop -nodisplay -minimize -noFigureWindows -nosplash -logfile -wait output -r \"addpath(genpath(\'"+PNTURL.toURI().getPath().toString().substring(1)+"'));cd "+PNTURL.toURI().getPath().toString().substring(1)+"; calcule;\";quit;";
+							            	    System.out.println("PNTURL "+PNTURL.toURI().getPath().toString().substring(1));
+							            	    process=Runtime.getRuntime().exec(cmd);
+					                    } catch (IOException e) {
+					                        JOptionPane.showMessageDialog(logiquePossibiliste, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+					                    } catch (URISyntaxException e) {
+					                    	JOptionPane.showMessageDialog(null,
+					    						    "Erreur d'exécution du script \nScripte non trouvée!",
+					    							   "Erreur",
+					    							   JOptionPane.ERROR_MESSAGE);
+										}
+					                    if(process!=null){
+					                    try {
+											process.waitFor();
+										} catch (InterruptedException e) {
+											JOptionPane.showMessageDialog(null,
+					    						    "Erreur d'exécution du script \nScripte non trouvée!",
+					    							   "Erreur",
+					    							   JOptionPane.ERROR_MESSAGE);
+										
+										}
+					                    }
+																																									                            
+					                    Path path2 = Paths.get("C:","cygwin","home","licence","resultats");
+					                    ResultsDialog resultsDialog = new ResultsDialog();
+					                    System.out.print(LireSousFormeString(path2.toAbsolutePath().toString()));
+					                   
+					                    Process process = null;
+					                
+					                   Path path3=Paths.get("C:","cygwin","home","licence","Cygwin.bat");
+					                   System.out.println("path cyg "+path3.toAbsolutePath().toString() );
+					                    try {
+					                    	process = Runtime.getRuntime().exec(path3.toAbsolutePath().toString());
+					                    	process.waitFor();
+					                    } catch (IOException e) {
+											JOptionPane.showMessageDialog(null,
+					    						    "Erreur d'exécution du script \nScripte non trouvée!",
+					    							   "Erreur",
+					    							   JOptionPane.ERROR_MESSAGE);
+										} catch (InterruptedException e) {
+											JOptionPane.showMessageDialog(null,
+					    						    "Erreur d'exécution du script \nExecution interrompue!",
+					    							   "Erreur",
+					    							   JOptionPane.ERROR_MESSAGE);
+										}
+					                    String Filecontent = null;
+					                    Filecontent=readInput(path2.toAbsolutePath().toString());
+					                    if(Filecontent!=null){
+					                    resultsDialog.setText(Filecontent);
+					                    resultsDialog.pack();
+					                    resultsDialog.setLocationRelativeTo(logiquePossibiliste);
+					                    resultsDialog.setVisible(true);        
+					                }
+		                        }
 		                    };
+		                   
 		                    Thread t = new Thread(externalProgramLauncher);
 		                    t.start();
+		                    
 				  }
 		       });
 		       
@@ -1426,7 +1485,6 @@ public static String readInput(String filePath) {
 		    chooser.setFileFilter(matlabFilter);
             chooser.setAcceptAllFileFilterUsed(false);
 		    
-		    //    
 		    if (chooser.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
 		      System.out.println("getCurrentDirectory(): " 
 		         +  chooser.getCurrentDirectory());

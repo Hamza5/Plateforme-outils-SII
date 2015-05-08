@@ -14,9 +14,9 @@
 \usepackage{subcaption} % Pour mettre plusieurs images sur la même ligne
 \usepackage{float} % Pour empêcher le déplacement des tableaux et des figures.
 \usepackage[french,longend,boxruled,algoruled,linesnumbered,algochapter]{algorithm2e}%pour les algorithmes
+\newcommand\mycommfont{\footnotesize\ttfamily\textcolor{blue}}%pour colorer les commenataires en bleu
 \usepackage{babelbib} % Pour changer la langue dans la bibliographie
 \usepackage{amsthm} % Pour les exemples
-\usepackage{xspace} % Les espaces après une commande
 
 \graphicspath{ {pictures/} } % Spécifier le répertoire contenant les images  
 \DisableLigatures[f]{encoding=*}
@@ -43,11 +43,11 @@
 % Espace entre les lignes
 \linespread{1.3}
 % Nom de notre application
-\newcommand{\appname}{\textbf{combinateur d'évidences}\xspace}
-\newcommand{\appName}{Combinateur d'évidences\xspace}
+\newcommand{\appname}{\textbf{combinateur d'évidences} }
+\newcommand{\appName}{Combinateur d'évidences }
 % Nom de la grande interface
-\newcommand{\platformename}{\textbf{plateforme d'outils}\xspace}
-\newcommand{\platformeName}{Plateforme d'outils\xspace}
+\newcommand{\platformename}{\textbf{plateforme d'outils} }
+\newcommand{\platformeName}{Plateforme d'outils }
 
 % Gérer les exemples
 \theoremstyle{definition}
