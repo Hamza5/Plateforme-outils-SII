@@ -1,15 +1,13 @@
-\parskip=0.6em
 \chapter{Conception des algorithmes}
 
-
+\phantomsection
+\addcontentsline{toc}{section}{Introduction}
 \section*{Introduction}
 
 Dans ce chapitre, nous allons détailler les différentes procédures et méthodes que nous avons implémentées dans \textbf sur la théorie de Dempster-Shafer, décrite dans le premier chapitre.
 
 Les algorithmes qui suivent, se déroule en un enchainement précis.
-Premièrement la procédure de préparation qui fait des manipulations sur les masses sera expliquée dans la section de cette procédure. Vient ensuite la procédure d'appel de fusion et de croyance qui nécessite les données résultant de la procédure précédente et qui fait appel à chaque procédure de fusion de croyance. Enfin à partir des données de la fusion viennent les deux dernières procédures de calcul de croyance et de décision qui présentent le résultat final de tous les algorithmes précédents .
-\phantomsection
-\addcontentsline{toc}{section}{Introduction}
+Premièrement la procédure de préparation qui fait des manipulations sur les masses sera expliquée dans la section de cette procédure. Vient ensuite la procédure d'appel de fusion et de croyance qui nécessite les données résultant de la procédure précédente et qui fait appel à chaque procédure de fusion de croyance. Enfin à partir des données de la fusion viennent les deux dernières procédures de calcul de croyance et de décision qui présentent le résultat final de tous les algorithmes précédents.
 \SetKwInput{KwIn}{Entrée}
 \SetKwInput{KwOut}{Sortie}
 \SetKw{KwTo}{à}
@@ -260,6 +258,6 @@ $ResDecision \gets vecHypothèses.Max();$
 }
 }
 \end{algorithm}
-%\phantomsection
-%\addcontentsline{toc}{section}{Conclusion}
+\phantomsection
+\addcontentsline{toc}{section}{Conclusion}
 \section*{Conclusion}
