@@ -3,9 +3,6 @@
 \phantomsection
 \addcontentsline{toc}{section}{Introduction}
 \section*{Introduction}
-
-
-
 \section{L’incertain}
 
 Les approches logiques de l’incertain permettent d’utiliser un langage formel pour la description des connaissances et le raisonnement automatique. Elles constituent une référence aux autres formalismes surtout pour le raisonnement, néanmoins les connaissances ne  sont pas structurées.
@@ -16,10 +13,7 @@ Sur le plan de la représentation, le mode graphique est le plus explicite en so
 Plusieurs chercheurs ont permis l’émergence d’un certain nombre de modèles graphiques offrant un cadre de représentation plus structuré.
 
 La théorie des possibilités est une théorie de l’incertain ayant pour vocation de manipuler des connaissances incomplètes. Elle diffère de la théorie de probabilité  vu qu'elle manipule deux mesures duales : possibilité et nécessité. Cette théorie a été développée dans deux directions :la qualitative et la quantitative ce qui permet en fait de définir deux types de réseaux causaux possibilistes : les réseaux causaux possibilistes basé sur le minimum (qualitatif) et les reseau basé sur le produit (quantitative).
-
-
-
-\subsection{Théorie de probabilité(BNT)}
+\subsection{Théorie de probabilité}
 
 La théorie des réseaux bayésien peut être considérée comme une fusion de diagrammes d'incidence et le théorème de Bayes. La probabilité qu'un événement se produise étant donné que un autre événement a déjà eu lieu est appelé une probabilité conditionnelle. 
 
@@ -40,13 +34,18 @@ Un graphe possibiliste basé sur le produit (quantitatif), noté par GP P, est u
 \begin{equation}
 pi P (V1, .., VN) = PRODi=1..N pi (Vi/PARVi)
 \end{equation}
-
- 	
 Ou PROD est l’opérateur produit.
 La boîte à outils PNT possède différents algorithmes pour les réseaux causaux possibilistes basée sur le produit à connexions multiples et pour les polyarbres. 
 \subsubsection{Logique}
+La logique possibiliste offre un cadre générale pour représenter les connaissances incertaines, en termes de formules logiques classiques auxquelles sont associées des pondérations appartenant à une échèlle linaire de 0 à 1, toute base possibiliste quantitative peut être codée de façon équivalente par un réseau causal possibiliste basé sur le produit.
 
-La logique possibiliste offre un cadre générale pour représenter les connaissances incertaines, en termes de formules logiques classiques auxquelles sont associées des pondérations appartenant à une échèlle linaire de 0 à 1.
+des programmes on été concus pour pouvoir:
+
+– un programme de passage d’une base possibiliste quantitative vers un graphe causal basé sur le produit, l’affectation de l’ordre arbitraire entre les variables influe sur la structure du graphe. Il serait donc intéressant de définir des heuristiques afin d’obtenir la structure de graphe la moins complexe possible afin d’optimiser
+le temps de la propagation.
+
+– un programme d’inférence appliqué à une base possibiliste quantitative. Il serait transformer la base de connaissances afin de pouvoir utiliser un prouveur de la classe MAXSAT connu pour être un des problèmes NP-difficiles.\cite{hkhallafiThesis}
+
 \subsection{Théorie de possibilité qualitative}
 \subsubsection{Graphique}
 
@@ -57,15 +56,28 @@ Un graphe possibiliste basé sur le minimum, noté par GPM, est un graphe où le
 Ou MIN est  l’opérateur minimum.
 
 La boite à outils PNT possède aussi différents algorithmes pour les réseaux causaux possibilistes basés sur le minimum à connexions multiples et pour les polyarbres. 
-\subsubsection{Logique}
-
-
 
 \subsection{Décision dans l’incertain}
+La théeorie de la déecision permet de modéliser le comportement d'un agent face
+à des situation de choix en se basant sur un certain nombre d'axiomes. Le critère
+de l'utilitée espérée est un critère dominant de cette approche, qui se base sur une
+base axiomatique très solide [10].
 \subsubsection{Graphique}
-
+L’utilisation de modèles graphiques dans de nombreux problèmes de décision apporte de
+l’expressivité et de l’efficacité de calcul tant pour la représentation des incertitudes que pour celle
+des préférences. La structure du graphe exprime les spécificités du problème traité et est utilisée
+pour propager des informations et optimiser des décisions. Plusieurs modèles graphiques peuvent
+être utilisés pour le problème de la prise de décision séquentielle, on peut citer à titre d’exemple les réseaux possibilistes.
+GraphViz02 est programme qui permet de calculer la meilleur décision qualitative basé sur la représentation graphique des réseaux possibilistes, pour faire ce calcul, le programme fait plusieurs démarches de fusion réseau possibiliste codifiant les connaissances, et le réseau possibiliste codifiant les préférences et génération de l’arbre de jonction correspondant.
 \subsubsection{Logique}
-La logique possibiliste qualitative est une logique de l'incertain conçue pour raisonner avec des connaissances incomplètes et partiellement inconsistantes [18].
+En plus des représentation graphiques, comme dans la logique possibiliste, il existe d’autres moyens de
+représentation. Nous allons voir dans cette partie, une représentation logique.
+
+Les informations sont représentées en logique possibiliste au travers des formules quantifiées par des mesures de nécessité (qui sont définies par dualité par rapport aux mesures de possibilité), afin d'être exploitées pour la représentation de problèmes de décision sous incertitude, ainsi que pour le calcul de décision optimales. [noughi]
+
+Le programme DecPos est intéressés aux problèmes de décisions dans le cas multi-sources, dans lesquels il doit passer par le processus décisionnel qui permet de fusionner les informations incertaines, afin de calculer la décision optimale dans les deux cas optimiste et pessimiste.
+
+
 
 \emph{ Nous precison La théorie de Dempster and Shafer qui est une théorie de l’incertain n'est pas exposée ici parce qu’elle presentée théoriquement en détail dans le chapitre I, et parce que dans le chapitre suivant est consacré aux algorithmes implémentés grace à cette théorie.}
 \section{L’imprécision}
