@@ -61,7 +61,7 @@ public class Décision extends JPanel {
         JButton DecPosButton = new JButton(new AbstractAction(DecPosButtonText) {
              public void actionPerformed(ActionEvent actionEvent) {
                 try {
-                    final URL decPosURL = ClassLoader.getSystemClassLoader().getResource("Plugins/Décision/DecPos");
+                    final URL decPosURL = ClassLoader.getSystemClassLoader().getResource("Plugins/décision/DecPos");
                     if (decPosURL == null) throw new FileNotFoundException("DecPos folder not found");
                     final File decPosFolderPath = new File(decPosURL.toURI());
                     String[] libs = {"lib/orbital-core.jar", "lib/orbital-ext.jar", "lib/org.sat4j.core-src.jar",
@@ -95,7 +95,7 @@ public class Décision extends JPanel {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
            
-            	final URL PNTURL = ClassLoader.getSystemClassLoader().getResource("Plugins/Décision/Pnt");
+            	final URL PNTURL = ClassLoader.getSystemClassLoader().getResource("Plugins/décision/Pnt");
             	
 				
                     Runnable externalProgramLauncher = null;
