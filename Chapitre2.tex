@@ -7,12 +7,12 @@
 
 Les approches logiques de l’incertain permettent d’utiliser un langage formel pour la description des connaissances et le raisonnement automatique. Elles constituent une référence aux autres formalismes surtout pour le raisonnement, néanmoins les connaissances ne  sont pas structurées.
 
-Les principales représentations des connaissances incertaines sont le mode logique et le mode graphique.
+Les principales représentations des connaissances incertaines sont le mode logique et le mode graphique.\cite{hkhallafiThesis}
 Sur le plan de la représentation, le mode graphique est le plus explicite en soumettant les relations de dépendance qui existent entre les différentes variables .sur le plan de raisonnement, le mode logique offre une machinerie d’inférences efficace.
 
 Plusieurs chercheurs ont permis l’émergence d’un certain nombre de modèles graphiques offrant un cadre de représentation plus structuré.
 
-La théorie des possibilités est une théorie de l’incertain ayant pour vocation de manipuler des connaissances incomplètes. Elle diffère de la théorie de probabilité  vu qu'elle manipule deux mesures duales : possibilité et nécessité. Cette théorie a été développée dans deux directions :la qualitative et la quantitative ce qui permet en fait de définir deux types de réseaux causaux possibilistes : les réseaux causaux possibilistes basé sur le minimum (qualitatif) et les reseau basé sur le produit (quantitative).
+La théorie des possibilités est une théorie de l’incertain ayant pour vocation de manipuler des connaissances incomplètes. Elle diffère de la théorie de probabilité  vu qu'elle manipule deux mesures duales : possibilité et nécessité. Cette théorie a été développée dans deux directions :la qualitative et la quantitative ce qui permet en fait de définir deux types de réseaux causaux possibilistes : les réseaux causaux possibilistes basé sur le minimum (qualitatif) et les réseau basé sur le produit (quantitative).\cite{hkhallafiThesis}\cite{kZebouchi2Thesis}
 \subsection{Théorie de probabilité}
 
 La théorie des réseaux bayésien peut être considérée comme une fusion de diagrammes d'incidence et le théorème de Bayes. La probabilité qu'un événement se produise étant donné que un autre événement a déjà eu lieu est appelé une probabilité conditionnelle. 
@@ -30,21 +30,19 @@ Une des plus grandes forces de BNT est qu'il offre une variété d'algorithmes d
 
 \subsubsection{Graphique}
 
-Un graphe possibiliste basé sur le produit (quantitatif), noté par GP P, est un graphe possibiliste où les possibilités conditionnelles sont obtenues par un conditionnement de type produit. La distribution de possibilité des réseaux possibilistes bases sur le produit, notée par Pi P, est obtenue par la règle de chaınage 
+Un graphe possibiliste basé sur le produit (quantitatif), noté par GP P, est un graphe possibiliste où les possibilités conditionnelles sont obtenues par un conditionnement de type produit. La distribution de possibilité des réseaux possibilistes bases sur le produit, notée par Pi P, est obtenue par la règle de chainage 
 \begin{equation}
 pi P (V1, .., VN) = PRODi=1..N pi (Vi/PARVi)
 \end{equation}
-Ou PROD est l’opérateur produit.
+Ou PROD est l’opérateur produit.\cite{BoBrDu2008.1}
 La boîte à outils PNT possède différents algorithmes pour les réseaux causaux possibilistes basée sur le produit à connexions multiples et pour les polyarbres. 
 \subsubsection{Logique}
-La logique possibiliste offre un cadre générale pour représenter les connaissances incertaines, en termes de formules logiques classiques auxquelles sont associées des pondérations appartenant à une échèlle linaire de 0 à 1, toute base possibiliste quantitative peut être codée de façon équivalente par un réseau causal possibiliste basé sur le produit.
+La logique possibiliste offre un cadre général pour représenter les connaissances incertaines, en termes de formules logiques classiques auxquelles sont associées des pondérations appartenant à une échèle linaire de 0 à 1. Toute base possibiliste quantitative peut être codée de façon équivalente par un réseau causal possibiliste basé sur le produit.
 
-des programmes on été concus pour pouvoir:
-
-– un programme de passage d’une base possibiliste quantitative vers un graphe causal basé sur le produit, l’affectation de l’ordre arbitraire entre les variables influe sur la structure du graphe. Il serait donc intéressant de définir des heuristiques afin d’obtenir la structure de graphe la moins complexe possible afin d’optimiser
+–Il existe un programme de passage d’une base possibiliste quantitative vers un graphe causal basé sur le produit dans lequel l’affectation de l’ordre arbitraire entre les variables influe sur la structure du graphe. Il serait donc intéressant de définir des heuristiques afin d’obtenir la structure de graphe la moins complexe possible afin d’optimiser
 le temps de la propagation.
 
-– un programme d’inférence appliqué à une base possibiliste quantitative. Il serait transformer la base de connaissances afin de pouvoir utiliser un prouveur de la classe MAXSAT connu pour être un des problèmes NP-difficiles.\cite{hkhallafiThesis}
+–Il existe aussi un programme d’inférence appliqué à une base possibiliste quantitative. Il permettait de 	 transformer la base de connaissances afin de pouvoir utiliser un prouveur de la classe MAXSAT connu pour être un des problèmes NP-difficiles.\cite{hkhallafiThesis}
 
 \subsection{Théorie de possibilité qualitative}
 \subsubsection{Graphique}
@@ -53,49 +51,47 @@ Un graphe possibiliste basé sur le minimum, noté par GPM, est un graphe où le
 \begin{equation}
  pi M (A1, .., AN) = MINi=1..N pi (Ai/teta Ai) 
 \end{equation}
-Ou MIN est  l’opérateur minimum.
+Ou MIN est  l’opérateur minimum.\cite{BoBrDu2008.1}
 
 La boite à outils PNT possède aussi différents algorithmes pour les réseaux causaux possibilistes basés sur le minimum à connexions multiples et pour les polyarbres. 
 
 \subsection{Décision dans l’incertain}
-La théeorie de la déecision permet de modéliser le comportement d'un agent face
-à des situation de choix en se basant sur un certain nombre d'axiomes. Le critère
-de l'utilitée espérée est un critère dominant de cette approche, qui se base sur une
-base axiomatique très solide [10].
+La théorie de la décision permet de modéliser le comportement d'un agent face
+à des situations de choix en se basant sur un certain nombre d'axiomes. Le critère
+de l'utilitée espérée est un critère dominant de cette approche, qui s'appuie sur une
+base axiomatique très solide.\cite{hkhaoulaThesis}
 \subsubsection{Graphique}
 L’utilisation de modèles graphiques dans de nombreux problèmes de décision apporte de
 l’expressivité et de l’efficacité de calcul tant pour la représentation des incertitudes que pour celle
 des préférences. La structure du graphe exprime les spécificités du problème traité et est utilisée
 pour propager des informations et optimiser des décisions. Plusieurs modèles graphiques peuvent
-être utilisés pour le problème de la prise de décision séquentielle, on peut citer à titre d’exemple les réseaux possibilistes.
-GraphViz02 est programme qui permet de calculer la meilleur décision qualitative basé sur la représentation graphique des réseaux possibilistes, pour faire ce calcul, le programme fait plusieurs démarches de fusion réseau possibiliste codifiant les connaissances, et le réseau possibiliste codifiant les préférences et génération de l’arbre de jonction correspondant.
+être utilisés pour le problème de la prise de décision séquentielle. On peut citer à titre d’exemple les réseaux possibilistes.\\
+GraphViz02 est un programme qui permet de calculer la meilleure décision qualitative basée sur la représentation graphique des réseaux possibilistes. Pour faire ce calcul, le programme fait plusieurs démarches de fusion de réseau possibiliste codifiant les connaissances, avec le réseau possibiliste codifiant les préférences.Puis il génère de l’arbre de jonction correspondant.\cite{hkhaoulaThesis}
 \subsubsection{Logique}
 En plus des représentation graphiques, comme dans la logique possibiliste, il existe d’autres moyens de
-représentation. Nous allons voir dans cette partie, une représentation logique.
+représentation. Nous allons voir ici une représentation logique.
 
-Les informations sont représentées en logique possibiliste au travers des formules quantifiées par des mesures de nécessité (qui sont définies par dualité par rapport aux mesures de possibilité), afin d'être exploitées pour la représentation de problèmes de décision sous incertitude, ainsi que pour le calcul de décision optimales. [noughi]
+Les informations sont représentées en logique possibiliste au travers des formules quantifiées par des mesures de nécessité (qui sont définies par dualité par rapport aux mesures de possibilité), afin d'être exploitées pour la représentation de problèmes de décision sous incertitude, ainsi que pour le calcul de décision optimale. [noughi]
 
-Le programme DecPos est intéressés aux problèmes de décisions dans le cas multi-sources, dans lesquels il doit passer par le processus décisionnel qui permet de fusionner les informations incertaines, afin de calculer la décision optimale dans les deux cas optimiste et pessimiste.
+Le programme DecPos est s'intéresse aux problèmes de décision dans le cas multi-sources, dans lesquels il doit passer par un processus décisionnel permettant de fusionner les informations incertaines, afin de calculer la décision optimale dans les deux cas optimiste et pessimiste.[noughi]
 
-
-
-\emph{ Nous precison La théorie de Dempster and Shafer qui est une théorie de l’incertain n'est pas exposée ici parce qu’elle presentée théoriquement en détail dans le chapitre I, et parce que dans le chapitre suivant est consacré aux algorithmes implémentés grace à cette théorie.}
+\emph{ La théorie de Dempster and Shafer qui est une théorie de l'incertain n'est pas exposée ici parce qu’elle est présentée théoriquement en détail dans le chapitre I, et parce que dans le chapitre suivant est consacré aux algorithmes implémentés grâce à cette théorie.}
 \section{L’imprécision}
 
 La logique floue permet de solutionner tous les problèmes où on dispose de connaissances imprécises, soumises à des incertitudes de nature non probabiliste.
 
 cette dernière est une forme de logique polyvalente qui traite l’approximation, plutôt que le raisonnement fixe et exact. Par rapport à la logique binaire traditionnelle (où les variables peuvent prendre des valeurs vraies ou fausses), les variables de logique floue peuvent avoir une valeur de vérité qui varie en degré entre 0 et 1. La logique floue a été étendue pour gérer le concept de vérité partielle, où la valeur de vérité peut varier entre complètement vrai et complètement faux. 
-\subsection{Fuzzy logic}
-
+\paragraph{Fuzzy logic} 
+\vspace{1em}
 La boîte à outils  Fuzzy est une collection de fonctions qui fournit des outils permettant de créer et d'éditer systèmes d'inférence floue. Et un bloc Simulink pour l'analyse, la conception et la simulation des systèmes basés sur la logique floue.
 
 Elle permet de modéliser les comportements de systèmes complexes en utilisant des règles logiques simples, puis de mettre en œuvre ces règles dans un système d'inférence floue.
 
-\section{Stisfiabilitée}
+\section{Satisfiabilitée}
 
-Nous presentant ici l'outil UBCSAT en precisant en premier temps la notion SAT et en presentant les problemes en cause de resoudre MaxSAT et MaxSATponderé. 
+Nous présentant ici l'outil UBCSAT en précisant en premier temps la notion SAT et en présentant les problèmes en cause de résoudre MaxSAT et MaxSATponderé. 
 \subsection{SAT}
-Soit F une formule propositionnelle sous la forme normale conjonctive (CNF). Le problème SAT est un problème de décision NP-complet qui consiste à déterminer si F admet ou non un modèle [1].
+Soit F une formule propositionnelle sous la forme normale conjonctive (CNF). Le problème SAT est un problème de décision NP-complet qui consiste à déterminer si F admet ou non un modèle.\cite{hassenThesis}
 
 \textbf{Le problème de satisfiabilité propositionnelle (SAT)} est un sujet d'étude important dans de nombreux domaines de l'informatique, SAT est définie par les ces composantes :\\
 \hspace{2em}Soit $X=\{x_1, x_2,\dots, x_n\}$, un ensemble de $n$variables booléennes.\\
@@ -104,18 +100,18 @@ Soit F une formule propositionnelle sous la forme normale conjonctive (CNF). Le 
 \hspace{2em}chaque littéral est une variable ou sa négation.\\
 \hspace{2em}Soit $D$, la donnée SAT, composé d'une conjonction de littéraux.
 
-Le problème SAT consiste à déterminer s’il existe une assignation des variables $x_i$ de $X$ telle que la donnée $D$ soit satisfaisante. S’il existe une assignation de variables qui satisfait toutes les clauses, le SAT admet une réponse ‘Oui’ ou ‘Non sinon’. 
+Le problème SAT consiste à déterminer s’il existe une assignation des variables $x_i$ de $X$ telle que la donnée $D$ soit satisfaisante. S’il existe une assignation de variables qui satisfait toutes les clauses, le SAT admet une réponse ‘Oui’ ou ‘Non sinon’.\cite{hkhallafiThesis}
 \subsection{WMAXSAT}
 
-toutefois, dans le cas de réponse négative du SAT, pour trouver toutes le nombre maximale de clauses pouvant être satisfaites à la fois. il a fallu définir \textbf{le problème du ‘Maximum Satisfiabilité’, ou MAXSAT}. Max-SAT est donc la version optimale de la SAT dont le but est de satisfaire le nombre maximal de clauses.
+toutefois, dans le cas de réponse négative du SAT, pour trouver toutes le nombre maximale de clauses pouvant être satisfaites à la fois. il a fallu définir \textbf{le problème du Maximum Satisfiabilité, ou MAXSAT}. Max-SAT est donc la version optimale de la SAT dont le but est de satisfaire le nombre maximal de clauses.
 
-Le problème avec le MAXSAT c’est qu’elle associe à toutes les clauses le même poids, d’où la néccessité de définir \textbf{le problème du MAXSAT pondéré, ou WMAXSAT} cela permet d'attribuer des poids aux différentes clauses pour spécifier les clauses simultanément satisfaites en augmentant la somme de leur poids et en affaiblissant la somme des poids des clauses insatisfaites.
+Le problème avec le MAXSAT c’est qu’elle associe à toutes les clauses le même poids, d’où la nécessité de définir \textbf{le problème du MAXSAT pondéré, ou WMAXSAT} cela permet d'attribuer des poids aux différentes clauses pour spécifier les clauses simultanément satisfaites en augmentant la somme de leur poids et en affaiblissant la somme des poids des clauses insatisfaites. \cite{hkhallafiThesis}
 
 
 \textbf{UBCSAT (University of British Columbia SAT)}
 
 Pour faire preuve de satisfiabilité, le logiciel UBCSAT convient pour cela.\\
-L'un des défis de l'élaboration du projet UBCSAT était de construire un environnement flexible, riche en fonctionnalités sans compromettre l'efficacité algorithmique. Ce programme est performant sur les instances SAT issues de problèmes réels. Il offre la gestion des contraintes pseudo booléennes, et il décline un grand nombre de problèmes de décision ou d’optimisation en termes de problème SAT ou pseudo booléen.    
+L'un des défis de l'élaboration du projet UBCSAT était de construire un environnement flexible, riche en fonctionnalités sans compromettre l'efficacité algorithmique. Ce programme est performant sur les instances SAT issues de problèmes réels. Il offre la gestion des contraintes pseudo booléennes, et il décline un grand nombre de problèmes de décision ou d’optimisation en termes de problème SAT ou pseudo booléen.    \cite{hassenThesis}
 
 Actuellement, UBCSAT comprend des implémentations de deux algorithmes conçus pour supporter les versions MAX-SAT, ainsi que MAX-SAT pondéré.
 
