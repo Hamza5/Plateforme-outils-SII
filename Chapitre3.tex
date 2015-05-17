@@ -128,12 +128,12 @@ $CalculCroyancePlausibilité(Agent);$
 \caption{Méthode de combinaison Dempster-Shafer}
 \BlankLine
 \KwIn{
-$AGENT1 = \lbrace \lbrace hypothèse_{1},masse_{1} \rbrace \lbrace hypothèse_{2},masse_{2} \rbrace \dots \lbrace hypothèse_{n},masse_{n} \rbrace \rbrace $,$\newline AGENT2 = \lbrace \lbrace hypothèse_{1},masse_{1} \rbrace \lbrace hypothèse_{2},masse_{2} \rbrace \dots \lbrace hypothèse_{m},masse_{m} \rbrace \rbrace $}
-\KwOut{$AGENTRes =\newline \lbrace \lbrace hypothèse_{1},masse_{1} \rbrace \lbrace hypothèse_{2},masse_{2}  \rbrace \dots \lbrace hypothèse_{l},masse_{l} \rbrace \rbrace $}
+$AGENT1 = \lbrace \lbrace hypothèse_{1},masse_{1} \rbrace  \dots \lbrace hypothèse_{n},masse_{n} \rbrace \rbrace $,$\newline AGENT2 = \lbrace \lbrace hypothèse_{1},masse_{1} \rbrace  \dots \lbrace hypothèse_{m},masse_{m} \rbrace \rbrace $}
+\KwOut{$AGRes = \lbrace \lbrace hypothèse_{1},masse_{1} \rbrace  \dots \lbrace hypothèse_{l},masse_{l} \rbrace \rbrace $}
 \BlankLine 
 \Begin
-$AGENTRes.Ajouter(AGENT1,0)$
-$AGENTRes.Ajouter(AGENT2,0)$
+$AGRes.Ajouter(AGENT1,0)$
+$AGRes.Ajouter(AGENT2,0)$
  \tcc{Ajouter touts les éléments de $AGENT1$ et $AGENT2$  avec une masse $= 0$ }
 $ k \gets 0;$
 $\newline$
@@ -142,7 +142,7 @@ $\newline$
 \Si{$hypothèse_{i} \cap hypothèse_{j} = \varnothing $}{
 $K \gets K + AGENT1.masse(i) \times AGENT2.masse(j);$
 }
-$AGENTRes.(hypothèse_{i} \cap hypothèse_{j}).masse \gets AGENTRes.(hypothèse_{i} \cap hypothèse_{j}).masse + hypothèse_{i}.masse \times hypothèse_{j}.masse ;$
+$AGRes.(hypothèse_{i} \cap hypothèse_{j}).masse \gets AGRes.(hypothèse_{i} \cap hypothèse_{j}).masse + hypothèse_{i}.masse \times hypothèse_{j}.masse ;$
 }
 
 \vspace{1em}
@@ -151,7 +151,7 @@ $k \gets 1-k;$ \\
 \Pour{$k \gets 1$ \KwTo $L$}{
 $AGENTRes(k).masse \gets AGENTRes(k).masse \times (1/k);$
 }
-\Retourner{$AGENTRes$}
+\Retourner{$AGRes$}
 \end{algorithm}
 $\newline$
 $\\ $Dans les algorithmes de combinaison qui suivent une grande partie redondante n'est pas presenté car elle est déjà dans l'algorithme combinaison Dempster-Shafer, nous ne présenterons que les paries différentes.
