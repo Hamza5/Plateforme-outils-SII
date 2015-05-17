@@ -4,10 +4,10 @@
 \addcontentsline{toc}{section}{Introduction}
 \section*{Introduction}
 
-Dans ce chapitre, nous allons détailler les différentes procédures et méthodes que nous avons implémentées dans \textbf sur la théorie de Dempster-Shafer, décrite dans le premier chapitre.
+Dans ce chapitre, nous allons détailler les différentes procédures et méthodes que nous avons implémentées à partir de  sur la théorie de\textbf{ Dempster-Shafer}, décrite dans le premier chapitre.
 
-Les algorithmes qui suivent, se déroule en un enchainement précis.
-Premièrement la procédure de préparation qui fait des manipulations sur les masses sera expliquée dans la section de cette procédure. Vient ensuite la procédure d'appel de fusion et de croyance qui nécessite les données résultant de la procédure précédente et qui fait appel à chaque procédure de fusion de croyance. Enfin à partir des données de la fusion viennent les deux dernières procédures de calcul de croyance et de décision qui présentent le résultat final de tous les algorithmes précédents.
+Les algorithmes qui suivent, se déroulent en un enchainement précis.
+La procédure de préparation qui fait des manipulations sur les masses sera expliquée en un premier temps. Vient ensuite la procédure d'appel de fusion et de croyance qui nécessite les données résultant de la procédure précédente et qui fait appel à chaque procédure de fusion de croyance. Enfin, à partir des données de la fusion viennent les deux dernières procédures de calcul de croyance et de décision qui présentent le résultat final de tous les algorithmes précédents.
 \SetKwInput{KwIn}{Entrée}
 \SetKwInput{KwOut}{Sortie}
 \SetKw{KwTo}{à}
@@ -31,9 +31,9 @@ Premièrement la procédure de préparation qui fait des manipulations sur les m
 \lAutre{ligne de l’alternative}
 \DontPrintSemicolon
 \section{Preparation des masses}
-Cette étape permet d'affecter à chaque agent une fiabilité par faire un affaiblissement a toutes les masses et l'attribuer à $\Omega$, et permet aussi de d'attribuer à $\Omega$ les masses non attribuées dans l'étape de collection d'information.   
+Cette étape permet d'affecter à chaque agent une fiabilité pour faire un affaiblissement à toutes les masses et l'attribuer à $\Omega$. Elle permet aussi de d'attribuer à $\Omega$ les masses non attribuées dans l'étape de collection d'informations.   
 
-$EtatsDuMonde$ est une variable utilisé dans l'algorithme, représente les états du monde collecté dans l'étape de collection d'information. \\
+$\textit{EtatsDuMonde}$ est une variable utilisée dans l'algorithme qui représente les états du monde collectés à cette étape  \\
 \begin{algorithm}[H]
 \caption{Préparation des masses}
 \BlankLine
@@ -45,7 +45,7 @@ $EtatsDuMonde$ est une variable utilisé dans l'algorithme, représente les éta
 \BlankLine 
 \Begin
 
-~~\\
+~~
 $Ensemble \enspace SousEnsembles \gets SousEnsebles(EtatsDuMonde)$ ~~\\
 \tcc{La fonction SousEnsebles permet de générer tous les sous ensembles de l'ensemble donné en paramètre}
 
@@ -84,7 +84,7 @@ $AgentsPréparés.Ajouter(Agent);$
 
 \section{Appel de procédures de fusion et de croyance}
 
-Grâce à cet algorithme, nous pouvons appeler les méthodes de combinaison en passant les agents deux par deux en paramètres, de ce fait on peut fusionner un nombre plus de deux connaissances d'agents.\\
+Grâce à cet algorithme, nous pouvons appeler les méthodes de combinaison en passant les agents deux par deux en paramètres, de ce fait on peut fusionner un nombre de deux connaissances d'agents ou plus .\\
 
 \begin{algorithm}[H]
 \caption{Appel de procédures de fusion et de croyance}
@@ -122,8 +122,8 @@ $CalculCroyancePlausibilité(Agent);$
 \Retourner{$AgentsPréparés$}
 \end{algorithm}
 \vspace{2em}
-\section{Procédure de combinaison de d'information}
-\vspace{1em}
+\section{Procédure de combinaison d'information}
+\vspace{2em}
 \begin{algorithm}[H]
 \caption{Méthode de combinaison Dempster-Shafer}
 \BlankLine
@@ -154,7 +154,7 @@ $AGENTRes(k).masse \gets AGENTRes(k).masse \times (1/k);$
 \Retourner{$AGENTRes$}
 \end{algorithm}
 $\newline$
-$\\ $Dans les algorithmes de combinaison qui suit une grande partie redondante n'est pas presenté car elle est déjà dans l'algorithme combinaison Dempster-Shafer, nous ne présenterons que les paries différentes.
+$\\ $Dans les algorithmes de combinaison qui suivent une grande partie redondante n'est pas presenté car elle est déjà dans l'algorithme combinaison Dempster-Shafer, nous ne présenterons que les paries différentes.
 $\newline$
 $\newline$
 $\newline$
@@ -186,15 +186,15 @@ $AGENTRes.(hypothèse_{i} \cap hypothèse_{j}).masse \gets AGENTRes.(hypothèse_
 $AGENTRes.(\varnothing ).masse \gets k;$
 \end{algorithm}
 \vspace{3em}
-Les Algorithmes ci dessus représente des implémentations sur les règles de combinaison présenté dans le premier chapitre, ces algorithmes nécessite beaucoup de ressource,ceci est causé par la méthode de générations des sous ensembles des états du monde dans l'étape de préparation des masses,cette méthode génère un nombre important d'ensemble :
+Les algorithmes ci dessus représentent des implémentations sur les règles de combinaison présentées dans le premier chapitre. Ces algorithmes nécessitent beaucoup de ressource, en raison de la méthode de génération des sous ensembles des états du monde dans l'étape de préparation des masses car cette méthode génère un nombre important d'ensemble :
 
 Soit $E$ un ensemble à $n$ éléments. Alors, l'ensemble $\mathcal{P}(E)$ des parties de $E$ est fini, et a \textbf{$2^n$} éléments.
-
+ \newpage
 \vspace{4em}
-Ce qui consomme un grand temps d'exécution en fonction de la grandeur d'états du monde, des instructions sont conçus afin  d'optimiser ces algorithmes ne sont pas présenté afin de rendre la présentation des algorithmes moins complexe et lisible.
-
+Cela consomme un grand temps d'exécution en fonction de la grandeur d'états du monde, c'est pourquoi des instructions sont conçue afin  d'optimiser ces algorithmes. Mais elle ne sont pas présentées pour ne pas alourdir et compliquer la présentation des algorithmes.
+\vspace{2em}
 \section{Procédure de calcul de croyance}
-\vspace{1em}
+\vspace{2em}
 \begin{algorithm}[H]
 \caption{Calcul de Croyance et de Plausibilité}
 \BlankLine

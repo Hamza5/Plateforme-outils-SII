@@ -27,17 +27,19 @@
 }
 
 % Pour la 1ère page
-\title{Conception et réalisation d'une interface integrant differentes toolboxes autour des theories de l'incertaines}
+\title{Le mémoire}
 \author{Hamza Abbad \and Ahmed Zebouchi}
 \date{}
 % Style de l'entête et le pied de la page 
 \setlength{\headheight}{16pt}
 \pagestyle{fancyplain}
 \lhead{} % Enlever la section
-\rhead{\fancyplain{}{\footnotesize \itshape{\nouppercase{\leftmark}}}} % Titre du chapitre en miniscule avec taille 10
+\rhead{\fancyplain{}{\footnotesize \itshape{\nouppercase{\leftmark}}}} % Titre du chapitre en miniscule
 \cfoot{} % Déplacer le numéro de la page
 \rfoot{\fancyplain{\thepage}{\thepage}} % à droite de la page
 
+% Afficher les chapitres et les sections seulement
+\setcounter{tocdepth}{1}
 % Espace entre les lignes
 \linespread{1.3}
 % Nom de notre application
@@ -58,7 +60,6 @@
 \include{Chapitre2}
 \include{Chapitre3}
 \include{Chapitre4}
-\include{Conclusion}
 \bibliographystyle{babplain}
 \phantomsection
 \addcontentsline{toc}{chapter}{Bibliographie}
