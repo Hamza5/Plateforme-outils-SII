@@ -17,6 +17,7 @@
 \newcommand\mycommfont{\footnotesize\ttfamily\textcolor{blue}}%pour colorer les commenataires en bleu
 \usepackage{babelbib} % Pour changer la langue dans la bibliographie
 \usepackage{amsthm} % Pour les exemples
+\usepackage{xspace}
 
 \graphicspath{ {pictures/} } % Spécifier le répertoire contenant les images  
 \DisableLigatures[f]{encoding=*}
@@ -29,7 +30,7 @@
 }
 
 % Pour la 1ère page
-\title{Le mémoire}
+\title{Conception et réalisation d'une interface integrant differentes toolboxes autour des theories de l'incertain}
 \author{Hamza Abbad \and Ahmed Zebouchi}
 \date{}
 % Style de l'entête et le pied de la page 
@@ -40,16 +41,14 @@
 \cfoot{} % Déplacer le numéro de la page
 \rfoot{\fancyplain{\thepage}{\thepage}} % à droite de la page
 
-% Afficher les chapitres et les sections seulement
-\setcounter{tocdepth}{1}
 % Espace entre les lignes
 \linespread{1.3}
 % Nom de notre application
-\newcommand{\appname}{\textbf{combinateur d'évidences} }
-\newcommand{\appName}{Combinateur d'évidences }
+\newcommand{\appname}{\textbf{combinateur d'évidences}\xspace}
+\newcommand{\appName}{Combinateur d'évidences\xspace}
 % Nom de la grande interface
-\newcommand{\platformename}{\textbf{plateforme d'outils} }
-\newcommand{\platformeName}{Plateforme d'outils }
+\newcommand{\platformename}{\textbf{plateforme d'outils SII}\xspace}
+\newcommand{\platformeName}{Plateforme d'outils SII\xspace}
 
 % Gérer les exemples
 \theoremstyle{definition}
@@ -62,6 +61,7 @@
 \include{Chapitre2}
 \include{Chapitre3}
 \include{Chapitre4}
+\include{Conclusion}
 \bibliographystyle{babplain}
 \phantomsection
 \addcontentsline{toc}{chapter}{Bibliographie}
