@@ -3,6 +3,7 @@
 \phantomsection
 \addcontentsline{toc}{section}{Introduction}
 \section*{Introduction}
+
 \section{L’incertain}
 
 Les approches logiques de l’incertain permettent d’utiliser un langage formel pour la description des connaissances et le raisonnement automatique. Elles constituent une référence aux autres formalismes surtout pour le raisonnement, néanmoins les connaissances ne  sont pas structurées.
@@ -30,9 +31,9 @@ Une des plus grandes forces de BNT est qu'il offre une variété d'algorithmes d
 
 \subsubsection{Graphique}
 
-Un graphe possibiliste basé sur le produit (quantitatif), noté par GP P, est un graphe possibiliste où les possibilités conditionnelles sont obtenues par un conditionnement de type produit. La distribution de possibilité des réseaux possibilistes bases sur le produit, notée par Pi P, est obtenue par la règle de chainage 
+Un graphe possibiliste basé sur le produit (quantitatif), noté par $GP_{P}$, est un graphe possibiliste où les possibilités conditionnelles sont obtenues par un conditionnement de type produit. La distribution de possibilité des réseaux possibilistes bases sur le produit, notée par $\pi_{P}$, est obtenue par la règle de chainage 
 \begin{equation}
-pi P (V1, .., VN) = PRODi=1..N pi (Vi/PARVi)
+\pi_{P} (V_1, \dots , V_N) = PROD_{i=1 \dots N} \prod  (V_i/PAR_{Vi})
 \end{equation}
 Ou PROD est l’opérateur produit.\cite{BoBrDu2008.1}
 La boîte à outils PNT possède différents algorithmes pour les réseaux causaux possibilistes basée sur le produit à connexions multiples et pour les polyarbres. 
@@ -47,9 +48,9 @@ le temps de la propagation.
 \subsection{Théorie de possibilité qualitative}
 \subsubsection{Graphique}
 
-Un graphe possibiliste basé sur le minimum, noté par GPM, est un graphe où les possibilités conditionnelles sont obtenues par le conditionnement minimum. La distribution de possibilité des réseaux possibilistes basée sur le minimum, notée par pi M, est obtenue par la règle de chainage :
+Un graphe possibiliste basé sur le minimum, noté par $GP_{M}$, est un graphe où les possibilités conditionnelles sont obtenues par le conditionnement minimum. La distribution de possibilité des réseaux possibilistes basée sur le minimum, notée par $\pi_{M}$, est obtenue par la règle de chainage :
 \begin{equation}
- pi M (A1, .., AN) = MINi=1..N pi (Ai/teta Ai) 
+ \pi_{M} (A_1, \dots, A_N) = MIN_{i=1 \dots N} \pi (A_i/teta A_i) 
 \end{equation}
 Ou MIN est  l’opérateur minimum.\cite{BoBrDu2008.1}
 
@@ -89,12 +90,12 @@ Elle permet de modéliser les comportements de systèmes complexes en utilisant 
 
 \section{Satisfiabilitée}
 
-Nous présentant ici l'outil UBCSAT en précisant en premier temps la notion SAT et en présentant les problèmes en cause de résoudre MaxSAT et MaxSATponderé. 
+Nous présentant ici l'outil UBCSAT en précisant en premier temps la notion SAT et en présentant les problèmes en cause de résoudre MaxSAT et MaxSAT ponderé. 
 \subsection{SAT}
 Soit F une formule propositionnelle sous la forme normale conjonctive (CNF). Le problème SAT est un problème de décision NP-complet qui consiste à déterminer si F admet ou non un modèle.\cite{hassenThesis}
 
 \textbf{Le problème de satisfiabilité propositionnelle (SAT)} est un sujet d'étude important dans de nombreux domaines de l'informatique, SAT est définie par les ces composantes :\\
-\hspace{2em}Soit $X=\{x_1, x_2,\dots, x_n\}$, un ensemble de $n$variables booléennes.\\
+\hspace{2em}Soit $X=\{x_1, x_2,\dots, x_n\}$, un ensemble de $n$ variables booléennes.\\
 \hspace{2em}Soit $C=\{c_1, c_2,\dots, c_m\}$, un ensemble de $m$ clauses où :\\
 \hspace{2em}chaque clause est une disjonction de littéraux,\\
 \hspace{2em}chaque littéral est une variable ou sa négation.\\

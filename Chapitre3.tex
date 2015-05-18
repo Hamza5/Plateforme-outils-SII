@@ -39,9 +39,9 @@ $\textit{EtatsDuMonde}$ est une variable utilisée dans l'algorithme qui représ
 \BlankLine
 \KwIn{
 %\textit{$AGENTS$} = $\lbrace Agent_1, Agent_2\dots Agent_N \rbrace$,  \textit{$EtatsDuMonde$} = $\lbrace Etat_1, Etat__2 \dots Etat__M \rbrace$}
-\textit{$AGENTS$} = $\lbrace Agent_{1}, Agent_{2}\dots Agent_{M} \rbrace$,\\ \quad \quad \enspace \qquad \textit{$EtatsDuMonde$} = $\lbrace Etat_{1}, Etat_{2}\dots Etat_{N} \rbrace$}
+\textit{$AGENTS$} = $\lbrace Agent_{i},i= \overline{1,M} \rbrace$,\\ \quad \quad \enspace \qquad \textit{$EtatsDuMonde$} = $\lbrace Etat_{j},j= \overline{1,N}\rbrace$}
 \KwOut{
- $\lbrace Agent_1, Agent_2\dots Agent_K \rbrace$}
+ $\lbrace Agent_i,i= \overline{1,K}    \rbrace$}
 \BlankLine 
 \Begin
 
@@ -90,7 +90,7 @@ Grâce à cet algorithme, nous pouvons appeler les méthodes de combinaison en p
 \caption{Appel de procédures de fusion et de croyance}
 \BlankLine
 \KwIn{
-$AGENTS = \lbrace Agent_{1}, Agent_{2}\dots Agent_{N} \rbrace $}
+$AGENTS = \lbrace Agent_{i}, i=\overline{1,N}\rbrace $}
 \KwOut{$Agent$}
 \BlankLine 
 \Begin
@@ -128,12 +128,12 @@ $CalculCroyancePlausibilité(Agent);$
 \caption{Méthode de combinaison Dempster-Shafer}
 \BlankLine
 \KwIn{
-$AGENT1 = \lbrace \lbrace hypothèse_{1},masse_{1} \rbrace \lbrace hypothèse_{2},masse_{2} \rbrace \dots \lbrace hypothèse_{n},masse_{n} \rbrace \rbrace $,$\newline AGENT2 = \lbrace \lbrace hypothèse_{1},masse_{1} \rbrace \lbrace hypothèse_{2},masse_{2} \rbrace \dots \lbrace hypothèse_{m},masse_{m} \rbrace \rbrace $}
-\KwOut{$AGENTRes =\newline \lbrace \lbrace hypothèse_{1},masse_{1} \rbrace \lbrace hypothèse_{2},masse_{2}  \rbrace \dots \lbrace hypothèse_{l},masse_{l} \rbrace \rbrace $}
+$AGENT1 = \lbrace \lbrace hypothèse_{i},masse_{i} \rbrace,  i= \overline{1,N} \rbrace $,$\newline AGENT2 = \lbrace \lbrace hypothèse_{j},masse_{j} \rbrace,  j= \overline{1,M} \rbrace $}
+\KwOut{$AGRes = \lbrace \lbrace hypothèse_{k},masse_{k} \rbrace, k= \overline{1,L}\rbrace $}
 \BlankLine 
 \Begin
-$AGENTRes.Ajouter(AGENT1,0)$
-$AGENTRes.Ajouter(AGENT2,0)$
+$AGRes.Ajouter(AGENT1,0)$
+$AGRes.Ajouter(AGENT2,0)$
  \tcc{Ajouter touts les éléments de $AGENT1$ et $AGENT2$  avec une masse $= 0$ }
 $ k \gets 0;$
 $\newline$
@@ -142,7 +142,7 @@ $\newline$
 \Si{$hypothèse_{i} \cap hypothèse_{j} = \varnothing $}{
 $K \gets K + AGENT1.masse(i) \times AGENT2.masse(j);$
 }
-$AGENTRes.(hypothèse_{i} \cap hypothèse_{j}).masse \gets AGENTRes.(hypothèse_{i} \cap hypothèse_{j}).masse + hypothèse_{i}.masse \times hypothèse_{j}.masse ;$
+$AGRes.(hypothèse_{i} \cap hypothèse_{j}).masse \gets AGRes.(hypothèse_{i} \cap hypothèse_{j}).masse + hypothèse_{i}.masse \times hypothèse_{j}.masse ;$
 }
 
 \vspace{1em}
@@ -151,7 +151,7 @@ $k \gets 1-k;$ \\
 \Pour{$k \gets 1$ \KwTo $L$}{
 $AGENTRes(k).masse \gets AGENTRes(k).masse \times (1/k);$
 }
-\Retourner{$AGENTRes$}
+\Retourner{$AGRes$}
 \end{algorithm}
 $\newline$
 $\\ $Dans les algorithmes de combinaison qui suivent une grande partie redondante n'est pas presenté car elle est déjà dans l'algorithme combinaison Dempster-Shafer, nous ne présenterons que les paries différentes.
@@ -199,8 +199,8 @@ Cela consomme un grand temps d'exécution en fonction de la grandeur d'états du
 \caption{Calcul de Croyance et de Plausibilité}
 \BlankLine
 \KwIn{
-$AGENT = \lbrace \lbrace hypothèse_{1},masse_{1} \rbrace \lbrace hypothèse_{2},masse_{2} \rbrace \dots \lbrace hypothèse_{n},masse_{n} \rbrace \rbrace $}
-\KwOut{$AGENT = \lbrace \lbrace hypothèse_{1},masse_{1},CR_{1},PL_{1} \rbrace \lbrace hypothèse_{2},masse_{2},CR_{2},PL_{2}  \rbrace \dots$ \\$ \lbrace hypothèse_{n},masse_{n},CR_{n},PL_{n}  \rbrace \rbrace $}
+$AGENT = \lbrace \lbrace hypothèse_{i},masse_{i} \rbrace, i= \overline{1,N}\rbrace $}
+\KwOut{$AGENT = \lbrace \lbrace hypothèse_{j},masse_{j},CR_{j},PL_{j} \rbrace, j= \overline{1,N} \rbrace $}
 \BlankLine 
 \Begin
 
@@ -230,7 +230,7 @@ $AGENT(i).Ajouter(BL,PL);$
 \caption{Méthode de calcul de décision}
 \BlankLine
 \KwIn{
-$AGENT = \lbrace \lbrace hypothèse_{1},masse_{1},CR_{1},PL_{1} \rbrace \lbrace hypothèse_{2},masse_{2},CR_{2},PL_{2}  \rbrace \dots$ \\$ \lbrace hypothèse_{n},masse_{n},CR_{n},PL_{n}  \rbrace \rbrace $}
+$AGENT = \lbrace \lbrace hypothèse_{i},masse_{i},CR_{i},PL_{i}  \rbrace, i= \overline{1,N}\rbrace $}
 \KwOut{$ResDecision$}
 \BlankLine 
 $hypothèses = vecHypothèses$
