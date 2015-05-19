@@ -11,7 +11,8 @@ public class MainWindow extends JFrame {
     private JTabbedPane tabs; // The main tabs
     public MainWindow(){
         super();
-        setTitle("Plateforme d'outils");
+        setTitle("Plateforme d'outils SII");
+        setIconImage(new ImageIcon(getClass().getResource("logo.png")).getImage());
         tabs = new JTabbedPane();
         setPreferredSize(new Dimension(600, 400));
         setContentPane(tabs);
@@ -48,7 +49,7 @@ public class MainWindow extends JFrame {
         }
     }
     public static void main(String[] args){ // Show the GUI
-        // Thread.setDefaultUncaughtExceptionHandler(new ExceptionHandler());
+        Thread.setDefaultUncaughtExceptionHandler(new ExceptionHandler());
         try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
         } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException e) {

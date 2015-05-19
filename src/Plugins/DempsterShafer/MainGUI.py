@@ -7,7 +7,8 @@ from os.path import join, splitext, dirname, realpath
 
 try:
     from PyQt4.QtGui import QApplication, QMainWindow, QActionGroup, QDialog, QStandardItem, QStandardItemModel, \
-        QInputDialog, QHeaderView, QLineEdit, QMessageBox, QFileDialog, QCloseEvent, QTableWidgetItem, QMovie, QLabel
+        QInputDialog, QHeaderView, QLineEdit, QMessageBox, QFileDialog, QCloseEvent, QTableWidgetItem, QMovie, QLabel\
+        , QIcon
     from PyQt4.QtCore import SIGNAL, QModelIndex, Qt, QThread, QMimeData
 except ImportError as e:
     print('Can not use PyQt4 !', e.msg, file=sys.stderr, sep='\n')
@@ -42,6 +43,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
     def __init__(self, parent=None):
         super().__init__(parent)
         self.setupUi(self)
+        self.setWindowIcon(QIcon("logo.png"))
         self.untitled = "Sans titre"
         self.title = self.untitled
         self.description = ""
