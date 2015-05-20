@@ -3,6 +3,8 @@
 \phantomsection
 \addcontentsline{toc}{section}{Introduction}
 \section*{Introduction}
+Par la suite, les travaux de Dempster et Shafer sur la théorie, différentes approches numériques
+proposées pour représenter les connaissances incertaines et imprécises. Nous allons nous focaliser, dans ce chapitre, sur ces certain nombre de théories modélisant les notions d’imperfection telles que l’incertain et l’imprécision.
 
 \section{L’incertain}
 
@@ -66,15 +68,16 @@ L’utilisation de modèles graphiques dans de nombreux problèmes de décision 
 l’expressivité et de l’efficacité de calcul tant pour la représentation des incertitudes que pour celle
 des préférences. La structure du graphe exprime les spécificités du problème traité et est utilisée
 pour propager des informations et optimiser des décisions. Plusieurs modèles graphiques peuvent
-être utilisés pour le problème de la prise de décision séquentielle. On peut citer à titre d’exemple les réseaux possibilistes.\\
+être utilisés pour le problème de la prise de décision séquentielle. On peut citer à titre d’exemple les réseaux possibilistes.
+
 GraphViz02 est un programme qui permet de calculer la meilleure décision qualitative basée sur la représentation graphique des réseaux possibilistes. Pour faire ce calcul, le programme fait plusieurs démarches de fusion de réseau possibiliste codifiant les connaissances, avec le réseau possibiliste codifiant les préférences.Puis il génère de l’arbre de jonction correspondant.\cite{hkhaoulaThesis}
 \subsubsection{Logique}
 En plus des représentation graphiques, comme dans la logique possibiliste, il existe d’autres moyens de
 représentation. Nous allons voir ici une représentation logique.
 
-Les informations sont représentées en logique possibiliste au travers des formules quantifiées par des mesures de nécessité (qui sont définies par dualité par rapport aux mesures de possibilité), afin d'être exploitées pour la représentation de problèmes de décision sous incertitude, ainsi que pour le calcul de décision optimale. [noughi]
+Les informations sont représentées en logique possibiliste au travers des formules quantifiées par des mesures de nécessité (qui sont définies par dualité par rapport aux mesures de possibilité), afin d'être exploitées pour la représentation de problèmes de décision sous incertitude, ainsi que pour le calcul de décision optimale.
 
-Le programme DecPos est s'intéresse aux problèmes de décision dans le cas multi-sources, dans lesquels il doit passer par un processus décisionnel permettant de fusionner les informations incertaines, afin de calculer la décision optimale dans les deux cas optimiste et pessimiste.[noughi]
+Le programme DecPos est s'intéresse aux problèmes de décision dans le cas multi-sources, dans lesquels il doit passer par un processus décisionnel permettant de fusionner les informations incertaines, afin de calculer la décision optimale dans les deux cas optimiste et pessimiste.\cite{Noughithese}
 
 \emph{ La théorie de Dempster and Shafer qui est une théorie de l'incertain n'est pas exposée ici parce qu’elle est présentée théoriquement en détail dans le chapitre I, et parce que dans le chapitre suivant est consacré aux algorithmes implémentés grâce à cette théorie.}
 \section{L’imprécision}
@@ -109,7 +112,7 @@ toutefois, dans le cas de réponse négative du SAT, pour trouver toutes le nomb
 Le problème avec le MAXSAT c’est qu’elle associe à toutes les clauses le même poids, d’où la nécessité de définir \textbf{le problème du MAXSAT pondéré, ou WMAXSAT} cela permet d'attribuer des poids aux différentes clauses pour spécifier les clauses simultanément satisfaites en augmentant la somme de leur poids et en affaiblissant la somme des poids des clauses insatisfaites. \cite{hkhallafiThesis}
 
 
-\textbf{UBCSAT (University of British Columbia SAT)}
+\textbf{UBCSAT (University of British Columbia SAT)}l
 
 Pour faire preuve de satisfiabilité, le logiciel UBCSAT convient pour cela.\\
 L'un des défis de l'élaboration du projet UBCSAT était de construire un environnement flexible, riche en fonctionnalités sans compromettre l'efficacité algorithmique. Ce programme est performant sur les instances SAT issues de problèmes réels. Il offre la gestion des contraintes pseudo booléennes, et il décline un grand nombre de problèmes de décision ou d’optimisation en termes de problème SAT ou pseudo booléen.    \cite{hassenThesis}
@@ -119,3 +122,5 @@ Actuellement, UBCSAT comprend des implémentations de deux algorithmes conçus p
 \phantomsection
 \addcontentsline{toc}{section}{Conclusion}
 \section*{Conclusion}
+Ce chapitre avait pour but d'introduire les concepts de base de la théorie de
+L’incertain dont des programme implemanté sur cette theorie sera integré dans notre projet. 
