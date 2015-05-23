@@ -9,13 +9,23 @@ import java.util.Arrays;
 
 public class MainWindow extends JFrame {
     private JTabbedPane tabs; // The main tabs
+    private JLabel developpersLabel;
     public MainWindow(){
         super();
         setTitle("Plateforme d'outils SII");
         setIconImage(new ImageIcon(getClass().getResource("logo.png")).getImage());
         tabs = new JTabbedPane();
-        setPreferredSize(new Dimension(600, 400));
-        setContentPane(tabs);
+        developpersLabel = new JLabel("Plateforme développée par Hamza Abbad & Ahmed Zebouchi - 2015 - Département Informatique - FEI - USTHB");
+        Box contentBox = new Box(BoxLayout.PAGE_AXIS);
+        Box hbox1 = new Box(BoxLayout.LINE_AXIS);
+        hbox1.add(tabs);
+        Box hbox2 = new Box(BoxLayout.LINE_AXIS);
+        hbox2.add(developpersLabel);
+        contentBox.add(hbox1);
+        contentBox.add(Box.createRigidArea(new Dimension(0, 5)));
+        contentBox.add(hbox2);
+        contentBox.add(Box.createRigidArea(new Dimension(0, 5)));
+        setContentPane(contentBox);
         // Add every component to the tabs automatically
         ClassLoader loader = ClassLoader.getSystemClassLoader();
         FilenameFilter filter = new FilenameFilter() {
