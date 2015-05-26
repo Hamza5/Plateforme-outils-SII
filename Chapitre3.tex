@@ -4,10 +4,10 @@
 \addcontentsline{toc}{section}{Introduction}
 \section*{Introduction}
 
-Dans ce chapitre, nous allons détailler les différentes procédures et méthodes que nous avons implémentées à partir de  sur la théorie de\textbf{ Dempster-Shafer}, décrite dans le premier chapitre.
+Nous allons maintenant détailler les différentes procédures et méthodes que nous avons implémenté à partir de la théorie de\textbf{ Dempster-Shafer} décrite dans le premier chapitre.
 
 Les algorithmes qui suivent, se déroulent en un enchainement précis.
-La procédure de préparation qui fait des manipulations sur les masses sera expliquée en un premier temps. Vient ensuite la procédure d'appel de fusion et de croyance qui nécessite les données résultant de la procédure précédente et qui fait appel à chaque procédure de fusion de croyance. Enfin, à partir des données de la fusion viennent les deux dernières procédures de calcul de croyance et de décision qui présentent le résultat final de tous les algorithmes précédents.
+La procédure de préparation qui opère des manipulations sur les masses sera expliquée en un premier temps.Ensuite nous allons présenter  ensuite la procédure d'appel de fusion et de croyance qui nécessite les données résultantes de la procédure précédente et qui fait appel à chaque procédure de fusion de croyance. Enfin, à partir des données de la fusion viennent les deux dernières procédures de calcul de croyance et de décision qui présentent le résultat final de tous les algorithmes précédents.
 \SetKwInput{KwIn}{Entrée}
 \SetKwInput{KwOut}{Sortie}
 \SetKw{KwTo}{à}
@@ -33,7 +33,7 @@ La procédure de préparation qui fait des manipulations sur les masses sera exp
 \section{Preparation des masses}
 Cette étape permet d'affecter à chaque agent une fiabilité pour faire un affaiblissement à toutes les masses et l'attribuer à $\Omega$. Elle permet aussi de d'attribuer à $\Omega$ les masses non attribuées dans l'étape de collection d'informations.   
 
-$\textit{EtatsDuMonde}$ est une variable utilisée dans l'algorithme qui représente les états du monde collectés à cette étape  \\
+$\textit{EtatsDuMonde}$ est une variable utilisée dans l'algorithme qui représente les états du monde collectés lors de cette étape. \\
 \begin{algorithm}[H]
 \caption{Préparation des masses}
 \BlankLine
@@ -84,7 +84,7 @@ $AgentsPréparés.Ajouter(Agent);$
 
 \section{Appel de procédures de fusion et de croyance}
 
-Grâce à cet algorithme, nous pouvons appeler les méthodes de combinaison en passant les agents deux par deux en paramètres, de ce fait on peut fusionner un nombre de deux connaissances d'agents ou plus .\\
+Grâce à cet algorithme, nous pouvons invoquer les méthodes de combinaison en passant les agents deux par deux en paramètres. Ainsi, nous pouvons fusionner les connaissances de plusieurs agents deux à deux\\
 
 \begin{algorithm}[H]
 \caption{Appel de procédures de fusion et de croyance}
@@ -154,7 +154,7 @@ $AGENTRes(k).masse \gets AGENTRes(k).masse \times (1/k);$
 \Retourner{$AGRes$}
 \end{algorithm}
 $\newline$
-$\\ $Dans les algorithmes de combinaison qui suivent une grande partie redondante n'est pas presenté car elle est déjà dans l'algorithme combinaison Dempster-Shafer, nous ne présenterons que les paries différentes.
+$\\ $Dans les algorithmes de combinaison qui suivent, une grande partie redondante n'est pas présentée car elle est déjà dans l'algorithme combinaison Dempster-Shafer. Nous ne présenterons que les paries différentes.
 $\newline$
 $\newline$
 $\newline$
@@ -186,12 +186,12 @@ $AGENTRes.(hypothèse_{i} \cap hypothèse_{j}).masse \gets AGENTRes.(hypothèse_
 $AGENTRes.(\varnothing ).masse \gets k;$
 \end{algorithm}
 \vspace{3em}
-Les algorithmes ci dessus représentent des implémentations sur les règles de combinaison présentées dans le premier chapitre. Ces algorithmes nécessitent beaucoup de ressource, en raison de la méthode de génération des sous ensembles des états du monde dans l'étape de préparation des masses car cette méthode génère un nombre important d'ensemble :
+Les algorithmes ci dessus représentent des implémentations sur les règles de combinaison présentées dans le premier chapitre. Ces algorithmes nécessitent beaucoup de ressources, en raison de la méthode de génération des sous ensembles des états du monde dans l'étape de préparation des masses car cette méthode génère un nombre important d'ensemble :
 
 Soit $E$ un ensemble à $n$ éléments. Alors, l'ensemble $\mathcal{P}(E)$ des parties de $E$ est fini, et a \textbf{$2^n$} éléments.
  \newpage
 \vspace{4em}
-Cela consomme un grand temps d'exécution en fonction de la grandeur d'états du monde, c'est pourquoi des instructions sont conçue afin  d'optimiser ces algorithmes. Mais elle ne sont pas présentées pour ne pas alourdir et compliquer la présentation des algorithmes.
+Cela consomme un grand temps d'exécution en fonction de la grandeur d'états du monde. C'est pourquoi des instructions sont conçues afin  d'optimiser ces algorithmes. Mais elle ne sont pas présentées pour ne pas alourdir et compliquer la présentation des algorithmes.
 \vspace{2em}
 \section{Procédure de calcul de croyance}
 \vspace{2em}
@@ -261,3 +261,5 @@ $ResDecision \gets vecHypothèses.Max();$
 \phantomsection
 \addcontentsline{toc}{section}{Conclusion}
 \section*{Conclusion}
+
+Sur la base de cet ensemble d'algorithmes, nous pouvons aborder la phase de réalisation.  
