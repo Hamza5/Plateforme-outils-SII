@@ -4,9 +4,9 @@
 \section*{Introduction}
 
 Dans ce chapitre, nous introduisons l'implémentation de notre projet. D'abord, nous
-citons les différents langages de programmation et les bibliothèques que nous avons manipulées.
-Ensuite, nous présentons le \appname en détaillant ses fonctionnalités. Enfin, nous passons
-à la description de la \platformename qui regroupe plusieurs programmes reliés aux théories de
+citons les différents langages de programmation et les bibliothèques que nous avons manipulé.
+Ensuite, nous présentons le \appname en détaillant ses fonctionnalités. Enfin, nous exposerons
+la description de la \platformename qui regroupe plusieurs programmes reliés aux théories de
 l'incertain. Nous expliquerons aussi comment cette plateforme interagit avec ces programmes.
 
 \section{Les langages de programmation et les bibliothèques utilisées}
@@ -30,11 +30,12 @@ Les résultats seront écrits dans un autre fichier XML. L'utilisateur n'a pas b
 de comprendre la structure de ces fichiers, il lui suffit d'utiliser l'interface
 graphique.
 
-Cette interface est composée d'une barre de menu et de trois parties, les états
+Cette interface est composée d'une barre de menu et de trois parties: les états
 du monde, les hypothèses, et les agents. La barre contient les fonctionnalités principales
 pour enregister, ouvrir, réinitialiser le projet et fermer l'application dans le menu
-\textbf{Fichier}. Dans le menu \textbf{Projet}, on trouve les actions liées à la manipulation
-du projet courant. On peut y changer le titre et donner une description au projet.\\[1em]
+\textbf{Fichier}. Dans le menu \textbf{Projet}, les actions liées à la manipulation
+du projet courant sont présentées. Le titre et la description du projet peuvent être changés
+à partir d'ici.\\[1em]
 
 \begin{figure}[H]
 \begin{subfigure}{0.49\textwidth}
@@ -50,13 +51,13 @@ du projet courant. On peut y changer le titre et donner une description au proje
 \end{figure}
 
 Les états du monde, les hypothèses et les agents doivent s'ajouter dans cet ordre à partir
-de ce menu ou par un clic droit dans leurs champs. \`A partir de ce menu, on peut choisir une
+de ce menu ou par un clic droit dans leurs champs. \`A partir de ce menu, l'utilisateur a la possibilité de sélectionner une
 des méthodes de fusion: \textit{Dempster-Shafer}, \textit{Dubois-Prade}, \textit{Smets} ou
-\textit{Yager}. On peut aussi choisir la méthode de décision qui sera utilisée parmi les trois
+\textit{Yager}. Il peut aussi choisir la méthode de décision qui sera utilisée parmi les trois
 suivantes: \textit{Optimiste}, \textit{Pessimiste} ou \textit{Pignistique}.
 
-On commence par ajouter tous les états du monde. Ensuite, chaque fois qu'on sélectionne certains
-états, on établit une hypothèse à partir de ces états.\\[1em]
+La première étape consiste à ajouter tous les états du monde. Ensuite, chaque fois qu'un ensemble d'états est sélectionné
+l'hypothèse correspondante est établie.\\[1em]
 
 \begin{figure}[H]
 \begin{subfigure}{0.49\textwidth}
@@ -71,8 +72,8 @@ On commence par ajouter tous les états du monde. Ensuite, chaque fois qu'on sé
 \caption{L'ajout des états du monde et les hypothèses}
 \end{figure}
 
-Par la suite, on doit procéder à l'ajout des agents. Chaque agent doit avoir un nom, un niveau de
-fiabilité et un ensemble d'hypothèses tels que à chaque hypothèse est affectée une masse entre
+Par la suite, l'utilisateur doit procéder à l'ajout des agents. Chaque agent doit avoir un nom, un niveau de
+fiabilité et un ensemble d'hypothèses tel que à chaque hypothèse est affectée une masse entre
 $0$ et $1$.\\[1em]
 
 \begin{figure}[H]
@@ -88,11 +89,11 @@ $0$ et $1$.\\[1em]
 \caption{L'ajout d'un agent et l'affectation de ses hypothèses}
 \end{figure}
 
-Avant de passer au calcul, on doit enregistrer ces données dans un fichier à l'aide de la fonctionnalité
+Avant de passer au calcul, les données saisies doivent être enregistrées dans un fichier à l'aide de la fonctionnalité
 \textbf{Enregistrer} ou \textbf{Enregistrer sous}. Il faut aussi choisir un nom et un emplacement pour le
 fichier. Il aura par défaut l'extention \texttt{.dsti.xml}. Cette action est nécessaire car elle génère
-le fichier d'entrée pour le noyau. Si on ignore cette étape le programme demandera de la faire avant qu'on
-puisse continuer.\\[1em]
+le fichier d'entrée pour le noyau. Si cette étape est ignorée, le programme demandera de la faire avant de
+continuer.\\[1em]
 
 \begin{figure}[H]
 \centering
@@ -100,7 +101,7 @@ puisse continuer.\\[1em]
 \caption{Enregistrer les données}
 \end{figure}
 
-Enfin, on peut lancer le calcul. Cette étape risque de prendre un temps important si le nombre des états
+La dernière étape consiste à lancer le calcul. Cette étape risque de prendre un temps important si le nombre des états
 du monde et/ou des agents est assez grand. Pour cela, un dialogue d'attente est affiché pendant l'exécution
 du noyau en arrière-plan. L'utilisateur peut annuler cette opération à tout moment en cliquant sur le bouton
 \emph{Annuler}.
@@ -126,8 +127,9 @@ la recherche. Il y a aussi un bouton permettant de créer un nouvel agent et de 
 \caption{Le calcul et l'affichage des résultats}
 \end{figure}
 
-Plus tard, on peut ouvrir les fichiers de données en utilisant l'action \textbf{Ouvrir} à partir du menu fichier. On
-peut aussi afficher les résultats en ouvrant le fichier correspondant en utilisant l'action \textbf{Ouvrir des résultats}.
+Par la suite, les fichiers de données peuvent être accessiblees en utilisant l'action \textbf{Ouvrir} à partir
+du menu fichier. Les résultats peuvent être aussi affichés en ouvrant le fichier correspondant en utilisant l'action
+\textbf{Ouvrir des résultats}.
 
 \begin{figure}[H]
 \begin{subfigure}{0.49\textwidth}
@@ -182,7 +184,7 @@ le traitement des graphes de décision.
 \end{figure}
 
 \vspace*{1.5em}
-Dans le panneau \textit{Incertain}, on trouve les interfaces nécessaires pour dessiner un graphe orienté sans
+Dans le panneau \textit{Incertain} regroupe les interfaces nécessaires pour dessiner un graphe orienté sans
 cycles de nature BNT ou PNT et pour modifier ses paramètres après la validation. Il y a un bouton \textbf{Ajouter un noeud}
 permettant d'ajouter un nouveau noeud isolé. Les noeuds doivent être reliés par des arcs qui sont créés par le
 glissement du curseur à partir d'un noeud et le relâchement dans un autre. Ensuite, l'utilisateur doit valider le graphe
@@ -218,9 +220,9 @@ de noeuds dans un graphe possibiliste et le nombre maximal de parents pour chaqu
 \caption{Le panneau \textbf{Incertain}}
 \end{figure}
 
-Il reste le panneau \textit{Tools} qui contient deux interfaces pour utiliser le logiciel \textbf{UBCSAT}, la
+Le dernier panneau \textit{Tools} contient deux interfaces pour utiliser le logiciel \textbf{UBCSAT}, la
 première pour calculer le SAT et la deuxième pour le Weighted Max SAT. L'utilisateur doit introduire les formules
-logiques FND\footnote{Forme normale disjonctive}.
+logiques sous forme FND\footnote{Forme normale disjonctive}.
 
 \begin{figure}[H]
 \centering
