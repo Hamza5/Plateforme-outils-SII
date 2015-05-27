@@ -1,0 +1,308 @@
+\NeedsTeXFormat{LaTeX2e}
+\documentclass[a4paper,french,10pt,twoside]{report}
+\usepackage[utf8]{inputenc} 
+\usepackage[T1]{fontenc}
+\usepackage[francais, english]{babel}
+\usepackage{lipsum}
+\usepackage{hyperref}  %%pour les signets :p
+\usepackage{lmodern}
+\usepackage{graphicx}
+\usepackage{verbatim}
+\usepackage{lscape}
+
+\usepackage{slashbox}
+\usepackage{pict2e}
+\usepackage{multirow}
+
+
+%\usepackage{lstlisting}
+%\usepackage{lettrine}
+%\usepackage{tikz}
+%\usetikzlibrary{shapes,arrows}
+%\usepackage{amsmath}
+%\usepackage{keyval}
+%\usepackage[toc,page]{appendix} 
+%%\usepackage{algorithm,algorithmic}
+%%\usepackage{alg}
+%\usepackage[french,longend,boxruled,algoruled,linesnumbered,algochapter]{algorithm2e}
+
+
+
+%\usepackage[norelsize]{algorithm2e}
+\usepackage{color}
+\usepackage{textcomp}
+%%%%%%%%%%%%%%% Style Des chapitres Lyes %%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%Options: Sonny, Lenny, Glenn, Conny, Rejne, Bjarne, Bjornstrup
+\usepackage[Glenn]{fncychap}
+
+\ChNameVar{\bfseries\normalsize\bfseries}
+\ChNumVar{\Huge}
+\ChTitleVar{\bfseries\Large\bfseries}
+\ChRuleWidth{0.7pt}
+\ChNameUpperCase 
+\ChTitleUpperCase
+
+%%%%%%%%%%%%%%% Style Des chapitres Lyes %%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+\usepackage{url}
+\usepackage{moreverb}
+\usepackage{listings}
+%\usepackage{linstings}
+%\usepackage{fvrb-ex}
+\usepackage{multicol}
+\usepackage{lscape}
+\usepackage[a4paper,twoside=true,left=2.2cm, right=2.2cm, top=2.5cm, bottom=2.5cm]{geometry}
+\usepackage{epsfig}
+%\usepackage[francais]{minitoc}
+\usepackage{minitoc}
+\renewcommand{\familydefault}{pag}
+\usepackage{makeidx}
+
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\lhead{\rightmark}
+\rhead{}
+%\usepackage{algorithm}
+%\usepackage{algorithmic}
+\usepackage{textcomp}
+%%%%%%Mini table de matiére%%%%%%%%%%
+
+
+%%%%%%%%%%%%%%%%%%%%%
+%\addtolength{\headwidth}{7mm}
+\newcommand{\clearemptydoublepage}{%
+ \newpage{\pagestyle{empty}\cleardoublepage}}
+%\newcommand{\doublesp}{\baselineskip 2\baselineskip} 2013
+%\newcommand{\moresp}{\baselineskip 1.2\baselineskip} 2013
+
+\pagestyle{fancy}
+\addtolength{\headheight}{2pt}
+
+%\renewcommand{\chaptermark}[1]{\markboth{#1 \currentfile}{}}
+%\renewcommand{\sectionmark}[1]{\markright{\thesection\ #1\currentfile}}
+\renewcommand{\chaptermark}[1]{\markboth{#1}{}}
+\renewcommand{\sectionmark}[1]{\markright{\thesection\ #1}}
+
+\fancyhf{}
+\fancyhead[LE,RO]{\bfseries\thepage}
+\fancyhead[LO]{\bfseries\rightmark}
+\fancyhead[RE]{\bfseries\leftmark}
+% style de page pour le debut de chapitre
+\fancypagestyle{french}{%
+  \fancyhf{} %pas de headers
+  \fancyhead{}
+  \fancyfoot[LE,RO]{\thepage}
+  \renewcommand{\headrulewidth}{0pt} % et pas de ligne
+  \renewcommand{\footrulewidth}{0pt} % et pas de ligne
+
+}
+
+\newcommand{\Part}[1]{\part[#1]{#1 \protect\thispagestyle{empty}}}
+% parametre fancyvbr et Verbatim
+%\fvset{fontsize=\small,fontfamily=pag}
+%\DefineShortVerb{\|}
+%\UndefineShortVerb{\|}
+%macros verbatim
+\def\FigVerbatim{\center\Verbatim[fontsize=\scriptsize,frame=single]}
+\def\endFigVerbatim{\endVerbatim\endcenter}
+
+\def\CodeVerbatima{\center\Verbatim[
+fontsize=\scriptsize,
+numbersep=1pt,
+xrightmargin=8mm,
+xleftmargin=8mm
+]}
+\def\endCodeVerbatima{\endVerbatim\endcenter}
+
+\def\CodeVerbatim
+{\center\Verbatim[
+fontsize=\scriptsize,
+frame=single,
+numbers=left,
+numbersep=1pt,
+xrightmargin=2mm,
+xleftmargin=2mm
+]}
+\def\endCodeVerbatim{\endVerbatim\endcenter}
+
+
+\def\myalgorithm{\center\algorithm[frame=single]}
+\def\myalgorithm{\endalgorithm\endcenter}
+%Comment
+\renewcommand{\comment}[1]{{\scriptsize \textit{#1}}}
+%English Zone
+%\newcommand{\englishz}[1]{{\scriptsize en anglais}~{\textit{#1}}}
+\newcommand{\englishz}[1]{{\textit{#1}}}
+%Definition
+%\newcommand{\defineword}[3]{#1\footnote{\label{#2} #3}\glossary{{\bf #1}~:~#3}\index{#1}}
+\newcommand{\defineword}[3]{#1\footnote{#3}\glossary{{\bf #1}~:~#3}\index{#1}}
+%Code Zone
+\newcommand{\techz}[1]{\textit{#1}}
+%Technical Zone
+\renewcommand{\ttdefault}{pcr}
+\newcommand{\codez}[1]{{\ttfamily \small #1}}
+%Mettre en valeur
+\newcommand{\stress}[1]{\textbf{#1}}
+%Quelques hacks pour avoir le nom des fichiers dans le titre !
+\newcommand{\currentfile}{}
+\newcommand{\myinclude}[1]{\renewcommand{\currentfile}{ {\scriptsize(#1)}}\include{#1}}
+\newcommand{\myinput}[1]{\renewcommand{\currentfile}{ {\scriptsize($#1$)}}\input{#1}}
+%Reference figure + ligne
+\newcommand{\refln}[2]{\textit{\small fig. \ref{#1} l.#2}}
+
+%%%%%%%%%%%%%%%%%%%%FIGURE Lyes
+%\usepackage{subfig}
+%\usepackage{xcolor}
+\usepackage{fancybox}
+%\usepackage{pstricks}
+
+%\usepackage{figencadree}
+
+%\usepackage{pst-all}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\renewcommand{\chaptermark}[1]{\markboth{#1}{}}
+\renewcommand{\sectionmark}[1]{\markright{\thesection\ #1}}
+
+\fancyhead[LE,RO]{\thepage}
+\fancyhead[LO]{\rightmark}
+\fancyhead[RE]{\leftmark}
+\renewcommand{\headrulewidth}{0.6 pt}
+\addtolength{\headheight}{0.5pt}
+
+\makeindex
+
+%\renewcommand{\algorithmicrequire} {\textbf{\textsc{ENTR\'EES:}}}
+%\floatname{algorithm}{Algorithme}
+%\let\mylistof\listof
+%\renewcommand\listof[2]{\mylistof{algorithm}{Liste des algorithmes}}
+\makeatletter
+%\providecommand*{\toclevel@algorithm}{0}
+
+\makeatother
+\setcounter{secnumdepth}{3}
+\setcounter{tocdepth}{3}
+
+
+% le cas de la première page d’un chapitre
+\fancypagestyle{plain}{%
+\fancyhf{}% on efface tout
+%\setlength{\parskip}{1.2ex plus .9ex minus .4ex}
+\renewcommand{\headrulewidth}{0pt}%
+\renewcommand{\footrulewidth}{0pt}}
+\renewcommand{\baselinestretch}{1.1}
+
+\setcounter{minitocdepth}{3} 
+\setlength{\mtcindent}{0pt} 
+\renewcommand{\mtcfont}{\small} 
+\renewcommand{\mtcSfont}{\small\bfseries}
+\renewcommand{\mtcSSfont}{\small}
+\renewcommand{\mtcSSSfont}{\small}
+\renewcommand{\mtifont}{\small\bfseries}
+
+\newcommand{\annexe}[1]{%
+	\refstepcounter{chapter}%
+	\phantomsection%
+	\addcontentsline{to\textbf{•}c}{chapter}{\appendixname~{\thechapter}: #1}%
+	\chapter*{\appendixname~{\thechapter}: #1}}
+
+
+
+\begin{document}
+%\dominitoc
+%\tableofcontents
+
+\begin{sloppypar}
+\fancyfoot{}
+\thispagestyle{empty}
+\begin{center}
+\normalsize{Ministère de l’Enseignement Supérieur et de la Recherche Scientifique}\\
+\normalsize{Université des Sciences et de la Technologie Houari Boumediene}\\
+\normalsize{Faculté d’Electronique et d’Informatique}\\
+\normalsize{Département d'Informatique}\\
+\end{center}
+\bigskip
+\begin{center}
+\includegraphics[scale=0.3]{pictures/usthb.PNG}
+\end{center}
+\begin{center}
+\huge{Mémoire de Licence}\bigskip
+\\
+\large{Domaine Mathématique et Informatique}\\
+\textbf{}\\
+\large{\textbf{Filière Informatique}}\\
+\textbf{}\\
+\large{\textbf{Spécialité}}\bigskip
+\\
+\large{Informatique Générale }\bigskip
+\\
+\large{\textbf{Thème}}\bigskip
+\end{center}
+\begin{center}
+\setlength{\shadowsize}{2pt}
+\shadowbox{
+\begin{minipage}{0.9\textwidth}
+\begin{center}
+\Large{Conception et réalisation d'une interface integrant  \\differentes toolboxes autour des theories de l'incertain}
+\end{center}
+\end{minipage}
+}
+
+\bigskip
+
+\end{center}
+\begin{flushleft}
+\textbf{Présenté par :} \hspace{8,45cm} \textbf{Proposé et dirigé par :} 
+ \end{flushleft}
+%\textbf{Sujet proposé par :} \hfill{} \textbf{Présenté par :}
+\begin{flushleft}
+ABBAD\hspace{0,2cm}Hamza \hspace{7cm} Mme KHELLAF-HANED Hadja Faiza\\
+ZEBOUCHI\hspace{0,35cm}Ahmed
+\end{flushleft}
+
+
+
+%\begin{table}[h]
+%\center
+%\begin{tabular}{p{6.5cm}p{8cm}}
+%\textbf{Présenté par :} & & & \textbf{Proposé et dirigé par :}\\
+%- BOUBENIA Mohamed& & & -	Dr BOUYAKOUB Fayçal M'hamed \\
+%- CHIOUKH Lyes & & &\\
+%\end{tabular}
+%\end{table}
+\vspace{1cm}
+\begin{center}
+\textbf{Devant le jury composé de : }\\
+
+
+\begin{table}[h]
+\begin{center}
+\begin{tabular}{p{4,5cm}p{1cm}}
+Mme MOKHTARI AISSANI & Présidente \\
+Mme AKLI ASTOUATI & Membre \\
+\end{tabular}
+\end{center}
+\end{table}
+
+\end{center}
+%\begin{table}[h]
+%\begin{tabular}{p{6.5cm}p{5cm}}
+%\textbf{Devant le jury composé de:}&\\
+%- Mr ABDELLI & Président \\
+%- Mr Belache & Membre \\
+%- Mme Bouyakoub & Membre \\
+%\end{tabular}
+%\end{table}
+
+\vspace{3cm}
+
+\begin{flushright}
+Projet N : 062/2015
+\end{flushright}
+
+
+
+
+\end{sloppypar}
+\end{document}

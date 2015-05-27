@@ -7,7 +7,7 @@
 Nous allons maintenant détailler les différentes procédures et méthodes que nous avons implémenté à partir de la théorie de\textbf{ Dempster-Shafer} décrite dans le premier chapitre.
 
 Les algorithmes qui suivent, se déroulent en un enchainement précis.
-La procédure de préparation qui opère des manipulations sur les masses sera expliquée en un premier temps.Ensuite nous allons présenter  ensuite la procédure d'appel de fusion et de croyance qui nécessite les données résultantes de la procédure précédente et qui fait appel à chaque procédure de fusion de croyance. Enfin, à partir des données de la fusion viennent les deux dernières procédures de calcul de croyance et de décision qui présentent le résultat final de tous les algorithmes précédents.
+La procédure de préparation qui opère des manipulations sur les masses sera expliquée en un premier temps. Ensuite nous allons présenter la procédure d'appel de fusion et de croyance qui nécessite les données résultant de la procédure précédente et qui fait appel à chaque procédure de fusion de croyance. Enfin, à partir des données de la fusion viennent les deux dernières procédures de calcul de croyance et de décision qui présentent le résultat final de tous les algorithmes précédents.
 \SetKwInput{KwIn}{Entrée}
 \SetKwInput{KwOut}{Sortie}
 \SetKw{KwTo}{à}
@@ -84,7 +84,7 @@ $AgentsPréparés.Ajouter(Agent);$
 
 \section{Appel de procédures de fusion et de croyance}
 
-Grâce à cet algorithme, nous pouvons invoquer les méthodes de combinaison en passant les agents deux par deux en paramètres. Ainsi, nous pouvons fusionner les connaissances de plusieurs agents deux à deux\\
+Grâce à cet algorithme, nous pouvons invoquer les méthodes de combinaison en passant les agents deux par deux en paramètres. Ainsi, nous pouvons fusionner les connaissances de plusieurs agents, deux à deux.\\
 
 \begin{algorithm}[H]
 \caption{Appel de procédures de fusion et de croyance}
@@ -165,7 +165,8 @@ $AGENTRes.(hypothèse_{i} \cap hypothèse_{j}).masse \gets AGENTRes.(hypothèse_
 
 $AGENTRes.(hypothèse_{i} \cup hypothèse_{j}).masse \gets AGENTRes.(hypothèse_{i} \cup hypothèse_{j}).masse + hypothèse_{i}.masse \times hypothèse_{j}.masse ;$
 \end{algorithm}
-\vspace{3em}
+\newpage
+\vspace*{3em}
 \begin{algorithm}[H]
 \setcounter{AlgoLine}{3}
 \caption{Méthode de combinaison Smets}
@@ -175,7 +176,7 @@ $k \gets k + AGENTRes.(hypothèse_{i} \cap hypothèse_{j}).masse $}
 $AGENTRes.(hypothèse_{i} \cap hypothèse_{j}).masse \gets AGENTRes.(hypothèse_{i} \cap hypothèse_{j}).masse + hypothèse_{i}.masse \times hypothèse_{j}.masse ;$
 $AGENTRes.(\varnothing ).masse \gets k;$
 \end{algorithm}
-\vspace{3em}
+\vspace{6em}
 \begin{algorithm}[H]
 \setcounter{AlgoLine}{9}
 \caption{Méthode de combinaison Yager}
@@ -185,7 +186,7 @@ $AGENTRes.(\varnothing ).masse \gets AGENTRes.(\varnothing ).masse + k;$}
 $AGENTRes.(hypothèse_{i} \cap hypothèse_{j}).masse \gets AGENTRes.(hypothèse_{i} \cap hypothèse_{j}).masse + hypothèse_{i}.masse \times hypothèse_{j}.masse ;$
 $AGENTRes.(\varnothing ).masse \gets k;$
 \end{algorithm}
-\vspace{3em}
+\vspace{6em}
 Les algorithmes ci dessus représentent des implémentations sur les règles de combinaison présentées dans le premier chapitre. Ces algorithmes nécessitent beaucoup de ressources, en raison de la méthode de génération des sous ensembles des états du monde dans l'étape de préparation des masses car cette méthode génère un nombre important d'ensemble :
 
 Soit $E$ un ensemble à $n$ éléments. Alors, l'ensemble $\mathcal{P}(E)$ des parties de $E$ est fini, et a \textbf{$2^n$} éléments.
@@ -196,7 +197,7 @@ Cela consomme un grand temps d'exécution en fonction de la grandeur d'états du
 \section{Procédure de calcul de croyance}
 \vspace{2em}
 \begin{algorithm}[H]
-\caption{Calcul de Croyance et de Plausibilité}
+\caption{Calcul de croyance et de plausibilité}
 \BlankLine
 \KwIn{
 $AGENT = \lbrace \lbrace hypothèse_{i},masse_{i} \rbrace, i= \overline{1,N}\rbrace $}
