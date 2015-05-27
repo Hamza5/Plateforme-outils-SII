@@ -10,12 +10,12 @@ proposées pour représenter les connaissances incertaines et imprécises. Nous 
 
 Les approches logiques de l’incertain permettent d’utiliser un langage formel pour la description des connaissances et le raisonnement automatique. Elles constituent une référence aux autres formalismes surtout pour le raisonnement. Néanmoins, les connaissances ne  sont pas structurées.
 
-Les principales représentations des connaissances incertaines sont le mode logique et le mode graphique.\cite{hkhallafiThesis}
+Les principales représentations des connaissances incertaines sont le mode logique et le mode graphique\cite{hkhallafiThesis}.
 Sur le plan de la représentation, le mode graphique est le plus explicite en soumettant les relations de dépendance qui existent entre les différentes variables. Sur le plan de raisonnement, le mode logique offre une machinerie d’inférence efficace.
 
 Plusieurs chercheurs ont permis l’émergence d’un certain nombre de modèles graphiques offrant un cadre de représentation plus structuré.
 
-La théorie des possibilités est une théorie de l’incertain ayant pour vocation de manipuler des connaissances incomplètes. Elle diffère de la théorie de probabilité  vu qu'elle manipule deux mesures duales : possibilité et nécessité. Cette théorie a été développée dans deux directions: la qualitative et la quantitative ce qui permet en fait de définir deux types de réseaux  possibilistes : les réseaux possibilistes basés sur le minimum (qualitatifs) et les réseau basés sur le produit (quantitatifs).\cite{hkhallafiThesis}\cite{kZebouchi2Thesis}
+La théorie des possibilités est une théorie de l’incertain ayant pour vocation de manipuler des connaissances incomplètes. Elle diffère de la théorie de probabilité  vu qu'elle manipule deux mesures duales : possibilité et nécessité. Cette théorie a été développée dans deux directions: la qualitative et la quantitative ce qui permet en fait de définir deux types de réseaux  possibilistes : les réseaux possibilistes basés sur le minimum (qualitatifs) et les réseau basés sur le produit (quantitatifs)\cite{hkhallafiThesis}\cite{kZebouchi2Thesis}.
 \subsection{Théorie de probabilité}
 
 Les réseaux bayésien peut être considérés comme une fusion de diagrammes d'incidence et le théorème de Bayes. La probabilité qu'un événement se produise étant donné que un autre événement a déjà eu lieu est appelé une probabilité conditionnelle. 
@@ -26,7 +26,7 @@ Les avantages du  modèle graphique est qu’un réseau bayésien peut être uti
 
 Afin de maintenir l'exploitation des réseaux bayésienne, Murphy a développe une boit a outil appelé le Bayes Net Boîte à outils (BNT).
 
-Une des plus grandes forces de BNT est qu'elle offre une variété d'algorithmes d'inférence, chacun fait différents métiers entre la précision, de la généralité, la simplicité, la vitesse, etc.
+Une des plus grandes forces de BNT \cite{BNT} est qu'elle offre une variété d'algorithmes d'inférence.
 
 
 \subsection{Théorie de possibilité quantitative}
@@ -47,7 +47,7 @@ La logique possibiliste offre un cadre général pour représenter les connaissa
 –Il existe un programme de passage d’une base possibiliste quantitative vers un graphe causal basé sur le produit dans lequel l’affectation de l’ordre arbitraire entre les variables influe sur la structure du graphe. Il serait donc intéressant de définir des heuristiques afin d’obtenir la structure de graphe la moins complexe possible afin d’optimiser
 le temps de la propagation.
 
-–Il existe aussi un programme d’inférence appliqué à une base possibiliste quantitative. Il permet de transformer la base de connaissances afin de pouvoir utiliser un prouveur de la classe WMAXSAT connu pour être un des problèmes NP-difficiles.\cite{hkhallafiThesis}
+–Il existe aussi un programme d’inférence appliqué à une base possibiliste quantitative. Il permet de transformer la base de connaissances afin de pouvoir utiliser un prouveur de la classe WMAXSAT connu pour être un des problèmes NP-difficiles\cite{hkhallafiThesis}.
 
 \subsection{Théorie de possibilité qualitative}
 \subsubsection{Mode graphique}
@@ -56,7 +56,7 @@ Un graphe possibiliste basé sur le minimum, noté par $GP_{M}$, est un graphe o
 \begin{equation}
  \pi_{M} (A_1, \dots, A_N) = MIN_{i=1 \dots N} \pi (A_i/teta A_i) 
 \end{equation}
-Ou MIN est  l’opérateur minimum.\cite{BoBrDu2008.1}
+Ou MIN est  l’opérateur minimum\cite{BoBrDu2008.1}.
 
 La boite à outils PNT possède aussi différents algorithmes pour les réseaux causaux possibilistes basés sur le minimum à connexions multiples et pour les polyarbres. 
 
@@ -64,7 +64,7 @@ La boite à outils PNT possède aussi différents algorithmes pour les réseaux 
 La théorie de la décision permet de modéliser le comportement d'un agent face
 à des situations de choix en se basant sur un certain nombre d'axiomes. Le critère
 de l'utilitée espérée est un critère dominant de cette approche, qui s'appuie sur une
-base axiomatique très solide.\cite{hkhaoulaThesis}
+base axiomatique très solide\cite{hkhaoulaThesis}.
 \subsubsection{a- Mode graphique}
 L’utilisation de modèles graphiques dans de nombreux problèmes de décision apporte de
 l’expressivité et de l’efficacité de calcul tant pour la représentation des incertitudes que pour celle
@@ -96,7 +96,7 @@ Elle permet de modéliser les comportements de systèmes complexes en utilisant 
 
 Nous présentons ici l'outil UBCSAT en précisant en premier temps les notions sur les prouveurs SAT, MaxSAT et WMAXSAT (MAXSAT pondéré). 
 \subsection{SAT}
-Soit F une formule propositionnelle sous la forme normale conjonctive (CNF). Le problème SAT est un problème de décision NP-complet qui consiste à déterminer si F admet ou non un modèle.\cite{hassenThesis}
+Soit F une formule propositionnelle sous la forme normale conjonctive (CNF). Le problème SAT est un problème de décision NP-complet qui consiste à déterminer si F admet ou non un modèle\cite{hassenThesis}.
 
 \textbf{Le problème de satisfiabilité propositionnelle (SAT)} est un sujet d'étude important dans de nombreux domaines de l'informatique, SAT est définie par les ces composantes :\\
 \hspace{2em}Soit $X=\{x_1, x_2,\dots, x_n\}$, un ensemble de $n$ variables booléennes.\\
@@ -105,17 +105,17 @@ Soit F une formule propositionnelle sous la forme normale conjonctive (CNF). Le 
 \hspace{2em}chaque littéral est une variable ou sa négation.\\
 \hspace{2em}Soit $D$, la donnée SAT, composé d'une conjonction de littéraux.
 
-Le problème SAT consiste à déterminer s’il existe une assignation des variables $x_i$ de $X$ telle que la donnée $D$ soit satisfaisante. S’il existe une assignation de variables qui satisfait toutes les clauses, le SAT admet une réponse ‘Oui’ ou ‘Non sinon’.\cite{hkhallafiThesis}
+Le problème SAT consiste à déterminer s’il existe une assignation des variables $x_i$ de $X$ telle que la donnée $D$ soit satisfaisante. S’il existe une assignation de variables qui satisfait toutes les clauses, le SAT admet une réponse ‘Oui’ ou ‘Non sinon’\cite{hkhallafiThesis}.
 \subsection{WMAXSAT}
 
 toutefois, dans le cas de réponse négative du SAT, pour trouver toutes le nombre maximale de clauses pouvant être satisfaites à la fois. il a fallu définir \textbf{le problème du Maximum Satisfiabilité, ou MAXSAT}. Max-SAT est donc la version optimale du SAT dont le but est de satisfaire le nombre maximal de clauses.
 
-Le problème avec le MAXSAT c’est qu’il associe à toutes les clauses le même poids, d’où la nécessité de définir \textbf{le problème du MAXSAT pondéré, ou WMAXSAT} cela permet d'attribuer des poids aux différentes clauses pour spécifier les clauses simultanément satisfaites en augmentant la somme de leur poids et en affaiblissant la somme des poids des clauses insatisfaites. \cite{hkhallafiThesis}
+Le problème avec le MAXSAT c’est qu’il associe à toutes les clauses le même poids, d’où la nécessité de définir \textbf{le problème du MAXSAT pondéré, ou WMAXSAT} cela permet d'attribuer des poids aux différentes clauses pour spécifier les clauses simultanément satisfaites en augmentant la somme de leur poids et en affaiblissant la somme des poids des clauses insatisfaites \cite{hkhallafiThesis}.
 
 
 \textbf{UBCSAT (University of British Columbia SAT)}
 
-L'un des défis de l'élaboration du projet UBCSAT était de construire un environnement flexible, riche en fonctionnalités sans compromettre l'efficacité algorithmique. Ce programme est performant sur les instances SAT issues de problèmes réels. Il offre la gestion des contraintes pseudo booléennes, et il décline un grand nombre de problèmes de décision ou d’optimisation en termes de problème SAT ou pseudo booléen.    \cite{hassenThesis}
+L'un des défis de l'élaboration du projet UBCSAT était de construire un environnement flexible, riche en fonctionnalités sans compromettre l'efficacité algorithmique. Ce programme est performant sur les instances SAT issues de problèmes réels. Il offre la gestion des contraintes pseudo booléennes, et il décline un grand nombre de problèmes de décision ou d’optimisation en termes de problème SAT ou pseudo booléen    \cite{hassenThesis}.
 
 Actuellement, UBCSAT comprend des implémentations de deux algorithmes conçus pour supporter les versions MAX-SAT, ainsi que MAX-SAT pondéré.
 
