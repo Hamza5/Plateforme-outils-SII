@@ -22,6 +22,8 @@ lib/
 *.bbl
 *.bcf
 *.blg
+*.loa
+*.lof
 *.dvi
 *.pdf
 *.synctex.gz
