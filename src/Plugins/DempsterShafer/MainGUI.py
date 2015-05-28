@@ -607,7 +607,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             if not self.enregistrer():
                 return
         try:
-            args = ['java', '-cp',  dirname(realpath(__file__)), self.executable, self.input, self.output]
+            java_cmd = 'javaw' if sys.platform.startswith('win') else 'java';
+            args = [java_cmd, '-cp',  dirname(realpath(__file__)), self.executable, self.input, self.output]
             wait_dialog = WaitDialog(self)
             launcher = ProgramLauncher(self, args, wait_dialog)
             wait_dialog.process = launcher
