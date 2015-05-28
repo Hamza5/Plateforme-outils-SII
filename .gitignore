@@ -24,6 +24,9 @@ lib/
 *.blg
 *.loa
 *.lof
+*.mtc?
+*.maf
+*.idx
 *.dvi
 *.pdf
 *.synctex.gz
