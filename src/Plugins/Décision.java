@@ -1,5 +1,6 @@
 package Plugins;
 
+import java.awt.Button;
 import java.awt.event.ActionEvent;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -24,8 +25,9 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.border.TitledBorder;
 
 public class Décision extends JPanel {
+	final JButton Khaoula;
     private static final String DecPosButtonText = "Lancer DecPos";
-    private static final String DecPosDescription = "Programme pour calculer les décisions. Développé par Noughi";
+    private static final String DecPosDescription = "Programme pour calculer les décisions. Développé par Nougui";
     private static final int spacing = 5;
     private static final String FuzzyButtonText = "Lancer GraphViz02";
     private static final String FuzzyDescription = "<html><div style=\"text-align: center;\">Cette Application offre la possibilité de traiter les processus suivants :"+
@@ -91,42 +93,62 @@ public class Décision extends JPanel {
                 }
             }
         });
-        JButton Khaoula = new JButton(new AbstractAction(FuzzyButtonText) {
-            @Override
+      Khaoula = new JButton(new AbstractAction(FuzzyButtonText) {
+    	  Thread t;
             public void actionPerformed(ActionEvent actionEvent) {
-           
-            	final URL PNTURL = ClassLoader.getSystemClassLoader().getResource("Plugins/décision/Pnt");
             	
-				
-                    Runnable externalProgramLauncher = null;
-					
-						externalProgramLauncher = new Runnable() {
-							Process process = null;
-							 
-							//Path path = Paths.get(System.getProperty("user.dir"),"src","Plugins","Décision","Pnt");	
-							
-							public void run() {
-						        try {
-						        	final String cmd="matlab -nodesktop -nodisplay -minimize  -nosplash -wait  -r \"cd "+PNTURL.toURI().getPath().toString().substring(1)+"; addpath(genpathKPM(pwd)); GUI;";
-						        	if (PNTURL == null) throw new FileNotFoundException("PNT folder not found");
-						        	System.out.println("cmd "+cmd);
-						        	process=Runtime.getRuntime().exec(cmd);
-						        } catch (IOException e) {
-						            JOptionPane.showMessageDialog(Décision, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-						        } catch (URISyntaxException e) {
-						        	JOptionPane.showMessageDialog(null,
-			    						    "Erreur d'exécution du script \nScripte non trouvée!",
-			    							   "Erreur",
-			    							   JOptionPane.ERROR_MESSAGE);
-								}
-						    }
-					
-						};
-					
-                    Thread t = new Thread(externalProgramLauncher);
+            	
+            	
+            	
+            	class ProgramLauncher extends Thread {
+            		
+            		JButton button;
+            		public ProgramLauncher(JButton button) {
+            			this.button = button;
+					}
+            		public void run() {
+            			final URL PNTURL = ClassLoader.getSystemClassLoader().getResource("Plugins/Décision/Pnt");
+            			button.setEnabled(false);
+            			button.setText("veuillez patienter ...");
+            	        try {
+            	        	if (PNTURL == null) throw new FileNotFoundException("PNT folder not found");
+            	        	final String cmd="matlab -nodesktop -nodisplay -minimize  -nosplash -wait  -r \"cd "
+            	        +PNTURL.toURI().getPath().toString().substring(1)+
+            	        "; addpath(genpathKPM(pwd)); GUI;";
+            	        	
+            	        	System.out.println("cmd "+cmd);
+            	        	Process process=Runtime.getRuntime().exec(cmd);
+            	        	process.waitFor();
+            	        	button.setText("Lancer GraphViz02");
+            	        	button.setEnabled(true);
+            	        } catch (IOException e) {
+            	            JOptionPane.showMessageDialog(Décision, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            	            button.setText("Lancer GraphViz02");
+            	        	button.setEnabled(true);
+            	        } catch (URISyntaxException e) {
+            	        	JOptionPane.showMessageDialog(null,
+            					    "Erreur d'exécution du script \nScripte non trouvée!",
+            						   "Erreur",
+            						   JOptionPane.ERROR_MESSAGE);
+            	        	button.setText("Lancer GraphViz02");
+            	        	button.setEnabled(true);
+            			} catch (InterruptedException e) {
+            				button.setText("Lancer GraphViz02");
+            	        	button.setEnabled(true);
+            			}
+            	    }
+            	}
+                    Thread t = new ProgramLauncher(Khaoula);
                     t.start();
-               
+//                    try {
+//						t.join();
+//					} catch (InterruptedException e) {
+//						Khaoula.setEnabled(true);
+//						e.printStackTrace();
+//					}
+//                    if(t.getState()!=Thread.State.TERMINATED){Khaoula.setEnabled(true);}
             }
+           
         });
         
         DecPosButton.setMnemonic('P');

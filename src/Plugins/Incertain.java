@@ -779,11 +779,14 @@ class Fenetre extends JDialog implements ListSelectionListener,ActionListener{
 		}break;
 		case "Calculer":
 		{
-		
+			 Calculer.setEnabled(false);
+			 Calculer.setText("veuillez patienter ...");
 			//File file = new File(new File(System.getProperty("user.dir"), new File(new File(new File("src","Plugins"),"Incertain"),"Pnt").toString()),"calcul.m");
 			
 			PrintWriter writer = null;
 			try {
+				Calculer.setEnabled(false);
+				
 				final URL BNTURL = ClassLoader.getSystemClassLoader().getResource("Plugins/incertain/FullBNT-1.0.4");
 	            if (BNTURL == null) throw new FileNotFoundException("BNT folder not found");
 				Path path = Paths.get(BNTURL.toURI().getPath().toString().substring(1),"calcul.m");	
@@ -808,13 +811,20 @@ class Fenetre extends JDialog implements ListSelectionListener,ActionListener{
 						   "Erreur",
 						   JOptionPane.ERROR_MESSAGE);
 			
+				Calculer.setEnabled(true);
+				Calculer.setText("Calculer");
 			}
 			
-			class ExecutorTask implements Runnable{
-
+			//class ExecutorTask implements Runnable{
+				class ExecutorTask extends Thread {
+            		
+            		JButton button;
+            		public ExecutorTask(JButton button) {
+            			this.button = button;
+					}
 				
 			    public void run() {
-			    	
+			    	button.setEnabled(false);
 			    	boolean verifexec=true;
 			        Process process = null;
 					try {
@@ -832,6 +842,8 @@ class Fenetre extends JDialog implements ListSelectionListener,ActionListener{
 					}
 					
 				} catch (IOException e) {
+					button.setText("Calculer");
+					button.setEnabled(true);
 					JOptionPane.showMessageDialog(null,
 						    "Erreur d'exécution du script \nVerifier si Matlab est correctement installée!",
 							   "Erreur",
@@ -839,6 +851,8 @@ class Fenetre extends JDialog implements ListSelectionListener,ActionListener{
 					verifexec=false;
 					
 				} catch (URISyntaxException e) {
+					button.setText("Calculer");
+					button.setEnabled(true);
 					JOptionPane.showMessageDialog(null,
 						    "Erreur d'exécution du script \nVerifier si Matlab est correctement installée!",
 							   "Erreur",
@@ -847,6 +861,8 @@ class Fenetre extends JDialog implements ListSelectionListener,ActionListener{
 				if(verifexec){
 				try {process.waitFor();
 				} catch (InterruptedException e) {
+					button.setText("Calculer");
+					button.setEnabled(true);
 					JOptionPane.showMessageDialog(null,
 						    "Erreur d'exécution du script \nl'exécution du script a été interrompu !",
 							   "Erreur",
@@ -856,8 +872,8 @@ class Fenetre extends JDialog implements ListSelectionListener,ActionListener{
 				
 			    }
 			}
-			ExecutorTask task = new ExecutorTask();
-	        Thread executorThread = new Thread(task);
+				//Calculer
+			Thread executorThread = new ExecutorTask(Calculer);
 	        executorThread.start();
 	      
 	        synchronized(executorThread){
@@ -865,6 +881,8 @@ class Fenetre extends JDialog implements ListSelectionListener,ActionListener{
 	            try {
 					executorThread.wait();
 				} catch (InterruptedException e) {
+					Calculer.setEnabled(true);
+					Calculer.setText("Calculer");
 					 JOptionPane.showMessageDialog(null,
 		 	            		"Erreur d'exécution du script ",
 		 							    "Erreur",
@@ -874,19 +892,26 @@ class Fenetre extends JDialog implements ListSelectionListener,ActionListener{
 	            
 	            String Fichier;
 	             Fichier= LireSousFormeString("output");
+	            
 	             if(bool&&!Fichier.contains("ans =")){
 	            	 
 	            	 JOptionPane.showMessageDialog(null,
 	 	            		"Erreur d'exécution du script ",
 	 							    "Erreur",
 	 							    JOptionPane.ERROR_MESSAGE);
+	            	 Calculer.setText("Calculer");
+	            	 Calculer.setEnabled(true);
 	             }else{
 	             JOptionPane.showMessageDialog(null,
 	            		Fichier.substring(LireSousFormeString("output").lastIndexOf("ans =")),
 							    "Resultat",
-							    JOptionPane.PLAIN_MESSAGE);}
+							    JOptionPane.PLAIN_MESSAGE);
+	             Calculer.setText("Calculer");
+	             Calculer.setEnabled(true);}
 	            
 	        }
+	        Calculer.setText("Calculer");
+	        Calculer.setEnabled(true);
 		}
 		
 		}
@@ -1215,9 +1240,9 @@ finally {
 		                            	 final File DSFolderPath = new File(DSURL.toURI());
 		                            	 ProcessBuilder DSPB;
 		                            	 if (System.getProperty("os.name").startsWith("Windows")) {
-		                            		  DSPB = new ProcessBuilder("python","MainGUI.py");
+		                            		  DSPB = new ProcessBuilder("combinateur");
 		                            	    } else {
-		                            	    	 DSPB = new ProcessBuilder("python3","MainGUI.py");
+		                            	    	 DSPB = new ProcessBuilder("./combinateur");
 		                            	    } 
 		                            	
 		                                 DSPB.directory(DSFolderPath);
@@ -1343,7 +1368,7 @@ finally {
 		        gbc_radioButton.gridy = 3;
 		        logiquePossibiliste.add(radioButton, gbc_radioButton);
 		        group.add(radioButton);
-		        JButton btnCaculer = new JButton("Calculer");
+		        final JButton btnCaculer = new JButton("Calculer");
 		        btnCaculer.setMnemonic(KeyEvent.VK_C);
 		        btnCaculer.addActionListener(new ActionListener() {
 		        	 int nbrNod=0;
@@ -1386,12 +1411,17 @@ finally {
 		            	    
 		            	   // path = Paths.get(System.getProperty("user.dir"),"src","Plugins","incertain","Pnt");	
 		            	   
-		            	    
-		            	    Runnable externalProgramLauncher = new Runnable() {
+							//externalProgramLauncher
+							class externalProgramLauncher extends Thread {
+			            		JButton button;
+			            		public externalProgramLauncher(JButton button) {
+			            			this.button = button;
+								}
 		                    	Process process = null;
 		                    	
 		                        public void run() {
-		                        	
+		                        	button.setText("veuillez patienter ...");
+		                        	button.setEnabled(false);
 					                    try {
 					                    	 final URL PNTURL = ClassLoader.getSystemClassLoader().getResource("Plugins/incertain/Pnt");
 							    	            if (PNTURL == null) throw new FileNotFoundException("PNT folder not found");
@@ -1399,8 +1429,12 @@ finally {
 							            	    System.out.println("PNTURL "+PNTURL.toURI().getPath().toString().substring(1));
 							            	    process=Runtime.getRuntime().exec(cmd);
 					                    } catch (IOException e) {
+					                    	button.setText("Calculer");
+						                    button.setEnabled(true);
 					                        JOptionPane.showMessageDialog(logiquePossibiliste, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
 					                    } catch (URISyntaxException e) {
+					                    	button.setText("Calculer");
+						                    button.setEnabled(true);
 					                    	JOptionPane.showMessageDialog(null,
 					    						    "Erreur d'exécution du script \nScripte non trouvée!",
 					    							   "Erreur",
@@ -1410,6 +1444,8 @@ finally {
 					                    try {
 											process.waitFor();
 										} catch (InterruptedException e) {
+											button.setText("Calculer");
+						                    button.setEnabled(true);
 											JOptionPane.showMessageDialog(null,
 					    						    "Erreur d'exécution du script \nScripte non trouvée!",
 					    							   "Erreur",
@@ -1430,11 +1466,15 @@ finally {
 					                    	process = Runtime.getRuntime().exec(path3.toAbsolutePath().toString());
 					                    	process.waitFor();
 					                    } catch (IOException e) {
+					                    	button.setText("Calculer");
+						                    button.setEnabled(true);
 											JOptionPane.showMessageDialog(null,
 					    						    "Erreur d'exécution du script \nScripte non trouvée!",
 					    							   "Erreur",
 					    							   JOptionPane.ERROR_MESSAGE);
 										} catch (InterruptedException e) {
+											button.setText("Calculer");
+						                    button.setEnabled(true);
 											JOptionPane.showMessageDialog(null,
 					    						    "Erreur d'exécution du script \nExecution interrompue!",
 					    							   "Erreur",
@@ -1446,12 +1486,15 @@ finally {
 					                    resultsDialog.setText(Filecontent);
 					                    resultsDialog.pack();
 					                    resultsDialog.setLocationRelativeTo(logiquePossibiliste);
-					                    resultsDialog.setVisible(true);        
+					                    
+					                    button.setEnabled(true);
 					                }
+					                    resultsDialog.setVisible(true);
+					                    button.setText("Calculer");
 		                        }
 		                    };
-		                   
-		                    Thread t = new Thread(externalProgramLauncher);
+		                   //btnCaculer
+		                    Thread t = new externalProgramLauncher(btnCaculer);
 		                    t.start();
 		                    
 				  }
