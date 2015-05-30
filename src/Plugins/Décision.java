@@ -27,10 +27,10 @@ import javax.swing.border.TitledBorder;
 public class Décision extends JPanel {
 	final JButton Khaoula;
     private static final String DecPosButtonText = "Lancer DecPos";
-    private static final String DecPosDescription = "Programme pour calculer les décisions. Développé par Nougui";
+    private static final String DecPosDescription = "Programme pour calculer les décisions. Développé par Noughi";
     private static final int spacing = 5;
     private static final String FuzzyButtonText = "Lancer GraphViz02";
-    private static final String FuzzyDescription = "<html><div style=\"text-align: center;\">Cette Application offre la possibilité de traiter les processus suivants :"+
+    private static final String FuzzyDescription = "<html><div style=\"text-align: center;\">Cette application offre la possibilité de traiter les processus suivants :"+
 "<br>– La décomposition d’un diagramme d’influence possibiliste vers :<br>– Deux réseaux possibilites sans réduction des noeuds d’utilité"+
 "<br>– Deux réseaux possibilites avec réduction des noeuds d’utilité"+
 "<br>– La transformation d’un diagramme d’influence possibiliste vers un réseau possibiliste"+

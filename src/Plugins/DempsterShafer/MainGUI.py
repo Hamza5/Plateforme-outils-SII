@@ -262,12 +262,13 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                 msg.exec_()
                 return
         except NameError:  # lxml library not found, can't validate the document
-            msg = QMessageBox(self)
-            msg.setWindowTitle('Erreur')
-            msg.setText('<b>La bibliothèque <i>lxml</i> est introuvable</b>')
-            msg.setInformativeText('Le programme ne peut pas assurer la validité de du fichier choisie')
-            msg.setIcon(QMessageBox.Warning)
-            msg.exec_()
+            # msg = QMessageBox(self)
+            # msg.setWindowTitle('Erreur')
+            # msg.setText('<b>La bibliothèque <i>lxml</i> est introuvable</b>')
+            # msg.setInformativeText('Le programme ne peut pas assurer la validité de du fichier choisie')
+            # msg.setIcon(QMessageBox.Warning)
+            # msg.exec_()
+            pass
         if not self.nouveau():
             return
         try:

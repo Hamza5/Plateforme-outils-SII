@@ -1222,7 +1222,7 @@ finally {
 									
 			tabs.addTab("Dempster-Shafer", DempsterShafer);
 			 String DSButtonText = "Lancer le Combinateur d'évidences";
-			 String DSDescription = "<html><body style=\"text-align: center;\">Ce logigiel permet d'appliquer la théorie de Dempster-Shafer sur un problème d'incertain dans un système multi-sources</body></html>";
+			 String DSDescription = "<html><body style=\"text-align: center;\">Ce logiciel permet d'appliquer la théorie de Dempster-Shafer sur un problème d'incertain dans un système multi-sources</body></html>";
 		     int spacing = 5;
 		      BoxLayout mainLayout = new BoxLayout(this, BoxLayout.PAGE_AXIS);
 		        setLayout(mainLayout);
