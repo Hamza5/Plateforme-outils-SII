@@ -24,7 +24,8 @@ lib/
 *.blg
 *.loa
 *.lof
-*.mtc?
+*.mtc
+*.mtc0
 *.maf
 *.idx
 *.dvi
