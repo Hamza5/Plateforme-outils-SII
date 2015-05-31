@@ -47,7 +47,6 @@ import javax.swing.JComponent;
 import javax.swing.JDialog;
 import javax.swing.JFileChooser;
 import javax.swing.JFormattedTextField;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JOptionPane;
@@ -780,7 +779,7 @@ class Fenetre extends JDialog implements ListSelectionListener,ActionListener{
 		case "Calculer":
 		{
 			 Calculer.setEnabled(false);
-			 Calculer.setText("veuillez patienter ...");
+			 Calculer.setText("Veuillez patienter ...");
 			//File file = new File(new File(System.getProperty("user.dir"), new File(new File(new File("src","Plugins"),"Incertain"),"Pnt").toString()),"calcul.m");
 			
 			PrintWriter writer = null;
@@ -1238,13 +1237,7 @@ finally {
 		                            	final URL DSURL = ClassLoader.getSystemClassLoader().getResource("Plugins/DempsterShafer");
 		                            	 if (DSURL == null) throw new FileNotFoundException("DempsterShafer folder not found");
 		                            	 final File DSFolderPath = new File(DSURL.toURI());
-		                            	 ProcessBuilder DSPB;
-		                            	 if (System.getProperty("os.name").startsWith("Windows")) {
-		                            		  DSPB = new ProcessBuilder("combinateur");
-		                            	    } else {
-		                            	    	 DSPB = new ProcessBuilder("./combinateur");
-		                            	    } 
-		                            	
+		                            	 ProcessBuilder DSPB = new ProcessBuilder(Paths.get(new File(DSURL.toURI()).getAbsolutePath(), "combinateur").toString());
 		                                 DSPB.directory(DSFolderPath);
 		                                 DSPB.redirectError(ProcessBuilder.Redirect.INHERIT);
 		                                 DSPB.start();
@@ -1420,7 +1413,7 @@ finally {
 		                    	Process process = null;
 		                    	
 		                        public void run() {
-		                        	button.setText("veuillez patienter ...");
+		                        	button.setText("Veuillez patienter ...");
 		                        	button.setEnabled(false);
 					                    try {
 					                    	 final URL PNTURL = ClassLoader.getSystemClassLoader().getResource("Plugins/incertain/Pnt");
@@ -1436,7 +1429,7 @@ finally {
 					                    	button.setText("Calculer");
 						                    button.setEnabled(true);
 					                    	JOptionPane.showMessageDialog(null,
-					    						    "Erreur d'exécution du script \nScripte non trouvée!",
+					    						    "Erreur d'exécution du script \nScripte non trouvé ou Matlab n'est pas bien installé!",
 					    							   "Erreur",
 					    							   JOptionPane.ERROR_MESSAGE);
 										}
@@ -1447,7 +1440,7 @@ finally {
 											button.setText("Calculer");
 						                    button.setEnabled(true);
 											JOptionPane.showMessageDialog(null,
-					    						    "Erreur d'exécution du script \nScripte non trouvée!",
+					    						    "Erreur d'exécution du script \nScripte non trouvé ou Matlab n'est pas bien installé!",
 					    							   "Erreur",
 					    							   JOptionPane.ERROR_MESSAGE);
 										
@@ -1469,7 +1462,7 @@ finally {
 					                    	button.setText("Calculer");
 						                    button.setEnabled(true);
 											JOptionPane.showMessageDialog(null,
-					    						    "Erreur d'exécution du script \nScripte non trouvée!",
+					    						    "Erreur d'exécution du script \nScripte non trouvé ou Matlab n'est pas bien installé!",
 					    							   "Erreur",
 					    							   JOptionPane.ERROR_MESSAGE);
 										} catch (InterruptedException e) {
@@ -1493,7 +1486,6 @@ finally {
 					                    button.setText("Calculer");
 		                        }
 		                    };
-		                   //btnCaculer
 		                    Thread t = new externalProgramLauncher(btnCaculer);
 		                    t.start();
 		                    
@@ -1522,7 +1514,7 @@ finally {
 			FileNameExtensionFilter matlabFilter = new FileNameExtensionFilter("Matlab", "m");
 		    chooser = new JFileChooser(); 
 		    chooser.setCurrentDirectory(new java.io.File("."));
-		    chooser.setDialogTitle("Choisir le script a exécuter");
+		    chooser.setDialogTitle("Choisir le script à exécuter");
 		    chooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
 		    chooser.addChoosableFileFilter(matlabFilter);
 		    chooser.setFileFilter(matlabFilter);
@@ -1547,7 +1539,7 @@ finally {
 			try {
 				f = new File(chooser.getSelectedFile().toString());
 				if(!f.exists() || f.isDirectory()) {JOptionPane.showMessageDialog(null,
-					    "Script introuvable",
+					    "Scripte introuvable",
 					   "Erreur",
 					   JOptionPane.ERROR_MESSAGE);break;
 				  }
@@ -1572,7 +1564,7 @@ finally {
 				}
 			} catch (IOException e1) {
 				JOptionPane.showMessageDialog(null,
-					    "Erreur d'exécution du script \nVerifier si Matlab est correctement installée!",
+					    "Erreur d'exécution du scripte \nVerifier si Matlab est correctement installé!",
 						   "Erreur",
 						   JOptionPane.ERROR_MESSAGE);
 			}
@@ -1729,7 +1721,7 @@ finally {
               if(nbreCell<=1){ JOptionPane.showMessageDialog(null,
   				    "Il faut au moins deux noeuds",
   				    "Erreur",
-  				    JOptionPane.ERROR_MESSAGE);}
+  				    JOptionPane.WARNING_MESSAGE);}
               else{
 		    data2=new Object[vertex.size()][3];
 		    System.out.println("i= "+vertex.size());
@@ -1845,12 +1837,11 @@ finally {
          	  JOptionPane.showMessageDialog(null,
      				    "Erreur dans la construction du graphe",
      				    "Erreur",
-     				    JOptionPane.ERROR_MESSAGE);
+     				    JOptionPane.WARNING_MESSAGE);
            }
               }
 		}
 		else if(e.getSource() ==button_4){
-			System.out.println("boutont");
 			
 			modifRow=0;
 			 vertex = new Vector<>();
@@ -1862,16 +1853,14 @@ finally {
               for (Object c : cells) { 
 			    mxCell cell = (mxCell) c; 
 			    if (cell.isVertex()) {
-			    	System.out.println(cell.getValue().toString()+" cell.getSource(): ");
 			    	vertex.add(cell.getValue().toString());
 			    	}
 			    }
 		    data2=new Object[vertex.size()][3];
-		    System.out.println("i= "+vertex.size());
 		    int nbrCell=0;
 		    for(int i=0;i<vertex.size();i++){
 		    	nbrCell++;
-		    	data2[i][0]=vertex.get(i);System.out.println("added to data2 :"+vertex.get(i));}
+		    	data2[i][0]=vertex.get(i);}
 		    if(nbrCell<=1){ JOptionPane.showMessageDialog(null,
 				    "Il faut au moins deux noeuds",
 				    "Erreur",
@@ -1880,8 +1869,7 @@ finally {
 		    for (Object c : cells) {
 		    mxCell cell = (mxCell) c; 
 		    if (cell.isEdge()) { 
-		    	
-		    	System.out.println(cell.getValue().toString()+" cell.getSource(): ");
+
 		    	mxCell edge;
 		    	edge=cell;
 			    if (!(edge.isEdge())) {
@@ -1913,7 +1901,6 @@ finally {
 				Object targetValue = target.getValue();
 				ArrayList <String> temp = new ArrayList <String>();
 				if ((sourceValue != null) && (targetValue != null)) {
-					System.out.println("Routing edge from " + sourceValue.toString() + " to " + targetValue.toString() + ".");
 					temp.add(sourceValue.toString());
 					temp.add(targetValue.toString());
 					edgeVec.add(temp);
@@ -1928,7 +1915,6 @@ finally {
 					for(int i1=0;i1<pow;i1++){tempAffich.add((float) 0);}
 					donnéesDist.put(vertex.get(i), tempAffich);
 					if(num<1){ bool=false;}
-					 System.out.print(tempAffich+" size "+tempAffich.size());
 					data2[i][1]=tempAffich.toString();
 					data2[i][2]="modifier";
 				}
@@ -1966,7 +1952,6 @@ finally {
 		    		if( edgeVec.get(j).get(0).equals(vertex.get(i))){
 		    			verif=false;break;
 		    		}
-		    		System.out.println("verif"+vertex.get(i));
 		    	}
 		    	if(verif){
 		    		vetcVErtex.add(i);
@@ -1988,7 +1973,7 @@ finally {
 	         	  JOptionPane.showMessageDialog(null,
 	     				    "Erreur dans la construction du graphe",
 	     				    "Erreur",
-	     				    JOptionPane.ERROR_MESSAGE);
+	     				    JOptionPane.WARNING_MESSAGE);
 	           }
 		    }
 		}

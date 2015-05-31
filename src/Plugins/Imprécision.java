@@ -5,7 +5,6 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.border.TitledBorder;
 import java.awt.event.ActionEvent;
 import java.io.IOException;
-import java.awt.event.ActionListener;
 
 public class Imprécision extends JPanel {
     private static final String FuzzyButtonText = "Lancer Fuzzy Logic Toolbox ™";
@@ -36,10 +35,6 @@ public class Imprécision extends JPanel {
                     t.start();
                
             }
-        });
-        DecPosButton.addActionListener(new ActionListener() {
-        	public void actionPerformed(ActionEvent arg0) {
-        	}
         });
         DecPosButton.setMnemonic('F');
         Box DecPosBox = new Box(BoxLayout.PAGE_AXIS);

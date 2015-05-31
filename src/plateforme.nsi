@@ -6,6 +6,7 @@ VIAddVersionKey "FileDescription" "Plateforme d'outils SII"
 VIAddVersionKey "CompanyName" "Hamza Abbad & Ahmed Zebouchi"
 VIAddVersionKey "LegalCopyright" "Copyright 2015 USTHB"
 VIProductVersion "1.0.0.0"
+Name "Plateforme d'outils SII"
 Icon "logo.ico"
 OutFile "plateforme.exe"
 SilentInstall silent
