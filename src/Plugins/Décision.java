@@ -109,7 +109,7 @@ public class Décision extends JPanel {
             	        try {
             	        	if (PNTURL == null) throw new FileNotFoundException("PNT folder not found");
             	        	final String cmd="matlab -nodesktop -nodisplay -minimize  -nosplash -wait  -r \"cd "
-            	        +PNTURL.toURI().getPath().toString().substring(1)+
+            	        +PNTURL.toURI().getPath().toString().substring(1).replace("'", "''")+
             	        "; addpath(genpathKPM(pwd)); GUI;";
 
             	        	Process process=Runtime.getRuntime().exec(cmd);
