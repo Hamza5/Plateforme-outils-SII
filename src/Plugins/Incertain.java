@@ -831,13 +831,13 @@ class Fenetre extends JDialog implements ListSelectionListener,ActionListener{
 					{   final URL BNTURL = ClassLoader.getSystemClassLoader().getResource("Plugins/incertain/FullBNT-1.0.4");
 		            if (BNTURL == null) throw new FileNotFoundException("BNT folder not found");
 						System.out.println("path :"+BNTURL.toURI().getPath().toString().substring(1));
-						process=Runtime.getRuntime().exec("matlab -nodesktop -nodisplay -minimize -noFigureWindows -nosplash -logfile -wait  output -r \"cd "+BNTURL.toURI().getPath().toString().substring(1).replace("'", "''")+";addpath(genpathKPM(pwd));calcul;quit;\"");
+						process=Runtime.getRuntime().exec("matlab -nodesktop -nodisplay -minimize -noFigureWindows -nosplash -logfile -wait  output -r \"cd ('"+BNTURL.toURI().getPath().toString().substring(1).replace("'", "''")+"');addpath(genpathKPM(pwd));calcul;quit;\"");
 					}else if (SelectedTAb.equals("PNT script build")){
 						 final URL PNTURL = ClassLoader.getSystemClassLoader().getResource("Plugins/incertain/pnt");
 				           if (PNTURL == null) throw new FileNotFoundException("BNT folder not found");
 						//File file1 = new File(System.getProperty("user.dir"), new File(new File(new File("src","Plugins"),"Incertain"),"Pnt").toString());
 						String AddToPath= "p=genpath('"+PNTURL.toURI().getPath().toString().substring(1).replace("'", "''")+"');addpath(p);";
-						process=Runtime.getRuntime().exec("matlab -nodesktop -nodisplay -minimize -noFigureWindows -nosplash -logfile -wait output -r \""+AddToPath+" cd "+PNTURL.toURI().getPath().toString().substring(1).replace("'", "''")+";calcul;quit;\"");
+						process=Runtime.getRuntime().exec("matlab -nodesktop -nodisplay -minimize -noFigureWindows -nosplash -logfile -wait output -r \""+AddToPath+" cd ('"+PNTURL.toURI().getPath().toString().substring(1).replace("'", "''")+"');calcul;quit;\"");
 					}
 					
 				} catch (IOException e) {
@@ -1391,7 +1391,7 @@ finally {
 							try {
 								final URL PNTURLP = ClassLoader.getSystemClassLoader().getResource("Plugins/incertain/pnt");
 					            if (PNTURLP == null) throw new FileNotFoundException("PNT folder not found");
-								Path pathPNT = Paths.get(PNTURLP.toURI().getPath().toString().substring(1).replace("'", "''"),"calcule.m");	
+								Path pathPNT = Paths.get(PNTURLP.toURI().getPath().toString().substring(1),"calcule.m");	
 								out = new PrintWriter(pathPNT.toString());
 								out.println(s);
 			            	    out.close();
@@ -1418,7 +1418,7 @@ finally {
 					                    try {
 					                    	 final URL PNTURL = ClassLoader.getSystemClassLoader().getResource("Plugins/incertain/Pnt");
 							    	            if (PNTURL == null) throw new FileNotFoundException("PNT folder not found");
-							            	    final String cmd="matlab -nodesktop -nodisplay -minimize -noFigureWindows -nosplash -logfile -wait output -r \"addpath(genpath(\'"+PNTURL.toURI().getPath().toString().substring(1).replace("'", "''")+"'));cd "+PNTURL.toURI().getPath().toString().substring(1).replace("'", "''")+"; calcule;\";quit;";
+							            	    final String cmd="matlab -nodesktop -nodisplay -minimize -noFigureWindows -nosplash -logfile -wait output -r \"addpath(genpath(\'"+PNTURL.toURI().getPath().toString().substring(1).replace("'", "''")+"'));cd ('"+PNTURL.toURI().getPath().toString().substring(1).replace("'", "''")+"'); calcule;\";quit;";
 							            	    System.out.println("PNTURL "+PNTURL.toURI().getPath().toString().substring(1).replace("'", "''"));
 							            	    process=Runtime.getRuntime().exec(cmd);
 					                    } catch (IOException e) {
