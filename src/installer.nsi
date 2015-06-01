@@ -1,3 +1,4 @@
+Unicode true
 !include MUI2.nsh
 !include FileFunc.nsh
 # Constants
@@ -15,6 +16,7 @@ Name "${APPNAME}"
 OutFile "Plateforme_outils_SII_install.exe"
 RequestExecutionLevel admin
 InstallDir "$PROGRAMFILES\${COMPANYNAME}\${APPNAME}"
+XPStyle on
 #Icon ${ICON}
 !define MUI_WELCOMEPAGE_TITLE_3LINES
 Var StartMenuFolder
