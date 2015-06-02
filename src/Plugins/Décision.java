@@ -1,14 +1,11 @@
 package Plugins;
 
-import java.awt.Button;
 import java.awt.event.ActionEvent;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.net.URL;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 
 import javax.swing.AbstractAction;
 import javax.swing.Box;
@@ -27,10 +24,10 @@ import javax.swing.border.TitledBorder;
 public class Décision extends JPanel {
 	final JButton Khaoula;
     private static final String DecPosButtonText = "Lancer DecPos";
-    private static final String DecPosDescription = "Programme pour calculer les décisions. Développé par Nougui";
+    private static final String DecPosDescription = "Programme pour calculer les décisions. Développé par Noughi";
     private static final int spacing = 5;
     private static final String FuzzyButtonText = "Lancer GraphViz02";
-    private static final String FuzzyDescription = "<html><div style=\"text-align: center;\">Cette Application offre la possibilité de traiter les processus suivants :"+
+    private static final String FuzzyDescription = "<html><div style=\"text-align: center;\">Cette application offre la possibilité de traiter les processus suivants :"+
 "<br>– La décomposition d’un diagramme d’influence possibiliste vers :<br>– Deux réseaux possibilites sans réduction des noeuds d’utilité"+
 "<br>– Deux réseaux possibilites avec réduction des noeuds d’utilité"+
 "<br>– La transformation d’un diagramme d’influence possibiliste vers un réseau possibiliste"+
@@ -94,7 +91,6 @@ public class Décision extends JPanel {
             }
         });
       Khaoula = new JButton(new AbstractAction(FuzzyButtonText) {
-    	  Thread t;
             public void actionPerformed(ActionEvent actionEvent) {
             	
             	
@@ -109,14 +105,13 @@ public class Décision extends JPanel {
             		public void run() {
             			final URL PNTURL = ClassLoader.getSystemClassLoader().getResource("Plugins/Décision/Pnt");
             			button.setEnabled(false);
-            			button.setText("veuillez patienter ...");
+            			button.setText("Veuillez patienter ...");
             	        try {
             	        	if (PNTURL == null) throw new FileNotFoundException("PNT folder not found");
-            	        	final String cmd="matlab -nodesktop -nodisplay -minimize  -nosplash -wait  -r \"cd "
-            	        +PNTURL.toURI().getPath().toString().substring(1)+
-            	        "; addpath(genpathKPM(pwd)); GUI;";
-            	        	
-            	        	System.out.println("cmd "+cmd);
+            	        	final String cmd="matlab -nodesktop -nodisplay -minimize  -nosplash -wait  -r \"cd ('"
+            	        +PNTURL.toURI().getPath().toString().substring(1).replace("'", "''")+
+            	        "'); addpath(genpathKPM(pwd)); GUI;";
+
             	        	Process process=Runtime.getRuntime().exec(cmd);
             	        	process.waitFor();
             	        	button.setText("Lancer GraphViz02");
@@ -127,7 +122,7 @@ public class Décision extends JPanel {
             	        	button.setEnabled(true);
             	        } catch (URISyntaxException e) {
             	        	JOptionPane.showMessageDialog(null,
-            					    "Erreur d'exécution du script \nScripte non trouvée!",
+            					    "Erreur d'exécution du scripte \nScripte non trouvé ou MATLAB n'est pas bien installé !",
             						   "Erreur",
             						   JOptionPane.ERROR_MESSAGE);
             	        	button.setText("Lancer GraphViz02");
@@ -150,7 +145,7 @@ public class Décision extends JPanel {
             }
            
         });
-        
+
         DecPosButton.setMnemonic('P');
         Box DecPosBox = new Box(BoxLayout.PAGE_AXIS);
         DecPosBox.setBorder(new TitledBorder("DecPos"));
@@ -177,9 +172,9 @@ public class Décision extends JPanel {
         			.addContainerGap(187, Short.MAX_VALUE))
         );
         DecPos.setLayout(gl_DecPos);
-        
-        
-        Khaoula.setMnemonic('F');
+
+
+        Khaoula.setMnemonic('G');
         Box KhaoulaBox = new Box(BoxLayout.PAGE_AXIS);
         KhaoulaBox.setBorder(new TitledBorder("GraphViz02"));
         Box khaoulaDescBox =  Box.createHorizontalBox();
