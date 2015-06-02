@@ -788,11 +788,11 @@ class Fenetre extends JDialog implements ListSelectionListener,ActionListener{
 				
 				final URL BNTURL = ClassLoader.getSystemClassLoader().getResource("Plugins/incertain/FullBNT-1.0.4");
 	            if (BNTURL == null) throw new FileNotFoundException("BNT folder not found");
-				Path path = Paths.get(BNTURL.toURI().getPath().toString().substring(1),"calcul.m");	
+				Path path = Paths.get(BNTURL.toURI().getPath().toString().substring(1).replace("'", "''"),"calcul.m");	
 				
 				final URL PNTURL = ClassLoader.getSystemClassLoader().getResource("Plugins/incertain/pnt");
 	            if (PNTURL == null) throw new FileNotFoundException("BNT folder not found");
-				Path pathPNT = Paths.get(PNTURL.toURI().getPath().toString().substring(1),"calcul.m");	
+				Path pathPNT = Paths.get(PNTURL.toURI().getPath().toString().substring(1).replace("'", "''"),"calcul.m");	
 				
 				
 				System.out.println("path la variable :"+path.toString());

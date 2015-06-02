@@ -319,7 +319,7 @@ public class Tools extends JPanel {
                     }
                     if (!errors.isEmpty()) JOptionPane.showMessageDialog(tools, errors.replaceAll("#.*\\n", "").substring(1), "Erreur", JOptionPane.ERROR_MESSAGE);
                     else {
-                        results = results.split("\n",4)[3]; // Remove unnecessary output
+                        results = results.split("\n",4)[3].substring(1); // Remove unnecessary output
                         for (int i=0; i<clauses.size(); i++)
                             results = results.replaceAll(indices.elementAt(i).toString(), clauses.elementAt(i));
                         ResultsDialog resultsDialog = new ResultsDialog();
@@ -350,7 +350,7 @@ public class Tools extends JPanel {
 
             @Override
             public void contentsChanged(ListDataEvent listDataEvent) {
-                // Nothing
+                // List items are not editable. So do nothing
             }
         };
         TableModelListener calculerTableModelListener = new TableModelListener() {
