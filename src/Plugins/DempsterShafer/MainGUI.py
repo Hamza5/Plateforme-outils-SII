@@ -117,9 +117,9 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.connect(self.actionOuvrir, SIGNAL("triggered(bool)"), self.ouvrir)
         self.connect(self.actionNouveau, SIGNAL("triggered(bool)"), self.nouveau)
         self.connect(self.actionCalculer, SIGNAL("triggered(bool)"), self.calculer)
-        self.connect(self.action_group, SIGNAL("selected(QAction *)"), self.setModified)
+        self.connect(self.action_group, SIGNAL("triggered(QAction *)"), self.setModified)
         self.connect(self.actionOuvrir_des_resultats, SIGNAL("triggered(bool)"), self.afficher)
-        self.connect(self.action_group2, SIGNAL("selected(QAction *)"), self.setModified)
+        self.connect(self.action_group2, SIGNAL("triggered(QAction *)"), self.setModified)
 
     def attribuer_titre(self):
         title, ok = QInputDialog.getText(self, "Titre", "Titre", QLineEdit.Normal, self.title)

@@ -1,4 +1,3 @@
-Unicode true
 !include MUI2.nsh
 !include FileFunc.nsh
 # Constants
@@ -70,11 +69,16 @@ WriteRegDWORD HKLM "${REG_UNINSTALL}" "EstimatedSize" "$0"
 	CreateShortCut "$SMPROGRAMS\$StartMenuFolder\${APPNAME}.lnk" "$INSTDIR\${EXE}"
 	CreateShortCut "$SMPROGRAMS\$StartMenuFolder\Désinstaller.lnk" "$INSTDIR\${UNINSTALLER}"
 	CreateShortCut "$DESKTOP\${APPNAME}.lnk" "$INSTDIR\${EXE}"
+	CreateShortCut "$SMPROGRAMS\$StartMenuFolder\Combinateur d'évidences.lnk" "$INSTDIR\Plugins\DempsterShafer\combinateur.exe"
+  CreateShortCut "$DESKTOP\Combinateur d'évidences.lnk" "$INSTDIR\Plugins\DempsterShafer\combinateur.exe"
 !insertmacro MUI_STARTMENU_WRITE_END
 SectionEnd
 
 Section "Uninstall"
-Delete "$SMPROGRAMS\$StartMenuFolder\${APPNAME}.lnk"
+Delete "'$DESKTOP\Combinateur d'évidences.lnk'"
+Delete "'$SMPROGRAMS\$StartMenuFolder\Combinateur d'évidences.lnk'"
+Delete "'$DESKTOP\${APPNAME}.lnk'"
+Delete "'$SMPROGRAMS\$StartMenuFolder\${APPNAME}.lnk'"
 Delete "$SMPROGRAMS\$StartMenuFolder\Désinstaller.lnk"
 RMDir "$SMPROGRAMS\$StartMenuFolder"
 Delete "$INSTDIR\${EXE}"
