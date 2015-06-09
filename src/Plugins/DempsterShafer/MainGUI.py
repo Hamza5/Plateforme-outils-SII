@@ -496,8 +496,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             agent = Agent(name, reliability)
             agent.disable(not enabled)
             for hypothesis, mass in zip(hypotheses, masses):
-                agent.add_hypothese(hypothesis, mass, 0)
-                agent_dialog.model.appendRow([ObjectItem(hypothesis), ObjectItem(mass), ObjectItem(0)])
+                agent.add_hypothese(hypothesis, mass)
+                agent_dialog.model.appendRow([ObjectItem(hypothesis), ObjectItem(mass)])
         if agent_dialog.exec_() == QDialog.Accepted:
             nom = agent_dialog.nomLineEdit.text()
             fiabilité = agent_dialog.fiabiliteSpinBox.value()
