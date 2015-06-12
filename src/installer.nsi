@@ -16,7 +16,9 @@ OutFile "Plateforme_outils_SII_install.exe"
 RequestExecutionLevel admin
 InstallDir "$PROGRAMFILES\${COMPANYNAME}\${APPNAME}"
 XPStyle on
-#Icon ${ICON}
+!define MUI_ICON ${ICON}
+!define MUI_WELCOMEFINISHPAGE_BITMAP "${NSISDIR}\Contrib\Graphics\Wizard\orange.bmp"
+!define MUI_UNWELCOMEFINISHPAGE_BITMAP "${NSISDIR}\Contrib\Graphics\Wizard\orange-uninstall.bmp"
 !define MUI_WELCOMEPAGE_TITLE_3LINES
 Var StartMenuFolder
 # Install pages
@@ -45,8 +47,9 @@ File ${PYTHON_EXE}
 File ${EXE}
 File "*.class"
 File "*.jar"
-File "*.png"
-File "*.ico"
+File "logo.png"
+File "splash.png"
+File "logo.ico"
 File /r "Plugins"
 DetailPrint $(python3_inst)
 ExecWait "msiexec /i ${PYTHON_EXE} /qb! TARGETDIR=${PYTHON_PATH} ALLUSERS=1"
@@ -75,21 +78,21 @@ WriteRegDWORD HKLM "${REG_UNINSTALL}" "EstimatedSize" "$0"
 SectionEnd
 
 Section "Uninstall"
-Delete "'$DESKTOP\Combinateur d'évidences.lnk'"
-Delete "'$SMPROGRAMS\$StartMenuFolder\Combinateur d'évidences.lnk'"
-Delete "'$DESKTOP\${APPNAME}.lnk'"
-Delete "'$SMPROGRAMS\$StartMenuFolder\${APPNAME}.lnk'"
-Delete "$SMPROGRAMS\$StartMenuFolder\Désinstaller.lnk"
-RMDir "$SMPROGRAMS\$StartMenuFolder"
-Delete "$INSTDIR\${EXE}"
-Delete "$INSTDIR\${ICON}"
-Delete "$INSTDIR\*.class"
-Delete "$INSTDIR\*.jar"
-Delete "$INSTDIR\logo.png"
-Delete "$INSTDIR\logo.ico"
-Delete "$INSTDIR\splash.png"
-RMDir /r "$INSTDIR\Plugins"
-Delete "$INSTDIR\${UNINSTALLER}"
+Delete /REBOOTOK "$DESKTOP\Combinateur d'évidences.lnk"
+Delete /REBOOTOK "$SMPROGRAMS\$StartMenuFolder\Combinateur d'évidences.lnk"
+Delete /REBOOTOK "$DESKTOP\${APPNAME}.lnk"
+Delete /REBOOTOK "$SMPROGRAMS\$StartMenuFolder\${APPNAME}.lnk"
+Delete /REBOOTOK "$SMPROGRAMS\$StartMenuFolder\Désinstaller.lnk"
+RMDir /REBOOTOK "$SMPROGRAMS\$StartMenuFolder"
+Delete /REBOOTOK "$INSTDIR\${EXE}"
+Delete /REBOOTOK "$INSTDIR\${ICON}"
+Delete /REBOOTOK "$INSTDIR\*.class"
+Delete /REBOOTOK "$INSTDIR\*.jar"
+Delete /REBOOTOK "$INSTDIR\logo.png"
+Delete /REBOOTOK "$INSTDIR\logo.ico"
+Delete /REBOOTOK "$INSTDIR\splash.png"
+RMDir /REBOOTOK /r "$INSTDIR\Plugins"
+Delete /REBOOTOK "$INSTDIR\${UNINSTALLER}"
 RMDir $INSTDIR
 DeleteRegKey HKLM "${REG_UNINSTALL}"
 SectionEnd
