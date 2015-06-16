@@ -389,16 +389,17 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             return
         selection_model = self.etatsListView.selectionModel()
         if selection_model.hasSelection():
-            self.delete_états_selection()
+            if not self.delete_états_selection():
+                return
         else:
             état_item, ok = QInputDialog.getItem(self, "Supprimer un état", "Etat", self.etatsModel.list_of_str(), 0,
                                                  False)
             if ok:
                 for item in reversed(self.etatsModel):
                     if item.named(état_item):
-                        self.deleteHypotheseByEtat(self.etatsListView.model()[item.row()].item)
-                        del self.etatsModel[item.row()]
-                        break
+                        if self.deleteHypotheseByEtat(self.etatsListView.model()[item.row()].item):
+                            del self.etatsModel[item.row()]
+                            break
             else:
                 return
         self.setModified()
@@ -738,21 +739,57 @@ class MainWindow(QMainWindow, Ui_MainWindow):
     def delete_états_selection(self):
         selection_model = self.etatsListView.selectionModel()
         model_index_list = selection_model.selectedIndexes()
-        for x in reversed(model_index_list):
-            self.deleteHypotheseByEtat(self.etatsListView.model()[x.row()].item)
-            del self.etatsListView.model()[x.row()]
+        états_rows = [x.row() for x in reversed(model_index_list)]
+        états_deleted = False
+        for i in états_rows:
+            if not self.deleteHypotheseByEtat(self.etatsListView.model()[i].item):
+                continue
+            del self.etatsListView.model()[i]
+            états_deleted = True
+        return états_deleted
 
     def deleteHypotheseByEtat(self, état: Etat):
+        hypothèsesIndices = []
         for hypothèse_item in reversed(self.hypothesesModel):
             if état in hypothèse_item.item:
-                self.deleteHypothese(hypothèse_item.row())
+                hypothèsesIndices.append(hypothèse_item.row())
+        if hypothèsesIndices:
+            msg = QMessageBox(self)
+            msg.setWindowTitle('Avertissement')
+            msg.setText('<b>Les hypothèses suivantes seront supprimées</b><br>'+'<br>'.join([self.hypothesesModel[i].text() for i in hypothèsesIndices]))
+            msg.setInformativeText('Voulez vous continuer ?')
+            msg.setStandardButtons(QMessageBox.Yes | QMessageBox.No)
+            msg.setIcon(QMessageBox.Warning)
+            ok = msg.exec_()
+            if ok == QMessageBox.Yes:
+                for i in hypothèsesIndices:
+                    if not self.deleteHypothese(i):
+                        return False
+                return True
+            return False
+        return True
 
     def deleteHypothese(self, rowIndex: int):
         hypothèse = self.hypothesesModel[rowIndex].item
+        agentsIndices = []
         for agent_item in self.agentsModel:
             if hypothèse in agent_item.item:
-                del self.agentsModel[agent_item.row()]
+                agentsIndices.append(agent_item.row())
+        if agentsIndices:
+            msg = QMessageBox(self)
+            msg.setWindowTitle('Avertissement')
+            msg.setText('<b>Les agents suivants seront supprimées</b><br>'+'<br>'.join([self.agentsModel[i].text() for i in agentsIndices]))
+            msg.setInformativeText('Voulez vous continuer ?')
+            msg.setStandardButtons(QMessageBox.Yes | QMessageBox.No)
+            msg.setIcon(QMessageBox.Warning)
+            ok = msg.exec_()
+            if ok == QMessageBox.Yes:
+                for agentIndex in agentsIndices:
+                    del self.agentsModel[agentIndex]
+            else:
+                return False
         del self.hypothesesModel[rowIndex]
+        return True
 
     def closeEvent(self, close_event: QCloseEvent):  # Reimplementing the window close event
         if self.edited:
