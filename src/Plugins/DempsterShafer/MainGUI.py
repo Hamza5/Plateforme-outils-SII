@@ -9,7 +9,7 @@ try:
     from PyQt4.QtGui import QApplication, QMainWindow, QActionGroup, QDialog, QStandardItem, QStandardItemModel, \
         QInputDialog, QHeaderView, QLineEdit, QMessageBox, QFileDialog, QCloseEvent, QTableWidgetItem, QMovie, QLabel\
         , QIcon
-    from PyQt4.QtCore import SIGNAL, QModelIndex, Qt, QThread, QMimeData
+    from PyQt4.QtCore import SIGNAL, QModelIndex, Qt, QThread, QMimeData, QLocale, QTranslator
 except ImportError as e:
     print('Can not use PyQt4 !', e.msg, file=sys.stderr, sep='\n')
     sys.exit(2)
@@ -786,9 +786,11 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             if ok == QMessageBox.Yes:
                 for agentIndex in agentsIndices:
                     del self.agentsModel[agentIndex]
+                    self.setModified()
             else:
                 return False
         del self.hypothesesModel[rowIndex]
+        self.setModified()
         return True
 
     def closeEvent(self, close_event: QCloseEvent):  # Reimplementing the window close event
@@ -1124,6 +1126,11 @@ def exception_handler(type, value, tb):  # Show the error to the user instead of
 if __name__ == '__main__':
     sys.excepthook = exception_handler  # Change the default exception handler
     app = QApplication(sys.argv)
+    # Translate standard buttons to french
+    qtTranslator = QTranslator()
+    qtTranslator.load("qt_fr")
+    app.installTranslator(qtTranslator)
+    # Show the main window
     window = MainWindow()
     window.show()
     sys.exit(app.exec_())
