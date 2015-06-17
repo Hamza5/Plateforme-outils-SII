@@ -31,7 +31,7 @@ La procédure de préparation qui opère des manipulations sur les masses sera e
 \lAutre{ligne de l’alternative}
 \DontPrintSemicolon
 \section{Preparation des masses}
-Cette étape permet d'affecter à chaque agent une fiabilité pour faire un affaiblissement à toutes les masses et l'attribuer à $\Omega$. Elle permet aussi de d'attribuer à $\Omega$ les masses non attribuées dans l'étape de collection d'informations.   
+Cette étape permet d'affecter à chaque agent une fiabilité pour faire un affaiblissement à toutes les masses et l'attribuer à $\Omega$. Elle permet aussi d'attribuer à $\Omega$ les masses non attribuées dans l'étape de collection d'informations.   
 
 $\textit{EtatsDuMonde}$ est une variable utilisée dans l'algorithme qui représente les états du monde collectés lors de cette étape. \\
 \begin{algorithm}[H]
@@ -123,7 +123,11 @@ $CalculCroyancePlausibilité(Agent);$
 \end{algorithm}
 \vspace{2em}
 \section{Procédure de combinaison d'information}
-\vspace{2em}
+\vspace{1em}
+
+Nous passant maintenant a vous présenter les algorithmes implémenté à partir des règles de combinaison.
+
+\vspace{1em}
 \begin{algorithm}[H]
 \caption{Méthode de combinaison Dempster-Shafer}
 \BlankLine
@@ -153,11 +157,12 @@ $AGENTRes(k).masse \gets AGENTRes(k).masse \times (1/k);$
 }
 \Retourner{$AGRes$}
 \end{algorithm}
-$\newline$
-$\\ $Dans les algorithmes de combinaison qui suivent, une grande partie redondante n'est pas présentée car elle est déjà dans l'algorithme combinaison Dempster-Shafer. Nous ne présenterons que les paries différentes.
-$\newline$
-$\newline$
-$\newline$
+\vspace{1em}
+
+Dans les algorithmes de combinaison qui suivent, une grande partie redondante n'est pas présentée car elle est déjà dans l'algorithme combinaison Dempster-Shafer. Nous ne présenterons que les parties différentes.
+
+\vspace{1em}
+
 \begin{algorithm}[H]
 \caption{Méthode de combinaison Dubois-Prade}
 \setcounter{AlgoLine}{3}
@@ -196,6 +201,9 @@ Cela consomme un grand temps d'exécution en fonction de la grandeur d'états du
 \vspace{2em}
 \section{Procédure de calcul de croyance}
 \vspace{2em}
+
+Après faire la fusion et à partir des masses calculé pour chaque hypothèse, nous passant à calculer la croyance et la plausibilité, pour cela l'algorithmes suivant est chargé d'effectuer ces calculs. 
+
 \begin{algorithm}[H]
 \caption{Calcul de croyance et de plausibilité}
 \BlankLine
@@ -262,5 +270,6 @@ $ResDecision \gets vecHypothèses.Max();$
 \phantomsection
 \addcontentsline{toc}{section}{Conclusion}
 \section*{Conclusion}
+les algorithmes que nous venons de présenter, ont comme but d'accélérer les calculs et augmenter la precision, ce qui a été achevé. 
 
 Sur la base de cet ensemble d'algorithmes, nous pouvons aborder la phase de réalisation.  
