@@ -1,12 +1,12 @@
-# Plateforme d'outils SII & Combinateur d'évidences
+## Plateforme d'outils SII & Combinateur d'évidences
 
-### Projet de fin d'études en licence Informatique générale
+#### Projet de fin d'études en licence Informatique générale
 
-### 2014/2015
+#### 2014/2015
 
-##### Hamza ABBAD & Ahmed ZEBOUCHI
+###### Hamza ABBAD & Ahmed ZEBOUCHI
 
-## Présentation
+### Présentation
 Dans le cadre du projet de fin d'études de licence, nous avons réalisé deux applications autour de
 théorie des connaissances incertaines et imprécises.
 
@@ -31,17 +31,18 @@ théorie des connaissances incertaines et imprécises.
   l'intéraction de l'utilisateur avec ces outils en offrant une interface commune pour les utiliser.
   Il existe plusieurs outils et parmi d'eux on trouve notre *Combinateur d'évidences*.
 
-## Dépendances
+### Dépendances
 
-Le **Combinateur d'évidences** nécessite *Java Runtime Environment* (JRE) pour le fonctionnement du noyau, et
-*Python 3*, *PyQt4* pour le fonctionnement de l'interface graphique. L'installation de la bibliothèque *lxml*
-est recommandée. Python 3 et PyQt4 seront automatiquement installés avec la Plateforme d'outils SII.
+Le **Combinateur d'évidences** nécessite [Java Runtime Environment](http://java.com) (JRE) pour le fonctionnement du noyau, et
+[Python 3](https://www.python.org/downloads/windows/), [PyQt4](http://sourceforge.net/projects/pyqt/) pour le fonctionnement de
+l'interface graphique. L'installation de la bibliothèque [lxml](https://pypi.python.org/pypi/lxml/)
+est recommandée. *Python 3* et *PyQt4* seront automatiquement installés avec la Plateforme d'outils SII.
 
-La **Plateforme d'outils SII* à besoin aussi de *Java Runtime Environment* pour fonctionner. Certain de ses
-outils nécessitent *MATLAB*.
+La **Plateforme d'outils SII** à besoin aussi de *Java Runtime Environment* pour fonctionner. Certain de ses
+outils nécessitent [MATLAB](http://fr.mathworks.com/products/matlab/).
 
-## Installation
+### Installation
 
-Télécharger la dernière version à partir du *Releases* de la page du projet dans GitHub. Ouvrir l'installation
+Télécharger la dernière version à partir du [*releases* de la page du projet dans GitHub](https://github.com/Hamza5/PFE-Licence/releases). Ouvrir l'installation
 et suivre les instructions. Patienter pendant l'installation. Deux raccourcis seront placés sur le bureau et
 dans le menu démarrer correspondant à ces deux logiciels.
