@@ -38,7 +38,7 @@ Le **Combinateur d'évidences** nécessite [Java Runtime Environment](http://jav
 l'interface graphique. L'installation de la bibliothèque [lxml](https://pypi.python.org/pypi/lxml/)
 est recommandée. *Python 3* et *PyQt4* seront automatiquement installés avec la Plateforme d'outils SII.
 
-La **Plateforme d'outils SII** à besoin aussi de *Java Runtime Environment* pour fonctionner. Certain de ses
+La **Plateforme d'outils SII** a besoin aussi de *Java Runtime Environment* pour fonctionner. Certain de ses
 outils nécessitent [MATLAB](http://fr.mathworks.com/products/matlab/).
 
 ### Installation
