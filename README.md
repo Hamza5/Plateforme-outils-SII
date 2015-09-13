@@ -35,7 +35,7 @@ théorie des connaissances incertaines et imprécises.
 
 Le **Combinateur d'évidences** nécessite *Java Runtime Environment* (JRE) pour le fonctionnement du noyau, et
 *Python 3*, *PyQt4* pour le fonctionnement de l'interface graphique. L'installation de la bibliothèque *lxml*
-est recommandée.
+est recommandée. Python 3 et PyQt4 seront automatiquement installés avec la Plateforme d'outils SII.
 
 La **Plateforme d'outils SII* à besoin aussi de *Java Runtime Environment* pour fonctionner. Certain de ses
 outils nécessitent *MATLAB*.
