@@ -41,8 +41,8 @@ est recommandée. *Python 3* et *PyQt4* seront automatiquement installés avec l
 La **Plateforme d'outils SII** a besoin aussi de *Java Runtime Environment* pour fonctionner. Certain de ses
 outils nécessitent [MATLAB](http://fr.mathworks.com/products/matlab/).
 
-### Installation
+### Téléchargement et Installation
 
-Télécharger la dernière version à partir du [*releases* de la page du projet dans GitHub](https://github.com/Hamza5/PFE-Licence/releases). Ouvrir l'installation
+Télécharger [la dernière version à partir du *releases* de la page du projet dans GitHub](https://github.com/Hamza5/Plateforme-outils-SII/releases/latest). Ouvrir l'installation
 et suivre les instructions. Patienter pendant l'installation. Deux raccourcis seront placés sur le bureau et
 dans le menu démarrer correspondant à ces deux logiciels.
