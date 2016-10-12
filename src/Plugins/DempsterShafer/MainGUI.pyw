@@ -37,6 +37,7 @@ import HelperClasses.Agent
 __author__ = 'Hamza Abbad'
 app_name = 'Combinateur d\'évidences'
 devloppers = 'Hamza Abbad & Ahmed Zebouchi'
+_version = '1.0.1'
 
 
 class MainWindow(QMainWindow, Ui_MainWindow):
@@ -99,7 +100,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.agentsTreeView.setContextMenuPolicy(Qt.ActionsContextMenu)
 
         # Add the default status message
-        self.statusbar.addWidget(QLabel(app_name+' - '+devloppers))
+        self.statusbar.addWidget(QLabel(app_name + ' ' + _version + ' - '+devloppers))
 
         # Connecting Signals to slots :
         self.connect(self.actionAjouterEtat, SIGNAL("triggered(bool)"), self.ajouterEtat)
@@ -274,7 +275,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         try:
             # The title and the description
             self.title = tree.find('Title').text
-            self.setWindowTitle(app_name + (' - ' + self.title if self.title != '' else ''))
+            self.setWindowTitle(app_name + ' ' + _version + (' - ' + self.title if self.title != '' else ''))
             self.description = tree.find('Description').text
             # The method
             method = tree.find('Method').text
@@ -812,11 +813,11 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
     def setModified(self):
         self.edited = True
-        self.setWindowTitle(app_name + ' - ' + self.title + '*')
+        self.setWindowTitle(app_name + ' ' + _version + ' - ' + self.title + '*')
 
     def setUnmodified(self):
         self.edited = False
-        self.setWindowTitle(app_name + ' - ' + self.title)
+        self.setWindowTitle(app_name + ' ' + _version + ' - ' + self.title)
 
 
 class DescriptionDialog(QDialog, Ui_descriptionDialog):
@@ -1129,12 +1130,16 @@ if __name__ == '__main__':
     if translator.load('qt_fr'):
         app.installTranslator(translator)
     else:
-        msg = QMessageBox(self)
+        msg = QMessageBox()
         msg.setWindowTitle('Avertissement')
         msg.setText('<b>Le fichier qt_fr.qm est manquant !</b>')
         msg.setIcon(QMessageBox.Warning)
         msg.exec_()
-        
+
     window = MainWindow()
     window.show()
+    # Load Java for the first time
+    java_cmd = 'javaw' if sys.platform.startswith('win') else 'java'
+    with subprocess.Popen([java_cmd, '-cp',  dirname(realpath(__file__)), window.executable], stderr=subprocess.DEVNULL):
+        pass
     sys.exit(app.exec_())
